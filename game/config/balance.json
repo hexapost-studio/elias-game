@@ -1,0 +1,52 @@
+{
+  "maxStat": 100,
+  "minStat": 0,
+  "maxAge": 100,
+  "initialStats": { "foi": 70, "paix": 70, "physique": 80, "finances": 50 },
+  "eventChancePerYear": 0.4,
+
+  "flow": {
+    "baseGain": 10,
+    "maxTime": 15,
+    "thresholds": { "palier1": 33, "palier2": 66, "palier3": 100 },
+    "multipliers": { "palier1": 1.0, "palier2": 1.5, "palier3": 2.5 },
+    "naturalDecay": 2,
+    "penaltyAsymmetric": true
+  },
+
+  "burnout": {
+    "palier1": 0,
+    "palier2": 1,
+    "palier3": 3
+  },
+
+  "aging": {
+    "physiqueDeclineStart": 41,
+    "physiqueDeclineRate": 1,
+    "physiqueDeclineRateOld": 2,
+    "paixDeclineStart": 61,
+    "paixDeclineRate": 1
+  },
+
+  "difficulty": {
+    "palier1MaxAge": 15,
+    "palier2MaxAge": 60,
+    "palier3MinAge": 61
+  },
+
+  "combo": {
+    "threshold": 5,
+    "bonusFoi": 2
+  },
+
+  "birthProfiles": [
+    { "name": "Foi de fer", "weight": 20, "foi": [70,95], "paix": [50,70], "physique": [60,80], "finances": [30,50] },
+    { "name": "Équilibré", "weight": 35, "foi": [50,70], "paix": [50,70], "physique": [50,70], "finances": [50,70] },
+    { "name": "Santé fragile", "weight": 15, "foi": [60,80], "paix": [50,70], "physique": [30,50], "finances": [50,70] },
+    { "name": "Financier", "weight": 15, "foi": [40,60], "paix": [40,60], "physique": [50,70], "finances": [70,95] },
+    { "name": "Éprouvé", "weight": 10, "foi": [80,95], "paix": [30,50], "physique": [40,60], "finances": [30,50] },
+    { "name": "Prodige", "weight": 5, "foi": [60,80], "paix": [60,80], "physique": [60,80], "finances": [60,80] }
+  ],
+
+  "saveExpiryDays": 7
+}

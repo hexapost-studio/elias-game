@@ -1,0 +1,58 @@
+import type { StoryArc } from '../types/game';
+
+/**
+ * Arcs narratifs — histoires multi-événements.
+ * Chaque arc est une séquence de 3-5 événements qui racontent
+ * une histoire continue à travers les âges d'Élias.
+ * Les événements d'un arc sont liés par storyArcId et arcSequence.
+ */
+export const STORY_ARCS: StoryArc[] = [
+  {
+    id: 'arc-louise',
+    name: 'Le pardon de Louise',
+    description: 'Une ancienne amie réapparaît et une blessure du passé doit être guérie.',
+    eventIds: ['arc-louise-1', 'arc-louise-2', 'arc-louise-3'],
+    rewardVerseId: 'v-amer-004',
+    rewardTitle: 'Le Réconciliateur',
+  },
+  {
+    id: 'arc-mathias',
+    name: 'Le disciple Mathias',
+    description: 'Un jeune homme cherche à être disciple. Le former demande patience et sagesse.',
+    eventIds: ['arc-mathias-1', 'arc-mathias-2', 'arc-mathias-3', 'arc-mathias-4'],
+    rewardVerseId: 'v-ident-004',
+    rewardTitle: 'Le Mentor',
+  },
+  {
+    id: 'arc-heritage',
+    name: 'L\'héritage du père',
+    description: 'Découvrir la vérité sur un secret de famille qui affecte la destinée.',
+    eventIds: ['arc-heritage-1', 'arc-heritage-2', 'arc-heritage-3'],
+    rewardVerseId: 'v-ident-003',
+    rewardTitle: 'Le Révélateur',
+  },
+  {
+    id: 'arc-tentation',
+    name: 'La tentation du pouvoir',
+    description: 'Une promotion rapide met la foi d\'Élias à l\'épreuve.',
+    eventIds: ['arc-tentation-1', 'arc-tentation-2', 'arc-tentation-3', 'arc-tentation-4', 'arc-tentation-5'],
+    rewardVerseId: 'v-orgueil-001',
+    rewardTitle: 'L\'Humble',
+  },
+  {
+    id: 'arc-guerison',
+    name: 'Le chemin de guérison',
+    description: 'Une maladie éprouve Élias et sa famille. La foi est mise à l\'épreuve sur la durée.',
+    eventIds: ['arc-guerison-1', 'arc-guerison-2', 'arc-guerison-3'],
+    rewardVerseId: 'v-peur-007',
+    rewardTitle: 'Le Guéri',
+  },
+];
+
+export function getArcById(id: string): StoryArc | undefined {
+  return STORY_ARCS.find((a) => a.id === id);
+}
+
+export function getArcByEventId(eventId: string): StoryArc | undefined {
+  return STORY_ARCS.find((a) => a.eventIds.includes(eventId));
+}

@@ -1,0 +1,109 @@
+import { create } from 'zustand';
+import type { GameState } from '../types/game';
+import {
+  createInitialState,
+  advanceAge,
+  validateChoice,
+  checkGameOver,
+  computeFinalMetrics,
+  determineTitle,
+} from '../engine/gameEngine';
+import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
+
+interface GameStore extends GameState {
+  gameOver: { isOver: boolean; reason?: string } | null;
+  initGame: () => void;
+  ageUp: () => void;
+  chooseVerse: (verseId: string, timeToAnswer?: number) => void;
+  dismissResult: () => void;
+  hydrateFromSave: (data: Partial<GameState>) => void;
+}
+
+export const useGameStore = create<GameStore>((set, get) => ({
+  ...createInitialState(),
+  gameOver: null,
+
+  hydrateFromSave: (data: Partial<GameState>) => {
+    set({ ...data, gameOver: null } as any);
+  },
+
+  initGame: () => {
+    const inheritance = get().inheritance;
+    const used = inheritance?.used;
+    const state = createInitialState(
+      used ? { title: null, bonus: {}, used: false } : inheritance
+    );
+    set({ ...state, gameOver: null });
+    saveGame(state).catch(() => {});
+  },
+
+  ageUp: () => {
+    const state = get();
+    const { newState } = advanceAge(state);
+    const over = checkGameOver(newState);
+    set({ ...newState, gameOver: over.isOver ? over : null });
+    saveGame(get()).catch(() => {});
+  },
+
+  chooseVerse: (verseId: string, timeToAnswer: number = 0) => {
+    const state = get();
+    if (!state.currentEvent || state.phase !== 'event') return;
+
+    const { correct, newState } = validateChoice(state, verseId, timeToAnswer);
+    const over = checkGameOver(newState);
+
+    // Analytics: log event
+    logEvent({
+      eventId: state.currentEvent.id,
+      correct,
+      timeToAnswer,
+      age: state.age,
+      flowLevel: state.flow.value,
+      category: state.currentEvent.category,
+      timestamp: Date.now(),
+    }).catch(() => {});
+
+    // Titre + héritage si game over
+    let finalTitle = null;
+    let finalInheritance = { ...newState.inheritance };
+    if (over.isOver) {
+      const metrics = computeFinalMetrics(newState);
+      finalTitle = determineTitle(metrics);
+      if (finalTitle) {
+        finalInheritance = {
+          title: finalTitle,
+          bonus: finalTitle.bonus,
+          used: false,
+        };
+        saveInheritance(finalInheritance).catch(() => {});
+      }
+
+      // Analytics: log run
+      logRun({
+        ageAtDeath: state.age,
+        totalEvents: newState.totalEvents,
+        successRate: newState.successRate,
+        maxCombo: newState.maxCombo,
+        maxFlow: state.flow.value,
+        cause: over.reason || null,
+        title: finalTitle?.name || null,
+        timestamp: Date.now(),
+      }).catch(() => {});
+    }
+
+    const resultState = {
+      ...newState,
+      phase: 'result' as const,
+      gameOver: over.isOver ? over : null,
+      currentTitle: finalTitle,
+      inheritance: finalInheritance,
+    };
+
+    set(resultState);
+    saveGame(resultState).catch(() => {});
+  },
+
+  dismissResult: () => {
+    set({ phase: 'idle', lastEventResult: null });
+  },
+}));

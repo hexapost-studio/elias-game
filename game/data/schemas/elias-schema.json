@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Élias Game Data Schema",
+  "description": "Valide l'intégrité de toutes les données du jeu (versets, événements, arcs, lexique, config)",
+
+  "definitions": {
+    "verse": {
+      "type": "object",
+      "required": ["id", "ref", "text", "cat", "diff"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^v-[a-z]+-\\d{3}$", "description": "ID unique du verset" },
+        "ref": { "type": "string", "minLength": 3 },
+        "text": { "type": "string", "minLength": 10 },
+        "cat": { "type": "string", "enum": ["peur_angoisse","impudicite_addiction","finances_paresse","amertume_rejet","combat_spirituel","identite_appel","doute_incredulite","orgueil_independance"] },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "impact": { "type": "object", "properties": { "foi": { "type": "integer" }, "paix": { "type": "integer" }, "physique": { "type": "integer" }, "finances": { "type": "integer" } } },
+        "diff": { "type": "integer", "minimum": 1, "maximum": 3 }
+      }
+    },
+
+    "event": {
+      "type": "object",
+      "required": ["id", "title", "description", "ageRange", "category", "correctVerseId", "statImpactOnFail"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^e-" },
+        "title": { "type": "string", "maxLength": 60 },
+        "description": { "type": "string", "minLength": 10, "maxLength": 500 },
+        "ageRange": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "integer", "minimum": 0, "maximum": 100 } },
+        "category": { "type": "string", "enum": ["peur_angoisse","impudicite_addiction","finances_paresse","amertume_rejet","combat_spirituel","identite_appel","doute_incredulite","orgueil_independance"] },
+        "correctVerseId": { "type": "string", "pattern": "^v-" },
+        "statImpactOnFail": { "type": "object", "properties": { "foi": { "type": "integer" }, "paix": { "type": "integer" }, "physique": { "type": "integer" }, "finances": { "type": "integer" }, "required": ["foi","paix","physique","finances"] } },
+        "cascadeEventId": { "type": "string", "pattern": "^e-" },
+        "storyArcId": { "type": "string", "pattern": "^arc-" },
+        "arcSequence": { "type": "integer", "minimum": 1 },
+        "minStat": { "type": "object" },
+        "maxStat": { "type": "object" }
+      }
+    },
+
+    "config": {
+      "type": "object",
+      "properties": {
+        "maxStat": { "type": "integer", "minimum": 1 },
+        "minStat": { "type": "integer", "minimum": 0 },
+        "maxAge": { "type": "integer", "minimum": 1 },
+        "flow": {
+          "type": "object",
+          "properties": {
+            "baseGain": { "type": "integer" },
+            "maxTime": { "type": "integer" },
+            "thresholds": {
+              "type": "object",
+              "properties": {
+                "palier1": { "type": "integer" },
+                "palier2": { "type": "integer" },
+                "palier3": { "type": "integer" }
+              }
+            },
+            "multipliers": {
+              "type": "object",
+              "properties": {
+                "palier1": { "type": "number" },
+                "palier2": { "type": "number" },
+                "palier3": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
