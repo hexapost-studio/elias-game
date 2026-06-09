@@ -13,9 +13,11 @@
  */
 
 import type { FC } from 'react';
+import { useState } from 'react';
 import {
   BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon,
 } from './IconSystem';
+import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
 
 interface MainMenuProps {
   onClose: () => void;
@@ -40,6 +42,8 @@ export const MainMenu: FC<MainMenuProps> = ({
   age,
   successRate,
 }) => {
+  const [volume, setVolume] = useState(Math.round(getAmbientVolume() * 100));
+
   return (
     <div
       style={{
@@ -169,6 +173,25 @@ export const MainMenu: FC<MainMenuProps> = ({
             onClick={onToggleAmbient}
             active={ambientOn}
           />
+
+          {ambientOn && (
+            <div style={{ padding: '4px 16px 8px', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 28 }}>🔈</span>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={volume}
+                onChange={(e) => {
+                  const v = Number(e.target.value);
+                  setVolume(v);
+                  setAmbientVolume(v / 100);
+                }}
+                style={{ flex: 1, accentColor: 'var(--accent-gold)', cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 28, textAlign: 'right' }}>{volume}%</span>
+            </div>
+          )}
 
           <MenuSection label="PARTIE" />
 

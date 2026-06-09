@@ -179,9 +179,9 @@ const SOUNDTRACK_PATHS = [
   '/audio/soundtrack-3.mp3',
 ];
 
-const AMBIENT_VOLUME = 0.38;  // Volume cible (fond sonore discret)
-const FADE_IN_SEC   = 2.5;    // Durée fondu ouverture
-const FADE_OUT_SEC  = 1.8;    // Durée fondu fermeture
+let AMBIENT_VOLUME = 0.38;    // Volume cible — modifiable via setAmbientVolume()
+const FADE_IN_SEC  = 2.5;    // Durée fondu ouverture
+const FADE_OUT_SEC = 1.8;    // Durée fondu fermeture
 
 let ambientRunning = false;
 let currentAudio: HTMLAudioElement | null = null;
@@ -248,6 +248,17 @@ export function startAmbient(): void {
   // Démarrer à une piste aléatoire
   trackIndex = Math.floor(Math.random() * SOUNDTRACK_PATHS.length);
   playTrack(SOUNDTRACK_PATHS[trackIndex], true);
+
+  // Couper la musique quand l'onglet est caché, reprendre au retour
+  document.addEventListener('visibilitychange', _handleVisibility);
+}
+
+function _handleVisibility() {
+  if (document.hidden) {
+    if (currentAudio) currentAudio.pause();
+  } else {
+    if (ambientRunning && currentAudio) currentAudio.play().catch(() => {});
+  }
 }
 
 export function stopAmbient(): void {
@@ -311,10 +322,22 @@ export function playCombo(): void {
 }
 
 export function playClick(): void {
-  play('click-a', 0.3);
+  play('click-a', 0.3, 0.92 + Math.random() * 0.16);
 }
 
 export function playLevelUp(): void {
   playProcedural('levelup');
   play('switch-a', 0.3, 1.3);
+}
+
+export function setAmbientVolume(v: number): void {
+  AMBIENT_VOLUME = Math.max(0, Math.min(1, v));
+  if (ambientGain && audioCtx) {
+    ambientGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    ambientGain.gain.setValueAtTime(AMBIENT_VOLUME, audioCtx.currentTime);
+  }
+}
+
+export function getAmbientVolume(): number {
+  return AMBIENT_VOLUME;
 }

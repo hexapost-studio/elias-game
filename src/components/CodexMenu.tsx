@@ -147,7 +147,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
 
         {/* Hint */}
         {!revealed && (
-          <div style={{ marginTop: 16, fontSize: 10, color: 'var(--text-muted)' }}>
+          <div style={{ marginTop: 16, fontSize: 11, color: 'var(--text-secondary)' }}>
             Essaie de réciter le verset avant de regarder
           </div>
         )}
@@ -311,7 +311,7 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
           const verse = verseMap.get(entry.verseId);
           if (!verse) return null;
           return (
-            <div key={entry.verseId} style={{ padding: '9px 12px', marginBottom: 6, borderRadius: 6, background: entry.unlocked ? 'rgba(255,255,255,0.55)' : 'rgba(180,120,80,0.08)', opacity: entry.unlocked ? 1 : 0.5, border: '1px solid', borderColor: entry.unlocked ? 'rgba(139,58,38,0.2)' : 'rgba(139,58,38,0.08)' }}>
+            <div key={entry.verseId} style={{ padding: '9px 12px', marginBottom: 6, borderRadius: 6, background: entry.unlocked ? 'rgba(255,255,255,0.55)' : 'rgba(180,120,80,0.08)', opacity: entry.unlocked ? 1 : 0.62, border: '1px solid', borderColor: entry.unlocked ? 'rgba(139,58,38,0.2)' : 'rgba(139,58,38,0.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   {entry.unlocked

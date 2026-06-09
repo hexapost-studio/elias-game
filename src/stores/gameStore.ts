@@ -72,7 +72,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     let finalTitle = null;
     let finalInheritance = { ...newState.inheritance };
     if (over.isOver) {
-      const metrics = computeFinalMetrics(newState);
+      const metrics = computeFinalMetrics(newState, over.reason);
       finalTitle = determineTitle(metrics);
       if (finalTitle) {
         finalInheritance = {

@@ -1,10 +1,8 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo, lazy, Suspense } from 'react';
 import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
-import { Journal } from './components/Journal';
 import { VerseChoices } from './components/VerseChoices';
-import { CodexMenu } from './components/CodexMenu';
 import { EliasPortrait } from './components/EliasPortrait';
 import { getVerseById } from './data/verses';
 import { computeFinalMetrics, determineTitle } from './engine/gameEngine';
@@ -21,9 +19,11 @@ import {
 } from './components/IconSystem';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
-import { LexiconMenu } from './components/LexiconMenu';
 import { ArcTracker } from './components/ArcTracker';
 import { MainMenu } from './components/MainMenu';
+
+const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
+const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
 import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying } from './engine/juice';
 import { AI_AVAILABLE, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
@@ -468,11 +468,11 @@ function App() {
                       {entry.type === 'milestone' ? (
                         <span>{entry.text}</span>
                       ) : entry.type === 'micro' ? (
-                        <><span style={{ opacity: 0.35 }}>{entry.age}a</span>{' '}
-                        <span style={{ opacity: 0.5, marginRight: 3 }}>·</span>
+                        <><span style={{ opacity: 0.6 }}>{entry.age}a</span>{' '}
+                        <span style={{ opacity: 0.7, marginRight: 3 }}>·</span>
                         {entry.text}</>
                       ) : (
-                        <><span style={{ opacity: 0.4 }}>{entry.age}a</span> {entry.text}</>
+                        <><span style={{ opacity: 0.65 }}>{entry.age}a</span> {entry.text}</>
                       )}
                     </div>
                   );
@@ -491,14 +491,14 @@ function App() {
                     marginBottom: 2,
                   }}>
                     {entry.generating ? (
-                      <span style={{ opacity: 0.5 }}>
-                        <span style={{ opacity: 0.4 }}>{entry.age}a</span> ✦ Élias écrit dans son journal...
+                      <span style={{ opacity: 0.65 }}>
+                        <span>{entry.age}a</span> ✦ Élias écrit dans son journal...
                       </span>
                     ) : (
                       <>
-                        <span style={{ opacity: 0.4 }}>{entry.age}a</span>
+                        <span style={{ opacity: 0.65 }}>{entry.age}a</span>
                         {' '}
-                        <span style={{ color: 'rgba(245,158,11,0.6)', marginRight: 4 }}>✦</span>
+                        <span style={{ color: 'rgba(245,158,11,0.85)', marginRight: 4 }}>✦</span>
                         {entry.text}
                       </>
                     )}
@@ -615,8 +615,10 @@ function App() {
         )}
       </div>
 
-      {showCodex && <CodexMenu onClose={() => setShowCodex(false)} />}
-      {showLexicon && <LexiconMenu onClose={() => setShowLexicon(false)} />}
+      <Suspense fallback={null}>
+        {showCodex && <CodexMenu onClose={() => setShowCodex(false)} />}
+        {showLexicon && <LexiconMenu onClose={() => setShowLexicon(false)} />}
+      </Suspense>
 
       {/* Menu burger principal */}
       {showMainMenu && (

@@ -251,6 +251,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     queuedCascadeEvents: [],
     completedArcs: [],
     encounteredArcIds: [],
+    recentEventIds: [],
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -422,8 +423,10 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     ? srsEvents
     : available;
 
-  // Sélection aléatoire
-  const event = pool[Math.floor(Math.random() * pool.length)];
+  // Sélection aléatoire — exclure les 5 événements récents si le pool le permet
+  const deduped = pool.filter((e) => !state.recentEventIds.includes(e.id));
+  const finalPool = deduped.length > 0 ? deduped : pool;
+  const event = finalPool[Math.floor(Math.random() * finalPool.length)];
   const allDecoys = assignDecoys();
   const fullEvent = allDecoys.find((e) => e.id === event.id) || event;
 
@@ -609,6 +612,12 @@ export function validateChoice(
   // Burnout rate update
   newFlow.burnoutRate = calculateBurnoutRate(newFlow.palier);
 
+  // Fenêtre glissante des événements récents (évite répétitions)
+  newState.recentEventIds = [
+    event.id,
+    ...state.recentEventIds.slice(0, 4),
+  ];
+
   newState.stats = newStats;
   newState.flow = newFlow;
   newState.codex = newCodex;
@@ -725,15 +734,8 @@ export function advanceAge(state: GameState): {
 
 /* ─── MÉTRIQUES DE FIN ─── */
 
-export function computeFinalMetrics(state: GameState): RunMetrics {
-  const categoryCounts: Record<string, number> = {};
-  for (const e of state.journal) {
-    if (e.type === 'success' || e.type === 'fail') {
-      const event = state.currentEvent;
-      // fallback: on compte juste le nombre
-    }
-  }
-  // Dominant category from codex errors
+export function computeFinalMetrics(state: GameState, causeReason?: string): RunMetrics {
+  // Catégorie dominante depuis les erreurs du codex
   let dominantCategory: AfflictionCategory | null = null;
   let maxErrors = 0;
   for (const entry of Object.values(state.codex)) {
@@ -741,6 +743,19 @@ export function computeFinalMetrics(state: GameState): RunMetrics {
       maxErrors = entry.errorCount;
       const verse = getVerseById(entry.verseId);
       if (verse) dominantCategory = verse.category;
+    }
+  }
+
+  // Cause de mort : stat tombée à 0 ou victoire
+  let causeOfDeath: string | null = null;
+  if (causeReason && causeReason !== 'victory') {
+    causeOfDeath = causeReason;
+  } else if (state.age < MAX_AGE) {
+    for (const [stat, value] of Object.entries(state.stats)) {
+      if (value <= 0) {
+        causeOfDeath = `La jauge de ${stat.toUpperCase()} est tombée à zéro.`;
+        break;
+      }
     }
   }
 
@@ -754,7 +769,7 @@ export function computeFinalMetrics(state: GameState): RunMetrics {
     maxFlow: state.flow.value,
     dominantCategory,
     totalVersesUnlocked: unlocked,
-    causeOfDeath: null,
+    causeOfDeath,
   };
 }
 

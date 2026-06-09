@@ -24,8 +24,8 @@
 
   /* Text */
   --text-primary: #f5e6c8;
-  --text-secondary: #c4a87a;
-  --text-muted: #a88d6a;
+  --text-secondary: #d4b88a;
+  --text-muted: #c9a97e;
 
   /* Accents */
   --accent-violet: #d97706;
@@ -213,7 +213,7 @@ body {
 }
 
 .stat-label {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -338,7 +338,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 2px 16px 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
   flex-shrink: 0;
 }
@@ -419,7 +419,7 @@ body {
 }
 
 .event-flavor {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
   font-style: italic;
   margin-top: 8px;
@@ -766,7 +766,7 @@ body {
   gap: 4px;
   padding: 2px 8px;
   border-radius: 20px;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
   font-family: var(--font-display);
@@ -784,7 +784,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  opacity: 0.6;
+  opacity: 0.85;
   transition: opacity 0.2s ease;
 }
 .burger-btn:hover { opacity: 1; }

@@ -200,6 +200,8 @@ export interface GameState {
   queuedCascadeEvents: QueuedCascade[];
   completedArcs: CompletedArc[];
   encounteredArcIds: string[];
+  /** Fenêtre glissante des 5 derniers événements vus — empêche les répétitions */
+  recentEventIds: string[];
   metrics: RunMetrics;
 }
 
