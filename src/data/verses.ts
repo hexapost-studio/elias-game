@@ -1,9 +1,12 @@
 import type { VerseEntry } from '../types/game';
 
 /**
- * Base de données initiale des versets — 60+ entrées.
- * 4 catégories principales + lexique EJP/ICC.
- * Structurée pour Spaced Repetition et matching sémantique.
+ * Base de données des versets — 100+ entrées.
+ * 23 catégories EJP/ICC couvrant toutes les AfflictionCategory.
+ * Structurée pour Spaced Repetition (champ weight) et matching sémantique.
+ *
+ * @see src/types/game.ts        — AfflictionCategory (toutes les catégories)
+ * @see src/data/event-schema.ts — CATEGORY_META (métadonnées pages EJP/ICC)
  */
 export const VERSE_DATABASE: VerseEntry[] = [
   // ═══════════════════════════════════════════════
@@ -648,6 +651,1307 @@ export const VERSE_DATABASE: VerseEntry[] = [
     tags: ['humilité', 'soumission', 'anciens', 'élévation', 'grâce', 'temps'],
     statImpact: { foi: 3, paix: 2, finances: 1 },
     difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 9 — SAINT-ESPRIT (p.6)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-esprit-001',
+    reference: 'Actes 1.8',
+    text: 'Mais vous recevrez une puissance, le Saint-Esprit survenant sur vous, et vous serez mes témoins à Jérusalem, dans toute la Judée, dans la Samarie, et jusqu\'aux extrémités de la terre.',
+    category: 'saint_esprit',
+    tags: ['puissance', 'saint-esprit', 'témoins', 'mission', 'onction'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-esprit-002',
+    reference: 'Jean 14.26',
+    text: 'Mais le consolateur, le Saint-Esprit, que le Père enverra en mon nom, vous enseignera toutes choses, et vous rappellera tout ce que je vous ai dit.',
+    category: 'saint_esprit',
+    tags: ['consolateur', 'enseignement', 'mémoire', 'père', 'promesse'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-esprit-003',
+    reference: 'Romains 8.26',
+    text: 'De même aussi l\'Esprit nous aide dans notre faiblesse, car nous ne savons pas ce qu\'il nous convient de demander dans nos prières. Mais l\'Esprit lui-même intercède par des soupirs inexprimables.',
+    category: 'saint_esprit',
+    tags: ['faiblesse', 'prière', 'intercession', 'esprit', 'soupirs'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-esprit-004',
+    reference: 'Galates 5.22-23',
+    text: 'Mais le fruit de l\'Esprit, c\'est l\'amour, la joie, la paix, la patience, la bonté, la bienveillance, la foi, la douceur, la tempérance.',
+    category: 'saint_esprit',
+    tags: ['fruit', 'amour', 'joie', 'paix', 'patience', 'bonté', 'douceur'],
+    statImpact: { foi: 2, paix: 4, physique: 1 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 10 — PAROLE DE DIEU (p.9)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-parole-001',
+    reference: 'Psaume 119.105',
+    text: 'Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.',
+    category: 'parole_de_dieu',
+    tags: ['parole', 'lampe', 'lumière', 'chemin', 'guidance'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-parole-002',
+    reference: 'Hébreux 4.12',
+    text: 'Car la parole de Dieu est vivante et efficace, plus tranchante qu\'une épée quelconque à deux tranchants, pénétrante jusqu\'à partager âme et esprit, jointures et moelles; elle juge les sentiments et les pensées du cœur.',
+    category: 'parole_de_dieu',
+    tags: ['parole', 'vivante', 'épée', 'tranchant', 'âme', 'esprit', 'jugement'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-parole-003',
+    reference: 'Josué 1.8',
+    text: 'Que ce livre de la loi ne s\'éloigne point de ta bouche; médite-le jour et nuit, pour agir fidèlement selon tout ce qui y est écrit; car c\'est alors que tu auras du succès dans tes entreprises, c\'est alors que tu réussiras.',
+    category: 'parole_de_dieu',
+    tags: ['méditation', 'loi', 'succès', 'fidélité', 'bouche', 'jour nuit'],
+    statImpact: { foi: 3, paix: 2, finances: 2 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 11 — AMOUR DE DIEU (p.17)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-amour-001',
+    reference: '1 Jean 4.19',
+    text: 'Pour nous, aimons, parce qu\'il nous a aimés le premier.',
+    category: 'amour_de_dieu',
+    tags: ['amour', 'premier', 'aimer', 'source', 'dieu'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-amour-002',
+    reference: 'Jean 13.34',
+    text: 'Je vous donne un commandement nouveau: Aimez-vous les uns les autres; comme je vous ai aimés, vous aussi, aimez-vous les uns les autres.',
+    category: 'amour_de_dieu',
+    tags: ['commandement', 'amour', 'les uns les autres', 'exemple', 'christ'],
+    statImpact: { foi: 2, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-amour-003',
+    reference: '1 Corinthiens 13.4-5',
+    text: 'La charité est patiente, elle est pleine de bonté; la charité n\'est point envieuse; la charité ne se vante point, elle ne s\'enfle point d\'orgueil, elle ne fait rien de malhonnête, elle ne cherche point son intérêt.',
+    category: 'amour_de_dieu',
+    tags: ['charité', 'patience', 'bonté', 'envie', 'orgueil', 'intérêt'],
+    statImpact: { paix: 4, foi: 2 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 12 — DIRECTION DIVINE (p.23)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-direct-001',
+    reference: 'Proverbes 3.5-6',
+    text: 'Confie-toi en l\'Éternel de tout ton cœur, et ne t\'appuie pas sur ta sagesse; reconnais-le dans toutes tes voies, et il aplanira tes sentiers.',
+    category: 'direction_divine',
+    tags: ['confiance', 'cœur', 'sagesse', 'voies', 'sentiers', 'guidance'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-direct-002',
+    reference: 'Psaume 32.8',
+    text: 'Je t\'instruirai et te montrerai la voie que tu dois suivre; je te conseillerai, j\'aurai les yeux sur toi.',
+    category: 'direction_divine',
+    tags: ['instruction', 'voie', 'conseil', 'yeux', 'guidance divine'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-direct-003',
+    reference: 'Ésaïe 30.21',
+    text: 'Tes oreilles entendront derrière toi une voix qui dira: C\'est ici le chemin, marchez-y! quand vous irez à droite, et quand vous irez à gauche.',
+    category: 'direction_divine',
+    tags: ['voix', 'chemin', 'droite', 'gauche', 'obéissance', 'discernement'],
+    statImpact: { foi: 3, paix: 3 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 13 — PRIÈRE (p.26)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-priere-001',
+    reference: 'Matthieu 7.7-8',
+    text: 'Demandez, et l\'on vous donnera; cherchez, et vous trouverez; frappez, et l\'on vous ouvrira. Car quiconque demande reçoit, celui qui cherche trouve, et l\'on ouvre à celui qui frappe.',
+    category: 'priere',
+    tags: ['demander', 'chercher', 'frapper', 'recevoir', 'trouver', 'ouvrir'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-priere-002',
+    reference: '1 Thessaloniciens 5.17',
+    text: 'Priez sans cesse.',
+    category: 'priere',
+    tags: ['prière', 'persévérance', 'constance', 'intimité', 'sans cesse'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-priere-003',
+    reference: 'Jérémie 33.3',
+    text: 'Crie à moi, et je te répondrai; je t\'annoncerai de grandes choses, des choses cachées que tu ne connais pas.',
+    category: 'priere',
+    tags: ['crier', 'réponse', 'révélation', 'choses cachées', 'intimité'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-priere-004',
+    reference: 'Jacques 5.16',
+    text: 'La prière fervente du juste a une grande efficace.',
+    category: 'priere',
+    tags: ['ferveur', 'juste', 'efficace', 'prière', 'puissance'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 14 — SOIF DE DIEU (p.29)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-soif-001',
+    reference: 'Psaume 42.2',
+    text: 'Mon âme soupire après Dieu, après le Dieu vivant; Quand irai-je et me présenterai-je devant la face de Dieu?',
+    category: 'soif_de_dieu',
+    tags: ['soif', 'âme', 'désir', 'dieu vivant', 'présence', 'intimité'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-soif-002',
+    reference: 'Matthieu 5.6',
+    text: 'Heureux ceux qui ont faim et soif de la justice, car ils seront rassasiés!',
+    category: 'soif_de_dieu',
+    tags: ['faim', 'soif', 'justice', 'rassasiement', 'béatitude'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-soif-003',
+    reference: 'Jean 7.37',
+    text: 'Si quelqu\'un a soif, qu\'il vienne à moi, et qu\'il boive.',
+    category: 'soif_de_dieu',
+    tags: ['soif', 'venir', 'boire', 'invitation', 'eau vive', 'jésus'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 1,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 15 — OBÉISSANCE (p.32)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-obeis-001',
+    reference: '1 Samuel 15.22',
+    text: 'L\'obéissance vaut mieux que les sacrifices, et l\'observation de sa parole vaut mieux que la graisse des béliers.',
+    category: 'obeissance',
+    tags: ['obéissance', 'sacrifice', 'parole', 'soumission', 'culte'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-obeis-002',
+    reference: 'Jean 14.15',
+    text: 'Si vous m\'aimez, gardez mes commandements.',
+    category: 'obeissance',
+    tags: ['amour', 'commandements', 'garde', 'obéissance', 'preuve'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-obeis-003',
+    reference: 'Actes 5.29',
+    text: 'Il faut obéir à Dieu plutôt qu\'aux hommes.',
+    category: 'obeissance',
+    tags: ['obéissance', 'dieu', 'hommes', 'autorité', 'courage', 'principe'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 16 — CULPABILITÉ (p.38)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-culpa-001',
+    reference: 'Romains 8.1',
+    text: 'Il n\'y a donc maintenant aucune condamnation pour ceux qui sont en Jésus-Christ.',
+    category: 'culpabilite',
+    tags: ['condamnation', 'jésus-christ', 'liberté', 'pardon', 'culpabilité'],
+    statImpact: { foi: 4, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-culpa-002',
+    reference: '1 Jean 1.9',
+    text: 'Si nous confessons nos péchés, il est fidèle et juste pour nous les pardonner, et pour nous purifier de toute iniquité.',
+    category: 'culpabilite',
+    tags: ['confession', 'pardon', 'fidélité', 'purification', 'iniquité'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-culpa-003',
+    reference: 'Lamentations 3.22-23',
+    text: 'Les bontés de l\'Éternel ne sont pas épuisées, ses compassions ne sont pas à leur terme. Elles se renouvellent chaque matin. Ta fidélité est grande!',
+    category: 'culpabilite',
+    tags: ['bonté', 'compassion', 'renouvellement', 'matin', 'fidélité', 'miséricorde'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 17 — STÉRILITÉ (p.59)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-steril-001',
+    reference: 'Ésaïe 54.1',
+    text: 'Chante d\'aise, stérile, toi qui n\'enfantes pas! Éclate en chants d\'allégresse, toi qui n\'as pas éprouvé les douleurs de l\'enfantement! Car les enfants de la délaissée seront plus nombreux que les enfants de la femme mariée, dit l\'Éternel.',
+    category: 'sterilite',
+    tags: ['stérilité', 'chant', 'délaissée', 'enfants', 'multiplication', 'promesse'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-steril-002',
+    reference: 'Psaume 113.9',
+    text: 'Il rend la femme stérile heureuse en en faisant la mère joyeuse d\'enfants. Louez l\'Éternel!',
+    category: 'sterilite',
+    tags: ['stérile', 'mère', 'enfants', 'joie', 'louange', 'retournement'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 1,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 18 — ABONDANCE FINANCIÈRE (p.66)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-abond-001',
+    reference: 'Malachie 3.10',
+    text: 'Apportez à la maison du trésor toutes les dîmes, afin qu\'il y ait de la nourriture dans ma maison; mettez-moi de la sorte à l\'épreuve, dit l\'Éternel des armées. Et vous verrez si je n\'ouvre pas pour vous les écluses des cieux, si je ne répands pas sur vous la bénédiction en abondance.',
+    category: 'abondance_financiere',
+    tags: ['dîme', 'bénédiction', 'cieux', 'test', 'abondance', 'trésor'],
+    statImpact: { foi: 4, finances: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-abond-002',
+    reference: '2 Corinthiens 9.7',
+    text: 'Que chacun donne comme il l\'a résolu en son cœur, sans tristesse ni contrainte; car Dieu aime celui qui donne avec joie.',
+    category: 'abondance_financiere',
+    tags: ['donner', 'joie', 'cœur', 'contrainte', 'générosité', 'amour'],
+    statImpact: { foi: 3, paix: 3, finances: 1 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-abond-003',
+    reference: 'Proverbes 3.9-10',
+    text: 'Honore l\'Éternel avec tes richesses, et avec les prémices de tous tes revenus; alors tes greniers seront remplis d\'abondance.',
+    category: 'abondance_financiere',
+    tags: ['honorer', 'richesses', 'prémices', 'revenus', 'greniers', 'abondance'],
+    statImpact: { foi: 3, finances: 4 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 19 — MALADIE & GUÉRISON (p.69)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-gueris-001',
+    reference: 'Ésaïe 53.5',
+    text: 'Mais il était blessé pour nos péchés, brisé pour nos iniquités; le châtiment qui nous donne la paix est tombé sur lui, et c\'est par ses meurtrissures que nous sommes guéris.',
+    category: 'maladie_guerison',
+    tags: ['guérison', 'meurtrissures', 'paix', 'iniquités', 'sacrifice', 'expiation'],
+    statImpact: { foi: 4, paix: 3, physique: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-gueris-002',
+    reference: 'Jacques 5.14-15',
+    text: 'Quelqu\'un parmi vous est-il malade? Qu\'il appelle les anciens de l\'Église, et que les anciens prient pour lui, en l\'oignant d\'huile au nom du Seigneur; la prière de la foi sauvera le malade.',
+    category: 'maladie_guerison',
+    tags: ['maladie', 'anciens', 'prière', 'huile', 'foi', 'guérison'],
+    statImpact: { foi: 4, paix: 2, physique: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-gueris-003',
+    reference: 'Psaume 103.3',
+    text: 'C\'est lui qui pardonne toutes tes iniquités, qui guérit toutes tes maladies.',
+    category: 'maladie_guerison',
+    tags: ['pardon', 'guérison', 'maladies', 'iniquités', 'totalité', 'dieu'],
+    statImpact: { foi: 3, paix: 3, physique: 3 },
+    difficulty: 1,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 20 — ÉCHEC & RÉUSSITE (p.72)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-echec-001',
+    reference: 'Michée 7.8',
+    text: 'Ne te réjouis pas à mon sujet, mon ennemie! Car si je suis tombée, je me relèverai; si je suis assise dans les ténèbres, l\'Éternel sera ma lumière.',
+    category: 'echec_reussite',
+    tags: ['chute', 'relèvement', 'ténèbres', 'lumière', 'ennemi', 'persévérance'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-echec-002',
+    reference: 'Philippiens 4.13',
+    text: 'Je puis tout par celui qui me fortifie.',
+    category: 'echec_reussite',
+    tags: ['force', 'pouvoir', 'christ', 'capacité', 'tout', 'confiance'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-echec-003',
+    reference: 'Proverbes 24.16',
+    text: 'Car le juste tombe sept fois et se relève, mais les méchants sont renversés par le malheur.',
+    category: 'echec_reussite',
+    tags: ['juste', 'chute', 'relèvement', 'sept fois', 'méchants', 'persévérance'],
+    statImpact: { foi: 3, paix: 3 },
+    difficulty: 1,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 21 — TRISTESSE & JOIE (p.81)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-joie-001',
+    reference: 'Néhémie 8.10',
+    text: 'Ne vous affligez pas, car la joie de l\'Éternel sera votre force.',
+    category: 'tristesse_joie',
+    tags: ['joie', 'force', 'éternel', 'affliction', 'tristesse'],
+    statImpact: { foi: 3, paix: 4, physique: 1 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-joie-002',
+    reference: 'Psaume 30.5',
+    text: 'Car sa colère dure un moment, et sa grâce dure toute la vie; le soir arrivent les pleurs, et le matin l\'allégresse.',
+    category: 'tristesse_joie',
+    tags: ['pleurs', 'allégresse', 'matin', 'soir', 'grâce', 'durée'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-joie-003',
+    reference: 'Jean 16.22',
+    text: 'Vous aussi, vous êtes maintenant dans la tristesse; mais je vous reverrai, et votre cœur se réjouira, et nul ne vous ravira votre joie.',
+    category: 'tristesse_joie',
+    tags: ['tristesse', 'joie', 'revoir', 'cœur', 'promesse', 'permanence'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 22 — DÉCOURAGEMENT (p.84)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-decour-001',
+    reference: 'Galates 6.9',
+    text: 'Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relâchons pas.',
+    category: 'decouragement',
+    tags: ['persévérance', 'bien', 'moisson', 'lassitude', 'temps', 'relâchement'],
+    statImpact: { foi: 3, paix: 3, physique: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-decour-002',
+    reference: 'Ésaïe 40.31',
+    text: 'Mais ceux qui se confient en l\'Éternel renouvellent leur force. Ils prennent le vol comme les aigles; ils courent sans se lasser, ils marchent sans se fatiguer.',
+    category: 'decouragement',
+    tags: ['force', 'renouveau', 'aigles', 'courir', 'marcher', 'fatigue', 'confiance'],
+    statImpact: { foi: 4, paix: 2, physique: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-decour-003',
+    reference: 'Hébreux 12.1',
+    text: 'Courons avec persévérance dans la carrière qui nous est ouverte, ayant les yeux sur Jésus, le chef et le consommateur de la foi.',
+    category: 'decouragement',
+    tags: ['persévérance', 'course', 'jésus', 'foi', 'nuage de témoins', 'carrière'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+
+  // ═══════════════════════════════════════════════
+  // CATÉGORIE 23 — LOURDEUR & FATIGUE (p.87)
+  // ═══════════════════════════════════════════════
+  {
+    id: 'v-lourd-001',
+    reference: 'Matthieu 11.28',
+    text: 'Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos.',
+    category: 'lourdeur_fatigue',
+    tags: ['fatigue', 'repos', 'charge', 'invitation', 'jésus', 'lourdeur'],
+    statImpact: { foi: 3, paix: 5, physique: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-lourd-002',
+    reference: 'Psaume 55.22',
+    text: 'Décharge sur l\'Éternel ton fardeau, et il te soutiendra; il ne laissera jamais chanceler le juste.',
+    category: 'lourdeur_fatigue',
+    tags: ['fardeau', 'soutien', 'décharger', 'juste', 'chanceler', 'éternel'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-lourd-003',
+    reference: '2 Corinthiens 12.9',
+    text: 'Ma grâce te suffit, car ma puissance s\'accomplit dans la faiblesse.',
+    category: 'lourdeur_fatigue',
+    tags: ['grâce', 'puissance', 'faiblesse', 'suffisance', 'paradoxe', 'force divine'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 2,
+  },
+
+  // ════════════════════════════════════════════════════════════
+  // COMPLÉMENT OFFICIEL — Versets EJP/ICC manquants (p.1–95)
+  // Ajoutés pour couvrir toutes les références du livre de base
+  // ════════════════════════════════════════════════════════════
+
+  // ── Identité en Christ (p.1) ──────────────────────────────
+  {
+    id: 'v-ident-009',
+    reference: 'Jean 1.12',
+    text: 'Mais à tous ceux qui l\'ont reçu, à ceux qui croient en son nom, elle a donné le pouvoir de devenir enfants de Dieu.',
+    category: 'identite_appel',
+    tags: ['enfants', 'pouvoir', 'croire', 'recevoir', 'nom', 'identité'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-ident-010',
+    reference: 'Romains 8.16',
+    text: 'L\'Esprit lui-même rend témoignage à notre esprit que nous sommes enfants de Dieu.',
+    category: 'identite_appel',
+    tags: ['esprit', 'témoignage', 'enfants', 'dieu', 'assurance', 'identité'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-ident-011',
+    reference: '2 Corinthiens 5.17',
+    text: 'Si quelqu\'un est en Christ, il est une nouvelle créature. Les choses anciennes sont passées; voici, toutes choses sont devenues nouvelles.',
+    category: 'identite_appel',
+    tags: ['nouvelle créature', 'christ', 'passé', 'transformation', 'renouveau'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-ident-012',
+    reference: '1 Jean 4.4',
+    text: 'Vous êtes de Dieu, petits enfants, et vous les avez vaincus, parce que celui qui est en vous est plus grand que celui qui est dans le monde.',
+    category: 'identite_appel',
+    tags: ['victoire', 'plus grand', 'monde', 'dieu', 'enfants', 'puissance'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-ident-013',
+    reference: 'Jérémie 1.5',
+    text: 'Avant que je t\'eusse formé dans le ventre de ta mère, je te connaissais, et avant que tu fusses sorti de son sein, je t\'avais consacré, je t\'avais établi prophète des nations.',
+    category: 'identite_appel',
+    tags: ['destinée', 'consacré', 'connu', 'prophète', 'nations', 'appel'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-ident-014',
+    reference: 'Éphésiens 2.10',
+    text: 'Car nous sommes son ouvrage, ayant été créés en Jésus-Christ pour de bonnes œuvres, que Dieu a préparées d\'avance, afin que nous les pratiquions.',
+    category: 'identite_appel',
+    tags: ['ouvrage', 'créés', 'bonnes œuvres', 'préparé', 'avance', 'destinée'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-ident-015',
+    reference: '1 Corinthiens 2.9-10',
+    text: 'Ce que l\'œil n\'a point vu, ce que l\'oreille n\'a point entendu, et ce qui n\'est point monté au cœur de l\'homme, ce que Dieu a préparé pour ceux qui l\'aiment. Mais Dieu nous l\'a révélé par l\'Esprit.',
+    category: 'identite_appel',
+    tags: ['préparé', 'révélé', 'esprit', 'destinée', 'mystère', 'amour'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 3,
+  },
+
+  // ── Saint-Esprit (p.6) ────────────────────────────────────
+  {
+    id: 'v-esprit-005',
+    reference: 'Jean 16.13',
+    text: 'Quand le consolateur sera venu, l\'Esprit de vérité, il vous conduira dans toute la vérité; car il ne parlera pas de lui-même, mais il dira tout ce qu\'il aura entendu, et il vous annoncera les choses à venir.',
+    category: 'saint_esprit',
+    tags: ['consolateur', 'vérité', 'conduire', 'révélation', 'choses à venir'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-esprit-006',
+    reference: 'Luc 4.18-19',
+    text: 'L\'Esprit du Seigneur est sur moi, parce qu\'il m\'a oint pour annoncer une bonne nouvelle aux pauvres; il m\'a envoyé pour guérir ceux qui ont le cœur brisé, pour proclamer aux captifs la délivrance, et aux aveugles le recouvrement de la vue, pour renvoyer libres les opprimés.',
+    category: 'saint_esprit',
+    tags: ['onction', 'liberté', 'délivrance', 'guérison', 'bonne nouvelle', 'captifs'],
+    statImpact: { foi: 5, paix: 2, physique: 2 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-esprit-007',
+    reference: '2 Corinthiens 3.17',
+    text: 'Or, le Seigneur c\'est l\'Esprit; et là où est l\'Esprit du Seigneur, là est la liberté.',
+    category: 'saint_esprit',
+    tags: ['liberté', 'seigneur', 'esprit', 'présence'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+
+  // ── La Parole de Dieu (p.9) ───────────────────────────────
+  {
+    id: 'v-parole-004',
+    reference: 'Jean 8.32',
+    text: 'Et vous connaîtrez la vérité, et la vérité vous affranchira.',
+    category: 'parole_de_dieu',
+    tags: ['vérité', 'connaissance', 'liberté', 'affranchir', 'parole'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-parole-005',
+    reference: 'Ésaïe 55.10-11',
+    text: 'Comme la pluie et la neige descendent des cieux et n\'y retournent pas sans avoir arrosé, fertilisé la terre... Ainsi en est-il de ma parole, qui sort de ma bouche: elle ne retourne point à moi sans effet, sans avoir exécuté ma volonté et accompli mes desseins.',
+    category: 'parole_de_dieu',
+    tags: ['pluie', 'parole', 'effet', 'volonté', 'accompli', 'puissance'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-parole-006',
+    reference: 'Matthieu 4.4',
+    text: 'L\'homme ne vivra pas de pain seulement, mais de toute parole qui sort de la bouche de Dieu.',
+    category: 'parole_de_dieu',
+    tags: ['pain', 'vie', 'parole', 'bouche', 'dieu', 'nourriture spirituelle'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-parole-007',
+    reference: 'Jean 1.1-3',
+    text: 'Au commencement était la Parole, et la Parole était avec Dieu, et la Parole était Dieu. Elle était au commencement avec Dieu. Toutes choses ont été faites par elle, et rien de ce qui a été fait n\'a été fait sans elle.',
+    category: 'parole_de_dieu',
+    tags: ['commencement', 'parole', 'dieu', 'création', 'éternité'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 3,
+  },
+
+  // ── La Foi (p.13) ─────────────────────────────────────────
+  {
+    id: 'v-doute-007',
+    reference: 'Hébreux 11.1',
+    text: 'Or la foi est une ferme assurance des choses qu\'on espère, une démonstration de celles qu\'on ne voit pas.',
+    category: 'doute_incredulite',
+    tags: ['foi', 'assurance', 'espérance', 'invisible', 'démonstration', 'définition'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-doute-008',
+    reference: 'Hébreux 11.6',
+    text: 'Or sans la foi il est impossible de lui être agréable; car il faut que celui qui s\'approche de Dieu croie que Dieu existe, et qu\'il est le rémunérateur de ceux qui le cherchent.',
+    category: 'doute_incredulite',
+    tags: ['foi', 'agréable', 'dieu existe', 'cherchent', 'rémunérateur'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-doute-009',
+    reference: 'Romains 10.17',
+    text: 'Ainsi la foi vient de ce qu\'on entend, et ce qu\'on entend vient de la parole de Christ.',
+    category: 'doute_incredulite',
+    tags: ['foi', 'entendre', 'parole', 'christ', 'source', 'croissance'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-doute-010',
+    reference: 'Marc 9.23',
+    text: 'Si tu peux!... Tout est possible à celui qui croit.',
+    category: 'doute_incredulite',
+    tags: ['possible', 'croire', 'foi', 'miracle', 'puissance'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-doute-011',
+    reference: 'Marc 11.23-24',
+    text: 'Car je vous le dis en vérité, si quelqu\'un dit à cette montagne: Ôte-toi de là et jette-toi dans la mer, et s\'il ne doute pas dans son cœur, mais s\'il croit que ce qu\'il dit arrivera, il le verra s\'accomplir. C\'est pourquoi je vous dis: Tout ce que vous demanderez en priant, croyez que vous l\'avez reçu, et vous le verrez s\'accomplir.',
+    category: 'doute_incredulite',
+    tags: ['montagne', 'doute', 'cœur', 'croire', 'prière', 'accompli'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 2,
+  },
+
+  // ── Manifester l'Amour (p.17) ─────────────────────────────
+  {
+    id: 'v-amour-004',
+    reference: 'Romains 5.5',
+    text: 'Or, l\'espérance ne trompe point, parce que l\'amour de Dieu est répandu dans nos cœurs par le Saint-Esprit qui nous a été donné.',
+    category: 'amour_de_dieu',
+    tags: ['espérance', 'amour', 'cœurs', 'saint-esprit', 'donné', 'répandu'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-amour-005',
+    reference: 'Colossiens 3.14',
+    text: 'Mais par-dessus toutes ces choses, revêtez-vous de l\'amour, qui est le lien de la perfection.',
+    category: 'amour_de_dieu',
+    tags: ['amour', 'revêtir', 'lien', 'perfection', 'par-dessus tout'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-amour-006',
+    reference: 'Jean 13.35',
+    text: 'À ceci tous connaîtront que vous êtes mes disciples, si vous avez de l\'amour les uns pour les autres.',
+    category: 'amour_de_dieu',
+    tags: ['témoignage', 'disciples', 'amour mutuel', 'reconnaissance', 'signe'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+
+  // ── Direction Divine (p.23) ───────────────────────────────
+  {
+    id: 'v-direct-004',
+    reference: 'Ésaïe 50.4',
+    text: 'Le Seigneur, l\'Éternel, m\'a donné la langue des hommes enseignés, pour que je sache soutenir par ma parole celui qui est abattu; il éveille matin après matin, il éveille mon oreille, pour que j\'écoute comme les hommes enseignés.',
+    category: 'direction_divine',
+    tags: ['langue', 'enseigné', 'abattu', 'matin', 'oreille', 'écouter'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 3,
+  },
+  {
+    id: 'v-direct-005',
+    reference: 'Colossiens 1.9',
+    text: 'C\'est pourquoi nous ne cessons de prier pour vous et de demander que vous soyez remplis de la connaissance de sa volonté, en toute sagesse et intelligence spirituelle.',
+    category: 'direction_divine',
+    tags: ['connaissance', 'volonté', 'sagesse', 'intelligence', 'prière', 'remplis'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+
+  // ── La Prière (p.26) ──────────────────────────────────────
+  {
+    id: 'v-priere-005',
+    reference: 'Éphésiens 6.18',
+    text: 'Faites en tout temps par l\'Esprit toutes sortes de prières et de supplications. Veillez à cela avec une entière persévérance, et en suppliant pour tous les saints.',
+    category: 'priere',
+    tags: ['prière', 'esprit', 'supplications', 'persévérance', 'tout temps', 'saints'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-priere-006',
+    reference: 'Luc 18.7-8',
+    text: 'Et Dieu ne fera-t-il pas justice à ses élus, qui crient à lui jour et nuit? Et tardera-t-il à leur égard? Je vous dis qu\'il leur fera promptement justice.',
+    category: 'priere',
+    tags: ['justice', 'élus', 'jour nuit', 'persistance', 'promptement', 'réponse'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-priere-007',
+    reference: 'Matthieu 21.22',
+    text: 'Tout ce que vous demanderez avec foi par la prière, vous le recevrez.',
+    category: 'priere',
+    tags: ['demander', 'foi', 'prière', 'recevoir', 'promesse'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+
+  // ── La Soif de Dieu (p.29) ────────────────────────────────
+  {
+    id: 'v-soif-004',
+    reference: 'Psaume 63.2-3',
+    text: 'Mon âme a soif de toi; ma chair soupire après toi, dans une terre aride, desséchée, sans eau. C\'est ainsi que je t\'ai contemplé dans le sanctuaire, en voyant ta puissance et ta gloire.',
+    category: 'soif_de_dieu',
+    tags: ['soif', 'chair', 'désert', 'aride', 'contemplation', 'gloire'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-soif-005',
+    reference: 'Amos 8.11',
+    text: 'Voici, les jours viennent, dit le Seigneur l\'Éternel, où j\'enverrai la famine dans le pays, non une famine de pain et une soif d\'eau, mais une famine d\'entendre les paroles de l\'Éternel.',
+    category: 'soif_de_dieu',
+    tags: ['famine', 'soif', 'paroles', 'éternel', 'jours', 'privation'],
+    statImpact: { foi: 4, paix: 2 },
+    difficulty: 3,
+  },
+  {
+    id: 'v-soif-006',
+    reference: '2 Corinthiens 3.18',
+    text: 'Nous tous qui, le visage découvert, contemplons comme dans un miroir la gloire du Seigneur, nous sommes transformés en la même image, de gloire en gloire, comme par le Seigneur, l\'Esprit.',
+    category: 'soif_de_dieu',
+    tags: ['contemplation', 'gloire', 'transformation', 'miroir', 'image', 'esprit'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 3,
+  },
+
+  // ── L'Obéissance (p.32) ───────────────────────────────────
+  {
+    id: 'v-obeis-004',
+    reference: 'Jean 14.21',
+    text: 'Celui qui a mes commandements et qui les garde, c\'est celui qui m\'aime; et celui qui m\'aime sera aimé de mon Père, et je l\'aimerai aussi, et je me ferai connaître à lui.',
+    category: 'obeissance',
+    tags: ['commandements', 'garder', 'aimer', 'père', 'révélation', 'obéissance'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-obeis-005',
+    reference: 'Deutéronome 28.1-2',
+    text: 'Si tu obéis fidèlement à la voix de l\'Éternel, ton Dieu, si tu observes et si tu mets en pratique tous ses commandements... toutes ces bénédictions viendront sur toi et t\'atteindront.',
+    category: 'obeissance',
+    tags: ['obéir', 'commandements', 'bénédictions', 'pratiquer', 'fidèlement'],
+    statImpact: { foi: 3, paix: 3, finances: 2 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-obeis-006',
+    reference: 'Jacques 1.22',
+    text: 'Mettez en pratique la parole, et ne vous bornez pas à l\'écouter, en vous trompant vous-mêmes par de faux raisonnements.',
+    category: 'obeissance',
+    tags: ['pratique', 'parole', 'écoute', 'tromperie', 'raisonnements', 'faire'],
+    statImpact: { foi: 3, paix: 3 },
+    difficulty: 1,
+  },
+
+  // ── Vaincre la Culpabilité (p.38) ────────────────────────
+  {
+    id: 'v-culpa-004',
+    reference: 'Psaume 103.11-12',
+    text: 'Comme le ciel est élevé au-dessus de la terre, Autant sa bonté est grande pour ceux qui le craignent. Aussi loin que l\'orient est de l\'occident, Il éloigne de nous nos transgressions.',
+    category: 'culpabilite',
+    tags: ['bonté', 'transgressions', 'orient', 'occident', 'éloigné', 'pardon'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-culpa-005',
+    reference: 'Ésaïe 43.25',
+    text: 'C\'est moi, moi qui efface tes transgressions pour l\'amour de moi, et je ne me souviens plus de tes péchés.',
+    category: 'culpabilite',
+    tags: ['efface', 'transgressions', 'souvenir', 'pardon', 'amour', 'dieu'],
+    statImpact: { foi: 4, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-culpa-006',
+    reference: '2 Corinthiens 5.21',
+    text: 'Celui qui n\'a point connu le péché, il l\'a fait devenir péché pour nous, afin que nous devenions en lui justice de Dieu.',
+    category: 'culpabilite',
+    tags: ['justice', 'péché', 'substitution', 'christ', 'échange', 'réconciliation'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 3,
+  },
+  {
+    id: 'v-culpa-007',
+    reference: 'Romains 8.33-34',
+    text: 'Qui accusera les élus de Dieu? C\'est Dieu qui justifie! Qui les condamnera? Christ est mort; bien plus, il est ressuscité, il est à la droite de Dieu, et il intercède pour nous!',
+    category: 'culpabilite',
+    tags: ['accusation', 'justifier', 'condamner', 'christ', 'intercession', 'liberté'],
+    statImpact: { foi: 5, paix: 4 },
+    difficulty: 2,
+  },
+
+  // ── Vaincre l'Amertume (p.42) ────────────────────────────
+  {
+    id: 'v-amer-011',
+    reference: 'Matthieu 6.14',
+    text: 'Si vous pardonnez aux hommes leurs offenses, votre Père céleste vous pardonnera aussi.',
+    category: 'amertume_rejet',
+    tags: ['pardon', 'hommes', 'père', 'offenses', 'réciprocité'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-amer-012',
+    reference: 'Éphésiens 4.31',
+    text: 'Que toute amertume, toute animosité, toute colère, tout cri, toute calomnie, et toute espèce de méchanceté, disparaissent du milieu de vous.',
+    category: 'amertume_rejet',
+    tags: ['amertume', 'animosité', 'colère', 'calomnie', 'méchanceté', 'disparaître'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-amer-013',
+    reference: 'Hébreux 12.15',
+    text: 'Veillez à ce que personne ne reste en dehors de la grâce de Dieu; à ce qu\'aucune racine d\'amertume, poussant un rejeton, ne cause du trouble et ne corrompe plusieurs.',
+    category: 'amertume_rejet',
+    tags: ['racine', 'amertume', 'grâce', 'trouble', 'corruption', 'vigilance'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-amer-014',
+    reference: 'Romains 8.38-39',
+    text: 'Car je suis persuadé que ni la mort ni la vie, ni les anges ni les dominations, ni les choses présentes ni les choses à venir, ni les puissances, ni la hauteur, ni la profondeur, ni aucune autre créature ne pourra nous séparer de l\'amour de Dieu.',
+    category: 'amertume_rejet',
+    tags: ['séparation', 'amour', 'mort', 'vie', 'rien', 'puissances', 'rejet'],
+    statImpact: { foi: 5, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-amer-015',
+    reference: 'Jérémie 31.3',
+    text: 'Je t\'ai aimé d\'un amour éternel; c\'est pourquoi je te conserve ma grâce.',
+    category: 'amertume_rejet',
+    tags: ['amour éternel', 'grâce', 'rejet', 'constance', 'fidélité'],
+    statImpact: { foi: 4, paix: 5 },
+    difficulty: 1,
+  },
+
+  // ── Vaincre la Peur (p.45) ────────────────────────────────
+  {
+    id: 'v-peur-011',
+    reference: 'Psaume 91.5-7',
+    text: 'Tu ne craindras ni les terreurs de la nuit, ni la flèche qui vole de jour, ni la peste qui marche dans les ténèbres, ni la contagion qui frappe en plein midi. Qu\'il en tombe mille à ton côté et dix mille à ta droite, toi tu ne seras pas atteint.',
+    category: 'peur_angoisse',
+    tags: ['terreurs', 'nuit', 'protection', 'mille', 'flèche', 'contagion'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-peur-012',
+    reference: 'Jean 14.27',
+    text: 'Je vous laisse la paix, je vous donne ma paix. Je ne vous la donne pas comme le monde la donne. Que votre cœur ne se trouble point, et ne s\'alarme point.',
+    category: 'peur_angoisse',
+    tags: ['paix', 'monde', 'cœur', 'trouble', 'alarme', 'don'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-peur-013',
+    reference: 'Hébreux 13.6',
+    text: 'Ainsi nous pouvons dire avec assurance: Le Seigneur est mon aide, je ne craindrai rien; que peut me faire un homme?',
+    category: 'peur_angoisse',
+    tags: ['assurance', 'aide', 'crainte', 'homme', 'confiance'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-peur-014',
+    reference: 'Ésaïe 30.15',
+    text: 'C\'est dans la tranquillité et le repos que sera votre salut, c\'est dans le calme et la confiance que sera votre force; mais vous n\'avez pas voulu.',
+    category: 'peur_angoisse',
+    tags: ['tranquillité', 'repos', 'salut', 'calme', 'confiance', 'force'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 2,
+  },
+
+  // ── Vaincre l'Impudicité / Addictions (p.52 & p.95) ──────
+  {
+    id: 'v-imput-011',
+    reference: 'Matthieu 5.28',
+    text: 'Mais moi, je vous dis que quiconque regarde une femme avec un désir charnel a déjà commis l\'adultère avec elle dans son cœur.',
+    category: 'impudicite_addiction',
+    tags: ['regard', 'désir', 'adultère', 'cœur', 'pureté', 'pensées'],
+    statImpact: { foi: 3, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-imput-012',
+    reference: '1 Thessaloniciens 4.3-5',
+    text: 'Car ce que Dieu veut, c\'est votre sanctification; c\'est que vous vous absteniez de l\'impudicité; que chacun de vous sache user du corps qui lui appartient avec sainteté et honnêteté, sans se laisser emporter par des passions de convoitise.',
+    category: 'impudicite_addiction',
+    tags: ['sanctification', 'abstenir', 'impudicité', 'sainteté', 'honnêteté', 'convoitise'],
+    statImpact: { foi: 4, physique: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-imput-013',
+    reference: 'Hébreux 13.4',
+    text: 'Que le mariage soit honoré de tous, et le lit conjugal exempt de souillure, car Dieu jugera les impudiques et les adultères.',
+    category: 'impudicite_addiction',
+    tags: ['mariage', 'honoré', 'souillure', 'impudiques', 'adultères', 'jugement'],
+    statImpact: { foi: 3, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-imput-014',
+    reference: '2 Corinthiens 10.5',
+    text: 'Nous renversons les raisonnements et toute hauteur qui s\'élève contre la connaissance de Dieu, et nous amenons toute pensée captive à l\'obéissance de Christ.',
+    category: 'impudicite_addiction',
+    tags: ['raisonnements', 'hauteur', 'pensée captive', 'obéissance', 'forteresses'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+
+  // ── Être Diligent / Vaincre la Paresse (p.56) ────────────
+  {
+    id: 'v-fin-011',
+    reference: 'Proverbes 21.5',
+    text: 'Les projets de l\'homme diligent ont pour résultat l\'abondance; mais la précipitation de tout homme le mène à la disette.',
+    category: 'finances_paresse',
+    tags: ['diligence', 'projets', 'abondance', 'précipitation', 'disette', 'travail'],
+    statImpact: { foi: 2, finances: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-fin-012',
+    reference: 'Romains 12.11',
+    text: 'Ayez du zèle et non de la paresse. Soyez fervents d\'esprit. Servez le Seigneur.',
+    category: 'finances_paresse',
+    tags: ['zèle', 'paresse', 'ferveur', 'esprit', 'servir', 'seigneur'],
+    statImpact: { foi: 3, finances: 3, physique: 1 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-fin-013',
+    reference: 'Proverbes 14.23',
+    text: 'Tout travail est avantageux; mais les paroles des lèvres ne mènent qu\'à la disette.',
+    category: 'finances_paresse',
+    tags: ['travail', 'avantageux', 'paroles', 'disette', 'action', 'résultat'],
+    statImpact: { foi: 2, finances: 3 },
+    difficulty: 1,
+  },
+  // Vaincre la Pauvreté / Prospérité (p.62)
+  {
+    id: 'v-fin-014',
+    reference: 'Psaume 23.1',
+    text: 'L\'Éternel est mon berger: je ne manquerai de rien.',
+    category: 'finances_paresse',
+    tags: ['berger', 'manque', 'provision', 'sécurité', 'éternel'],
+    statImpact: { foi: 3, finances: 4, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-fin-015',
+    reference: '2 Corinthiens 8.9',
+    text: 'Car vous connaissez la grâce de notre Seigneur Jésus-Christ, qui, pour vous, de riche qu\'il était, s\'est fait pauvre, afin que par sa pauvreté vous fussiez enrichis.',
+    category: 'finances_paresse',
+    tags: ['grâce', 'richesse', 'pauvreté', 'enrichis', 'christ', 'échange'],
+    statImpact: { foi: 4, finances: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-fin-016',
+    reference: '3 Jean 1.2',
+    text: 'Bien-aimé, je souhaite que tu prospères à tous égards et que tu sois en bonne santé, comme prospère l\'état de ton âme.',
+    category: 'finances_paresse',
+    tags: ['prospérité', 'santé', 'âme', 'bénédiction', 'tout'],
+    statImpact: { foi: 3, finances: 4, physique: 2 },
+    difficulty: 1,
+  },
+
+  // ── Vaincre la Stérilité (p.59) ───────────────────────────
+  {
+    id: 'v-steril-003',
+    reference: 'Exode 23.26',
+    text: 'Aucune femme ne fera de fausse couche, et il n\'y aura pas de stérile dans ton pays; j\'accomplirai le nombre de tes jours.',
+    category: 'sterilite',
+    tags: ['stérile', 'fausse couche', 'pays', 'promesse', 'jours', 'vie'],
+    statImpact: { foi: 4, physique: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-steril-004',
+    reference: 'Deutéronome 7.14',
+    text: 'Tu seras béni plus que tous les peuples; il n\'y aura chez toi ni homme ni femme stérile, ni parmi ton bétail.',
+    category: 'sterilite',
+    tags: ['béni', 'peuples', 'stérile', 'fécondité', 'bénédiction'],
+    statImpact: { foi: 4, physique: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-steril-005',
+    reference: 'Ésaïe 66.9',
+    text: 'Est-ce que j\'amènerais jusqu\'à la naissance et je n\'accoucherais pas? dit l\'Éternel. Est-ce que je ferais accoucher et je rendrais stérile? dit ton Dieu.',
+    category: 'sterilite',
+    tags: ['naissance', 'accoucher', 'stérile', 'dieu', 'accomplissement', 'promesse'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 3,
+  },
+
+  // ── Abondance / Dîme (p.66) ───────────────────────────────
+  {
+    id: 'v-abond-004',
+    reference: '2 Corinthiens 9.6',
+    text: 'Mais je dis ceci: celui qui sème peu moissonnera peu, et celui qui sème abondamment moissonnera abondamment.',
+    category: 'abondance_financiere',
+    tags: ['semer', 'moissonner', 'peu', 'abondamment', 'générosité', 'récolte'],
+    statImpact: { foi: 3, finances: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-abond-005',
+    reference: 'Proverbes 11.24',
+    text: 'Tel qui dépense libéralement devient de plus en plus riche, tel qui épargne à l\'excès ne fait que s\'appauvrir.',
+    category: 'abondance_financiere',
+    tags: ['générosité', 'richesse', 'épargner', 'appauvrir', 'paradoxe', 'donner'],
+    statImpact: { foi: 3, finances: 4 },
+    difficulty: 2,
+  },
+
+  // ── Maladies & Guérison (p.69) ────────────────────────────
+  {
+    id: 'v-gueris-004',
+    reference: 'Deutéronome 7.15',
+    text: 'L\'Éternel éloignera de toi toute maladie; il ne t\'infligera aucune des mauvaises maladies d\'Égypte que tu as connues, mais il les enverra sur tous ceux qui te haïssent.',
+    category: 'maladie_guerison',
+    tags: ['maladie', 'éloigner', 'protection', 'santé', 'éternel', 'promesse'],
+    statImpact: { foi: 4, physique: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-gueris-005',
+    reference: 'Matthieu 8.16-17',
+    text: 'Il chassa les esprits d\'un mot, et il guérit tous les malades, afin que s\'accomplît ce qui avait été annoncé par Ésaïe, le prophète: Il a pris nos infirmités, et s\'est chargé de nos maladies.',
+    category: 'maladie_guerison',
+    tags: ['guérison', 'infirmités', 'maladies', 'accomplissement', 'parole', 'prophétie'],
+    statImpact: { foi: 4, physique: 5 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-gueris-006',
+    reference: 'Romains 8.11',
+    text: 'Et si l\'Esprit de celui qui a ressuscité Jésus d\'entre les morts habite en vous, celui qui a ressuscité Christ d\'entre les morts vivifiera aussi vos corps mortels par son Esprit qui habite en vous.',
+    category: 'maladie_guerison',
+    tags: ['résurrection', 'esprit', 'corps mortels', 'vivifier', 'habiter', 'vie'],
+    statImpact: { foi: 5, physique: 4 },
+    difficulty: 3,
+  },
+
+  // ── Vaincre l'Échec / Réussite (p.72) ────────────────────
+  {
+    id: 'v-echec-004',
+    reference: 'Proverbes 16.3',
+    text: 'Recommande à l\'Éternel tes œuvres, et tes projets réussiront.',
+    category: 'echec_reussite',
+    tags: ['recommander', 'éternel', 'œuvres', 'projets', 'réussite', 'succès'],
+    statImpact: { foi: 4, finances: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-echec-005',
+    reference: 'Jérémie 29.11',
+    text: 'Car je connais les projets que j\'ai formés sur vous, dit l\'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l\'espérance.',
+    category: 'echec_reussite',
+    tags: ['projets', 'paix', 'avenir', 'espérance', 'malheur', 'plans divins'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-echec-006',
+    reference: 'Deutéronome 28.13',
+    text: 'L\'Éternel te mettra à la tête et non à la queue; tu seras toujours en haut et jamais en bas, si tu obéis aux commandements de l\'Éternel, ton Dieu, que je te prescris aujourd\'hui, et si tu les mets en pratique.',
+    category: 'echec_reussite',
+    tags: ['tête', 'queue', 'haut', 'bas', 'obéissance', 'bénédiction'],
+    statImpact: { foi: 4, finances: 3 },
+    difficulty: 2,
+  },
+
+  // ── Vaincre l'Orgueil / Humilité (p.78) ──────────────────
+  {
+    id: 'v-orgueil-007',
+    reference: 'Jacques 4.10',
+    text: 'Humiliez-vous devant le Seigneur, et il vous élèvera.',
+    category: 'orgueil_independance',
+    tags: ['humilité', 'seigneur', 'élévation', 'baisser', 'principe'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-orgueil-008',
+    reference: 'Colossiens 3.12',
+    text: 'Revêtez-vous donc, comme des élus de Dieu, saints et bien-aimés, de compassion, de bonté, d\'humilité, de douceur, de patience.',
+    category: 'orgueil_independance',
+    tags: ['élus', 'compassion', 'bonté', 'humilité', 'douceur', 'patience'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-orgueil-009',
+    reference: 'Proverbes 18.12',
+    text: 'Avant la ruine le cœur de l\'homme s\'élève; mais avant la gloire il y a l\'humilité.',
+    category: 'orgueil_independance',
+    tags: ['ruine', 'élévation', 'gloire', 'humilité', 'cœur', 'ordre'],
+    statImpact: { foi: 3, paix: 3 },
+    difficulty: 1,
+  },
+
+  // ── Tristesse & Joie (p.81) ───────────────────────────────
+  {
+    id: 'v-joie-004',
+    reference: 'Proverbes 17.22',
+    text: 'Un cœur joyeux est un bon remède, mais un esprit abattu dessèche les os.',
+    category: 'tristesse_joie',
+    tags: ['joie', 'remède', 'esprit abattu', 'santé', 'cœur', 'os'],
+    statImpact: { foi: 2, paix: 4, physique: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-joie-005',
+    reference: 'Jean 15.11',
+    text: 'Je vous ai dit ces choses, afin que ma joie soit en vous, et que votre joie soit parfaite.',
+    category: 'tristesse_joie',
+    tags: ['joie', 'parfaite', 'christ', 'demeurer', 'plénitude'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-joie-006',
+    reference: 'Philippiens 4.4',
+    text: 'Réjouissez-vous toujours dans le Seigneur; je le répète, réjouissez-vous.',
+    category: 'tristesse_joie',
+    tags: ['réjouir', 'seigneur', 'toujours', 'commandement', 'joie'],
+    statImpact: { foi: 3, paix: 4 },
+    difficulty: 1,
+  },
+
+  // ── Découragement / Persévérance (p.84) ──────────────────
+  {
+    id: 'v-decour-004',
+    reference: 'Hébreux 10.36',
+    text: 'Car vous avez besoin de persévérance, afin qu\'après avoir accompli la volonté de Dieu, vous obteniez ce qui vous est promis.',
+    category: 'decouragement',
+    tags: ['persévérance', 'volonté', 'promesse', 'accomplir', 'obtenir'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-decour-005',
+    reference: 'Romains 5.3-4',
+    text: 'Nous nous glorifions encore des afflictions, sachant que l\'affliction produit la persévérance, la persévérance la probité, et la probité l\'espérance.',
+    category: 'decouragement',
+    tags: ['afflictions', 'persévérance', 'probité', 'espérance', 'gloire', 'chaîne'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 3,
+  },
+  {
+    id: 'v-decour-006',
+    reference: 'Matthieu 24.13',
+    text: 'Mais celui qui persévérera jusqu\'à la fin sera sauvé.',
+    category: 'decouragement',
+    tags: ['persévérance', 'fin', 'sauvé', 'tenir', 'jusqu\'au bout'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+
+  // ── Lourdeur & Fatigue (p.87) ─────────────────────────────
+  {
+    id: 'v-lourd-004',
+    reference: 'Ésaïe 40.29',
+    text: 'Il donne de la force à celui qui est fatigué, et il augmente la vigueur de celui qui est épuisé.',
+    category: 'lourdeur_fatigue',
+    tags: ['force', 'fatigué', 'vigueur', 'épuisé', 'don', 'éternel'],
+    statImpact: { foi: 4, physique: 4 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-lourd-005',
+    reference: '1 Pierre 5.7',
+    text: 'Déchargez-vous sur lui de tous vos soucis, car lui-même prend soin de vous.',
+    category: 'lourdeur_fatigue',
+    tags: ['soucis', 'décharger', 'soin', 'lui', 'repos', 'fardeau'],
+    statImpact: { foi: 3, paix: 5 },
+    difficulty: 1,
+  },
+
+  // ── Combat Spirituel / Oppression (p.90) ─────────────────
+  {
+    id: 'v-combat-009',
+    reference: 'Romains 8.31',
+    text: 'Que dirons-nous donc à l\'égard de ces choses? Si Dieu est pour nous, qui sera contre nous?',
+    category: 'combat_spirituel',
+    tags: ['dieu pour nous', 'contre', 'confiance', 'victoire', 'assurance'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-combat-010',
+    reference: 'Ésaïe 54.17',
+    text: 'Aucune arme forgée contre toi ne prospérera, et tu condamneras toute langue qui s\'élèvera en jugement contre toi.',
+    category: 'combat_spirituel',
+    tags: ['arme', 'forgée', 'prospérera', 'langue', 'jugement', 'protection'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-combat-011',
+    reference: 'Luc 10.19',
+    text: 'Voici, je vous ai donné le pouvoir de marcher sur les serpents et les scorpions, et sur toute la puissance de l\'ennemi; et rien ne pourra vous nuire.',
+    category: 'combat_spirituel',
+    tags: ['pouvoir', 'serpents', 'scorpions', 'ennemi', 'nuire', 'autorité'],
+    statImpact: { foi: 5, paix: 2 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-combat-012',
+    reference: 'Jacques 4.7',
+    text: 'Soumettez-vous donc à Dieu; résistez au diable, et il fuira loin de vous.',
+    category: 'combat_spirituel',
+    tags: ['soumission', 'résistance', 'fuir', 'ennemi', 'dieu', 'victoire'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
+  },
+  {
+    id: 'v-combat-013',
+    reference: '2 Corinthiens 10.4-5',
+    text: 'Les armes avec lesquelles nous combattons ne sont pas charnelles; mais elles sont puissantes, par la vertu de Dieu, pour renverser des forteresses. Nous renversons les raisonnements et toute hauteur qui s\'élève contre la connaissance de Dieu.',
+    category: 'combat_spirituel',
+    tags: ['armes', 'charnelles', 'forteresses', 'raisonnements', 'connaissance', 'puissance'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 3,
+  },
+  {
+    id: 'v-combat-014',
+    reference: 'Apocalypse 12.11',
+    text: 'Ils l\'ont vaincu à cause du sang de l\'agneau et à cause de la parole de leur témoignage, et ils n\'ont pas aimé leur vie jusqu\'à craindre la mort.',
+    category: 'combat_spirituel',
+    tags: ['vaincre', 'sang', 'agneau', 'témoignage', 'mort', 'victoire'],
+    statImpact: { foi: 5, paix: 3 },
+    difficulty: 3,
+  },
+  // Être secouru dans la détresse (p.35) → combat_spirituel
+  {
+    id: 'v-combat-015',
+    reference: 'Psaume 34.18-19',
+    text: 'L\'Éternel est près de ceux qui ont le cœur brisé, et il sauve ceux qui ont l\'esprit dans l\'abattement. Le malheur atteint souvent le juste, mais l\'Éternel l\'en délivre toujours.',
+    category: 'combat_spirituel',
+    tags: ['cœur brisé', 'abattement', 'juste', 'délivre', 'malheur', 'détresse'],
+    statImpact: { foi: 4, paix: 4 },
+    difficulty: 2,
+  },
+  {
+    id: 'v-combat-016',
+    reference: 'Psaume 50.15',
+    text: 'Invoque-moi au jour de la détresse; je te délivrerai, et tu me glorifieras.',
+    category: 'combat_spirituel',
+    tags: ['invoque', 'détresse', 'délivrance', 'glorifier', 'secours', 'prière'],
+    statImpact: { foi: 4, paix: 3 },
+    difficulty: 1,
   },
 ];
 

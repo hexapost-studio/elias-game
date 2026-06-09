@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GameState } from '../types/game';
+import type { GameState, AfflictionEvent } from '../types/game';
 import {
   createInitialState,
   advanceAge,
@@ -13,7 +13,7 @@ import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence
 interface GameStore extends GameState {
   gameOver: { isOver: boolean; reason?: string } | null;
   initGame: () => void;
-  ageUp: () => void;
+  ageUp: (aiEvent?: AfflictionEvent) => void;
   chooseVerse: (verseId: string, timeToAnswer?: number) => void;
   dismissResult: () => void;
   hydrateFromSave: (data: Partial<GameState>) => void;
@@ -37,9 +37,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     saveGame(state).catch(() => {});
   },
 
-  ageUp: () => {
+  ageUp: (aiEvent?: AfflictionEvent) => {
     const state = get();
     const { newState } = advanceAge(state);
+    // Si aucun événement statique n'a été généré et qu'un événement IA est prêt, l'injecter
+    if (aiEvent && !newState.currentEvent) {
+      newState.currentEvent = aiEvent;
+      newState.phase = 'event';
+    }
     const over = checkGameOver(newState);
     set({ ...newState, gameOver: over.isOver ? over : null });
     saveGame(get()).catch(() => {});

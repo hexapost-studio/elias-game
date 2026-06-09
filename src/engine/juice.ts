@@ -171,6 +171,114 @@ export function glowFlash(el: HTMLElement, color: string = '#10b981'): void {
   }, 400);
 }
 
+/* ─── MUSIQUE D'AMBIANCE — 3 soundtracks MP3 ─── */
+
+const SOUNDTRACK_PATHS = [
+  '/audio/soundtrack-1.mp3',
+  '/audio/soundtrack-2.mp3',
+  '/audio/soundtrack-3.mp3',
+];
+
+const AMBIENT_VOLUME = 0.38;  // Volume cible (fond sonore discret)
+const FADE_IN_SEC   = 2.5;    // Durée fondu ouverture
+const FADE_OUT_SEC  = 1.8;    // Durée fondu fermeture
+
+let ambientRunning = false;
+let currentAudio: HTMLAudioElement | null = null;
+let ambientGain: GainNode | null = null;
+let ambientSource: MediaElementAudioSourceNode | null = null;
+let trackIndex = 0;
+let fadeOutTimer: ReturnType<typeof setTimeout> | null = null;
+
+export function isAmbientPlaying(): boolean {
+  return ambientRunning;
+}
+
+/** Charge et joue une piste MP3 dans le contexte Web Audio (pour fade via GainNode). */
+function playTrack(path: string, fadeIn = true): void {
+  if (!audioCtx || !ambientRunning) return;
+  const ctx = audioCtx;
+
+  // Déconnecter la piste précédente si elle existe
+  if (ambientSource) {
+    try { ambientSource.disconnect(); } catch { /* ignore */ }
+    ambientSource = null;
+  }
+  if (currentAudio) {
+    currentAudio.onended = null;
+    currentAudio.pause();
+    currentAudio = null;
+  }
+
+  const audio = new Audio(path);
+  audio.crossOrigin = 'anonymous';
+  audio.preload = 'auto';
+
+  const source = ctx.createMediaElementSource(audio);
+  const gain = ctx.createGain();
+
+  // Fondu entrant
+  gain.gain.value = fadeIn ? 0 : AMBIENT_VOLUME;
+  if (fadeIn) {
+    gain.gain.linearRampToValueAtTime(AMBIENT_VOLUME, ctx.currentTime + FADE_IN_SEC);
+  }
+
+  source.connect(gain).connect(ctx.destination);
+  audio.play().catch(() => { /* autoplay blocked — ignore */ });
+
+  // Passer à la piste suivante à la fin
+  audio.onended = () => {
+    if (!ambientRunning) return;
+    trackIndex = (trackIndex + 1) % SOUNDTRACK_PATHS.length;
+    playTrack(SOUNDTRACK_PATHS[trackIndex], true);
+  };
+
+  currentAudio  = audio;
+  ambientSource = source;
+  ambientGain   = gain;
+}
+
+export function startAmbient(): void {
+  if (ambientRunning) return;
+  ambientRunning = true;
+
+  // Reprendre le contexte audio si suspendu (politique autoplay navigateurs)
+  if (audioCtx?.state === 'suspended') audioCtx.resume();
+
+  // Démarrer à une piste aléatoire
+  trackIndex = Math.floor(Math.random() * SOUNDTRACK_PATHS.length);
+  playTrack(SOUNDTRACK_PATHS[trackIndex], true);
+}
+
+export function stopAmbient(): void {
+  if (!ambientRunning) return;
+  ambientRunning = false;
+
+  // Fondu sortant avant de couper
+  if (ambientGain && audioCtx) {
+    const ctx = audioCtx;
+    const gain = ambientGain;
+    gain.gain.cancelScheduledValues(ctx.currentTime);
+    gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + FADE_OUT_SEC);
+  }
+
+  // Couper après le fondu
+  if (fadeOutTimer) clearTimeout(fadeOutTimer);
+  fadeOutTimer = setTimeout(() => {
+    if (currentAudio) {
+      currentAudio.onended = null;
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    if (ambientSource) {
+      try { ambientSource.disconnect(); } catch { /* ignore */ }
+      ambientSource = null;
+    }
+    ambientGain = null;
+  }, (FADE_OUT_SEC + 0.1) * 1000);
+}
+
 /* ─── INIT ─── */
 
 let initPromise: Promise<void> | null = null;

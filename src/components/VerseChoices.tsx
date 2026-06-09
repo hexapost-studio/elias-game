@@ -125,22 +125,71 @@ export function VerseChoices() {
           displayText = verse.reference;
         }
 
+        const slotImg = hasAnswered
+          ? isCorrect
+            ? '/ui/travelbook/UI_TravelBook_Slot01b.png'
+            : '/ui/travelbook/UI_TravelBook_Slot01c.png'
+          : '/ui/travelbook/UI_TravelBook_Slot01a.png';
+
         return (
           <button
             key={verseId}
             className={btnClass}
             onClick={() => handleChoose(verseId)}
             disabled={hasAnswered}
+            style={{ display: 'flex', alignItems: 'center', gap: 10 }}
           >
-            <span style={{ opacity: 0.3, marginRight: 6, fontFamily: 'var(--font-display)', fontSize: 11 }}>
-              {String.fromCharCode(65 + i)}.
+            {/* Pixel art slot badge */}
+            <span style={{ position: 'relative', flexShrink: 0, width: 22, height: 22 }}>
+              <img
+                src={slotImg}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  imageRendering: 'pixelated',
+                  opacity: hasAnswered ? (isCorrect ? 0.9 : 0.6) : 0.55,
+                }}
+              />
+              {hasAnswered ? (
+                /* Pixel art tick ou cross après réponse */
+                <img
+                  src={isCorrect
+                    ? '/ui/travelbook/UI_TravelBook_IconTick01a.png'
+                    : '/ui/travelbook/UI_TravelBook_IconCross01a.png'}
+                  alt={isCorrect ? '✓' : '✕'}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '55%',
+                    height: '55%',
+                    margin: 'auto',
+                    imageRendering: 'pixelated',
+                    filter: isCorrect
+                      ? 'brightness(0) saturate(1) invert(1) sepia(1) saturate(4) hue-rotate(100deg)'
+                      : 'brightness(0) saturate(1) invert(1) sepia(1) saturate(6) hue-rotate(320deg)',
+                  }}
+                />
+              ) : (
+                <span style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 9,
+                  fontWeight: 700,
+                  color: 'var(--text-muted)',
+                  letterSpacing: 0,
+                }}>
+                  {String.fromCharCode(65 + i)}
+                </span>
+              )}
             </span>
-            {displayText}
-            {hasAnswered && (
-              <span style={{ float: 'right', color: isCorrect ? 'var(--success)' : 'var(--danger)' }}>
-                {isCorrect ? '✓' : '✕'}
-              </span>
-            )}
+            <span style={{ flex: 1, textAlign: 'left' }}>{displayText}</span>
           </button>
         );
       })}

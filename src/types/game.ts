@@ -1,13 +1,69 @@
-/** Catégories d'afflictions spirituelles */
+/**
+ * Catégories d'épreuves d'Élias.
+ *
+ * Chaque catégorie correspond à un thème de verset du livre de référence EJP/ICC.
+ * Elle détermine :
+ *  - Quel pool de versets est utilisé pour les leurres (decoys)
+ *  - La couleur et l'icône affichées dans le HUD
+ *  - Le "ton" narratif attendu dans les descriptions d'événements
+ *
+ * ── CATÉGORIES ORIGINALES (8) ────────────────────────────────────────────────
+ *  Couvrent les afflictions classiques de la vie chrétienne quotidienne.
+ *
+ * ── NOUVELLES CATÉGORIES (15) — thèmes positifs et croissance ────────────────
+ *  Issues du livre de versets EJP/ICC (pages 1–95).
+ *  Contrairement aux catégories originales (vaincre X), ces thèmes incluent
+ *  aussi des dimensions positives : manifester, recevoir, vivre, expérimenter.
+ *
+ * @see src/data/verses.ts    — pool de versets par catégorie
+ * @see src/components/IconSystem.tsx — couleurs et icônes associées
+ * @see src/data/event-schema.ts — règles de génération d'événements IA
+ */
 export type AfflictionCategory =
-  | 'peur_angoisse'
-  | 'impudicite_addiction'
-  | 'finances_paresse'
-  | 'amertume_rejet'
-  | 'combat_spirituel'
-  | 'identite_appel'
-  | 'doute_incredulite'
-  | 'orgueil_independance';
+  // ── Catégories originales ──────────────────────────────────────────────────
+  | 'peur_angoisse'           // Peur, angoisse, inquiétude (p.45)
+  | 'impudicite_addiction'    // Impudicité, addictions (p.52, p.95)
+  | 'finances_paresse'        // Pauvreté, manque, paresse (p.56, p.62)
+  | 'amertume_rejet'          // Amertume, manque de pardon, rejet (p.42, p.75)
+  | 'combat_spirituel'        // Oppression, attaques de l'ennemi (p.90)
+  | 'identite_appel'          // Identité en Christ, destinée (p.1, p.20)
+  | 'doute_incredulite'       // Doute, incrédulité, manque de foi (p.13)
+  | 'orgueil_independance'    // Orgueil, autosuffisance (p.78)
+  // ── Nouvelles catégories — croissance et victoire ─────────────────────────
+  | 'saint_esprit'            // Vie et dons du Saint-Esprit (p.6)
+  | 'parole_de_dieu'          // Connaissance et pratique de la Parole (p.9)
+  | 'amour_de_dieu'           // Manifester l'amour de Dieu envers autrui (p.17)
+  | 'direction_divine'        // Recevoir la direction de Dieu (p.23)
+  | 'priere'                  // Vie de prière, intercession (p.26)
+  | 'soif_de_dieu'            // Désir de Dieu, intimité spirituelle (p.29)
+  | 'obeissance'              // Obéissance à Dieu et à l'autorité (p.32)
+  | 'culpabilite'             // Vaincre la culpabilité, la condamnation (p.38)
+  | 'sterilite'               // Stérilité physique ou spirituelle (p.59)
+  | 'abondance_financiere'    // Dîme, offrandes, prospérité divine (p.66)
+  | 'maladie_guerison'        // Maladies, guérison divine (p.69)
+  | 'echec_reussite'          // Vaincre l'échec, marcher dans la réussite (p.72)
+  | 'tristesse_joie'          // Tristesse, manifester la joie de Dieu (p.81)
+  | 'decouragement'           // Découragement, persévérance (p.84)
+  | 'lourdeur_fatigue';       // Fatigue, lourdeur, vigueur divine (p.87)
+
+/**
+ * Ton narratif d'un événement.
+ * Utilisé par le moteur IA pour garantir la cohérence du style.
+ *
+ * - `intime`        : Élias seul face à Dieu. Chambre, prière, nuit.
+ * - `communautaire` : Contexte d'église, cellule, groupe de prière.
+ * - `familial`      : Interactions avec parents, conjoint, enfants, fratrie.
+ * - `professionnel` : Travail, université, argent, carrière.
+ * - `ministeriel`   : Service, vision, leadership, appel à servir.
+ * - `corporel`      : Santé physique, maladie, fatigue, corps.
+ */
+export type EventTone =
+  | 'intime'
+  | 'communautaire'
+  | 'familial'
+  | 'professionnel'
+  | 'ministeriel'
+  | 'corporel';
 
 export type StatName = 'foi' | 'paix' | 'physique' | 'finances';
 
@@ -41,6 +97,21 @@ export interface VerseEntry {
   cascadeFailId?: string;  // Événement déclenché si échec
 }
 
+/** Les 4 stades de vie utilisés pour adapter les événements */
+export type LifeStage = 'enfant' | 'ado' | 'adulte' | 'senior';
+
+/**
+ * Variante d'un événement propre à un stade de vie.
+ * Remplace description, impact et flavor du stade correspondant.
+ * Les champs absents héritent des valeurs racine de l'événement.
+ */
+export interface AgeVariant {
+  description: string;
+  /** Impact partiel — fusionné avec statImpactOnFail racine */
+  statImpactOnFail?: Partial<StatImpact>;
+  thematicFlavor?: string;
+}
+
 export interface AfflictionEvent {
   id: string;
   title: string;
@@ -63,6 +134,11 @@ export interface AfflictionEvent {
   minStat?: Partial<Record<StatName, number>>;
   /** Stat maximum pour que cet événement apparaisse */
   maxStat?: Partial<Record<StatName, number>>;
+  /**
+   * Surcharges par stade de vie (enfant 0-11, ado 12-17, adulte 18-59, senior 60+).
+   * Quand un stade est absent, l'événement utilise ses champs racine.
+   */
+  byAge?: Partial<Record<LifeStage, AgeVariant>>;
 }
 
 export interface NarrativeVariant {
@@ -113,6 +189,7 @@ export interface GameState {
   inheritance: Inheritance;
   queuedCascadeEvents: QueuedCascade[];
   completedArcs: CompletedArc[];
+  encounteredArcIds: string[];
   metrics: RunMetrics;
 }
 

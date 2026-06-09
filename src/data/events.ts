@@ -1,7 +1,7 @@
-import type { AfflictionEvent } from '../types/game';
+import type { AfflictionEvent, LifeStage } from '../types/game';
 import { VERSE_DATABASE } from './verses';
 
-function pickDecoys(
+export function pickDecoys(
   correctId: string,
   category: string,
   count: number = 3
@@ -16,6 +16,593 @@ function pickDecoys(
 }
 
 export const EVENT_DATABASE: AfflictionEvent[] = [
+  // ═══ 0-10 ans — Enfance ═══
+  {
+    id: 'e-enf-001',
+    title: 'Le cauchemar nocturne',
+    description:
+      'Tu te réveilles en pleurs au cœur de la nuit. Une ombre dans ta chambre te fait trembler. Tu cries mais personne ne vient.',
+    ageRange: [0, 7],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -4, physique: -1, finances: 0 },
+    thematicFlavor: 'Peurs d\'enfant',
+  },
+  {
+    id: 'e-enf-002',
+    title: 'Peur du noir',
+    description:
+      'La lumière éteinte, chaque ombre devient un monstre. Tu n\'oses pas fermer les yeux. L\'obscurité semble sans fin.',
+    ageRange: [0, 8],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-004',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -1, paix: -4, physique: -1, finances: 0 },
+    thematicFlavor: 'Nuit d\'enfant',
+  },
+  {
+    id: 'e-enf-003',
+    title: 'La fièvre qui dure',
+    description:
+      'Cloué au lit depuis trois jours, tu souffres et tu ne comprends pas pourquoi Dieu laisse les petits enfants avoir mal.',
+    ageRange: [0, 10],
+    category: 'maladie_guerison',
+    correctVerseId: 'v-gueris-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -3, physique: -5, finances: 0 },
+    thematicFlavor: 'Enfant malade',
+  },
+  {
+    id: 'e-enf-004',
+    title: 'Le bébé qui prend tout',
+    description:
+      'Depuis l\'arrivée de ton petit frère, papa et maman ne s\'occupent plus de toi. Une jalousie brûlante envahit ton cœur.',
+    ageRange: [1, 9],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -4, physique: 0, finances: 0 },
+    thematicFlavor: 'Rivalité fraternelle',
+  },
+  {
+    id: 'e-enf-005',
+    title: 'La colère du refus',
+    description:
+      'Maman a encore dit non. Une rage monte en toi, tu veux tout casser. Tu ne comprends pas pourquoi tu n\'as pas le droit.',
+    ageRange: [1, 9],
+    category: 'orgueil_independance',
+    correctVerseId: 'v-orgueil-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -4, physique: -1, finances: 0 },
+    thematicFlavor: 'Caractère',
+  },
+  {
+    id: 'e-enf-006',
+    title: 'Le premier jour d\'école',
+    description:
+      'La maîtresse est inconnue, les enfants aussi. La peur de ne rien savoir faire paralyse ta gorge dès le matin.',
+    ageRange: [3, 7],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -1, paix: -4, physique: -2, finances: 0 },
+    thematicFlavor: 'Séparation',
+  },
+  {
+    id: 'e-enf-007',
+    title: 'Le jouet cassé',
+    description:
+      'Tu as cassé le jouet préféré de ton frère en jouant sans permission. Le mensonge te semble plus simple que d\'avouer.',
+    ageRange: [2, 10],
+    category: 'culpabilite',
+    correctVerseId: 'v-culpa-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -3, physique: 0, finances: 0 },
+    thematicFlavor: 'Vérité difficile',
+  },
+  {
+    id: 'e-enf-008',
+    title: 'L\'ami qui ne joue plus',
+    description:
+      'Ton seul ami de la cour a choisi quelqu\'un d\'autre. Tu manges seul, invisible, le cœur serré sans savoir pourquoi.',
+    ageRange: [4, 10],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -5, physique: -1, finances: 0 },
+    thematicFlavor: 'Amitié perdue',
+  },
+  {
+    id: 'e-enf-009',
+    title: 'Désobéir en cachette',
+    description:
+      'Papa a interdit cette émission. Dès qu\'il sort, la tentation est trop forte. Tu regardes, sachant que c\'est mal.',
+    ageRange: [4, 11],
+    category: 'obeissance',
+    correctVerseId: 'v-obeis-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -2, physique: 0, finances: 0 },
+    thematicFlavor: 'Autorité parentale',
+  },
+  {
+    id: 'e-enf-010',
+    title: 'La honte à la récitation',
+    description:
+      'Debout devant la classe, tu as oublié le verset. Les mots se figent. Les rires fusent et la honte te brûle le visage.',
+    ageRange: [5, 10],
+    category: 'decouragement',
+    correctVerseId: 'v-decour-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -3, physique: -2, finances: 0 },
+    thematicFlavor: 'Honte publique',
+  },
+
+  // ═══ Vie de famille — Parents, fratrie, maison ═══
+  {
+    id: 'e-fam-001',
+    title: 'Les parents se disputent',
+    description:
+      'Les cris de tes parents traversent les murs de ta chambre. La maison tremble de tension. Tu serres ton oreiller en priant que ça s\'arrête.',
+    ageRange: [2, 70],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -6, physique: -1, finances: 0 },
+    thematicFlavor: 'Foyer en tension',
+    cascadeEventId: 'e-fam-001-c',
+    byAge: {
+      enfant: {
+        description: 'Les cris de tes parents traversent les murs de ta chambre. La maison tremble. Tu serres ton oreiller en priant que ça s\'arrête.',
+        statImpactOnFail: { paix: -2 },
+        thematicFlavor: 'Enfant pris en étau',
+      },
+      ado: {
+        description: 'Tes parents se disputent encore. Tu essaies de jouer les médiateurs mais personne ne t\'écoute vraiment. Tu fuis dans ta chambre, honteux.',
+        statImpactOnFail: { foi: -1, paix: -1 },
+        thematicFlavor: 'Faux adulte',
+      },
+      adulte: {
+        description: 'Tes parents vieillissants se déchirent encore. Tu es tiraillé entre eux, contraint de prendre parti dans un conflit qui t\'écrase depuis l\'enfance.',
+        statImpactOnFail: { paix: 1, finances: -1 },
+        thematicFlavor: 'Blessures héritées',
+      },
+      senior: {
+        description: 'Tes parents âgés se querellent sur des questions d\'héritage. À ton âge, tu mesures combien les blessures non guéries voyagent de génération en génération.',
+        statImpactOnFail: { foi: 1, paix: -1, physique: 1 },
+        thematicFlavor: 'Transmission des blessures',
+      },
+    },
+  },
+  {
+    id: 'e-fam-001-c',
+    title: 'Un foyer qui se fracture',
+    description:
+      'Les disputes n\'ont pas cessé. Tes parents ne dorment plus dans la même chambre. Le mot "séparation" flotte dans l\'air sans être dit.',
+    ageRange: [3, 16],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -4, paix: -6, physique: -2, finances: 0 },
+    thematicFlavor: 'Famille brisée',
+  },
+  {
+    id: 'e-fam-002',
+    title: 'La perte d\'emploi',
+    description:
+      'Papa rentre tôt depuis un mois. Il ne parle plus, mange peu. Le mot "licencié" flotte dans l\'air. L\'argent manque et la peur s\'installe.',
+    ageRange: [3, 75],
+    category: 'decouragement',
+    correctVerseId: 'v-decour-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -3, physique: -1, finances: -5 },
+    thematicFlavor: 'Précarité familiale',
+    cascadeEventId: 'e-fam-002-c',
+    byAge: {
+      enfant: {
+        description: 'Papa rentre tôt depuis un mois. Il ne parle plus, mange peu. L\'argent manque. Tu ne comprends pas tout, mais tu sens que quelque chose s\'est cassé.',
+        statImpactOnFail: { finances: -1, physique: 1 },
+        thematicFlavor: 'Inquiétude d\'enfant',
+      },
+      ado: {
+        description: 'Papa a perdu son emploi. L\'ambiance à la maison est lourde. Tu te demandes si tu dois trouver un petit boulot pour aider. La honte te ronge à l\'école.',
+        statImpactOnFail: { foi: -1, finances: -1 },
+        thematicFlavor: 'Honte adolescente',
+      },
+      adulte: {
+        description: 'Tu as été licencié ce matin. Ton contrat, ta routine, ton identité — tout s\'est effondré en un email. Comment nourrir ta famille ? Comment prier quand le vide te répond ?',
+        statImpactOnFail: { foi: -2, paix: -2, finances: -3 },
+        thematicFlavor: 'Identité brisée',
+      },
+      senior: {
+        description: 'La retraite forcée est arrivée avant l\'heure. Des décennies de travail effacées du jour au lendemain. Tu dois apprendre à exister sans ce rôle qui te définissait.',
+        statImpactOnFail: { foi: -1, paix: -2, physique: -2 },
+        thematicFlavor: 'Fin de carrière',
+      },
+    },
+  },
+  {
+    id: 'e-fam-002-c',
+    title: 'La honte des fins de mois',
+    description:
+      'Les voisins savent que papa est au chômage. Tu entends les murmures. À l\'école, tu dis que ça va. Mais à l\'intérieur, tout s\'effondre.',
+    ageRange: [5, 20],
+    category: 'culpabilite',
+    correctVerseId: 'v-culpa-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -4, physique: -1, finances: -3 },
+    thematicFlavor: 'Honte sociale',
+  },
+  {
+    id: 'e-fam-003',
+    title: 'Maman à l\'hôpital',
+    description:
+      'On a emmené maman d\'urgence cette nuit. Papa dit que ça va, mais ses yeux ne mentent pas. Le silence de la maison est assourdissant.',
+    ageRange: [1, 16],
+    category: 'maladie_guerison',
+    correctVerseId: 'v-gueris-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -4, paix: -5, physique: -1, finances: 0 },
+    thematicFlavor: 'Maladie parentale',
+  },
+  {
+    id: 'e-fam-004',
+    title: 'Le déménagement',
+    description:
+      'Les cartons sont partout. Une ville inconnue attend ta famille. Tu laisses ta chambre, tes amis, ton église. Un arrachement brutal.',
+    ageRange: [3, 75],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-004',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -5, physique: -1, finances: 0 },
+    thematicFlavor: 'Exile intérieur',
+    byAge: {
+      enfant: {
+        description: 'Les cartons sont partout. Demain tu quitteras ta chambre, tes amis et ton école. Tu ne veux pas partir. Personne ne t\'a demandé ton avis.',
+        statImpactOnFail: { paix: -2, physique: -1 },
+        thematicFlavor: 'Arrachement',
+      },
+      ado: {
+        description: 'Tu déménages à 200 km de tout ce que tu connais. Tes amis, ton groupe de jeunes, ton premier amour — tout ça s\'arrête net. Tu n\'as pas choisi ça.',
+        statImpactOnFail: { foi: -1, paix: -2 },
+        thematicFlavor: 'Identité brisée',
+      },
+      adulte: {
+        description: 'Le travail t\'oblige à partir. Tu dois tout recommencer : trouver un logement, une église, un réseau. Ta famille accepte mais tu vois leur peine. C\'est ta décision à porter.',
+        statImpactOnFail: { paix: -2, finances: -2 },
+        thematicFlavor: 'Responsabilité adulte',
+      },
+      senior: {
+        description: 'Quitter la maison où tu as élevé tes enfants pour rejoindre ta famille dans une autre ville. Chaque mur de cette maison raconte une histoire. Tu dois tout laisser.',
+        statImpactOnFail: { paix: -3, physique: -1 },
+        thematicFlavor: 'Mémoire et deuil',
+      },
+    },
+  },
+  {
+    id: 'e-fam-005',
+    title: 'Grand-mère est partie',
+    description:
+      'Grand-mère ne se réveillera plus. Son fauteuil est vide, son rire manque déjà. C\'est la première fois que la mort entre vraiment dans ta vie.',
+    ageRange: [4, 80],
+    category: 'tristesse_joie',
+    correctVerseId: 'v-joie-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -4, paix: -4, physique: -2, finances: 0 },
+    thematicFlavor: 'Deuil familial',
+    byAge: {
+      enfant: {
+        description: 'Grand-mère ne se réveillera plus. Son fauteuil est vide. Tu ne comprends pas bien ce que "morte" veut dire, mais son absence fait un trou immense.',
+        statImpactOnFail: { paix: -2 },
+        thematicFlavor: 'Premier deuil',
+      },
+      ado: {
+        description: 'Grand-mère est partie cette nuit. C\'est la première mort qui te touche vraiment. Tu dois être fort pour ta famille, mais au fond de toi quelque chose s\'est brisé.',
+        statImpactOnFail: { foi: -1, paix: -1 },
+        thematicFlavor: 'Choc du deuil',
+      },
+      adulte: {
+        description: 'Tu as perdu grand-mère. Tu organises les funérailles, tu soutiens ta famille. Mais quand tout le monde est parti, tu réalises que tu n\'as pas encore pleuré.',
+        statImpactOnFail: { paix: -1, physique: -1 },
+        thematicFlavor: 'Deuil gelé',
+      },
+      senior: {
+        description: 'Tu enternes ta mère aujourd\'hui. Vous avez eu vos disputes, vos silences, vos réconciliations. Maintenant tu deviens la génération la plus ancienne de ta famille.',
+        statImpactOnFail: { foi: -2, physique: -2 },
+        thematicFlavor: 'Transmission',
+      },
+    },
+  },
+  {
+    id: 'e-fam-006',
+    title: 'L\'animal de compagnie',
+    description:
+      'La famille a adopté un chiot. Tu promets d\'en prendre soin chaque jour. Mais les jeux t\'attirent plus que cette responsabilité silencieuse.',
+    ageRange: [3, 13],
+    category: 'obeissance',
+    correctVerseId: 'v-obeis-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -2, physique: -1, finances: 0 },
+    thematicFlavor: 'Responsabilité',
+    cascadeEventId: 'e-fam-006-c',
+  },
+  {
+    id: 'e-fam-006-c',
+    title: 'L\'animal ne mange plus',
+    description:
+      'Depuis quelques jours, ton chien ne mange plus. Il gémit dans son coin. Tu sais que c\'est peut-être ta négligence qui l\'a rendu malade.',
+    ageRange: [4, 15],
+    category: 'culpabilite',
+    correctVerseId: 'v-culpa-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -3, physique: -1, finances: 0 },
+    thematicFlavor: 'Conséquences',
+    cascadeEventId: 'e-fam-006-c2',
+  },
+  {
+    id: 'e-fam-006-c2',
+    title: 'La mort du chien',
+    description:
+      'Cette nuit, ton chien est mort. Papa a creusé un trou dans le jardin. C\'est la première fois que tu pleures pour quelque chose que tu aimais.',
+    ageRange: [5, 16],
+    category: 'tristesse_joie',
+    correctVerseId: 'v-joie-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -4, physique: -2, finances: 0 },
+    thematicFlavor: 'Premier deuil',
+  },
+  {
+    id: 'e-fam-007',
+    title: 'Une famille qui s\'agrandit',
+    description:
+      'Maman attend un bébé. Bientôt ta chambre sera partagée, les câlins aussi. Quelque chose en toi résiste à cette nouvelle joie.',
+    ageRange: [2, 12],
+    category: 'orgueil_independance',
+    correctVerseId: 'v-orgueil-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -3, physique: 0, finances: 0 },
+    thematicFlavor: 'Fraternité',
+  },
+  {
+    id: 'e-fam-008',
+    title: 'Le cousin qui débarque',
+    description:
+      'Ton cousin Joël arrive pour six mois. Il dort dans ta chambre, mange dans ton assiette, prend ta place. La patience devient un combat quotidien.',
+    ageRange: [4, 18],
+    category: 'orgueil_independance',
+    correctVerseId: 'v-orgueil-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -4, physique: 0, finances: -1 },
+    thematicFlavor: 'Cohabitation',
+  },
+  {
+    id: 'e-fam-009',
+    title: 'Papa absent depuis des mois',
+    description:
+      'Ton père travaille dans une autre ville depuis six mois. Il a promis de revenir souvent. Mais les appels se font rares et sa chaise reste vide.',
+    ageRange: [5, 20],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-005',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -5, physique: -1, finances: 0 },
+    thematicFlavor: 'Père absent',
+  },
+  {
+    id: 'e-fam-010',
+    title: 'Grand-père vient habiter',
+    description:
+      'Grand-père est malade, lent, parfois confus. Il vient vivre chez vous. Prendre soin de lui chaque jour demande un amour que tu n\'as pas encore.',
+    ageRange: [8, 35],
+    category: 'obeissance',
+    correctVerseId: 'v-obeis-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -3, physique: -2, finances: 0 },
+    thematicFlavor: 'Soin des anciens',
+  },
+  {
+    id: 'e-fam-011',
+    title: 'Le remariage de papa',
+    description:
+      'Papa a annoncé qu\'il se remarie. Cet inconnu vivra dans ta maison. Tout ce que tu pensais savoir de ta famille vient de changer en un instant.',
+    ageRange: [8, 30],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-006',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -4, paix: -5, physique: -1, finances: 0 },
+    thematicFlavor: 'Famille recomposée',
+  },
+  {
+    id: 'e-fam-012',
+    title: 'Maladie grave dans la famille',
+    description:
+      'Le médecin a prononcé un mot que tu ne comprenais pas encore : cancer. Papa reste assis sans bouger. Tout le monde fait semblant de sourire.',
+    ageRange: [10, 60],
+    category: 'maladie_guerison',
+    correctVerseId: 'v-gueris-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -5, paix: -5, physique: -2, finances: -2 },
+    thematicFlavor: 'Maladie grave',
+  },
+
+  // ═══ Environnement — Quartier, société, église ═══
+  {
+    id: 'e-ext-001',
+    title: 'Coupure de courant prolongée',
+    description:
+      'L\'électricité est coupée depuis cinq jours. Les cours se font à la bougie. La ville attend dans la chaleur et l\'incertitude sans réponse.',
+    ageRange: [4, 50],
+    category: 'decouragement',
+    correctVerseId: 'v-decour-003',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -2, physique: -2, finances: -1 },
+    thematicFlavor: 'Contraintes extérieures',
+  },
+  {
+    id: 'e-ext-002',
+    title: 'L\'inondation',
+    description:
+      'La pluie ne s\'arrête pas. L\'eau monte dans les rues, puis sous la porte. Tout ce que votre famille possède est emporté par le courant.',
+    ageRange: [3, 80],
+    category: 'decouragement',
+    correctVerseId: 'v-decour-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -4, paix: -4, physique: -3, finances: -4 },
+    thematicFlavor: 'Catastrophe',
+    byAge: {
+      enfant: {
+        description: 'L\'eau est entrée dans la maison cette nuit. Maman a pris les affaires importantes, papa portait le bébé. Toi tu regardais tes jouets disparaître sous l\'eau.',
+        statImpactOnFail: { paix: -1, finances: 0 },
+        thematicFlavor: 'Perte d\'enfance',
+      },
+      ado: {
+        description: 'Ton quartier est sous l\'eau. L\'école est fermée, les amis sont dispersés. Tu aides ta famille à vider la maison. C\'est la première fois que tu te sens vraiment utile.',
+        statImpactOnFail: { foi: -1 },
+        thematicFlavor: 'Crise mobilisatrice',
+      },
+      adulte: {
+        description: 'Ton appartement est inondé. Tu as tout perdu : les meubles, les documents, les photos. En une nuit, des années de travail se retrouvent dans la boue.',
+        statImpactOnFail: { paix: -2, finances: -2 },
+        thematicFlavor: 'Tout reconstruire',
+      },
+      senior: {
+        description: 'Tu as tout perdu dans l\'inondation. Ce n\'est pas la première fois que Dieu te laisse recommencer de zéro. Tu sais maintenant que les biens ne comptent pas. Mais les genoux font mal.',
+        statImpactOnFail: { physique: -2, finances: -1 },
+        thematicFlavor: 'Résilience acquise',
+      },
+    },
+  },
+  {
+    id: 'e-ext-003',
+    title: 'Le pasteur quitte l\'église',
+    description:
+      'Le pasteur a annoncé son départ. Les membres se disputent, certains partent. Tu te demandes si l\'Église est vraiment aussi solide qu\'on te l\'a dit.',
+    ageRange: [10, 50],
+    category: 'doute_incredulite',
+    correctVerseId: 'v-doute-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -5, paix: -3, physique: 0, finances: 0 },
+    thematicFlavor: 'Crise communautaire',
+    cascadeEventId: 'e-ext-003-c',
+  },
+  {
+    id: 'e-ext-003-c',
+    title: 'L\'église divisée',
+    description:
+      'La communauté s\'est scindée en deux. Des familles que tu connaissais depuis toujours ne se parlent plus. Tu ne sais plus où est ta place.',
+    ageRange: [12, 55],
+    category: 'doute_incredulite',
+    correctVerseId: 'v-doute-005',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -6, paix: -4, physique: 0, finances: 0 },
+    thematicFlavor: 'Schisme',
+  },
+  {
+    id: 'e-ext-004',
+    title: 'La pénurie alimentaire',
+    description:
+      'Les marchés sont vides depuis des semaines. Papa compte chaque franc. On mange moins, on parle peu. La peur du lendemain est silencieuse.',
+    ageRange: [5, 60],
+    category: 'lourdeur_fatigue',
+    correctVerseId: 'v-lourd-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -3, physique: -3, finances: -4 },
+    thematicFlavor: 'Disette',
+  },
+  {
+    id: 'e-ext-005',
+    title: 'Le voisin dans le besoin',
+    description:
+      'Ta voisine frappe à la porte, les yeux rouges. Son mari l\'a chassée avec ses enfants. Dieu te demande peut-être de faire quelque chose.',
+    ageRange: [8, 70],
+    category: 'direction_divine',
+    correctVerseId: 'v-direct-001',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -2, physique: 0, finances: -1 },
+    thematicFlavor: 'Prochain',
+  },
+  {
+    id: 'e-ext-006',
+    title: 'Violence dans le quartier',
+    description:
+      'Des coups de feu ont réveillé le quartier cette nuit. La porte est fermée à double tour. L\'angoisse de l\'inconnu t\'empêche de dormir.',
+    ageRange: [5, 80],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-005',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -5, physique: -2, finances: 0 },
+    thematicFlavor: 'Insécurité',
+    byAge: {
+      enfant: {
+        description: 'Des cris ont traversé la nuit. Maman vous a tous mis sous les lits. Tu fermes les yeux très fort en comptant pour ne pas entendre.',
+        statImpactOnFail: { paix: -2 },
+        thematicFlavor: 'Effroi d\'enfant',
+      },
+      ado: {
+        description: 'Un garçon de ton école a été blessé ce soir dans une bagarre. Tu le connaissais. La violence est sortie des écrans et est entrée dans ta vie réelle.',
+        statImpactOnFail: { foi: -2, paix: -1 },
+        thematicFlavor: 'Réalité brutale',
+      },
+      adulte: {
+        description: 'Le quartier est devenu dangereux. Tu dois décider si tu restes pour ta communauté ou tu pars pour protéger ta famille. Aucun des deux choix n\'est juste.',
+        statImpactOnFail: { paix: -2, finances: -1 },
+        thematicFlavor: 'Décision impossible',
+      },
+      senior: {
+        description: 'Tu vis dans ce quartier depuis 30 ans. Aujourd\'hui il est méconnaissable. Tu refuses de partir, mais tu te demandes si ton courage est de la sagesse ou de la fierté.',
+        statImpactOnFail: { foi: -1, physique: -2 },
+        thematicFlavor: 'Fidélité au territoire',
+      },
+    },
+  },
+  {
+    id: 'e-ext-007',
+    title: 'Agitation politique',
+    description:
+      'Les nouvelles sont mauvaises. Les manifestants bloquent les routes, les écoles ferment. Ta famille attend, enfermée, dans l\'incertitude.',
+    ageRange: [12, 70],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-008',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -4, physique: -1, finances: -2 },
+    thematicFlavor: 'Crise sociale',
+  },
+  {
+    id: 'e-ext-008',
+    title: 'L\'ami qui déménage',
+    description:
+      'Ton meilleur ami part dans une autre ville ce week-end. Vous avez grandi ensemble. Sa maison sera vide et tu ne sais pas comment vivre ça.',
+    ageRange: [6, 30],
+    category: 'amertume_rejet',
+    correctVerseId: 'v-amer-008',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -4, physique: -1, finances: 0 },
+    thematicFlavor: 'Séparation',
+  },
+  {
+    id: 'e-ext-009',
+    title: 'Changer d\'école',
+    description:
+      'Nouveaux couloirs, nouvelles règles, aucun visage connu. Dans cette école, tu repars de zéro. La peur de ne pas trouver ta place te paralyse.',
+    ageRange: [6, 20],
+    category: 'peur_angoisse',
+    correctVerseId: 'v-peur-009',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -2, paix: -4, physique: -2, finances: 0 },
+    thematicFlavor: 'Nouveau départ forcé',
+  },
+  {
+    id: 'e-ext-010',
+    title: 'La crise économique',
+    description:
+      'Le pays traverse une crise sévère. Les prix doublent, le travail se raréfie. Ta famille resserre les rangs. La foi est mise à l\'épreuve.',
+    ageRange: [14, 80],
+    category: 'lourdeur_fatigue',
+    correctVerseId: 'v-lourd-002',
+    decoyVerseIds: [],
+    statImpactOnFail: { foi: -3, paix: -3, physique: -2, finances: -5 },
+    thematicFlavor: 'Précarité systémique',
+  },
+
   // ═══ 0-15 ans — Fondations ═══
   {
     id: 'e-fond-001',
@@ -1010,3 +1597,33 @@ export function assignDecoys(): AfflictionEvent[] {
 }
 
 export const TOTAL_EVENTS = EVENT_DATABASE.length;
+
+/**
+ * Résout un événement pour un âge donné.
+ * Si l'événement a un `byAge` pour le stade correspondant,
+ * les champs description / statImpactOnFail / thematicFlavor sont remplacés.
+ */
+export function resolveEventForAge(event: AfflictionEvent, age: number): AfflictionEvent {
+  const stage: LifeStage =
+    age >= 60 ? 'senior'
+    : age >= 18 ? 'adulte'
+    : age >= 12 ? 'ado'
+    : 'enfant';
+
+  const variant = event.byAge?.[stage];
+  if (!variant) return event;
+
+  return {
+    ...event,
+    description: variant.description,
+    thematicFlavor: variant.thematicFlavor ?? event.thematicFlavor,
+    statImpactOnFail: variant.statImpactOnFail
+      ? {
+          foi:      (event.statImpactOnFail.foi      ?? 0) + (variant.statImpactOnFail.foi      ?? 0),
+          paix:     (event.statImpactOnFail.paix     ?? 0) + (variant.statImpactOnFail.paix     ?? 0),
+          physique: (event.statImpactOnFail.physique ?? 0) + (variant.statImpactOnFail.physique ?? 0),
+          finances: (event.statImpactOnFail.finances ?? 0) + (variant.statImpactOnFail.finances ?? 0),
+        }
+      : event.statImpactOnFail,
+  };
+}

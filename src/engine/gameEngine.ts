@@ -12,7 +12,7 @@ import type {
   RunMetrics,
   QueuedCascade,
 } from '../types/game';
-import { getEventsForAge, assignDecoys, getEventById } from '../data/events';
+import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from '../data/events';
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
 import { getArcById } from '../data/storyArcs';
 
@@ -249,6 +249,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     inheritance: inheritance || { title: null, bonus: {}, used: false },
     queuedCascadeEvents: [],
     completedArcs: [],
+    encounteredArcIds: [],
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -387,7 +388,8 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     const cascade = cascadeEvents[0];
     const event = getEventById(cascade.eventId);
     if (event) {
-      const withVariant = applyNarrativeVariant(event, state);
+      const ageResolved = resolveEventForAge(event, state.age);
+      const withVariant = applyNarrativeVariant(ageResolved, state);
       return { ...withVariant, title: `[Cascade] ${withVariant.title}` };
     }
   }
@@ -424,8 +426,9 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   const allDecoys = assignDecoys();
   const fullEvent = allDecoys.find((e) => e.id === event.id) || event;
 
-  // Appliquer la variante narrative
-  return applyNarrativeVariant(fullEvent, state);
+  // Appliquer la variante d'âge, puis la variante narrative
+  const ageResolved = resolveEventForAge(fullEvent, state.age);
+  return applyNarrativeVariant(ageResolved, state);
 }
 
 /* ─── VALIDATION ─── */
@@ -495,15 +498,18 @@ export function validateChoice(
       },
     ];
 
-    // Arc narratif: vérifier si c'est le dernier événement d'un arc
+    // Arc narratif: tracker rencontre + complétion
     if (event.storyArcId && event.arcSequence) {
       const arc = getArcById(event.storyArcId);
+      // Marquer l'arc comme rencontré
+      if (!state.encounteredArcIds.includes(event.storyArcId)) {
+        newState.encounteredArcIds = [...state.encounteredArcIds, event.storyArcId];
+      }
       if (arc && event.arcSequence === arc.eventIds.length) {
         newState.completedArcs = [
           ...state.completedArcs,
           { arcId: event.storyArcId, completedAtAge: state.age },
         ];
-        // Message de complétion d'arc
         newState.journal = [
           ...newState.journal,
           {

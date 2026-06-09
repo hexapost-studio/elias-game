@@ -1,10 +1,33 @@
 import { useGameStore } from '../stores/gameStore';
-import { STAT_ICONS, STAT_COLORS } from './IconSystem';
 import type { StatName } from '../types/game';
 
 const statKeys: StatName[] = ['foi', 'paix', 'physique', 'finances'];
-const statLabels: Record<StatName, string> = {
+
+const STAT_LABELS: Record<StatName, string> = {
   foi: 'Foi', paix: 'Paix', physique: 'Physique', finances: 'Finances',
+};
+
+const STAT_COLORS: Record<StatName, string> = {
+  foi: 'var(--color-foi)',
+  paix: 'var(--color-paix)',
+  physique: 'var(--color-physique)',
+  finances: 'var(--color-finances)',
+};
+
+// TravelBook pixel art icons — scaled 2x with pixelated rendering
+const TB_ICONS: Record<StatName, string> = {
+  foi:       '/ui/travelbook/UI_TravelBook_IconStar01a.png',
+  paix:      '/ui/travelbook/UI_TravelBook_IconHeart01e.png',
+  physique:  '/ui/travelbook/UI_TravelBook_IconHeart01a.png',
+  finances:  '/ui/travelbook/UI_TravelBook_IconCoin01a.png',
+};
+
+// CSS filters to shift the original warm maroon → stat color
+const TB_FILTERS: Record<StatName, string> = {
+  foi:      'hue-rotate(185deg) saturate(4) brightness(2.8)',
+  paix:     'hue-rotate(115deg) saturate(3) brightness(2.2)',
+  physique: 'brightness(2.8) saturate(0.9)',
+  finances: 'brightness(1.6) saturate(1.8)',
 };
 
 export function StatBar() {
@@ -13,40 +36,64 @@ export function StatBar() {
   return (
     <div id="stat-bar">
       {statKeys.map((key) => {
-        const Icon = STAT_ICONS[key];
-        const color = STAT_COLORS[key];
         const value = stats[key];
         const danger = value <= 25;
+        const color = STAT_COLORS[key];
 
         return (
           <div key={key} className="stat-item">
-            <div className="stat-icon" style={{ color }}>
-              <Icon size={14} />
+            <div className="stat-icon">
+              <img
+                src={TB_ICONS[key]}
+                alt={key}
+                style={{
+                  width: 16,
+                  height: 16,
+                  imageRendering: 'pixelated',
+                  objectFit: 'contain',
+                  filter: TB_FILTERS[key] + (danger ? ` drop-shadow(0 0 3px ${color})` : ''),
+                  animation: danger ? 'iconPulse 1s ease-in-out infinite alternate' : 'none',
+                }}
+              />
             </div>
             <div className="stat-info">
               <span className="stat-label" style={{ color: danger ? color : 'var(--text-muted)' }}>
-                {statLabels[key]}
+                {STAT_LABELS[key]}
               </span>
-              <div className="stat-track" style={{ background: 'rgba(255,255,255,0.08)', position: 'relative' }}>
-                {/* Kenney bar background via CSS */}
+              <div
+                className="stat-track"
+                style={{
+                  backgroundImage: 'url(/ui/travelbook/UI_TravelBook_Bar01a.png)',
+                  backgroundSize: '100% 100%',
+                  imageRendering: 'pixelated',
+                }}
+              >
                 <div
                   className="stat-fill"
                   style={{
                     width: `${Math.max(0, value)}%`,
-                    background: color,
-                    boxShadow: danger ? `0 0 8px ${color}` : 'none',
-                    position: 'relative',
-                    zIndex: 1,
+                    background: `linear-gradient(90deg, ${color}cc, ${color})`,
+                    boxShadow: danger ? `0 0 6px ${color}` : 'none',
                   }}
                 />
               </div>
             </div>
-            <span className="stat-value" style={{ color, fontFamily: "'Kenney Future', monospace", fontSize: 11 }}>
+            <span
+              className="stat-value"
+              style={{ color, fontFamily: "'Kenney Future', monospace", fontSize: 11 }}
+            >
               {value}
             </span>
           </div>
         );
       })}
+
+      <style>{`
+        @keyframes iconPulse {
+          from { transform: scale(1); }
+          to   { transform: scale(1.15); }
+        }
+      `}</style>
     </div>
   );
 }
