@@ -467,6 +467,10 @@ function App() {
                     <div key={`n-${entry.i}`} className={`journal-entry entry-${entry.type}`}>
                       {entry.type === 'milestone' ? (
                         <span>{entry.text}</span>
+                      ) : entry.type === 'micro' ? (
+                        <><span style={{ opacity: 0.35 }}>{entry.age}a</span>{' '}
+                        <span style={{ opacity: 0.5, marginRight: 3 }}>·</span>
+                        {entry.text}</>
                       ) : (
                         <><span style={{ opacity: 0.4 }}>{entry.age}a</span> {entry.text}</>
                       )}

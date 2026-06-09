@@ -112,6 +112,14 @@ export interface AgeVariant {
   thematicFlavor?: string;
 }
 
+export interface MicroEvent {
+  id: string;
+  text: string;
+  ageRange: [number, number];
+  probability?: number;
+  statBonus?: Partial<StatImpact>;
+}
+
 export interface AfflictionEvent {
   id: string;
   title: string;
@@ -121,6 +129,8 @@ export interface AfflictionEvent {
   correctVerseId: string;
   decoyVerseIds: string[];
   statImpactOnFail: StatImpact;
+  /** Boosts de stats appliqués en cas de bonne réponse (événements bénédiction) */
+  statImpactOnSuccess?: Partial<StatImpact>;
   thematicFlavor?: string;
   /** Événement déclenché si le joueur échoue */
   cascadeEventId?: string;
@@ -236,6 +246,6 @@ export interface RunMetrics {
 export interface JournalEntry {
   age: number;
   text: string;
-  type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade';
+  type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro';
   verseRef?: string;
 }

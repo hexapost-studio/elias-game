@@ -529,6 +529,13 @@ body {
 .entry-fail { color: var(--danger); }
 .entry-milestone { color: var(--accent-gold); font-style: italic; }
 .entry-cascade { color: var(--warning); }
+.entry-micro {
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.82;
+  padding-left: 8px;
+  border-left: 1px solid rgba(167, 141, 104, 0.25);
+}
 
 /* ─── ACTION BUTTON ─── */
 #action-area {

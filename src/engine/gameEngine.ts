@@ -15,6 +15,7 @@ import type {
 import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from '../data/events';
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
 import { getArcById } from '../data/storyArcs';
+import { getMicroEventForAge } from '../data/microEvents';
 
 const MAX_STAT = 100;
 const MIN_STAT = 0;
@@ -470,6 +471,18 @@ export function validateChoice(
       );
     }
 
+    // Bonus événement bénédiction
+    if (event.statImpactOnSuccess) {
+      for (const [stat, val] of Object.entries(event.statImpactOnSuccess)) {
+        if (val !== undefined) {
+          newStats[stat as StatName] = Math.min(
+            MAX_STAT,
+            (newStats[stat as StatName] || 0) + val
+          );
+        }
+      }
+    }
+
     // Combo
     newState.combo = state.combo + 1;
     newState.maxCombo = Math.max(newState.maxCombo, newState.combo);
@@ -683,6 +696,27 @@ export function advanceAge(state: GameState): {
       newState.currentEvent = event;
       newState.phase = 'event';
       eventGenerated = true;
+    }
+  }
+
+  // Micro-événements passifs (indépendants des épreuves)
+  if (Math.random() < 0.55) {
+    const micro = getMicroEventForAge(newAge);
+    if (micro) {
+      newState.journal = [
+        ...newState.journal,
+        { age: newAge, text: micro.text, type: 'micro' },
+      ];
+      if (micro.statBonus) {
+        const ns = { ...newState.stats };
+        for (const [stat, val] of Object.entries(micro.statBonus)) {
+          ns[stat as StatName] = Math.min(
+            MAX_STAT,
+            Math.max(MIN_STAT, (ns[stat as StatName] || 0) + (val ?? 0))
+          );
+        }
+        newState.stats = ns;
+      }
     }
   }
 
