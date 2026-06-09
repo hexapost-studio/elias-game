@@ -1,46 +1,117 @@
 /**
  * @file aiNarrator.ts
- * @description Service d'IA narratif — deux fonctionnalités en jeu :
+ * @description Service d'IA narratif — journal vivant + événements dynamiques.
  *
- *  1. Journal vivant : à chaque anniversaire d'Élias, Claude génère
- *     une entrée de journal intime à la 1ère personne, adaptée aux
- *     stats et au stade de vie du personnage.
+ * Backends supportés (par ordre de priorité) :
+ *  1. Ollama (auto-hébergé, gratuit, local ou sur Proxmox)
+ *     → VITE_OLLAMA_URL=http://localhost:11434  +  VITE_OLLAMA_MODEL=llama3.2
+ *  2. Groq (cloud, gratuit avec compte, ultra-rapide)
+ *     → VITE_GROQ_API_KEY=gsk_xxx
+ *  3. OpenAI-compatible custom (n8n, LM Studio, etc.)
+ *     → VITE_AI_ENDPOINT=https://...  +  VITE_AI_KEY=xxx  +  VITE_AI_MODEL=xxx
  *
- *  2. Événements dynamiques : à partir d'un verset sélectionné en
- *     fonction des stats faibles, Claude génère un événement de vie
- *     inédit qui amène naturellement ce verset comme réponse.
- *
- * Requiert VITE_ANTHROPIC_API_KEY dans .env.local.
- * Utilise claude-haiku pour la vitesse et le coût.
+ * Sans aucune variable → AI_AVAILABLE = false, le jeu fonctionne sans IA.
  */
 
-import Anthropic from '@anthropic-ai/sdk';
 import type { StatImpact, AfflictionCategory } from '../types/game';
 import { VERSE_DATABASE } from '../data/verses';
 
-// ── Client ────────────────────────────────────────────────────────────────────
+// ── Détection du backend disponible ───────────────────────────────────────────
 
-const _client = (() => {
-  const key = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
-  if (!key) return null;
-  return new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true });
-})();
+type Backend =
+  | { type: 'ollama';  url: string; model: string }
+  | { type: 'groq';   key: string; model: string }
+  | { type: 'custom'; endpoint: string; key: string; model: string };
 
-export const AI_AVAILABLE = _client !== null;
+function detectBackend(): Backend | null {
+  const ollamaUrl   = import.meta.env.VITE_OLLAMA_URL   as string | undefined;
+  const ollamaModel = import.meta.env.VITE_OLLAMA_MODEL  as string | undefined;
+  if (ollamaUrl) {
+    return { type: 'ollama', url: ollamaUrl, model: ollamaModel ?? 'llama3.2' };
+  }
 
-// ── Types locaux ──────────────────────────────────────────────────────────────
+  const groqKey = import.meta.env.VITE_GROQ_API_KEY as string | undefined;
+  if (groqKey) {
+    return { type: 'groq', key: groqKey, model: 'llama-3.1-8b-instant' };
+  }
+
+  const customEndpoint = import.meta.env.VITE_AI_ENDPOINT as string | undefined;
+  const customKey      = import.meta.env.VITE_AI_KEY      as string | undefined;
+  const customModel    = import.meta.env.VITE_AI_MODEL    as string | undefined;
+  if (customEndpoint && customModel) {
+    return { type: 'custom', endpoint: customEndpoint, key: customKey ?? '', model: customModel };
+  }
+
+  return null;
+}
+
+const BACKEND = detectBackend();
+export const AI_AVAILABLE = BACKEND !== null;
+
+// ── Appel unifié OpenAI-compatible ────────────────────────────────────────────
+
+async function chat(prompt: string, maxTokens: number = 250): Promise<string | null> {
+  if (!BACKEND) return null;
+
+  try {
+    if (BACKEND.type === 'ollama') {
+      // Ollama : API native /api/generate (format propre)
+      const res = await fetch(`${BACKEND.url}/api/generate`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model:  BACKEND.model,
+          prompt,
+          stream: false,
+          options: { num_predict: maxTokens, temperature: 0.8 },
+        }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json() as { response?: string };
+      return data.response?.trim() ?? null;
+    }
+
+    // Groq + custom → format OpenAI /chat/completions
+    const endpoint =
+      BACKEND.type === 'groq'
+        ? 'https://api.groq.com/openai/v1/chat/completions'
+        : BACKEND.endpoint;
+    const key =
+      BACKEND.type === 'groq' ? BACKEND.key : (BACKEND as { key: string }).key;
+
+    const res = await fetch(endpoint, {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model:       BACKEND.model,
+        max_tokens:  maxTokens,
+        temperature: 0.8,
+        messages:    [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json() as { choices?: { message?: { content?: string } }[] };
+    return data.choices?.[0]?.message?.content?.trim() ?? null;
+
+  } catch {
+    return null;
+  }
+}
+
+// ── Types & helpers ───────────────────────────────────────────────────────────
 
 export type LifeStageLabel = 'enfant' | 'ado' | 'adulte' | 'senior';
 
 export interface AiEventNarrative {
-  title: string;
-  description: string;
+  title:          string;
+  description:    string;
   thematicFlavor: string;
-  verseId: string;
-  category: AfflictionCategory;
+  verseId:        string;
+  category:       AfflictionCategory;
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function lifeStage(age: number): LifeStageLabel {
   if (age >= 60) return 'senior';
@@ -50,114 +121,73 @@ function lifeStage(age: number): LifeStageLabel {
 }
 
 const STAGE_TONE: Record<LifeStageLabel, string> = {
-  enfant:  'simple, concret, émotions primaires',
-  ado:     'tourmenté, identitaire, cherche sa place',
-  adulte:  'mature, responsable, face à des choix lourds',
-  senior:  'contemplatif, sage, regard sur ce qui reste',
+  enfant:  'simple et concret, comme un enfant qui découvre le monde',
+  ado:     'émotionnel et identitaire, cherche sa place',
+  adulte:  'mature et responsable, face à des choix lourds',
+  senior:  'contemplatif et sage, regard sur ce qui reste',
 };
 
 const STAT_TO_CATEGORIES: Record<string, AfflictionCategory[]> = {
   foi:      ['doute_incredulite', 'peur_angoisse', 'soif_de_dieu'],
-  paix:     ['amertume_rejet', 'tristesse_joie', 'culpabilite'],
-  physique: ['maladie_guerison', 'lourdeur_fatigue', 'decouragement'],
-  finances: ['finances_paresse', 'abondance_financiere'],
+  paix:     ['amertume_rejet',    'tristesse_joie', 'culpabilite'],
+  physique: ['maladie_guerison',  'lourdeur_fatigue', 'decouragement'],
+  finances: ['finances_paresse',  'abondance_financiere'],
 };
 
-/** Sélectionne un verset en ciblant la stat la plus faible du joueur. */
+/** Sélectionne un verset en ciblant la stat la plus faible. */
 export function pickVerseForAge(
   age: number,
   stats: StatImpact,
 ): typeof VERSE_DATABASE[number] | null {
-  // Stat la plus basse (hors finances, moins liée aux catégories)
-  const weakStat = (
-    Object.entries({ foi: stats.foi, paix: stats.paix, physique: stats.physique })
-      .sort(([, a], [, b]) => a - b)[0][0]
-  );
+  const weakStat = Object.entries({
+    foi: stats.foi, paix: stats.paix, physique: stats.physique,
+  }).sort(([, a], [, b]) => a - b)[0][0];
 
   const preferredCats = STAT_TO_CATEGORIES[weakStat] ?? [];
   const pool = VERSE_DATABASE.filter((v) =>
-    preferredCats.includes(v.category) &&
-    /* exclure les versets avec difficulté trop haute pour l'âge */
-    (age >= 18 || v.difficulty <= 2)
+    preferredCats.includes(v.category) && (age >= 18 || v.difficulty <= 2)
   );
-
-  const chosen = (pool.length > 0 ? pool : VERSE_DATABASE)[
-    Math.floor(Math.random() * (pool.length > 0 ? pool.length : VERSE_DATABASE.length))
-  ];
-  return chosen ?? null;
+  const src = pool.length > 0 ? pool : VERSE_DATABASE;
+  return src[Math.floor(Math.random() * src.length)] ?? null;
 }
 
 // ── 1. Journal vivant ─────────────────────────────────────────────────────────
 
-/**
- * Génère une entrée de journal intime personnalisée pour Élias.
- * Retourne null si l'IA est indisponible ou échoue.
- */
 export async function generateJournalEntry(
   age: number,
   stats: StatImpact,
   recentEventTitles: string[],
   successRate: number,
 ): Promise<string | null> {
-  if (!_client) return null;
-
   const stage  = lifeStage(age);
   const events = recentEventTitles.slice(-4).join(', ') || 'aucune épreuve notable';
 
-  try {
-    const resp = await _client.messages.create({
-      model:      'claude-haiku-4-5-20251001',
-      max_tokens: 200,
-      messages: [{
-        role:    'user',
-        content: `Tu es Élias, ${age} ans (stade de vie : ${stage}).
+  const prompt = `Tu es Élias, ${age} ans (stade : ${stage}).
 Stats intérieures : Foi ${stats.foi}/100 · Paix ${stats.paix}/100 · Corps ${stats.physique}/100 · Finances ${stats.finances}/100.
-Dernières épreuves vécues : ${events}.
-Taux de victoire dans les épreuves : ${successRate}%.
+Dernières épreuves : ${events}. Taux de victoire : ${successRate}%.
 
-Écris UNE entrée de journal intime à la 1ère personne (je / mon / ma).
-Contraintes strictes :
+Écris UNE entrée de journal intime à la 1ère personne.
 • 2-3 phrases, 50-80 mots maximum
 • Ton : ${STAGE_TONE[stage]}
 • Vocabulaire EJP/ICC autorisé : Prodige, Couloir, Saison, Ferveur, Anakazo, chair, ennemi
 • PAS de citation biblique explicite, PAS de formule d'introduction
-• Commence directement par "Je" ou par une situation`,
-      }],
-    });
+• Commence directement par "Je" ou par une situation concrète`;
 
-    const block = resp.content[0];
-    return block.type === 'text' ? block.text.trim() : null;
-  } catch {
-    return null;
-  }
+  return chat(prompt, 200);
 }
 
 // ── 2. Événements dynamiques ──────────────────────────────────────────────────
 
-/**
- * Génère un événement de vie inédit adapté à l'âge et aux stats d'Élias.
- * Sélectionne d'abord un verset cible, puis demande à l'IA d'écrire
- * la situation qui y conduit naturellement.
- * Retourne null si l'IA est indisponible ou si le JSON est invalide.
- */
 export async function generateDynamicEvent(
   age: number,
   stats: StatImpact,
 ): Promise<AiEventNarrative | null> {
-  if (!_client) return null;
-
   const verse = pickVerseForAge(age, stats);
   if (!verse) return null;
 
   const stage = lifeStage(age);
 
-  try {
-    const resp = await _client.messages.create({
-      model:      'claude-haiku-4-5-20251001',
-      max_tokens: 250,
-      messages: [{
-        role:    'user',
-        content: `Jeu Élias — simulateur de vie EJP/ICC.
+  const prompt = `Jeu Élias — simulateur de vie EJP/ICC.
 Élias a ${age} ans (${stage}). Stats : Foi ${stats.foi} · Paix ${stats.paix} · Corps ${stats.physique} · Finances ${stats.finances}.
 Verset réponse : "${verse.text}" (${verse.reference}).
 
@@ -166,23 +196,18 @@ Réponds UNIQUEMENT en JSON valide, sans markdown :
 {"title":"max 5 mots","description":"80-160 caractères, 2e personne du singulier","thematicFlavor":"2-3 mots"}
 
 Règles :
-• Situation réaliste — vie africaine ou diaspora
-• Adapté au stade ${stage}
+• Situation réaliste — vie africaine ou diaspora, adapté au stade ${stage}
 • PAS de jargon religieux dans la description
-• Mots interdits : péché, Satan, démon, enfer, malédiction`,
-      }],
-    });
+• Mots interdits : péché, Satan, démon, enfer, malédiction`;
 
-    const block = resp.content[0];
-    if (block.type !== 'text') return null;
+  const raw = await chat(prompt, 250);
+  if (!raw) return null;
 
-    // Extraire le JSON même si l'IA ajoute du texte autour
-    const jsonMatch = block.text.match(/\{[\s\S]*\}/);
+  try {
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) return null;
-
     const parsed = JSON.parse(jsonMatch[0]) as Partial<AiEventNarrative>;
     if (!parsed.title || !parsed.description || !parsed.thematicFlavor) return null;
-
     return {
       title:          parsed.title,
       description:    parsed.description,
