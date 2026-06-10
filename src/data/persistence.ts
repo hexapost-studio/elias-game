@@ -20,6 +20,7 @@ export async function saveGame(state: GameState): Promise<void> {
     stats: state.stats,
     profileName: state.profileName,
     parentNames: state.parentNames,
+    lifeContext: state.lifeContext,
     flow: state.flow,
     combo: state.combo,
     maxCombo: state.maxCombo,

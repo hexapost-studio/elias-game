@@ -11,6 +11,7 @@ import type {
   Inheritance,
   RunMetrics,
   QueuedCascade,
+  LifeContext,
 } from '../types/game';
 import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from '../data/events';
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
@@ -78,6 +79,43 @@ function generateParentNames(): { father: string; mother: string } {
   return {
     father: FATHER_NAMES[Math.floor(Math.random() * FATHER_NAMES.length)],
     mother: MOTHER_NAMES[Math.floor(Math.random() * MOTHER_NAMES.length)],
+  };
+}
+
+/* ─── CONTEXTE DE VIE ─── */
+
+const FRIEND_NAMES = [
+  'Jonas', 'Thomas', 'Caleb', 'Nathanaël', 'Isaac', 'Amos', 'Ezra', 'Barnabas',
+  'Timothée', 'Esther', 'Déborah', 'Abigaïl', 'Lydie', 'Priscille', 'Suzanne', 'Joanna',
+];
+
+const CITIES = [
+  'Abidjan', 'Dakar', 'Yaoundé', 'Kinshasa', 'Brazzaville', 'Lomé', 'Cotonou',
+  'Douala', 'Libreville', 'Bamako', 'Conakry', 'Kigali', 'Bujumbura', 'Montréal',
+];
+
+const PROFESSIONS = [
+  'enseignant', 'médecin', 'ingénieur', 'comptable', 'infirmier', 'juriste',
+  'entrepreneur', 'architecte', 'informaticien', 'économiste', 'pharmacien',
+  'développeur', 'biologiste', 'évangéliste',
+];
+
+const CHURCH_NAMES = [
+  'Église de la Grâce', 'Assemblée de la Foi', 'Centre Chrétien', 'Tabernacle de la Victoire',
+  'Église du Rocher', 'Maison de Prière', 'Communauté Chrétienne', 'Église Vivante',
+  'Centre de Vie', 'Temple de la Paix', 'Bergers de Jésus', 'Mission Évangélique',
+];
+
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateLifeContext(): LifeContext {
+  return {
+    friendName: pickRandom(FRIEND_NAMES),
+    city:       pickRandom(CITIES),
+    profession: pickRandom(PROFESSIONS),
+    churchName: pickRandom(CHURCH_NAMES),
   };
 }
 
@@ -235,10 +273,12 @@ export function recordVerseError(
 export function createInitialState(inheritance?: Inheritance): GameState {
   const { stats, profileName } = generateBirthStats();
   const parentNames = generateParentNames();
+  const lifeContext = generateLifeContext();
   const state: GameState = {
     age: 0,
     profileName,
     parentNames,
+    lifeContext,
     stats: inheritance?.bonus
       ? {
           foi: Math.min(100, stats.foi + (inheritance.bonus.foi || 0)),
@@ -254,7 +294,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     journal: [
       {
         age: 0,
-        text: `Élias est né. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}.${
+        text: `Élias est né à ${lifeContext.city}. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}. Il deviendra ${lifeContext.profession}.${
           inheritance?.title
             ? ` Héritage: "${inheritance.title.name}" (bonus actif).`
             : ''
@@ -733,7 +773,7 @@ export function advanceAge(state: GameState): {
 
   // Micro-événements passifs (indépendants des épreuves)
   if (Math.random() < 0.55) {
-    const micro = getMicroEventForAge(newAge, state.parentNames);
+    const micro = getMicroEventForAge(newAge, state.parentNames, state.lifeContext);
     if (micro) {
       newState.journal = [
         ...newState.journal,

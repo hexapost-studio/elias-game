@@ -179,11 +179,19 @@ export interface CompletedArc {
   completedAtAge: number;
 }
 
+export interface LifeContext {
+  friendName: string;   // {ami}  — ami principal, généré à la naissance
+  city: string;         // {ville} — ville natale
+  profession: string;   // {métier} — vocation professionnelle
+  churchName: string;   // {église} — communauté d'appartenance
+}
+
 export interface GameState {
   age: number;
   stats: Record<StatName, number>;
   profileName: string;       // Profil de naissance
   parentNames: { father: string; mother: string };
+  lifeContext: LifeContext;
   difficulty: DifficultyLevel;
   flow: FlowState;
   combo: number;

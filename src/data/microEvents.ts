@@ -1,4 +1,4 @@
-import type { MicroEvent } from '../types/game';
+import type { MicroEvent, LifeContext } from '../types/game';
 
 export const MICRO_EVENTS: MicroEvent[] = [
   // ═══ 0-6 ans — Petite enfance ═══
@@ -215,7 +215,7 @@ export const MICRO_EVENTS: MicroEvent[] = [
   },
   {
     id: 'micro-035',
-    text: 'Ton église ouvre une deuxième salle de culte. Tu y as contribué de tes mains et de ton temps.',
+    text: '{église} ouvre une deuxième salle de culte. Tu y as contribué de tes mains et de ton temps.',
     ageRange: [25, 60],
     statBonus: { foi: 3, paix: 2 },
   },
@@ -500,67 +500,67 @@ export const MICRO_EVENTS: MicroEvent[] = [
   // ═══ AMIS ═══
   {
     id: 'micro-081',
-    text: 'Jonas et toi, vous avez décidé que vous serez amis pour la vie derrière la cour de récréation. C\'était simple comme ça.',
+    text: '{ami} et toi, vous avez décidé que vous seriez amis pour la vie derrière la cour de récréation. C\'était simple comme ça.',
     ageRange: [5, 12],
     statBonus: { paix: 3 },
   },
   {
     id: 'micro-082',
-    text: 'Thomas te convainc de sécher les cours une après-midi. Vous passez l\'heure à vous sentir coupables. Le sermon du soir vous vise directement.',
+    text: '{ami} te convainc de sécher les cours une après-midi. Vous passez l\'heure à vous sentir coupables. Le sermon du soir vous vise directement.',
     ageRange: [13, 18],
     statBonus: { paix: -1 },
   },
   {
     id: 'micro-083',
-    text: 'Esther partage ses notes de méditation biblique avec toi. Elle souligne en rouge ce qui lui parle. Tu commences à faire pareil.',
+    text: '{ami} partage ses notes de méditation biblique avec toi. Les passages soulignés en rouge disent quelque chose sur ce que {ami} traverse. Tu commences à faire pareil.',
     ageRange: [14, 22],
     statBonus: { foi: 3, paix: 1 },
   },
   {
     id: 'micro-084',
-    text: 'Caleb déménage sans vraiment te prévenir. Tu l\'apprends par quelqu\'un d\'autre. L\'amitié a ses silences douloureux.',
+    text: '{ami} déménage sans vraiment te prévenir. Tu l\'apprends par quelqu\'un d\'autre. L\'amitié a ses silences douloureux.',
     ageRange: [14, 25],
     statBonus: { paix: -2 },
   },
   {
     id: 'micro-085',
-    text: 'Dix ans plus tard, tu retrouves Jonas sur les réseaux. Il a changé, toi aussi. Mais quelque chose reste intact.',
+    text: 'Dix ans plus tard, tu retrouves {ami} sur les réseaux. {ami} a changé, toi aussi. Mais quelque chose reste intact.',
     ageRange: [22, 45],
     statBonus: { paix: 3 },
   },
   {
     id: 'micro-086',
-    text: 'Simon traverse un divorce difficile. Tu lui rends visite tous les jeudis soirs depuis trois mois. Ce n\'est pas grand-chose, mais c\'est tout.',
+    text: '{ami} traverse une période très difficile. Tu passes le voir tous les jeudis soirs depuis trois mois. Ce n\'est pas grand-chose, mais c\'est tout.',
     ageRange: [27, 55],
     statBonus: { paix: 2, foi: 1 },
   },
   {
     id: 'micro-087',
-    text: 'Nathanaël te pose des questions sur ta foi que tu n\'avais jamais posées toi-même. Vous débattez jusqu\'à minuit. Tu rentres secoué — et plus solide.',
+    text: '{ami} te pose des questions sur ta foi que tu n\'avais jamais posées toi-même. Vous débattez jusqu\'à minuit. Tu rentres secoué — et plus solide.',
     ageRange: [18, 38],
     statBonus: { foi: 3 },
   },
   {
     id: 'micro-088',
-    text: 'Déborah propose de créer un groupe de responsabilité à deux. Vous vous envoyez un verset par semaine. Ça dure des années.',
+    text: '{ami} propose de créer un groupe de responsabilité à deux. Vous vous envoyez un verset par semaine. Ça dure des années.',
     ageRange: [20, 40],
     statBonus: { foi: 2, paix: 2 },
   },
   {
     id: 'micro-089',
-    text: 'Un ami proche est mort subitement. Trente-huit ans. Tu n\'avais pas vu ça venir. Tu ne savais pas que la douleur pouvait ressembler à ça.',
+    text: 'Un proche est mort subitement. Trente-huit ans. Tu n\'avais pas vu ça venir. Tu ne savais pas que la douleur pouvait ressembler à ça.',
     ageRange: [25, 65],
     statBonus: { paix: -3, foi: 1 },
   },
   {
     id: 'micro-090',
-    text: 'Esther se marie. Tu es à l\'église au premier rang. En la voyant avancer dans l\'allée, tu réalises combien de chemin vous avez fait ensemble.',
+    text: '{ami} se marie. Tu es au premier rang. En voyant {ami} avancer vers l\'autel, tu réalises combien de chemin vous avez fait ensemble.',
     ageRange: [22, 50],
     statBonus: { paix: 3 },
   },
   {
     id: 'micro-091',
-    text: 'Tu as un ami que tu connais depuis plus de vingt ans. Il connaît tes pires côtés et il est encore là. C\'est une grâce rare.',
+    text: '{ami} te connaît depuis plus de vingt ans. {ami} connaît tes pires côtés et est encore là. C\'est une grâce rare.',
     ageRange: [30, 75],
     statBonus: { paix: 3, foi: 1 },
   },
@@ -574,13 +574,13 @@ export const MICRO_EVENTS: MicroEvent[] = [
   // ═══ PROFESSION / CARRIÈRE ═══
   {
     id: 'micro-093',
-    text: 'La famille se réunit pour décider de ton orientation universitaire. Chacun a un avis. Au fond, tu sais déjà ce que tu veux.',
+    text: 'La famille se réunit pour décider de ton orientation. Tu veux travailler dans le domaine de {métier}. Chacun a un avis différent. Au fond, tu sais ce que tu veux.',
     ageRange: [16, 21],
     statBonus: { finances: 1 },
   },
   {
     id: 'micro-094',
-    text: 'Premier stage en entreprise. Tu arrives avec une heure d\'avance. Les collègues arrivent à l\'heure exacte. Tu apprends vite comment ça marche.',
+    text: 'Premier stage. Tout t\'est encore étranger dans ce métier de {métier}. Tu arrives une heure en avance. Les collègues arrivent à l\'heure exacte. Tu apprends vite.',
     ageRange: [18, 24],
     statBonus: { finances: 1, paix: 1 },
   },
@@ -592,13 +592,13 @@ export const MICRO_EVENTS: MicroEvent[] = [
   },
   {
     id: 'micro-096',
-    text: 'Tu es embauché. Le premier appel que tu passes, c\'est à {père}. Il dit "Je savais". {mère} pleure un peu.',
+    text: 'Tu es embauché comme {métier}. Le premier appel que tu passes, c\'est à {père}. Il dit "Je savais". {mère} pleure un peu.',
     ageRange: [20, 30],
     statBonus: { finances: 3, paix: 3 },
   },
   {
     id: 'micro-097',
-    text: 'Premier salaire versé. Tu comptes les billets deux fois. La dîme en premier, comme tu l\'as toujours entendu. Et ensuite tu manges bien.',
+    text: 'Premier salaire de {métier} versé. Tu comptes les billets deux fois. La dîme en premier, comme tu l\'as toujours entendu. Et ensuite tu manges bien.',
     ageRange: [20, 32],
     statBonus: { foi: 3, finances: 2 },
   },
@@ -616,7 +616,7 @@ export const MICRO_EVENTS: MicroEvent[] = [
   },
   {
     id: 'micro-100',
-    text: 'Tu formes un jeune collègue. Il te pose des questions que tu avais oublié de te poser. Tu réalises que tu en sais plus que tu ne pensais.',
+    text: 'Tu formes un jeune {métier}. Il te pose des questions que tu avais oublié de te poser. Tu réalises que tu en sais plus que tu ne pensais.',
     ageRange: [28, 65],
     statBonus: { paix: 2, foi: 1 },
   },
@@ -640,7 +640,7 @@ export const MICRO_EVENTS: MicroEvent[] = [
   },
   {
     id: 'micro-104',
-    text: 'Pot de départ à la retraite. Des collègues que tu ne soupçonnais pas prennent la parole. Tu découvres l\'impact que tu as eu sans le chercher.',
+    text: 'Pot de départ à la retraite — trente ans de {métier}. Des collègues que tu ne soupçonnais pas prennent la parole. Tu découvres l\'impact que tu as eu sans le chercher.',
     ageRange: [58, 72],
     statBonus: { paix: 4, foi: 2 },
   },
@@ -666,7 +666,7 @@ export const MICRO_EVENTS: MicroEvent[] = [
   // ═══ VOYAGE ═══
   {
     id: 'micro-108',
-    text: 'Première fois que tu quittes ta ville. Depuis la vitre du car, tu regardes défiler un pays que tu ne connaissais pas.',
+    text: 'Première fois que tu quittes {ville}. Depuis la vitre du car, tu regardes défiler un pays que tu ne connaissais pas.',
     ageRange: [8, 20],
     statBonus: { paix: 2 },
   },
@@ -684,19 +684,19 @@ export const MICRO_EVENTS: MicroEvent[] = [
   },
   {
     id: 'micro-111',
-    text: 'Tu arrives en Europe par une nuit froide. Le froid, les néons, les visages inconnus. Tu es seul et tu sais pourquoi tu es venu.',
+    text: 'Tu arrives en Europe par une nuit froide, loin de {ville}. Le froid, les néons, les visages inconnus. Tu es seul et tu sais pourquoi tu es venu.',
     ageRange: [17, 32],
     statBonus: { paix: -1, finances: 1 },
   },
   {
     id: 'micro-112',
-    text: 'Retour au pays après plusieurs années à l\'étranger. À l\'aéroport, les odeurs, les voix, la chaleur — quelque chose en toi se remet en place.',
+    text: 'Retour à {ville} après plusieurs années à l\'étranger. À l\'aéroport, les odeurs, les voix, la chaleur — quelque chose en toi se remet en place.',
     ageRange: [22, 55],
     statBonus: { paix: 4, foi: 2 },
   },
   {
     id: 'micro-113',
-    text: 'Conférence de l\'église dans une autre ville. Trois jours, des gens de partout, une Parole qui tombe sur toi au moment juste.',
+    text: '{église} organise une conférence dans une autre ville. Trois jours, des gens de partout, une Parole qui tombe sur toi au moment juste.',
     ageRange: [14, 50],
     statBonus: { foi: 4, paix: 2 },
   },
@@ -728,7 +728,7 @@ export const MICRO_EVENTS: MicroEvent[] = [
   // ═══ SAISONS ET ENVIRONNEMENT ═══
   {
     id: 'micro-118',
-    text: 'L\'anniversaire de l\'église : trois services dans la journée, des témoignages, des larmes, de la joie. Tu rentres vidé et plein en même temps.',
+    text: 'Anniversaire de {église} : trois services dans la journée, des témoignages, des larmes, de la joie. Tu rentres vidé et plein en même temps.',
     ageRange: [8, 65],
     statBonus: { foi: 4, paix: 2 },
   },
@@ -777,7 +777,8 @@ export const MICRO_EVENTS: MicroEvent[] = [
 
 export function getMicroEventForAge(
   age: number,
-  parentNames?: { father: string; mother: string }
+  parentNames?: { father: string; mother: string },
+  lifeContext?: LifeContext
 ): MicroEvent | null {
   const available = MICRO_EVENTS.filter(
     (e) => age >= e.ageRange[0] && age <= e.ageRange[1]
@@ -786,11 +787,19 @@ export function getMicroEventForAge(
 
   const selected = available[Math.floor(Math.random() * available.length)];
 
-  if (!parentNames) return selected;
-
-  const text = selected.text
-    .replace(/\{père\}/g, parentNames.father)
-    .replace(/\{mère\}/g, parentNames.mother);
+  let text = selected.text;
+  if (parentNames) {
+    text = text
+      .replace(/\{père\}/g, parentNames.father)
+      .replace(/\{mère\}/g, parentNames.mother);
+  }
+  if (lifeContext) {
+    text = text
+      .replace(/\{ami\}/g, lifeContext.friendName)
+      .replace(/\{ville\}/g, lifeContext.city)
+      .replace(/\{métier\}/g, lifeContext.profession)
+      .replace(/\{église\}/g, lifeContext.churchName);
+  }
 
   return { ...selected, text };
 }
