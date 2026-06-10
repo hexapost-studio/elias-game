@@ -183,6 +183,7 @@ export interface GameState {
   age: number;
   stats: Record<StatName, number>;
   profileName: string;       // Profil de naissance
+  parentNames: { father: string; mother: string };
   difficulty: DifficultyLevel;
   flow: FlowState;
   combo: number;

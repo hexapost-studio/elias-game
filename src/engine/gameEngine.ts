@@ -60,6 +60,27 @@ export function calculateFlowPenalty(currentFlow: number): number {
   return 0; // déjà au palier 1, retombe à 0
 }
 
+/* ─── NOMS DES PARENTS ─── */
+
+const FATHER_NAMES = [
+  'Samuel', 'Emmanuel', 'Joël', 'Nathan', 'Daniel', 'Caleb', 'David',
+  'Gidéon', 'Jonas', 'Aaron', 'Élie', 'Moïse', 'Matthieu', 'Marc', 'Luc',
+  'Pierre', 'Jean', 'André', 'Simon', 'Jacques', 'Abdias', 'Siméon', 'Ézéchiel',
+];
+
+const MOTHER_NAMES = [
+  'Marie', 'Rachel', 'Naomi', 'Rébecca', 'Esther', 'Léa', 'Marthe',
+  'Lydie', 'Anne', 'Priscille', 'Suzanne', 'Déborah', 'Miriam', 'Élisabeth',
+  'Abigaïl', 'Ruth', 'Sophie', 'Grâce', 'Christiane', 'Joie', 'Joyeuse', 'Béatrice',
+];
+
+function generateParentNames(): { father: string; mother: string } {
+  return {
+    father: FATHER_NAMES[Math.floor(Math.random() * FATHER_NAMES.length)],
+    mother: MOTHER_NAMES[Math.floor(Math.random() * MOTHER_NAMES.length)],
+  };
+}
+
 /* ─── STATS DE NAISSANCE RNG ─── */
 
 interface BirthProfile {
@@ -213,9 +234,11 @@ export function recordVerseError(
 
 export function createInitialState(inheritance?: Inheritance): GameState {
   const { stats, profileName } = generateBirthStats();
+  const parentNames = generateParentNames();
   const state: GameState = {
     age: 0,
     profileName,
+    parentNames,
     stats: inheritance?.bonus
       ? {
           foi: Math.min(100, stats.foi + (inheritance.bonus.foi || 0)),
@@ -231,7 +254,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     journal: [
       {
         age: 0,
-        text: `Élias est né. Profil: ${profileName}. Le combat commence.${
+        text: `Élias est né. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}.${
           inheritance?.title
             ? ` Héritage: "${inheritance.title.name}" (bonus actif).`
             : ''
@@ -710,7 +733,7 @@ export function advanceAge(state: GameState): {
 
   // Micro-événements passifs (indépendants des épreuves)
   if (Math.random() < 0.55) {
-    const micro = getMicroEventForAge(newAge);
+    const micro = getMicroEventForAge(newAge, state.parentNames);
     if (micro) {
       newState.journal = [
         ...newState.journal,

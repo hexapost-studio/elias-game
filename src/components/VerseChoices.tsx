@@ -9,9 +9,15 @@ export function VerseChoices() {
   const currentEvent = useGameStore((s) => s.currentEvent);
   const chooseVerse = useGameStore((s) => s.chooseVerse);
   const difficulty = useGameStore((s) => s.difficulty);
+  const age = useGameStore((s) => s.age);
   const lastEventResult = useGameStore((s) => s.lastEventResult);
   const phase = useGameStore((s) => s.phase);
   const flowPalier = useGameStore((s) => s.flow.palier);
+
+  // Difficulté effective : la plus haute entre le choix du joueur et l'âge actuel
+  // Plus on vieillit, plus on doit se rappeler les versets sans aide
+  const ageDifficulty = age <= 15 ? 1 : age <= 50 ? 2 : 3;
+  const effectiveDifficulty = Math.max(difficulty, ageDifficulty) as typeof difficulty;
 
   const [timeLeft, setTimeLeft] = useState(FLOW_MAX_TIME);
   const [started, setStarted] = useState(false);
@@ -66,8 +72,8 @@ export function VerseChoices() {
     chooseVerse(verseId, Math.round(finalTime * 10) / 10);
   };
 
-  const showFullText = difficulty === 1 || flowPalier === 1;
-  const showPartialText = difficulty === 2 || flowPalier === 2;
+  const showFullText = effectiveDifficulty === 1 && flowPalier === 1;
+  const showPartialText = effectiveDifficulty <= 2 && flowPalier <= 2 && !showFullText;
 
   return (
     <div>
