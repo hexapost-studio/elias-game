@@ -341,3 +341,9 @@ export function setAmbientVolume(v: number): void {
 export function getAmbientVolume(): number {
   return AMBIENT_VOLUME;
 }
+
+export function setAmbientPlaybackRate(rate: number): void {
+  if (currentAudio) {
+    currentAudio.playbackRate = Math.max(0.8, Math.min(1.2, rate));
+  }
+}

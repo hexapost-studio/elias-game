@@ -25,9 +25,10 @@ import { MainMenu } from './components/MainMenu';
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying } from './engine/juice';
+import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate } from './engine/juice';
 import { AI_AVAILABLE, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
 import { pickDecoys } from './data/events';
+import { ShareCard } from './components/ShareCard';
 import type { AfflictionEvent } from './types/game';
 import './index.css';
 
@@ -94,7 +95,10 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ambientOn, setAmbientOn] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
+  const [showLifeReview, setShowLifeReview] = useState(false);
   const journalRef = useRef<HTMLDivElement>(null);
+  const gameOverSoundPlayed = useRef(false);
 
   // ── IA narrative ──────────────────────────────────────────────────────────
   type AiJournalEntry = { age: number; text: string; generating: boolean };
@@ -184,6 +188,22 @@ function App() {
     prevAge.current = age;
   }, [age]);
 
+  // Reset game-over sound guard when a new game begins
+  useEffect(() => {
+    if (!gameOver?.isOver) {
+      gameOverSoundPlayed.current = false;
+      setShowShareCard(false);
+      setShowLifeReview(false);
+    }
+  }, [gameOver?.isOver]);
+
+  // Dynamic music: slow the track slightly when any stat is critically low
+  useEffect(() => {
+    if (!ambientOn) return;
+    const min = Math.min(stats.foi, stats.paix, stats.physique, stats.finances);
+    setAmbientPlaybackRate(min <= 20 ? 0.92 : min <= 35 ? 0.96 : 1.0);
+  }, [stats, ambientOn]);
+
   // ── Journal vivant : entrée IA à chaque anniversaire ─────────────────────
   useEffect(() => {
     if (!AI_AVAILABLE || age === 0 || phase === 'gameover') return;
@@ -251,63 +271,241 @@ function App() {
   // ─── GAME OVER ───
   if (gameOver?.isOver) {
     const isVictory = gameOver.reason === 'victory';
-    if (isVictory) playLevelUp();
-    else playFail();
+    if (!gameOverSoundPlayed.current) {
+      gameOverSoundPlayed.current = true;
+      if (isVictory) playLevelUp();
+      else playFail();
+    }
     const unlockedCount = Object.values(codex).filter((c) => c.unlocked).length;
     const metrics = computeFinalMetrics(state);
     const title = determineTitle(metrics);
+
+    // Merge journal for life review
+    type MixedEntry =
+      | { kind: 'normal'; i: number; age: number; type: string; text: string }
+      | { kind: 'ai'; age: number; text: string };
+    const normalEntries: MixedEntry[] = state.journal.map((e, i) => ({
+      kind: 'normal', i, age: e.age ?? 0, type: e.type, text: e.text,
+    }));
+    const aiEntries: MixedEntry[] = aiJournalEntries
+      .filter(e => !e.generating)
+      .map(e => ({ kind: 'ai', age: e.age, text: e.text }));
+    const mergedJournal = [...normalEntries, ...aiEntries].sort((a, b) => a.age - b.age);
+
+    const handleExportJournal = async () => {
+      const lines = [
+        `=== La vie d'Élias ===`,
+        `Âge : ${age} ans · Réussite : ${successRate}% · Combo max : ×${state.maxCombo}`,
+        ...(title ? [`Titre : ${title.name}`] : []),
+        '',
+        ...mergedJournal.map(e =>
+          e.kind === 'normal'
+            ? `${e.age}a : ${e.text}`
+            : `${e.age}a ✦ ${e.text}`
+        ),
+        '',
+        `Joue Élias ➜ ${window.location.origin}`,
+      ].join('\n');
+      try {
+        await navigator.clipboard.writeText(lines);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = lines;
+        ta.style.cssText = 'position:fixed;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+    };
 
     return (
       <div id="game-container">
         <BackgroundParticles />
         <div id="vignette" />
-        <div id="gameover-screen">
-          <div style={{ marginBottom: 8, color: isVictory ? 'var(--accent-gold)' : 'var(--text-muted)' }}>
-            {isVictory
-              ? <Crown size={48} strokeWidth={1} />
-              : <Church size={48} strokeWidth={1} />
-            }
-          </div>
 
-          <div className="gameover-title">
-            {isVictory ? 'VILLE OUVERTE' : 'COURSE TERMINÉE'}
-          </div>
-
-          {title && (
-            <div className="title-badge">
-              <Star size={14} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }} />
-              {title.name}
-            </div>
-          )}
-
-          <div className="gameover-stats">
-            <div>Âge : <strong>{age}</strong> ans</div>
-            <div>Épreuves : <strong>{totalEvents}</strong></div>
-            <div>Réussite : <strong>{successRate}%</strong></div>
-            <div>Combo max : <strong>{state.maxCombo}</strong></div>
-            <div>Flow max : <strong>{Math.round(flow.value)}</strong></div>
-            <div>Codex : <strong>{unlockedCount}</strong>/{Object.keys(codex).length}</div>
-          </div>
-
-          {title && (
-            <div className="inheritance-box">
-              <div style={{ color: 'var(--accent-gold)', marginBottom: 4, fontWeight: 600 }}>
-                <Award size={12} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />
-                Héritage débloqué
+        {/* Life Review overlay */}
+        {showLifeReview ? (
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 10,
+            background: '#120d07',
+            display: 'flex', flexDirection: 'column',
+            animation: 'fadeIn 0.25s ease',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '16px 20px 12px',
+              borderBottom: '1px solid rgba(245,158,11,0.15)',
+              flexShrink: 0,
+            }}>
+              <button
+                onClick={() => setShowLifeReview(false)}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: 'var(--text-muted)', fontSize: 12, padding: '4px 8px',
+                  fontFamily: 'var(--font-body)',
+                }}
+              >
+                ← Retour
+              </button>
+              <div style={{
+                fontFamily: 'var(--font-display)', fontSize: 12,
+                color: 'var(--accent-gold)', letterSpacing: 2,
+              }}>
+                MA VIE
               </div>
-              {title.description}<br />
-              <span style={{ color: 'var(--color-foi)', fontSize: 11 }}>
-                Bonus : {Object.entries(title.bonus)
-                  .map(([s, v]) => `${s.charAt(0).toUpperCase() + s.slice(1)} +${v}`)
-                  .join(' · ')}
-              </span>
+              <button
+                onClick={handleExportJournal}
+                style={{
+                  background: 'rgba(245,158,11,0.1)',
+                  border: '1px solid rgba(245,158,11,0.25)',
+                  borderRadius: 8, cursor: 'pointer',
+                  color: 'var(--accent-gold)', fontSize: 10,
+                  padding: '4px 10px', fontFamily: 'var(--font-body)',
+                  fontWeight: 600, letterSpacing: 0.5,
+                }}
+              >
+                COPIER
+              </button>
             </div>
-          )}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px' }}>
+              {mergedJournal.length === 0 ? (
+                <div style={{
+                  textAlign: 'center', color: 'var(--text-muted)',
+                  fontSize: 12, padding: '40px 0',
+                }}>
+                  Aucune entrée de journal.
+                </div>
+              ) : (
+                mergedJournal.map((entry, idx) => {
+                  if (entry.kind === 'normal') {
+                    return (
+                      <div key={`r-n-${entry.i}`} className={`journal-entry entry-${entry.type}`}>
+                        {entry.type === 'milestone' ? (
+                          <span>{entry.text}</span>
+                        ) : entry.type === 'micro' ? (
+                          <><span style={{ opacity: 0.6 }}>{entry.age}a</span>{' '}
+                          <span style={{ opacity: 0.7, marginRight: 3 }}>·</span>
+                          {entry.text}</>
+                        ) : (
+                          <><span style={{ opacity: 0.65 }}>{entry.age}a</span> {entry.text}</>
+                        )}
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={`r-ai-${idx}`} style={{
+                      padding: '5px 0 5px 10px',
+                      borderBottom: '1px solid rgba(245,158,11,0.08)',
+                      borderLeft: '2px solid rgba(245,158,11,0.3)',
+                      fontSize: 12, lineHeight: 1.65,
+                      fontStyle: 'italic', color: 'var(--text-secondary)',
+                      marginBottom: 2,
+                    }}>
+                      <span style={{ opacity: 0.65 }}>{entry.age}a</span>
+                      {' '}<span style={{ color: 'rgba(245,158,11,0.85)', marginRight: 4 }}>✦</span>
+                      {entry.text}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        ) : (
+          <div id="gameover-screen">
+            <div style={{ marginBottom: 8, color: isVictory ? 'var(--accent-gold)' : 'var(--text-muted)' }}>
+              {isVictory
+                ? <Crown size={48} strokeWidth={1} />
+                : <Church size={48} strokeWidth={1} />
+              }
+            </div>
 
-          <button className="btn-restart" onClick={initGame}>
-            NOUVELLE PARTIE {title ? '✦ HÉRITAGE' : ''}
-          </button>
-        </div>
+            <div className="gameover-title">
+              {isVictory ? 'VILLE OUVERTE' : 'COURSE TERMINÉE'}
+            </div>
+
+            {title && (
+              <div className="title-badge">
+                <Star size={14} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }} />
+                {title.name}
+              </div>
+            )}
+
+            <div className="gameover-stats">
+              <div>Âge : <strong>{age}</strong> ans</div>
+              <div>Épreuves : <strong>{totalEvents}</strong></div>
+              <div>Réussite : <strong>{successRate}%</strong></div>
+              <div>Combo max : <strong>{state.maxCombo}</strong></div>
+              <div>Flow max : <strong>{Math.round(flow.value)}</strong></div>
+              <div>Codex : <strong>{unlockedCount}</strong>/{Object.keys(codex).length}</div>
+            </div>
+
+            {title && (
+              <div className="inheritance-box">
+                <div style={{ color: 'var(--accent-gold)', marginBottom: 4, fontWeight: 600 }}>
+                  <Award size={12} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />
+                  Héritage débloqué
+                </div>
+                {title.description}<br />
+                <span style={{ color: 'var(--color-foi)', fontSize: 11 }}>
+                  Bonus : {Object.entries(title.bonus)
+                    .map(([s, v]) => `${s.charAt(0).toUpperCase() + s.slice(1)} +${v}`)
+                    .join(' · ')}
+                </span>
+              </div>
+            )}
+
+            {/* Secondary actions */}
+            <div style={{ display: 'flex', gap: 10, width: '100%', maxWidth: 280 }}>
+              <button
+                onClick={() => setShowLifeReview(true)}
+                style={{
+                  flex: 1, padding: '11px 0',
+                  background: 'rgba(245,158,11,0.07)',
+                  border: '1px solid rgba(245,158,11,0.22)',
+                  borderRadius: 10, cursor: 'pointer',
+                  fontFamily: 'var(--font-display)', fontSize: 10,
+                  fontWeight: 700, letterSpacing: 1,
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                JOURNAL
+              </button>
+              <button
+                onClick={() => setShowShareCard(true)}
+                style={{
+                  flex: 1, padding: '11px 0',
+                  background: 'rgba(124,58,237,0.07)',
+                  border: '1px solid rgba(124,58,237,0.22)',
+                  borderRadius: 10, cursor: 'pointer',
+                  fontFamily: 'var(--font-display)', fontSize: 10,
+                  fontWeight: 700, letterSpacing: 1,
+                  color: '#a78bfa',
+                }}
+              >
+                PARTAGER
+              </button>
+            </div>
+
+            <button className="btn-restart" onClick={initGame}>
+              NOUVELLE PARTIE {title ? '✦ HÉRITAGE' : ''}
+            </button>
+          </div>
+        )}
+
+        {/* Share card modal */}
+        {showShareCard && (
+          <ShareCard
+            age={age}
+            successRate={successRate}
+            maxCombo={state.maxCombo}
+            titleName={title?.name ?? null}
+            isVictory={isVictory}
+            completedArcsCount={state.completedArcs.length}
+            onClose={() => setShowShareCard(false)}
+          />
+        )}
+
         <DebugView />
       </div>
     );

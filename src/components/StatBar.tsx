@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import type { StatName } from '../types/game';
 
@@ -14,7 +15,6 @@ const STAT_COLORS: Record<StatName, string> = {
   finances: 'var(--color-finances)',
 };
 
-// TravelBook pixel art icons — scaled 2x with pixelated rendering
 const TB_ICONS: Record<StatName, string> = {
   foi:       '/ui/travelbook/UI_TravelBook_IconStar01a.png',
   paix:      '/ui/travelbook/UI_TravelBook_IconHeart01e.png',
@@ -22,7 +22,6 @@ const TB_ICONS: Record<StatName, string> = {
   finances:  '/ui/travelbook/UI_TravelBook_IconCoin01a.png',
 };
 
-// CSS filters to shift the original warm maroon → stat color
 const TB_FILTERS: Record<StatName, string> = {
   foi:      'hue-rotate(185deg) saturate(4) brightness(2.8)',
   paix:     'hue-rotate(115deg) saturate(3) brightness(2.2)',
@@ -30,8 +29,46 @@ const TB_FILTERS: Record<StatName, string> = {
   finances: 'brightness(1.6) saturate(1.8)',
 };
 
+type FloatItem = { id: number; delta: number };
+
 export function StatBar() {
   const stats = useGameStore((s) => s.stats);
+  const prevStatsRef = useRef<Record<StatName, number> | null>(null);
+  const [floats, setFloats] = useState<Record<StatName, FloatItem[]>>({
+    foi: [], paix: [], physique: [], finances: [],
+  });
+
+  useEffect(() => {
+    if (prevStatsRef.current === null) {
+      prevStatsRef.current = { ...stats };
+      return;
+    }
+    const prev = prevStatsRef.current;
+    const newEntries: Array<[StatName, FloatItem]> = [];
+
+    for (const key of statKeys) {
+      const delta = stats[key] - prev[key];
+      if (delta !== 0) {
+        const id = performance.now() + Math.random();
+        newEntries.push([key, { id, delta }]);
+        setTimeout(() => {
+          setFloats(f => ({ ...f, [key]: f[key].filter(i => i.id !== id) }));
+        }, 800);
+      }
+    }
+
+    prevStatsRef.current = { ...stats };
+
+    if (newEntries.length > 0) {
+      setFloats(f => {
+        const next = { ...f };
+        for (const [key, item] of newEntries) {
+          next[key] = [...f[key], item];
+        }
+        return next;
+      });
+    }
+  }, [stats]);
 
   return (
     <div id="stat-bar">
@@ -41,7 +78,31 @@ export function StatBar() {
         const color = STAT_COLORS[key];
 
         return (
-          <div key={key} className="stat-item">
+          <div key={key} className="stat-item" style={{ position: 'relative' }}>
+            {floats[key].map((fi) => (
+              <span
+                key={fi.id}
+                style={{
+                  position: 'absolute',
+                  right: 2,
+                  top: -4,
+                  color: fi.delta > 0 ? '#4ade80' : '#f87171',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  pointerEvents: 'none',
+                  zIndex: 10,
+                  animation: 'floatStat 0.75s ease-out forwards',
+                  whiteSpace: 'nowrap',
+                  textShadow: fi.delta > 0
+                    ? '0 0 8px rgba(74,222,128,0.7)'
+                    : '0 0 8px rgba(248,113,113,0.7)',
+                  lineHeight: 1,
+                  letterSpacing: '0.5px',
+                }}
+              >
+                {fi.delta > 0 ? `+${fi.delta}` : fi.delta}
+              </span>
+            ))}
             <div className="stat-icon">
               <img
                 src={TB_ICONS[key]}

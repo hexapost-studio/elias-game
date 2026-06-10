@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronRight, BookOpen, Zap, Award, XIcon } from './IconSystem';
+import { ChevronRight } from './IconSystem';
 
 const STEPS = [
   {
@@ -30,12 +30,21 @@ const STEPS = [
     title: 'Débloquez le Codex et les Titres',
     description: 'Chaque verset utilisé avec succès rejoint votre Grimoire. Complétez-les tous. Terminez une partie pour débloquer un Titre et son héritage pour la prochaine run.',
     detail: [
-      'Codex : 66 versets à collectionner',
+      'Codex : versets à collectionner',
       'Titres : Prodige, Combattant, Sage...',
       'Héritage : bonus de stats inter-run',
     ],
     color: '#10b981',
   },
+];
+
+const TOTAL_STEPS = STEPS.length + 1; // +1 for interactive step
+
+const TUTORIAL_CHOICES = [
+  { ref: 'Jean 3.16', correct: false },
+  { ref: 'Romains 8.28', correct: false },
+  { ref: 'Psaume 27.1', correct: true },
+  { ref: 'Proverbes 3.5-6', correct: false },
 ];
 
 interface OnboardingProps {
@@ -44,9 +53,14 @@ interface OnboardingProps {
 
 export function Onboarding({ onComplete }: OnboardingProps) {
   const [step, setStep] = useState(0);
+  const [tutorialChoice, setTutorialChoice] = useState<number | null>(null);
 
-  const current = STEPS[step];
-  const isLast = step === STEPS.length - 1;
+  const isInteractive = step === TOTAL_STEPS - 1;
+  const isLast = step === TOTAL_STEPS - 1;
+  const current = !isInteractive ? STEPS[step] : null;
+  const activeColor = current?.color ?? '#f59e0b';
+  const chosenCorrect = tutorialChoice !== null && TUTORIAL_CHOICES[tutorialChoice].correct;
+  const chosenWrong = tutorialChoice !== null && !TUTORIAL_CHOICES[tutorialChoice].correct;
 
   return (
     <div
@@ -63,126 +77,215 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* Dots */}
+      {/* Progress dots */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 40 }}>
-        {STEPS.map((_, i) => (
+        {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
           <div
             key={i}
             style={{
               width: i === step ? 24 : 8,
               height: 8,
               borderRadius: 4,
-              background: i === step ? current.color : '#333',
+              background: i === step ? activeColor : i < step ? '#4a3f6e' : '#333',
               transition: 'all 0.3s',
             }}
           />
         ))}
       </div>
 
-      {/* Icon */}
-      <div
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: 40,
-          background: `${current.color}22`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 36,
-          marginBottom: 24,
-          border: `2px solid ${current.color}44`,
-        }}
-      >
-        {current.icon}
-      </div>
-
-      {/* Title */}
-      <h1
-        style={{
-          fontFamily: "'Cinzel', serif",
-          fontSize: 20,
-          fontWeight: 700,
-          color: current.color,
-          textAlign: 'center',
-          marginBottom: 12,
-          letterSpacing: 1,
-        }}
-      >
-        {current.title}
-      </h1>
-
-      {/* Description */}
-      <p
-        style={{
-          fontSize: 14,
-          lineHeight: 1.7,
-          color: '#b8a9d4',
-          textAlign: 'center',
-          maxWidth: 320,
-          marginBottom: 20,
-        }}
-      >
-        {current.description}
-      </p>
-
-      {/* Detail list */}
-      <div
-        style={{
-          background: '#1a1228',
-          borderRadius: 12,
-          padding: '12px 16px',
-          border: '1px solid #2d2147',
-          marginBottom: 32,
-          width: '100%',
-          maxWidth: 320,
-        }}
-      >
-        {current.detail.map((d, i) => (
+      {/* Info steps (0-2) */}
+      {!isInteractive && current && (
+        <>
           <div
-            key={i}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '4px 0',
-              fontSize: 12,
-              color: '#7b6b9e',
+              width: 80, height: 80, borderRadius: 40,
+              background: `${current.color}22`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 36, marginBottom: 24,
+              border: `2px solid ${current.color}44`,
             }}
           >
-            <div
-              style={{
-                width: 4,
-                height: 4,
-                borderRadius: 2,
-                background: current.color,
-                flexShrink: 0,
-              }}
-            />
-            {d}
+            {current.icon}
           </div>
-        ))}
-      </div>
 
-      {/* Buttons */}
+          <h1 style={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: 20, fontWeight: 700,
+            color: current.color,
+            textAlign: 'center', marginBottom: 12, letterSpacing: 1,
+          }}>
+            {current.title}
+          </h1>
+
+          <p style={{
+            fontSize: 14, lineHeight: 1.7,
+            color: '#b8a9d4', textAlign: 'center',
+            maxWidth: 320, marginBottom: 20,
+          }}>
+            {current.description}
+          </p>
+
+          <div style={{
+            background: '#1a1228', borderRadius: 12,
+            padding: '12px 16px', border: '1px solid #2d2147',
+            marginBottom: 32, width: '100%', maxWidth: 320,
+          }}>
+            {current.detail.map((d, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '4px 0', fontSize: 12, color: '#7b6b9e',
+              }}>
+                <div style={{
+                  width: 4, height: 4, borderRadius: 2,
+                  background: current.color, flexShrink: 0,
+                }} />
+                {d}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Interactive step (step 3) */}
+      {isInteractive && (
+        <>
+          <div style={{
+            width: 80, height: 80, borderRadius: 40,
+            background: 'rgba(245,158,11,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 32, marginBottom: 20,
+            border: '2px solid rgba(245,158,11,0.35)',
+          }}>
+            ⚔
+          </div>
+
+          <h1 style={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: 18, fontWeight: 700, color: '#f59e0b',
+            textAlign: 'center', marginBottom: 10, letterSpacing: 1,
+          }}>
+            Essayez maintenant
+          </h1>
+
+          {/* Mini event card */}
+          <div style={{
+            background: '#1a1228', border: '1px solid rgba(245,158,11,0.25)',
+            borderRadius: 12, padding: '14px 16px',
+            width: '100%', maxWidth: 320, marginBottom: 16,
+          }}>
+            <div style={{
+              fontSize: 10, color: '#7c3aed', fontWeight: 700,
+              letterSpacing: 1.5, marginBottom: 8, textTransform: 'uppercase',
+            }}>
+              Épreuve · Peur &amp; Angoisse
+            </div>
+            <div style={{ fontSize: 13, color: '#b8a9d4', lineHeight: 1.65 }}>
+              La nuit, une peur inexplicable t'envahit. Ton cœur s'emballe. Quel verset apporte la victoire contre la peur ?
+            </div>
+          </div>
+
+          {/* Choices */}
+          <div style={{ width: '100%', maxWidth: 320, marginBottom: 20 }}>
+            {TUTORIAL_CHOICES.map((choice, i) => {
+              const isChosen = tutorialChoice === i;
+              const isCorrectChoice = choice.correct;
+              const showCorrect = tutorialChoice !== null && isCorrectChoice;
+              const showWrong = isChosen && !isCorrectChoice;
+
+              let bg = 'rgba(26,18,40,0.8)';
+              let border = 'rgba(245,158,11,0.2)';
+              let color = '#b8a9d4';
+
+              if (showCorrect) {
+                bg = 'rgba(16,185,129,0.12)';
+                border = 'rgba(16,185,129,0.5)';
+                color = '#6ee7b7';
+              } else if (showWrong) {
+                bg = 'rgba(239,68,68,0.12)';
+                border = 'rgba(239,68,68,0.5)';
+                color = '#fca5a5';
+              }
+
+              return (
+                <button
+                  key={i}
+                  onClick={() => { if (tutorialChoice === null) setTutorialChoice(i); }}
+                  disabled={tutorialChoice !== null}
+                  style={{
+                    width: '100%', padding: '10px 14px',
+                    marginBottom: 8, textAlign: 'left',
+                    background: bg,
+                    border: `1px solid ${border}`,
+                    borderRadius: 10, cursor: tutorialChoice === null ? 'pointer' : 'default',
+                    color, fontSize: 13, fontFamily: "'Inter', sans-serif",
+                    transition: 'all 0.2s ease',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                  }}
+                >
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, letterSpacing: 1,
+                    color: showCorrect ? '#6ee7b7' : showWrong ? '#fca5a5' : '#555',
+                    minWidth: 16,
+                  }}>
+                    {showCorrect ? '✓' : showWrong ? '✕' : String.fromCharCode(65 + i)}
+                  </span>
+                  {choice.ref}
+                  {showCorrect && isChosen && (
+                    <span style={{ marginLeft: 'auto', fontSize: 10, color: '#6ee7b7' }}>
+                      Bonne réponse !
+                    </span>
+                  )}
+                  {showCorrect && !isChosen && (
+                    <span style={{ marginLeft: 'auto', fontSize: 10, color: '#6ee7b7', opacity: 0.8 }}>
+                      Bonne réponse
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Feedback message */}
+          {chosenCorrect && (
+            <div style={{
+              fontSize: 13, color: '#6ee7b7', marginBottom: 16,
+              textAlign: 'center', animation: 'fadeIn 0.3s ease',
+            }}>
+              ✦ Psaume 27.1 — "L'Éternel est ma lumière et mon salut"<br />
+              <span style={{ fontSize: 11, color: '#10b981', opacity: 0.8 }}>
+                Tu as reconnu le bon verset contre la peur.
+              </span>
+            </div>
+          )}
+          {chosenWrong && (
+            <div style={{
+              fontSize: 12, color: '#fde68a', marginBottom: 16,
+              textAlign: 'center', animation: 'fadeIn 0.3s ease',
+              lineHeight: 1.6,
+            }}>
+              Le verset contre la peur est <strong>Psaume 27.1</strong>.<br />
+              <span style={{ fontSize: 11, color: '#c9a97e', opacity: 0.9 }}>
+                Tu l'apprendras en jouant — chaque erreur renforce la mémoire.
+              </span>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Navigation buttons */}
       <div style={{ display: 'flex', gap: 12 }}>
         {!isLast && (
           <button
             onClick={() => setStep((s) => s + 1)}
             style={{
               padding: '12px 28px',
-              background: current.color,
-              color: 'white',
-              border: 'none',
-              borderRadius: 10,
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: 'pointer',
+              background: activeColor,
+              color: 'white', border: 'none',
+              borderRadius: 10, fontSize: 14,
+              fontWeight: 600, cursor: 'pointer',
               fontFamily: "'Cinzel', serif",
               letterSpacing: 1,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
+              display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
             SUIVANT <ChevronRight size={16} strokeWidth={2} />
@@ -193,15 +296,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             onClick={onComplete}
             style={{
               padding: '12px 28px',
-              background: current.color,
-              color: 'white',
-              border: 'none',
-              borderRadius: 10,
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: 'pointer',
+              background: chosenCorrect ? '#10b981' : '#f59e0b',
+              color: 'white', border: 'none',
+              borderRadius: 10, fontSize: 14,
+              fontWeight: 600, cursor: 'pointer',
               fontFamily: "'Cinzel', serif",
               letterSpacing: 1,
+              transition: 'background 0.3s ease',
             }}
           >
             COMMENCER
@@ -211,12 +312,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           onClick={onComplete}
           style={{
             padding: '12px 20px',
-            background: 'transparent',
-            color: '#666',
-            border: '1px solid #333',
-            borderRadius: 10,
-            fontSize: 12,
-            cursor: 'pointer',
+            background: 'transparent', color: '#666',
+            border: '1px solid #333', borderRadius: 10,
+            fontSize: 12, cursor: 'pointer',
           }}
         >
           PASSER

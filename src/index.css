@@ -709,6 +709,12 @@ body {
   100% { opacity: 0; }
 }
 
+@keyframes floatStat {
+  0%   { transform: translateY(0);     opacity: 1;   }
+  70%  { transform: translateY(-22px); opacity: 0.9; }
+  100% { transform: translateY(-30px); opacity: 0;   }
+}
+
 /* ─── PARTICLE FLY ─── */
 @keyframes particleFly {
   0% {
