@@ -26,7 +26,8 @@ const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ defa
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
 import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate } from './engine/juice';
-import { AI_AVAILABLE, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
+import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
+import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
 import { ActionPanel } from './components/ActionPanel';
@@ -74,6 +75,7 @@ function App() {
     totalEvents,
     successRate,
     flow,
+    crisesRemaining,
     currentEvent,
     lastEventResult,
     gameOver,
@@ -83,6 +85,7 @@ function App() {
     stats,
     lifeContext,
     parentNames,
+    actionsThisYear,
     initGame,
     ageUp,
     dismissResult,
@@ -209,7 +212,7 @@ function App() {
 
   // ── Journal vivant : entrée IA à chaque anniversaire ─────────────────────
   useEffect(() => {
-    if (!AI_AVAILABLE || age === 0 || phase === 'gameover') return;
+    if (!isAiEnabled() || age === 0 || phase === 'gameover') return;
     const s = useGameStore.getState();
     const recentTitles = s.journal
       .filter((e) => e.type !== 'milestone')
@@ -222,7 +225,7 @@ function App() {
       { age, text: '', generating: true },
     ]);
 
-    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames)
+    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames, actionsThisYear)
       .then((text) => {
         if (!text) {
           setAiJournalEntries((prev) => prev.filter((e) => !(e.age === age && e.generating)));
@@ -240,7 +243,7 @@ function App() {
 
   // ── Événements dynamiques : pré-génération en arrière-plan ───────────────
   useEffect(() => {
-    if (!AI_AVAILABLE || phase !== 'idle' || generatingAiEvent || pendingAiEvent) return;
+    if (!isAiEnabled() || phase !== 'idle' || generatingAiEvent || pendingAiEvent) return;
     // 1 chance sur 3 de générer un événement IA pour la prochaine fois
     if (Math.random() > 0.33) return;
 
@@ -565,14 +568,26 @@ function App() {
       </div>
 
       <div id="info-bar">
-        <span>{totalEvents} épreuves · {successRate}%</span>
         <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          {combo > 2 && (
-            <span className="combo-badge">
-              <Zap size={11} strokeWidth={2} style={{ display: 'inline', verticalAlign: 'middle' }} />
-              x{combo}
+          <span>{totalEvents} épreuves · {successRate}%</span>
+          {crisesRemaining < 2 && (
+            <span title="Grâces de crise restantes" style={{ fontSize: 11, letterSpacing: 1, color: crisesRemaining === 0 ? '#ef4444' : '#f87171' }}>
+              {'♡'.repeat(crisesRemaining)}{'♥'.repeat(Math.max(0, 2 - crisesRemaining))}
             </span>
           )}
+        </span>
+        <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {combo > 2 && (() => {
+            const nextMilestone = combo < 5 ? 5 : combo < 10 ? 10 : combo < 20 ? 20 : null;
+            const tierColor = combo >= 20 ? '#a78bfa' : combo >= 10 ? '#fb923c' : combo >= 5 ? '#fbbf24' : '#f59e0b';
+            return (
+              <span className="combo-badge" style={{ background: `linear-gradient(135deg, ${tierColor}, #92400e)`, fontSize: combo >= 10 ? 13 : 11, padding: combo >= 5 ? '4px 14px' : '3px 12px' }}>
+                <Zap size={combo >= 10 ? 13 : 11} strokeWidth={2} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                x{combo}
+                {nextMilestone && <span style={{ fontSize: 9, opacity: 0.7, marginLeft: 4 }}>→{nextMilestone}</span>}
+              </span>
+            );
+          })()}
           {/* Raccourcis rapides — menu complet via burger */}
           <button
             onClick={() => { playClick(); setShowCodex(true); }}
@@ -804,7 +819,7 @@ function App() {
         );
       })()}
 
-      <ActionPanel />
+      {age >= 8 && <ActionPanel />}
 
       <div id="action-area">
         {phase === 'idle' && (
@@ -919,6 +934,8 @@ function App() {
           CHARGEMENT...
         </div>
       )}
+
+      <DevPanel />
     </div>
   );
 }

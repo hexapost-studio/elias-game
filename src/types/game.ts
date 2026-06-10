@@ -186,6 +186,7 @@ export interface LifeContext {
   city: string;         // {ville} — ville natale
   profession: string;   // {métier} — vocation professionnelle
   churchName: string;   // {église} — communauté d'appartenance
+  spouseName: string;   // {conjoint} — conjoint(e), généré(e) à la naissance
 }
 
 export type PlayerAction = 'pray' | 'fast' | 'serve' | 'call_friend' | 'read_word';
@@ -200,6 +201,12 @@ export interface GameState {
   actionPoints: number;          // Points d'action disponibles cette année
   actionsThisYear: PlayerAction[]; // Actions déjà utilisées cette année
   amiRelationship: number;        // 0-100 — relation avec l'ami principal
+  /**
+   * Grâces de crise — quand une stat tombe à 0 via un event, au lieu de mourir
+   * la stat est remontée à 3 et une grâce est consommée. À 0 grâce : mort réelle.
+   * Commence à 2. Ne se recharge pas (sauf héritage spécial).
+   */
+  crisesRemaining: number;
   flow: FlowState;
   combo: number;
   maxCombo: number;

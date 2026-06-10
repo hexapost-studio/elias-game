@@ -55,6 +55,46 @@ export const STORY_ARCS: StoryArc[] = [
     rewardVerseId: 'v-amour-003',
     rewardTitle: 'L\'Ami Fidèle',
   },
+  {
+    id: 'arc-metier',
+    name: 'Le chemin du métier',
+    description: 'Vocation, épreuves professionnelles, dilemmes de foi et héritage transmis.',
+    eventIds: ['arc-metier-1', 'arc-metier-2', 'arc-metier-3', 'arc-metier-4', 'arc-metier-5'],
+    rewardVerseId: 'v-ident-003',
+    rewardTitle: 'L\'Artisan Fidèle',
+  },
+  {
+    id: 'arc-parents',
+    name: 'L\'héritage des parents',
+    description: 'Conflits, réconciliation, maladies, deuils et l\'héritage spirituel reçu.',
+    eventIds: ['arc-parents-1', 'arc-parents-2', 'arc-parents-3', 'arc-parents-4', 'arc-parents-5', 'arc-parents-6'],
+    rewardVerseId: 'v-ident-004',
+    rewardTitle: 'Le Fils Fidèle',
+  },
+  {
+    id: 'arc-eglise',
+    name: 'La maison de Dieu',
+    description: 'Premier service, leadership, crise interne, et renouveau de la communauté.',
+    eventIds: ['arc-eglise-1', 'arc-eglise-2', 'arc-eglise-3', 'arc-eglise-4'],
+    rewardVerseId: 'v-soif-001',
+    rewardTitle: 'Le Pilier',
+  },
+  {
+    id: 'arc-ville',
+    name: 'Enfant de {ville}',
+    description: 'Départ, vie en diaspora, retour aux racines — l\'identité forgée par un lieu.',
+    eventIds: ['arc-ville-1', 'arc-ville-2', 'arc-ville-3'],
+    rewardVerseId: 'v-ident-007',
+    rewardTitle: 'L\'Enraciné',
+  },
+  {
+    id: 'arc-conjoint',
+    name: 'L\'alliance de {conjoint}',
+    description: 'Rencontre, mariage, crise, renouveau et deuil d\'une vie partagée.',
+    eventIds: ['arc-conjoint-1', 'arc-conjoint-2', 'arc-conjoint-3', 'arc-conjoint-4', 'arc-conjoint-5', 'arc-conjoint-6'],
+    rewardVerseId: 'v-joie-003',
+    rewardTitle: 'L\'Époux Fidèle',
+  },
 ];
 
 export function getArcById(id: string): StoryArc | undefined {

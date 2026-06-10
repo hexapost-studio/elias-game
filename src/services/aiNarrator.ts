@@ -7,7 +7,11 @@
  *     → VITE_OLLAMA_URL=http://localhost:11434  +  VITE_OLLAMA_MODEL=llama3.2
  *  2. Groq (cloud, gratuit avec compte, ultra-rapide)
  *     → VITE_GROQ_API_KEY=gsk_xxx
- *  3. OpenAI-compatible custom (n8n, LM Studio, etc.)
+ *  3. OpenRouter (cloud, modèles gratuits disponibles)
+ *     → VITE_AI_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+ *        VITE_AI_KEY=sk-or-v1-xxx  +  VITE_AI_MODEL=mistralai/mistral-7b-instruct:free
+ *     Ou via localStorage : elias-or-key + elias-or-model (mode dev à la volée)
+ *  4. OpenAI-compatible custom (n8n, LM Studio, etc.)
  *     → VITE_AI_ENDPOINT=https://...  +  VITE_AI_KEY=xxx  +  VITE_AI_MODEL=xxx
  *
  * Sans aucune variable → AI_AVAILABLE = false, le jeu fonctionne sans IA.
@@ -18,10 +22,15 @@ import { VERSE_DATABASE } from '../data/verses';
 
 // ── Détection du backend disponible ───────────────────────────────────────────
 
+const OR_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
+const LS_KEY_NAME  = 'elias-or-key';
+const LS_MODEL_NAME = 'elias-or-model';
+
 type Backend =
-  | { type: 'ollama';  url: string; model: string }
-  | { type: 'groq';   key: string; model: string }
-  | { type: 'custom'; endpoint: string; key: string; model: string };
+  | { type: 'ollama';      url: string; model: string }
+  | { type: 'groq';        key: string; model: string }
+  | { type: 'openrouter';  key: string; model: string }
+  | { type: 'custom';      endpoint: string; key: string; model: string };
 
 function detectBackend(): Backend | null {
   const ollamaUrl   = import.meta.env.VITE_OLLAMA_URL   as string | undefined;
@@ -39,28 +48,66 @@ function detectBackend(): Backend | null {
   const customKey      = import.meta.env.VITE_AI_KEY      as string | undefined;
   const customModel    = import.meta.env.VITE_AI_MODEL    as string | undefined;
   if (customEndpoint && customModel) {
+    const isOpenRouter = customEndpoint.includes('openrouter.ai');
+    if (isOpenRouter) {
+      return { type: 'openrouter', key: customKey ?? '', model: customModel };
+    }
     return { type: 'custom', endpoint: customEndpoint, key: customKey ?? '', model: customModel };
   }
+
+  // Fallback : clé OpenRouter stockée dans localStorage (mode dev runtime)
+  try {
+    const lsKey   = localStorage.getItem(LS_KEY_NAME);
+    const lsModel = localStorage.getItem(LS_MODEL_NAME) ?? 'mistralai/mistral-7b-instruct:free';
+    if (lsKey) {
+      return { type: 'openrouter', key: lsKey, model: lsModel };
+    }
+  } catch { /* localStorage non dispo (SSR, tests) */ }
 
   return null;
 }
 
-const BACKEND = detectBackend();
-export const AI_AVAILABLE = BACKEND !== null;
+/** Recalculé à chaque appel — reflète les changements de localStorage en temps réel */
+export function isAiEnabled(): boolean {
+  return detectBackend() !== null;
+}
+
+/** @deprecated Utiliser isAiEnabled() — gardé pour compatibilité */
+export const AI_AVAILABLE = detectBackend() !== null;
+
+// ── Activation/désactivation runtime (dev mode) ───────────────────────────────
+
+export function activateAiRuntime(key: string, model?: string): void {
+  localStorage.setItem(LS_KEY_NAME, key);
+  if (model) localStorage.setItem(LS_MODEL_NAME, model);
+}
+
+export function deactivateAiRuntime(): void {
+  localStorage.removeItem(LS_KEY_NAME);
+  localStorage.removeItem(LS_MODEL_NAME);
+}
+
+export function getAiRuntimeStatus(): { active: boolean; model: string | null; source: string } {
+  const b = detectBackend();
+  if (!b) return { active: false, model: null, source: 'none' };
+  const source = b.type === 'openrouter' && localStorage.getItem(LS_KEY_NAME) ? 'localStorage' : 'env';
+  const model  = 'model' in b ? b.model : null;
+  return { active: true, model, source };
+}
 
 // ── Appel unifié OpenAI-compatible ────────────────────────────────────────────
 
 async function chat(prompt: string, maxTokens: number = 250): Promise<string | null> {
-  if (!BACKEND) return null;
+  const backend = detectBackend();
+  if (!backend) return null;
 
   try {
-    if (BACKEND.type === 'ollama') {
-      // Ollama : API native /api/generate (format propre)
-      const res = await fetch(`${BACKEND.url}/api/generate`, {
+    if (backend.type === 'ollama') {
+      const res = await fetch(`${backend.url}/api/generate`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model:  BACKEND.model,
+          model:  backend.model,
           prompt,
           stream: false,
           options: { num_predict: maxTokens, temperature: 0.8 },
@@ -71,22 +118,33 @@ async function chat(prompt: string, maxTokens: number = 250): Promise<string | n
       return data.response?.trim() ?? null;
     }
 
-    // Groq + custom → format OpenAI /chat/completions
-    const endpoint =
-      BACKEND.type === 'groq'
-        ? 'https://api.groq.com/openai/v1/chat/completions'
-        : BACKEND.endpoint;
-    const key =
-      BACKEND.type === 'groq' ? BACKEND.key : (BACKEND as { key: string }).key;
+    // OpenRouter, Groq, custom → format OpenAI /chat/completions
+    let endpoint: string;
+    let key: string;
+    const headers: Record<string, string> = {
+      'Content-Type':  'application/json',
+    };
+
+    if (backend.type === 'openrouter') {
+      endpoint = OR_ENDPOINT;
+      key = backend.key;
+      headers['HTTP-Referer'] = 'https://elias-game.app';
+      headers['X-Title']      = 'Élias — Simulateur de vie';
+    } else if (backend.type === 'groq') {
+      endpoint = 'https://api.groq.com/openai/v1/chat/completions';
+      key = backend.key;
+    } else {
+      endpoint = backend.endpoint;
+      key = backend.key;
+    }
+
+    headers['Authorization'] = `Bearer ${key}`;
 
     const res = await fetch(endpoint, {
       method:  'POST',
-      headers: {
-        'Content-Type':  'application/json',
-        'Authorization': `Bearer ${key}`,
-      },
+      headers,
       body: JSON.stringify({
-        model:       BACKEND.model,
+        model:       backend.model,
         max_tokens:  maxTokens,
         temperature: 0.8,
         messages:    [{ role: 'user', content: prompt }],
@@ -158,6 +216,7 @@ export interface AiLifeContext {
   city: string;
   profession: string;
   churchName: string;
+  spouseName?: string;
 }
 
 export interface AiParentNames {
@@ -173,6 +232,7 @@ function buildLifeContextLine(lc?: AiLifeContext, pn?: AiParentNames): string {
   if (lc?.profession) parts.push(`${lc.profession} de métier`);
   if (lc?.churchName) parts.push(`membre de ${lc.churchName}`);
   if (lc?.friendName) parts.push(`ami proche : ${lc.friendName}`);
+  if (lc?.spouseName) parts.push(`conjoint(e) : ${lc.spouseName}`);
   return parts.join(', ') + '.';
 }
 
@@ -185,15 +245,25 @@ export async function generateJournalEntry(
   successRate: number,
   lifeContext?: AiLifeContext,
   parentNames?: AiParentNames,
+  actionsThisYear?: string[],
 ): Promise<string | null> {
   const stage  = lifeStage(age);
   const events = recentEventTitles.slice(-4).join(', ') || 'aucune épreuve notable';
   const ctxLine = buildLifeContextLine(lifeContext, parentNames);
 
+  const ACTION_LABELS: Record<string, string> = {
+    pray: 'prié', fast: 'jeûné', serve: 'servi à l\'église',
+    call_friend: `appelé ${lifeContext?.friendName ?? 'son ami'}`, read_word: 'lu la Parole',
+  };
+  const actionsLine = actionsThisYear && actionsThisYear.length > 0
+    ? `Cette année, Élias a : ${actionsThisYear.map(a => ACTION_LABELS[a] ?? a).join(', ')}.`
+    : '';
+
   const prompt = `Tu es Élias, ${age} ans (stade : ${stage}).
 ${ctxLine}
 Stats intérieures : Foi ${stats.foi}/100 · Paix ${stats.paix}/100 · Corps ${stats.physique}/100 · Finances ${stats.finances}/100.
 Dernières épreuves : ${events}. Taux de victoire : ${successRate}%.
+${actionsLine}
 
 Écris UNE entrée de journal intime à la 1ère personne.
 • 2-3 phrases, 50-80 mots maximum

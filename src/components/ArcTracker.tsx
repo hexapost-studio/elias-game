@@ -2,25 +2,42 @@ import { useGameStore } from '../stores/gameStore';
 import { STORY_ARCS } from '../data/storyArcs';
 
 const ARC_ICONS: Record<string, string> = {
-  'arc-louise': '🤝',
-  'arc-mathias': '📖',
+  'arc-louise':   '🤝',
+  'arc-mathias':  '📖',
   'arc-heritage': '🏛️',
-  'arc-tentation': '⚡',
+  'arc-tentation':'⚡',
   'arc-guerison': '✨',
+  'arc-ami':      '👥',
+  'arc-metier':   '⚒️',
+  'arc-parents':  '🏠',
+  'arc-eglise':   '⛪',
+  'arc-ville':    '🏙️',
+  'arc-conjoint': '💍',
 };
 
 const ARC_SHORT: Record<string, string> = {
-  'arc-louise': 'Louise',
-  'arc-mathias': 'Mathias',
+  'arc-louise':   'Louise',
+  'arc-mathias':  'Mathias',
   'arc-heritage': 'Héritage',
-  'arc-tentation': 'Pouvoir',
+  'arc-tentation':'Pouvoir',
   'arc-guerison': 'Guérison',
 };
 
+/** Remplace {ami}/{ville}/{métier}/{église}/{conjoint} dans les noms d'arcs */
+function resolveArcName(name: string, city: string, friendName: string, profession: string, churchName: string, spouseName: string): string {
+  return name
+    .replace(/\{ville\}/g,    city)
+    .replace(/\{ami\}/g,      friendName)
+    .replace(/\{métier\}/g,   profession)
+    .replace(/\{église\}/g,   churchName)
+    .replace(/\{conjoint\}/g, spouseName);
+}
+
 export function ArcTracker() {
-  const completedArcs = useGameStore((s) => s.completedArcs);
+  const completedArcs   = useGameStore((s) => s.completedArcs);
   const encounteredArcIds = useGameStore((s) => s.encounteredArcIds);
-  const currentEvent = useGameStore((s) => s.currentEvent);
+  const currentEvent    = useGameStore((s) => s.currentEvent);
+  const lifeContext     = useGameStore((s) => s.lifeContext);
 
   const completedIds = new Set(completedArcs.map((a) => a.arcId));
   const activeArcId = currentEvent?.storyArcId ?? null;
@@ -32,6 +49,7 @@ export function ArcTracker() {
     <div
       style={{
         display: 'flex',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 6,
@@ -49,7 +67,7 @@ export function ArcTracker() {
         return (
           <div
             key={arc.id}
-            title={`${arc.name}${completed ? ' (complété)' : active ? ' (en cours)' : ''}`}
+            title={`${resolveArcName(arc.name, lifeContext.city, lifeContext.friendName, lifeContext.profession, lifeContext.churchName, lifeContext.spouseName)}${completed ? ' (complété)' : active ? ' (en cours)' : ''}`}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -79,7 +97,7 @@ export function ArcTracker() {
             }}
           >
             <span style={{ fontSize: 10 }}>{ARC_ICONS[arc.id] ?? '◆'}</span>
-            <span>{ARC_SHORT[arc.id] ?? arc.name}</span>
+            <span>{ARC_SHORT[arc.id] ?? resolveArcName(arc.name, lifeContext.city, lifeContext.friendName, lifeContext.profession, lifeContext.churchName, lifeContext.spouseName)}</span>
             {completed && <span style={{ fontSize: 8 }}>✓</span>}
           </div>
         );

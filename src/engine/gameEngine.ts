@@ -106,6 +106,12 @@ const CHURCH_NAMES = [
   'Centre de Vie', 'Temple de la Paix', 'Bergers de Jésus', 'Mission Évangélique',
 ];
 
+const SPOUSE_NAMES = [
+  'Sarah', 'Élise', 'Chloé', 'Marie-Claire', 'Joëlle', 'Grâce', 'Esther', 'Naomi',
+  'Abigaïl', 'Lydie', 'Priscille', 'Béatrice', 'Christiane', 'Joyeuse', 'Ange',
+  'Gloria', 'Ruth', 'Marthe', 'Suzanne', 'Léa', 'Rébecca', 'Miriam', 'Joanna',
+];
+
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -116,6 +122,7 @@ function generateLifeContext(): LifeContext {
     city:       pickRandom(CITIES),
     profession: pickRandom(PROFESSIONS),
     churchName: pickRandom(CHURCH_NAMES),
+    spouseName: pickRandom(SPOUSE_NAMES),
   };
 }
 
@@ -282,6 +289,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     actionPoints: 2,
     actionsThisYear: [],
     amiRelationship: 50,
+    crisesRemaining: 2,
     stats: inheritance?.bonus
       ? {
           foi: Math.min(100, stats.foi + (inheritance.bonus.foi || 0)),
@@ -383,11 +391,40 @@ export function checkGameOver(state: GameState): {
 
   for (const [stat, value] of Object.entries(state.stats)) {
     if (value <= 0) {
-      return { isOver: true, reason: `La jauge de ${stat} est tombée à zéro.` };
+      return { isOver: true, reason: `La jauge de ${stat} est tombée à zéro — les grâces sont épuisées.` };
     }
   }
 
   return { isOver: false };
+}
+
+const STAT_LABELS: Record<string, string> = {
+  foi: 'Foi', paix: 'Paix', physique: 'Corps', finances: 'Finances',
+};
+
+/**
+ * Après application des malus d'un event, vérifie si une stat est tombée à ≤ 0.
+ * Si des grâces restent, remonte la stat à 3 et consomme une grâce.
+ * Retourne le state corrigé + un message de crise (ou null si pas de crise).
+ */
+export function applyCrisisGrace(
+  state: GameState,
+  stats: Record<StatName, number>,
+): { stats: Record<StatName, number>; newCrises: number; crisisMessage: string | null } {
+  let newCrises = state.crisesRemaining;
+  let crisisMessage: null | string = null;
+  const corrected = { ...stats };
+
+  for (const [key, val] of Object.entries(corrected)) {
+    if (val <= 0 && newCrises > 0) {
+      corrected[key as StatName] = 3;
+      newCrises--;
+      const label = STAT_LABELS[key] ?? key;
+      crisisMessage = `[CRISE] La jauge de ${label} a touché zéro. Une grâce divine a relevé Élias (${newCrises} grâce${newCrises !== 1 ? 's' : ''} restante${newCrises !== 1 ? 's' : ''}).`;
+    }
+  }
+
+  return { stats: corrected, newCrises, crisisMessage };
 }
 
 /* ─── VARIANTES NARRATIVES ─── */
@@ -507,17 +544,18 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   return applyLifeContextToEvent(withVariant, state);
 }
 
-/** Remplace les templates {ami}/{père}/{mère}/{ville}/{métier}/{église} dans un event */
+/** Remplace les templates {ami}/{père}/{mère}/{ville}/{métier}/{église}/{conjoint} dans un event */
 function applyLifeContextToEvent(event: AfflictionEvent, state: GameState): AfflictionEvent {
   const { lifeContext, parentNames } = state;
   const replace = (s: string) =>
     s
-      .replace(/\{ami\}/g,    lifeContext.friendName)
-      .replace(/\{ville\}/g,  lifeContext.city)
-      .replace(/\{métier\}/g, lifeContext.profession)
-      .replace(/\{église\}/g, lifeContext.churchName)
-      .replace(/\{père\}/g,   parentNames.father)
-      .replace(/\{mère\}/g,   parentNames.mother);
+      .replace(/\{ami\}/g,      lifeContext.friendName)
+      .replace(/\{ville\}/g,    lifeContext.city)
+      .replace(/\{métier\}/g,   lifeContext.profession)
+      .replace(/\{église\}/g,   lifeContext.churchName)
+      .replace(/\{conjoint\}/g, lifeContext.spouseName)
+      .replace(/\{père\}/g,     parentNames.father)
+      .replace(/\{mère\}/g,     parentNames.mother);
 
   return {
     ...event,
@@ -582,9 +620,25 @@ export function validateChoice(
     newState.combo = state.combo + 1;
     newState.maxCombo = Math.max(newState.maxCombo, newState.combo);
 
-    // Bonus combo (≥5)
-    if (newState.combo >= 5) {
-      newStats.foi = Math.min(MAX_STAT, newStats.foi + 2);
+    // Bonus combo — paliers progressifs
+    if (newState.combo === 5) {
+      newStats.foi  = Math.min(MAX_STAT, newStats.foi + 3);
+      newStats.paix = Math.min(MAX_STAT, newStats.paix + 2);
+      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x5] Ferveur montante — Foi +3, Paix +2', type: 'milestone' as const }];
+    } else if (newState.combo === 10) {
+      newStats.foi      = Math.min(MAX_STAT, newStats.foi + 5);
+      newStats.paix     = Math.min(MAX_STAT, newStats.paix + 5);
+      newStats.physique = Math.min(MAX_STAT, newStats.physique + 3);
+      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x10] Le feu de Dieu — Foi +5, Paix +5, Corps +3', type: 'milestone' as const }];
+    } else if (newState.combo === 20) {
+      newStats.foi      = Math.min(MAX_STAT, newStats.foi + 8);
+      newStats.paix     = Math.min(MAX_STAT, newStats.paix + 8);
+      newStats.physique = Math.min(MAX_STAT, newStats.physique + 5);
+      newStats.finances = Math.min(MAX_STAT, newStats.finances + 5);
+      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x20] PRODIGE — toutes stats +bonus', type: 'milestone' as const }];
+    } else if (newState.combo > 0 && newState.combo % 5 === 0) {
+      // Paliers suivants (25, 30, ...) : +3 foi
+      newStats.foi = Math.min(MAX_STAT, newStats.foi + 3);
     }
 
     // Codex: débloquer le verset
@@ -649,6 +703,17 @@ export function validateChoice(
         MIN_STAT,
         (newStats[stat as StatName] || 0) + impact
       );
+    }
+
+    // Grâce de crise : si une stat a touché 0 et qu'il reste des grâces
+    const { stats: gracedStats, newCrises, crisisMessage } = applyCrisisGrace(state, newStats);
+    Object.assign(newStats, gracedStats);
+    newState.crisesRemaining = newCrises;
+    if (crisisMessage) {
+      newState.journal = [
+        ...state.journal,
+        { age: state.age, text: crisisMessage, type: 'cascade' as const },
+      ];
     }
 
     // Combo reset
@@ -732,11 +797,11 @@ export type ActionEffect = {
 };
 
 const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Record<string, number>>; label: string; amiDelta?: number }> = {
-  pray:        () => ({ statDelta: { foi: 2 },           label: 'Temps de prière — Foi +2' }),
-  fast:        () => ({ statDelta: { foi: 3, physique: -1 }, label: 'Jeûne — Foi +3, Corps -1' }),
-  serve:       (s) => ({ statDelta: { paix: 2 },         label: `Service à ${s.lifeContext.churchName} — Paix +2` }),
-  call_friend: (s) => ({ statDelta: { paix: 1 },         label: `Appel à ${s.lifeContext.friendName} — Paix +1`, amiDelta: 5 }),
-  read_word:   () => ({ statDelta: { foi: 1 },           label: 'Lecture de la Parole — Foi +1' }),
+  pray:        () => ({ statDelta: { foi: 4, paix: 1 },        label: 'Temps de prière — Foi +4, Paix +1' }),
+  fast:        () => ({ statDelta: { foi: 5, physique: -2 },   label: 'Jeûne — Foi +5, Corps -2' }),
+  serve:       (s) => ({ statDelta: { paix: 4, finances: 1 },  label: `Service à ${s.lifeContext.churchName} — Paix +4, Finances +1` }),
+  call_friend: (s) => ({ statDelta: { paix: 3 },               label: `Appel à ${s.lifeContext.friendName} — Paix +3`, amiDelta: 8 }),
+  read_word:   () => ({ statDelta: { foi: 3, paix: 1 },        label: 'Lecture de la Parole — Foi +3, Paix +1' }),
 };
 
 export function applyPlayerAction(
@@ -809,7 +874,17 @@ export function advanceAge(state: GameState): {
   }
   if (newAge > 60) {
     newStats.physique = Math.max(MIN_STAT, newStats.physique - 2);
-    newStats.paix = Math.max(MIN_STAT, newStats.paix - 1);
+    newStats.paix     = Math.max(MIN_STAT, newStats.paix     - 1);
+  }
+
+  // Decay naturel — pression de fond (évite mid-game trop facile)
+  // Foi : -1 tous les 2 ans à partir de 20 ans (vie adulte demande de nourrir sa foi)
+  if (newAge >= 20 && newAge % 2 === 0) {
+    newStats.foi = Math.max(1, newStats.foi - 1);  // floor à 1 — decay seul ne tue pas
+  }
+  // Paix : -1 tous les 2 ans à partir de 25 ans (pression et responsabilités de la vie)
+  if (newAge >= 25 && newAge % 2 === 0) {
+    newStats.paix = Math.max(1, newStats.paix - 1);
   }
 
   // Flow décroît naturellement si inactif
@@ -825,10 +900,13 @@ export function advanceAge(state: GameState): {
 
   // Journal milestones
   const ageEvents: string[] = [];
-  if (newAge === 0) ageEvents.push('[NAISSANCE] Élias vient de naître.');
-  if (newAge === 15) ageEvents.push('[CROISSANCE] Élias entre dans l\'adolescence. Les choix commencent.');
-  if (newAge === 25) ageEvents.push('[COMBAT] Élias est un jeune adulte. Le combat s\'intensifie.');
-  if (newAge === 60) ageEvents.push('[SAGESSE] Élias marche vers la sagesse. Les dernières batailles approchent.');
+  if (newAge === 0)  ageEvents.push('[NAISSANCE] Élias vient de naître.');
+  if (newAge === 15) ageEvents.push('[ADOLESCENCE] Élias entre dans l\'adolescence. Les premiers choix commencent.');
+  if (newAge === 25) ageEvents.push('[JEUNE ADULTE] Élias prend sa vie en main. Le combat intérieur s\'intensifie.');
+  if (newAge === 30) ageEvents.push('[MATURITÉ] 30 ans. La vie forge ce que la foi doit porter. Les fondations se testent.');
+  if (newAge === 40) ageEvents.push('[PIVOT] 40 ans. Le corps commence à parler. Ce qui était acquis doit être renouvelé.');
+  if (newAge === 50) ageEvents.push('[PROFONDEUR] 50 ans. Ce qui comptait avant compte moins. Ce qui était flou devient clair.');
+  if (newAge === 60) ageEvents.push('[SAGESSE] 60 ans. Élias marche vers la sagesse. Les dernières grandes batailles approchent.');
   if (newAge === 80) ageEvents.push('[GLORIEUX] Les dernières forteresses tombent. Le Prodige achève sa course.');
 
   if (ageEvents.length > 0) {
@@ -846,8 +924,10 @@ export function advanceAge(state: GameState): {
   const hasCascade = newState.queuedCascadeEvents.some(
     (q) => q.triggerAge === newAge
   );
+  // Pas d'épreuves interactives avant 5 ans — le bébé/très jeune enfant ne choisit pas de versets
   const shouldGenerate =
-    hasCascade || Math.random() < 0.4 || state.failedVerseIds.length > 0;
+    newAge >= 5 &&
+    (hasCascade || Math.random() < 0.55 || state.failedVerseIds.length > 0);
 
   let eventGenerated = false;
   if (shouldGenerate) {
