@@ -144,6 +144,8 @@ export interface AfflictionEvent {
   minStat?: Partial<Record<StatName, number>>;
   /** Stat maximum pour que cet événement apparaisse */
   maxStat?: Partial<Record<StatName, number>>;
+  /** Relation minimum avec {ami} pour que cet event apparaisse */
+  minAmiRelationship?: number;
   /**
    * Surcharges par stade de vie (enfant 0-11, ado 12-17, adulte 18-59, senior 60+).
    * Quand un stade est absent, l'événement utilise ses champs racine.
@@ -186,6 +188,8 @@ export interface LifeContext {
   churchName: string;   // {église} — communauté d'appartenance
 }
 
+export type PlayerAction = 'pray' | 'fast' | 'serve' | 'call_friend' | 'read_word';
+
 export interface GameState {
   age: number;
   stats: Record<StatName, number>;
@@ -193,6 +197,9 @@ export interface GameState {
   parentNames: { father: string; mother: string };
   lifeContext: LifeContext;
   difficulty: DifficultyLevel;
+  actionPoints: number;          // Points d'action disponibles cette année
+  actionsThisYear: PlayerAction[]; // Actions déjà utilisées cette année
+  amiRelationship: number;        // 0-100 — relation avec l'ami principal
   flow: FlowState;
   combo: number;
   maxCombo: number;

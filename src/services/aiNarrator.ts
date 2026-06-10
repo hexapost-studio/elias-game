@@ -151,6 +151,31 @@ export function pickVerseForAge(
   return src[Math.floor(Math.random() * src.length)] ?? null;
 }
 
+// ── Types contexte de vie ─────────────────────────────────────────────────────
+
+export interface AiLifeContext {
+  friendName: string;
+  city: string;
+  profession: string;
+  churchName: string;
+}
+
+export interface AiParentNames {
+  father: string;
+  mother: string;
+}
+
+function buildLifeContextLine(lc?: AiLifeContext, pn?: AiParentNames): string {
+  if (!lc && !pn) return '';
+  const parts: string[] = [];
+  if (pn) parts.push(`Fils de ${pn.father} et ${pn.mother}`);
+  if (lc?.city) parts.push(`né à ${lc.city}`);
+  if (lc?.profession) parts.push(`${lc.profession} de métier`);
+  if (lc?.churchName) parts.push(`membre de ${lc.churchName}`);
+  if (lc?.friendName) parts.push(`ami proche : ${lc.friendName}`);
+  return parts.join(', ') + '.';
+}
+
 // ── 1. Journal vivant ─────────────────────────────────────────────────────────
 
 export async function generateJournalEntry(
@@ -158,17 +183,22 @@ export async function generateJournalEntry(
   stats: StatImpact,
   recentEventTitles: string[],
   successRate: number,
+  lifeContext?: AiLifeContext,
+  parentNames?: AiParentNames,
 ): Promise<string | null> {
   const stage  = lifeStage(age);
   const events = recentEventTitles.slice(-4).join(', ') || 'aucune épreuve notable';
+  const ctxLine = buildLifeContextLine(lifeContext, parentNames);
 
   const prompt = `Tu es Élias, ${age} ans (stade : ${stage}).
+${ctxLine}
 Stats intérieures : Foi ${stats.foi}/100 · Paix ${stats.paix}/100 · Corps ${stats.physique}/100 · Finances ${stats.finances}/100.
 Dernières épreuves : ${events}. Taux de victoire : ${successRate}%.
 
 Écris UNE entrée de journal intime à la 1ère personne.
 • 2-3 phrases, 50-80 mots maximum
 • Ton : ${STAGE_TONE[stage]}
+• Si tu mentionnes un ami, utilise le prénom fourni ci-dessus
 • Vocabulaire EJP/ICC autorisé : Prodige, Couloir, Saison, Ferveur, Anakazo, chair, ennemi
 • PAS de citation biblique explicite, PAS de formule d'introduction
 • Commence directement par "Je" ou par une situation concrète`;
@@ -181,17 +211,22 @@ Dernières épreuves : ${events}. Taux de victoire : ${successRate}%.
 export async function generateDynamicEvent(
   age: number,
   stats: StatImpact,
+  lifeContext?: AiLifeContext,
+  parentNames?: AiParentNames,
 ): Promise<AiEventNarrative | null> {
   const verse = pickVerseForAge(age, stats);
   if (!verse) return null;
 
   const stage = lifeStage(age);
+  const ctxLine = buildLifeContextLine(lifeContext, parentNames);
 
   const prompt = `Jeu Élias — simulateur de vie EJP/ICC.
-Élias a ${age} ans (${stage}). Stats : Foi ${stats.foi} · Paix ${stats.paix} · Corps ${stats.physique} · Finances ${stats.finances}.
+Élias a ${age} ans (${stage}). ${ctxLine}
+Stats : Foi ${stats.foi} · Paix ${stats.paix} · Corps ${stats.physique} · Finances ${stats.finances}.
 Verset réponse : "${verse.text}" (${verse.reference}).
 
 Génère un événement concret de vie qui AMÈNE à ce verset comme réponse naturelle.
+Si tu mentionnes un ami ou une église, utilise les noms fournis ci-dessus.
 Réponds UNIQUEMENT en JSON valide, sans markdown :
 {"title":"max 5 mots","description":"80-160 caractères, 2e personne du singulier","thematicFlavor":"2-3 mots"}
 

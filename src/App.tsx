@@ -29,6 +29,7 @@ import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, sc
 import { AI_AVAILABLE, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
+import { ActionPanel } from './components/ActionPanel';
 import type { AfflictionEvent } from './types/game';
 import './index.css';
 
@@ -80,6 +81,8 @@ function App() {
     inheritance,
     codex,
     stats,
+    lifeContext,
+    parentNames,
     initGame,
     ageUp,
     dismissResult,
@@ -219,7 +222,7 @@ function App() {
       { age, text: '', generating: true },
     ]);
 
-    generateJournalEntry(age, stats, recentTitles, successRate)
+    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames)
       .then((text) => {
         if (!text) {
           setAiJournalEntries((prev) => prev.filter((e) => !(e.age === age && e.generating)));
@@ -242,7 +245,7 @@ function App() {
     if (Math.random() > 0.33) return;
 
     setGeneratingAiEvent(true);
-    generateDynamicEvent(age, stats)
+    generateDynamicEvent(age, stats, lifeContext, parentNames)
       .then((narrative) => {
         if (!narrative) { setGeneratingAiEvent(false); return; }
         const event: AfflictionEvent = {
@@ -800,6 +803,8 @@ function App() {
           </div>
         );
       })()}
+
+      <ActionPanel />
 
       <div id="action-area">
         {phase === 'idle' && (

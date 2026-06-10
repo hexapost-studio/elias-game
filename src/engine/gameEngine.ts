@@ -279,6 +279,9 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     profileName,
     parentNames,
     lifeContext,
+    actionPoints: 2,
+    actionsThisYear: [],
+    amiRelationship: 50,
     stats: inheritance?.bonus
       ? {
           foi: Math.min(100, stats.foi + (inheritance.bonus.foi || 0)),
@@ -439,6 +442,10 @@ function filterEventsByStats(
         if ((state.stats[stat as StatName] || 0) > value) return false;
       }
     }
+    // Relation avec {ami}
+    if (e.minAmiRelationship !== undefined) {
+      if (state.amiRelationship < e.minAmiRelationship) return false;
+    }
     return true;
   });
 }
@@ -455,7 +462,8 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     if (event) {
       const ageResolved = resolveEventForAge(event, state.age);
       const withVariant = applyNarrativeVariant(ageResolved, state);
-      return { ...withVariant, title: `[Cascade] ${withVariant.title}` };
+      const withCtx = applyLifeContextToEvent(withVariant, state);
+      return { ...withCtx, title: `[Cascade] ${withCtx.title}` };
     }
   }
 
@@ -495,7 +503,28 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
 
   // Appliquer la variante d'âge, puis la variante narrative
   const ageResolved = resolveEventForAge(fullEvent, state.age);
-  return applyNarrativeVariant(ageResolved, state);
+  const withVariant = applyNarrativeVariant(ageResolved, state);
+  return applyLifeContextToEvent(withVariant, state);
+}
+
+/** Remplace les templates {ami}/{père}/{mère}/{ville}/{métier}/{église} dans un event */
+function applyLifeContextToEvent(event: AfflictionEvent, state: GameState): AfflictionEvent {
+  const { lifeContext, parentNames } = state;
+  const replace = (s: string) =>
+    s
+      .replace(/\{ami\}/g,    lifeContext.friendName)
+      .replace(/\{ville\}/g,  lifeContext.city)
+      .replace(/\{métier\}/g, lifeContext.profession)
+      .replace(/\{église\}/g, lifeContext.churchName)
+      .replace(/\{père\}/g,   parentNames.father)
+      .replace(/\{mère\}/g,   parentNames.mother);
+
+  return {
+    ...event,
+    title:          replace(event.title),
+    description:    replace(event.description),
+    thematicFlavor: event.thematicFlavor ? replace(event.thematicFlavor) : event.thematicFlavor,
+  };
 }
 
 /* ─── VALIDATION ─── */
@@ -695,6 +724,62 @@ export function validateChoice(
   };
 }
 
+/* ─── ACTIONS VOLONTAIRES ─── */
+
+export type ActionEffect = {
+  newState: GameState;
+  label: string;
+};
+
+const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Record<string, number>>; label: string; amiDelta?: number }> = {
+  pray:        () => ({ statDelta: { foi: 2 },           label: 'Temps de prière — Foi +2' }),
+  fast:        () => ({ statDelta: { foi: 3, physique: -1 }, label: 'Jeûne — Foi +3, Corps -1' }),
+  serve:       (s) => ({ statDelta: { paix: 2 },         label: `Service à ${s.lifeContext.churchName} — Paix +2` }),
+  call_friend: (s) => ({ statDelta: { paix: 1 },         label: `Appel à ${s.lifeContext.friendName} — Paix +1`, amiDelta: 5 }),
+  read_word:   () => ({ statDelta: { foi: 1 },           label: 'Lecture de la Parole — Foi +1' }),
+};
+
+export function applyPlayerAction(
+  state: GameState,
+  action: import('../types/game').PlayerAction
+): ActionEffect | null {
+  if (state.actionPoints <= 0) return null;
+  if (state.actionsThisYear.includes(action)) return null;
+
+  const effectFn = ACTION_EFFECTS[action];
+  if (!effectFn) return null;
+
+  const { statDelta, label, amiDelta } = effectFn(state);
+  const newStats = { ...state.stats };
+
+  for (const [stat, val] of Object.entries(statDelta)) {
+    newStats[stat as string] = Math.min(
+      MAX_STAT,
+      Math.max(MIN_STAT, (newStats[stat as string] || 0) + (val ?? 0))
+    );
+  }
+
+  const journalEntry: import('../types/game').JournalEntry = {
+    age: state.age,
+    text: label,
+    type: 'micro',
+  };
+
+  return {
+    label,
+    newState: {
+      ...state,
+      stats: newStats,
+      actionPoints: state.actionPoints - 1,
+      actionsThisYear: [...state.actionsThisYear, action],
+      amiRelationship: amiDelta
+        ? Math.min(100, state.amiRelationship + amiDelta)
+        : state.amiRelationship,
+      journal: [...state.journal, journalEntry],
+    },
+  };
+}
+
 /* ─── VIEILLISSEMENT ─── */
 
 export function advanceAge(state: GameState): {
@@ -709,6 +794,9 @@ export function advanceAge(state: GameState): {
   newState.phase = 'idle';
   newState.currentEvent = null;
   newState.lastEventResult = null;
+  // Reset actions volontaires — 2 points avant 60 ans, 3 points senior
+  newState.actionPoints = newAge >= 60 ? 3 : 2;
+  newState.actionsThisYear = [];
 
   // Retirer les cascades déclenchées
   newState.queuedCascadeEvents = state.queuedCascadeEvents.filter(

@@ -47,6 +47,14 @@ export const STORY_ARCS: StoryArc[] = [
     rewardVerseId: 'v-peur-007',
     rewardTitle: 'Le Guéri',
   },
+  {
+    id: 'arc-ami',
+    name: 'Une amitié pour la vie',
+    description: 'Une amitié qui traverse enfance, crises, silences, retrouvailles et deuil.',
+    eventIds: ['arc-ami-1', 'arc-ami-2', 'arc-ami-3', 'arc-ami-4', 'arc-ami-5', 'arc-ami-6', 'arc-ami-7', 'arc-ami-8'],
+    rewardVerseId: 'v-amour-003',
+    rewardTitle: 'L\'Ami Fidèle',
+  },
 ];
 
 export function getArcById(id: string): StoryArc | undefined {

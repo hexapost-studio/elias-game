@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GameState, AfflictionEvent } from '../types/game';
+import type { GameState, AfflictionEvent, PlayerAction } from '../types/game';
 import {
   createInitialState,
   advanceAge,
@@ -7,6 +7,7 @@ import {
   checkGameOver,
   computeFinalMetrics,
   determineTitle,
+  applyPlayerAction,
 } from '../engine/gameEngine';
 import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
 
@@ -17,6 +18,7 @@ interface GameStore extends GameState {
   chooseVerse: (verseId: string, timeToAnswer?: number) => void;
   dismissResult: () => void;
   hydrateFromSave: (data: Partial<GameState>) => void;
+  useAction: (action: PlayerAction) => boolean;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -110,5 +112,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   dismissResult: () => {
     set({ phase: 'idle', lastEventResult: null });
+  },
+
+  useAction: (action: PlayerAction) => {
+    const state = get();
+    const result = applyPlayerAction(state, action);
+    if (!result) return false;
+    set(result.newState);
+    saveGame(result.newState).catch(() => {});
+    return true;
   },
 }));
