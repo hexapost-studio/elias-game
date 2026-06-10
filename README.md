@@ -35,7 +35,35 @@ Chaque épreuve demande de mémoriser et reconnaître un verset biblique. Répon
 
 ### Le Flow
 
-Barre spéciale qui monte avec les combos de bonnes réponses. À mesure que le Flow augmente, les événements deviennent plus intenses mais les récompenses aussi.
+Barre spéciale qui monte avec les combos de bonnes réponses. Trois paliers :
+
+| Palier | Multiplicateur | Effet |
+|---|---|---|
+| **REPOS** | ×1 | Normal |
+| **FERVEUR** | ×1.5 | Bonus versets augmentés |
+| **FEU DE DIEU** | ×2.5 | Bonus max — Corps -3 par succès |
+
+### Actions volontaires (2 pts/an · 3 pts après 60 ans)
+
+Chaque année, Élias peut accomplir 2 actions spirituelles indépendamment des événements :
+
+| Action | Effet |
+|---|---|
+| 🙏 Prier | Foi +4, Paix +1 |
+| ✦ Jeûner | Foi +5, Corps -2 |
+| 🤝 Servir | Paix +4, Finances +1 |
+| 📞 Appeler {ami} | Paix +3, Amitié +8 |
+| 📖 Lire la Parole | Foi +3, Paix +1 |
+
+### Grâces divines
+
+Élias commence chaque partie avec **2 grâces**. Si une stat tombe à 0 suite à un événement, la grâce se consume et la stat remonte à 3 (mort évitée). À 0 grâce : mort immédiate si une stat tombe à zéro.
+
+### Déclin naturel
+
+À partir de l'âge adulte, deux stats diminuent passivement (plancher : 1, ne cause jamais de mort seul) :
+- Foi : -1 tous les 2 ans à partir de 20 ans
+- Paix : -1 tous les 2 ans à partir de 25 ans
 
 ### Difficultés progressives
 
@@ -60,16 +88,52 @@ Le même événement a une dimension différente selon l'âge d'Élias :
 | **Déménagement** | Personne ne t'a demandé ton avis | Perd ses amis, son premier amour | Ta décision, ta famille la subit | Quitter la maison de 30 ans |
 | **Inondation** | Regarde ses jouets couler | Mobilisé pour aider | Tout reconstruire de zéro | Sait déjà que rien ne dure |
 
+---
+
+## Arcs narratifs
+
+Séquences d'événements personnalisés qui suivent Élias sur plusieurs décennies. Chaque arc est lié au contexte de vie unique du personnage (prénom de l'ami, ville, métier, église, conjoint·e).
+
+| Arc | Événements | Âges | Contexte |
+|---|---|---|---|
+| 🤝 Arc-ami | 8 | 8–90 | `{ami}` (amitié, relation long terme) |
+| ⚒️ Arc-métier | 5 | 16–65 | `{métier}` (orientation, crise, héritage pro) |
+| 🏠 Arc-parents | 6 | 10–75 | `{père}` / `{mère}` (conflit, maladie, deuil) |
+| ⛪ Arc-église | 4 | 18–65 | `{église}` (service, leadership, crise interne) |
+| 🏙️ Arc-ville | 3 | 8–45 | `{ville}` (départ, diaspora, retour aux racines) |
+| 💍 Arc-conjoint | 6 | 22–90 | `{conjoint}` (rencontre, mariage, crise, deuil) |
+
+Complèter un arc débloque un titre + verset de récompense.
+
+### Le contexte de vie (`lifeContext`)
+
+À la naissance, le moteur génère un profil unique pour Élias :
+
+```typescript
+{
+  friendName:  'Barnabas',     // ami fidèle
+  city:        'Kinshasa',     // ville d'origine
+  profession:  'enseignant',   // métier
+  churchName:  'Église Bethel',
+  spouseName:  'Angèle',       // futur·e conjoint·e
+}
+```
+
+Ces valeurs remplacent `{ami}`, `{ville}`, `{métier}`, `{église}`, `{conjoint}` dans tous les titres, descriptions et noms d'arcs.
+
+---
+
 ### Catégories d'épreuves (23 au total)
 
 Peur/angoisse · Amertume/rejet · Orgueil/indépendance · Culpabilité · Découragement · Maladie/guérison · Tristesse/joie · Lourdeur/fatigue · Doute/incrédulité · Obéissance · Identité/appel · Combat spirituel · Prière · Parole de Dieu · Saint-Esprit · Soif de Dieu · Direction divine · Impudicité/addiction · Finances/paresse · Abondance financière · Stérilité · Échec/réussite · Amour de Dieu
 
-### Types d'événements (112 au total)
+### Types d'événements (200+ au total)
 
 - **Épreuves personnelles** (core events) — peur, tentation, rejet, maladie, doute
 - **Enfance (0-10 ans)** — 10 événements spécifiques aux premières années de vie
 - **Famille** — 12 événements autour de la cellule familiale : disputes des parents, chômage, maladie grave, déménagement, deuil, animal de compagnie, remariage, grand-parent qui vient habiter
 - **Environnement** — 10 événements externes qui influencent la vie d'Élias : coupure de courant, inondation, violence dans le quartier, crise politique, pasteur qui part, église divisée
+- **Arcs narratifs** (voir section dédiée) — séquences d'événements liés à la vie personnalisée d'Élias
 
 ### Événements en cascade
 
@@ -106,17 +170,20 @@ elias-game/
 │   ├── App.tsx                  # Composant racine, boucle UI principale
 │   ├── components/
 │   │   ├── StatBar.tsx          # Barres de stats
-│   │   ├── FlowBar.tsx          # Barre de Flow
+│   │   ├── FlowBar.tsx          # Barre de Flow (REPOS/FERVEUR/FEU DE DIEU)
+│   │   ├── ActionPanel.tsx      # Actions volontaires (2 pts/an)
+│   │   ├── ArcTracker.tsx       # Suivi des arcs narratifs (noms résolus)
+│   │   ├── DevPanel.tsx         # Panel dev (mode ?dev, test IA)
 │   │   ├── EliasPortrait.tsx    # Portrait pixel art avec réactions CSS
 │   │   ├── VerseChoices.tsx     # Boutons de réponse
 │   │   ├── Journal.tsx          # Journal de vie
 │   │   ├── CodexMenu.tsx        # Bibliothèque de versets débloqués
 │   │   ├── LexiconMenu.tsx      # Vocabulaire EJP/ICC
 │   │   ├── MainMenu.tsx         # Menu burger
-│   │   ├── ArcTracker.tsx       # Suivi des arcs narratifs
 │   │   └── IconSystem.tsx       # Icônes
 │   ├── data/
-│   │   ├── events.ts            # 112 événements avec variantes byAge
+│   │   ├── events.ts            # 200+ événements avec variantes byAge + arcs
+│   │   ├── storyArcs.ts         # 11 arcs narratifs (arc-ami, arc-métier, etc.)
 │   │   ├── verses.ts            # 200 versets EJP/ICC
 │   │   └── lexicon-ejp-icc.ts   # 18 termes clés du vocabulaire EJP/ICC
 │   ├── engine/
@@ -244,7 +311,16 @@ VITE_GROQ_API_KEY=gsk_xxxxxxxxxxxxxx
 ```
 Compte gratuit : [console.groq.com](https://console.groq.com) → API Keys
 
-**Option 3 — Endpoint custom (n8n, LM Studio, etc.)**
+**Option 3 — OpenRouter (cloud, modèles gratuits disponibles)**
+```env
+VITE_AI_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+VITE_AI_KEY=sk-or-v1-xxxxxxxxxxxx
+VITE_AI_MODEL=mistralai/mistral-7b-instruct:free
+```
+Compte gratuit : [openrouter.ai](https://openrouter.ai) → Keys  
+Modèles gratuits : `mistralai/mistral-7b-instruct:free`, `google/gemma-2-9b-it:free`, `meta-llama/llama-3.2-3b-instruct:free`
+
+**Option 4 — Endpoint custom (n8n, LM Studio, etc.)**
 ```env
 VITE_AI_ENDPOINT=https://mon-serveur/v1/chat/completions
 VITE_AI_KEY=optionnel
@@ -252,6 +328,10 @@ VITE_AI_MODEL=nom-du-modele
 ```
 
 **Sans IA (par défaut)** — Ne rien configurer. Le jeu est identique, sans les entrées de journal générées.
+
+### Mode dev (test IA sans exposer aux joueurs)
+
+Ajouter `?dev` à l'URL ou taper 7 fois dans le coin bas-droit pour ouvrir le **DevPanel** flottant. Permet d'activer/désactiver l'IA, changer de modèle, et voir le statut en temps réel — invisible pour les joueurs normaux.
 
 ### Comment l'IA s'intègre sans casser le jeu
 
