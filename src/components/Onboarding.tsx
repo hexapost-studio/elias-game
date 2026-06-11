@@ -12,7 +12,7 @@ const STEPS = [
       'Physique — votre corps',
       'Finances — votre prospérité',
     ],
-    color: '#7c3aed',
+    color: '#c084fc',
   },
   {
     icon: '▸',
@@ -68,7 +68,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        background: '#0f0a1a',
+        background: '#120d07',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -77,6 +77,20 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         fontFamily: "'Inter', sans-serif",
       }}
     >
+      {/* Titre atmosphérique */}
+      <div style={{ textAlign: 'center', marginBottom: 28 }}>
+        <div style={{
+          fontFamily: "'Kenney Future', 'Cinzel', serif",
+          fontSize: 13, fontWeight: 700, letterSpacing: 3,
+          color: '#f59e0b', marginBottom: 4,
+        }}>
+          ÉLIAS
+        </div>
+        <div style={{ fontSize: 10, color: '#6b4f28', letterSpacing: 2 }}>
+          LE COMBAT D'UNE VIE
+        </div>
+      </div>
+
       {/* Progress dots */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 40 }}>
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
@@ -86,7 +100,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               width: i === step ? 24 : 8,
               height: 8,
               borderRadius: 4,
-              background: i === step ? activeColor : i < step ? '#4a3f6e' : '#333',
+              background: i === step ? activeColor : i < step ? '#3d2605' : '#2a1a08',
               transition: 'all 0.3s',
             }}
           />
@@ -119,21 +133,21 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
           <p style={{
             fontSize: 14, lineHeight: 1.7,
-            color: '#b8a9d4', textAlign: 'center',
+            color: '#c9a97e', textAlign: 'center',
             maxWidth: 320, marginBottom: 20,
           }}>
             {current.description}
           </p>
 
           <div style={{
-            background: '#1a1228', borderRadius: 12,
-            padding: '12px 16px', border: '1px solid #2d2147',
+            background: '#1c1409', borderRadius: 12,
+            padding: '12px 16px', border: '1px solid rgba(245,158,11,0.2)',
             marginBottom: 32, width: '100%', maxWidth: 320,
           }}>
             {current.detail.map((d, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                padding: '4px 0', fontSize: 12, color: '#7b6b9e',
+                padding: '4px 0', fontSize: 12, color: '#9a7a4a',
               }}>
                 <div style={{
                   width: 4, height: 4, borderRadius: 2,
@@ -169,17 +183,17 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
           {/* Mini event card */}
           <div style={{
-            background: '#1a1228', border: '1px solid rgba(245,158,11,0.25)',
+            background: '#1c1409', border: '1px solid rgba(245,158,11,0.25)',
             borderRadius: 12, padding: '14px 16px',
             width: '100%', maxWidth: 320, marginBottom: 16,
           }}>
             <div style={{
-              fontSize: 10, color: '#7c3aed', fontWeight: 700,
+              fontSize: 10, color: '#c084fc', fontWeight: 700,
               letterSpacing: 1.5, marginBottom: 8, textTransform: 'uppercase',
             }}>
               Épreuve · Peur &amp; Angoisse
             </div>
-            <div style={{ fontSize: 13, color: '#b8a9d4', lineHeight: 1.65 }}>
+            <div style={{ fontSize: 13, color: '#c9a97e', lineHeight: 1.65 }}>
               La nuit, une peur inexplicable t'envahit. Ton cœur s'emballe. Quel verset apporte la victoire contre la peur ?
             </div>
           </div>
@@ -192,9 +206,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               const showCorrect = tutorialChoice !== null && isCorrectChoice;
               const showWrong = isChosen && !isCorrectChoice;
 
-              let bg = 'rgba(26,18,40,0.8)';
+              let bg = 'rgba(28,20,9,0.85)';
               let border = 'rgba(245,158,11,0.2)';
-              let color = '#b8a9d4';
+              let color = '#c9a97e';
 
               if (showCorrect) {
                 bg = 'rgba(16,185,129,0.12)';
@@ -224,7 +238,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 >
                   <span style={{
                     fontSize: 10, fontWeight: 700, letterSpacing: 1,
-                    color: showCorrect ? '#6ee7b7' : showWrong ? '#fca5a5' : '#555',
+                    color: showCorrect ? '#6ee7b7' : showWrong ? '#fca5a5' : '#6b5235',
                     minWidth: 16,
                   }}>
                     {showCorrect ? '✓' : showWrong ? '✕' : String.fromCharCode(65 + i)}
@@ -312,9 +326,10 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           onClick={onComplete}
           style={{
             padding: '12px 20px',
-            background: 'transparent', color: '#666',
-            border: '1px solid #333', borderRadius: 10,
+            background: 'transparent', color: '#7a5c35',
+            border: '1px solid rgba(245,158,11,0.2)', borderRadius: 10,
             fontSize: 12, cursor: 'pointer',
+            fontFamily: "'Inter', sans-serif",
           }}
         >
           PASSER
