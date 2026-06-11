@@ -773,7 +773,7 @@ export function validateChoice(
   // Fenêtre glissante des événements récents (évite répétitions)
   newState.recentEventIds = [
     event.id,
-    ...state.recentEventIds.slice(0, 4),
+    ...state.recentEventIds.slice(0, 9),
   ];
 
   newState.stats = newStats;
@@ -898,6 +898,11 @@ export function advanceAge(state: GameState): {
   }
 
   newState.difficulty = getDifficultyForAge(newAge);
+
+  // Recharge d'une grâce aux jalons de vie (25, 50, 75 ans)
+  if ([25, 50, 75].includes(newAge) && newState.crisesRemaining < 2) {
+    newState.crisesRemaining = Math.min(2, newState.crisesRemaining + 1);
+  }
 
   // Journal milestones
   const ageEvents: string[] = [];

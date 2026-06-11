@@ -26,7 +26,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gameOver: null,
 
   hydrateFromSave: (data: Partial<GameState>) => {
-    set({ ...data, gameOver: null } as any);
+    set({ ...createInitialState(), ...data, gameOver: null });
   },
 
   initGame: () => {
