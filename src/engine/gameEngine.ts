@@ -12,6 +12,9 @@ import type {
   RunMetrics,
   QueuedCascade,
   LifeContext,
+  AfflictionCategory,
+  SpiritualSeasonName,
+  SpiritualSeason,
 } from '../types/game';
 import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from '../data/events';
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
@@ -326,6 +329,11 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     completedArcs: [],
     encounteredArcIds: [],
     recentEventIds: [],
+    answeredArcEventIds: [],
+    consecutiveFails: 0,
+    reliefActive: false,
+    spiritualSeason: 'Réveil' as SpiritualSeasonName,
+    amiDecayStreak: 0,
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -459,6 +467,127 @@ export function applyNarrativeVariant(
   return event;
 }
 
+/* ─── SAISONS SPIRITUELLES (Système 3) ─── */
+
+interface CategoryAffinity {
+  primaryStat: StatName;
+  orientation: 'victoire' | 'croissance';
+  threshold: number;
+}
+
+const CATEGORY_AFFINITY: Partial<Record<AfflictionCategory, CategoryAffinity>> = {
+  peur_angoisse:        { primaryStat: 'paix',     orientation: 'victoire',   threshold: 45 },
+  doute_incredulite:    { primaryStat: 'foi',      orientation: 'victoire',   threshold: 50 },
+  combat_spirituel:     { primaryStat: 'foi',      orientation: 'victoire',   threshold: 50 },
+  amertume_rejet:       { primaryStat: 'paix',     orientation: 'victoire',   threshold: 40 },
+  finances_paresse:     { primaryStat: 'finances', orientation: 'victoire',   threshold: 40 },
+  impudicite_addiction: { primaryStat: 'foi',      orientation: 'victoire',   threshold: 45 },
+  maladie_guerison:     { primaryStat: 'physique', orientation: 'victoire',   threshold: 40 },
+  tristesse_joie:       { primaryStat: 'paix',     orientation: 'victoire',   threshold: 35 },
+  decouragement:        { primaryStat: 'paix',     orientation: 'victoire',   threshold: 40 },
+  lourdeur_fatigue:     { primaryStat: 'physique', orientation: 'victoire',   threshold: 35 },
+  culpabilite:          { primaryStat: 'paix',     orientation: 'victoire',   threshold: 40 },
+  echec_reussite:       { primaryStat: 'finances', orientation: 'victoire',   threshold: 35 },
+  saint_esprit:         { primaryStat: 'foi',      orientation: 'croissance', threshold: 60 },
+  parole_de_dieu:       { primaryStat: 'foi',      orientation: 'croissance', threshold: 55 },
+  amour_de_dieu:        { primaryStat: 'paix',     orientation: 'croissance', threshold: 60 },
+  direction_divine:     { primaryStat: 'paix',     orientation: 'croissance', threshold: 55 },
+  priere:               { primaryStat: 'foi',      orientation: 'croissance', threshold: 50 },
+  soif_de_dieu:         { primaryStat: 'foi',      orientation: 'croissance', threshold: 65 },
+  abondance_financiere: { primaryStat: 'finances', orientation: 'croissance', threshold: 60 },
+  identite_appel:       { primaryStat: 'foi',      orientation: 'croissance', threshold: 40 },
+  obeissance:           { primaryStat: 'foi',      orientation: 'croissance', threshold: 50 },
+};
+
+export const SPIRITUAL_SEASONS: Record<SpiritualSeasonName, SpiritualSeason> = {
+  Réveil: {
+    name: 'Réveil', label: 'RÉVEIL', icon: '✦', color: '#fbbf24',
+    description: 'Une saison de réveil spirituel s\'ouvre. Les bases de la foi se posent.',
+    categoryMultipliers: { identite_appel: 2.0, saint_esprit: 1.8, parole_de_dieu: 1.6, soif_de_dieu: 1.5, peur_angoisse: 0.6 },
+  },
+  Désert: {
+    name: 'Désert', label: 'DÉSERT', icon: '◈', color: '#d97706',
+    description: 'Élias entre dans une saison de désert. Les épreuves intérieures s\'intensifient.',
+    categoryMultipliers: { doute_incredulite: 2.0, soif_de_dieu: 2.0, decouragement: 1.8, tristesse_joie: 1.6, lourdeur_fatigue: 1.5, abondance_financiere: 0.5 },
+  },
+  Persécution: {
+    name: 'Persécution', label: 'ÉPREUVE', icon: '⚔', color: '#ef4444',
+    description: 'Une saison d\'épreuve extérieure. La foi d\'Élias est testée publiquement.',
+    categoryMultipliers: { combat_spirituel: 2.5, amertume_rejet: 2.0, obeissance: 1.8, identite_appel: 1.4, echec_reussite: 1.5, abondance_financiere: 0.4 },
+  },
+  Abondance: {
+    name: 'Abondance', label: 'ABONDANCE', icon: '✧', color: '#34d399',
+    description: 'Une saison de bénédiction s\'ouvre. Dieu multiplie sur la fidélité.',
+    categoryMultipliers: { abondance_financiere: 2.5, amour_de_dieu: 2.0, direction_divine: 1.8, priere: 1.5, orgueil_independance: 1.6, finances_paresse: 0.5 },
+  },
+  Grâce: {
+    name: 'Grâce', label: 'GRÂCE', icon: '◎', color: '#c084fc',
+    description: 'La grâce de Dieu couvre cette saison. Le repos et le renouveau arrivent.',
+    categoryMultipliers: { saint_esprit: 2.0, parole_de_dieu: 1.8, amour_de_dieu: 1.8, impudicite_addiction: 1.5, culpabilite: 0.3, tristesse_joie: 0.4 },
+  },
+};
+
+const SEASON_SEQUENCE: SpiritualSeasonName[] = [
+  'Réveil',       // 0-9   — éveil de l'enfance
+  'Désert',       // 10-19 — doutes de l'adolescence
+  'Réveil',       // 20-29 — jeune adulte, renouveau
+  'Persécution',  // 30-39 — apogée, épreuves publiques
+  'Désert',       // 40-49 — désert du milieu de vie
+  'Abondance',    // 50-59 — fruit de la fidélité
+  'Grâce',        // 60-69 — grâce du senior
+  'Désert',       // 70-79 — dernier affinage
+  'Abondance',    // 80-89 — moisson finale
+  'Grâce',        // 90-99 — grâce ultime
+];
+
+export function getSeasonForAge(age: number): SpiritualSeasonName {
+  return SEASON_SEQUENCE[Math.min(Math.floor(age / 10), 9)];
+}
+
+function getSeasonMultipliers(season: SpiritualSeasonName): Partial<Record<AfflictionCategory, number>> {
+  return SPIRITUAL_SEASONS[season].categoryMultipliers;
+}
+
+/* ─── SÉLECTION PONDÉRÉE (Système 1) ─── */
+
+function computeEventWeight(
+  event: AfflictionEvent,
+  state: GameState,
+  seasonMult: Partial<Record<AfflictionCategory, number>>
+): number {
+  const affinity = CATEGORY_AFFINITY[event.category];
+  let weight = 1.0;
+
+  if (affinity) {
+    const val = state.stats[affinity.primaryStat];
+    if (affinity.orientation === 'victoire' && val < affinity.threshold) {
+      // Plus le stat est bas, plus l'événement est probable
+      weight = 1.0 + 1.5 * ((affinity.threshold - val) / affinity.threshold);
+    } else if (affinity.orientation === 'croissance' && val >= affinity.threshold) {
+      // Plus le stat est haut, plus l'enseignement profond est probable
+      weight = 1.0 + 0.8 * ((val - affinity.threshold) / (100 - affinity.threshold));
+    }
+  }
+
+  // Cas spécial : orgueil boost quand foi est élevée (piège du pharisien)
+  if (event.category === 'orgueil_independance') {
+    weight = 1.0 + 1.2 * (state.stats.foi / 100);
+  }
+
+  weight *= (seasonMult[event.category] ?? 1.0);
+  return Math.max(0.1, weight);
+}
+
+function weightedPick<T>(items: T[], weights: number[]): T {
+  const total = weights.reduce((s, w) => s + w, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < items.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return items[i];
+  }
+  return items[items.length - 1];
+}
+
 /* ─── GÉNÉRATION D'ÉVÉNEMENT ─── */
 
 /** Filtre les événements selon les conditions de stats */
@@ -488,6 +617,19 @@ function filterEventsByStats(
 }
 
 export function generateEvent(state: GameState): AfflictionEvent | null {
+  // Correcteur de frustration (Système 2) — 3 fails consécutifs → event de grâce
+  if (state.reliefActive) {
+    const blessingPool = filterEventsByStats(getEventsForAge(state.age), state)
+      .filter((e) => e.statImpactOnSuccess && !state.recentEventIds.includes(e.id));
+    if (blessingPool.length > 0) {
+      const relief = blessingPool[Math.floor(Math.random() * blessingPool.length)];
+      const resolved = resolveEventForAge(relief, state.age);
+      const withVariant = applyNarrativeVariant(resolved, state);
+      const withCtx = applyLifeContextToEvent(withVariant, state);
+      return { ...withCtx, title: `[Grâce] ${withCtx.title}` };
+    }
+  }
+
   // D'abord vérifier les cascades
   const cascadeEvents = getCascadeEventsForAge(
     state.queuedCascadeEvents,
@@ -509,15 +651,27 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     .filter((e) => e.spawnProbability === undefined || Math.random() < e.spawnProbability);
   if (available.length === 0) return null;
 
-  // Priorité aux arcs déjà commencés
-  const arcEventIds = state.completedArcs
+  // Priorité aux arcs en cours — en respectant l'ordre séquentiel
+  const completedArcEventIds = state.completedArcs
     .flatMap((a) => {
       const arc = getArcById(a.arcId);
       return arc ? arc.eventIds : [];
     });
-  const remainingArcEvents = available.filter(
-    (e) => e.storyArcId && !arcEventIds.includes(e.id)
-  );
+  const remainingArcEvents = available.filter((e) => {
+    if (!e.storyArcId || !e.arcSequence) return false;
+    // Ignorer les événements des arcs déjà terminés
+    if (completedArcEventIds.includes(e.id)) return false;
+    // Séquence 1 : arc non encore commencé
+    if (e.arcSequence === 1) {
+      return !state.encounteredArcIds.includes(e.storyArcId);
+    }
+    // Séquence N > 1 : l'arc doit être en cours ET l'event précédent doit avoir été répondu
+    if (!state.encounteredArcIds.includes(e.storyArcId)) return false;
+    const arc = getArcById(e.storyArcId);
+    if (!arc) return false;
+    const prevEventId = arc.eventIds[e.arcSequence - 2];
+    return (state.answeredArcEventIds ?? []).includes(prevEventId);
+  });
 
   // SRS: priorité aux versets avec erreurs
   const srsPriorities = getSrsPriorityVerses(state.codex);
@@ -535,7 +689,10 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   // Sélection aléatoire — exclure les 5 événements récents si le pool le permet
   const deduped = pool.filter((e) => !state.recentEventIds.includes(e.id));
   const finalPool = deduped.length > 0 ? deduped : pool;
-  const event = finalPool[Math.floor(Math.random() * finalPool.length)];
+  // Sélection pondérée (Système 1) — poids basés sur les stats + saison spirituelle
+  const seasonMult = getSeasonMultipliers(state.spiritualSeason ?? 'Réveil');
+  const weights = finalPool.map((e) => computeEventWeight(e, state, seasonMult));
+  const event = weightedPick(finalPool, weights);
   const allDecoys = assignDecoys();
   const fullEvent = allDecoys.find((e) => e.id === event.id) || event;
 
@@ -589,6 +746,10 @@ export function validateChoice(
 
   if (correct) {
     // === SUCCÈS ===
+
+    // Correcteur de frustration (Système 2) — réinitialiser le compteur de fails
+    newState.consecutiveFails = 0;
+    newState.reliefActive = false;
 
     // Flow gain avec Time-to-Answer
     const flowGain = calculateFlowGain(timeToAnswer);
@@ -661,13 +822,9 @@ export function validateChoice(
       },
     ];
 
-    // Arc narratif: tracker rencontre + complétion
+    // Arc narratif: tracker complétion (la rencontre est tracée plus bas, hors du bloc correct)
     if (event.storyArcId && event.arcSequence) {
       const arc = getArcById(event.storyArcId);
-      // Marquer l'arc comme rencontré
-      if (!state.encounteredArcIds.includes(event.storyArcId)) {
-        newState.encounteredArcIds = [...state.encounteredArcIds, event.storyArcId];
-      }
       if (arc && event.arcSequence === arc.eventIds.length) {
         newState.completedArcs = [
           ...state.completedArcs,
@@ -694,15 +851,22 @@ export function validateChoice(
   } else {
     // === ÉCHEC ===
 
+    // Correcteur de frustration (Système 2) — incrémenter le compteur de fails
+    const newConsecutiveFails = (state.consecutiveFails ?? 0) + 1;
+    newState.consecutiveFails = newConsecutiveFails;
+    newState.reliefActive = newConsecutiveFails >= 3;
+
     // Flow: pénalité asymétrique
     newFlow.value = calculateFlowPenalty(newFlow.value);
     newFlow.palier = getFlowPalier(newFlow.value);
 
-    // Stats: malus
+    // Stats: malus avec softening progressif après 2 fails consécutifs
+    const softening = newConsecutiveFails >= 2 ? 0.75 : 1.0;
     for (const [stat, impact] of Object.entries(event.statImpactOnFail)) {
+      const adjustedImpact = Math.round(impact * softening);
       newStats[stat as StatName] = Math.max(
         MIN_STAT,
-        (newStats[stat as StatName] || 0) + impact
+        (newStats[stat as StatName] || 0) + adjustedImpact
       );
     }
 
@@ -770,10 +934,21 @@ export function validateChoice(
   // Burnout rate update
   newFlow.burnoutRate = calculateBurnoutRate(newFlow.palier);
 
-  // Fenêtre glissante des événements récents (évite répétitions)
+  // Tracker rencontre d'arc (success OU fail) — permet à l'event suivant de l'arc d'apparaître
+  if (event.storyArcId && event.arcSequence) {
+    if (!state.encounteredArcIds.includes(event.storyArcId)) {
+      newState.encounteredArcIds = [...state.encounteredArcIds, event.storyArcId];
+    }
+    const existing = state.answeredArcEventIds ?? [];
+    if (!existing.includes(event.id)) {
+      newState.answeredArcEventIds = [...existing, event.id];
+    }
+  }
+
+  // Fenêtre glissante des événements récents — 20 slots pour mieux éviter les répétitions
   newState.recentEventIds = [
     event.id,
-    ...state.recentEventIds.slice(0, 9),
+    ...state.recentEventIds.slice(0, 19),
   ];
 
   newState.stats = newStats;
@@ -886,6 +1061,43 @@ export function advanceAge(state: GameState): {
   // Paix : -1 tous les 2 ans à partir de 25 ans (pression et responsabilités de la vie)
   if (newAge >= 25 && newAge % 2 === 0) {
     newStats.paix = Math.max(1, newStats.paix - 1);
+  }
+
+  // Decay de l'amitié (Système 4) — -3 par an sans contact, plancher à 10
+  const usedCallFriend = state.actionsThisYear.includes('call_friend');
+  if (!usedCallFriend && newAge >= 8) {
+    newState.amiRelationship = Math.max(10, (state.amiRelationship ?? 50) - 3);
+  }
+  // Streak de froideur — journal si 2 ans consécutifs sous 20
+  if (newState.amiRelationship < 20) {
+    newState.amiDecayStreak = (state.amiDecayStreak ?? 0) + 1;
+    if (newState.amiDecayStreak === 2) {
+      newState.journal = [
+        ...newState.journal,
+        {
+          age: newAge,
+          text: `[AMI] Tu réalises que tu n'as pas eu de vraies nouvelles de ${state.lifeContext.friendName} depuis longtemps. Le silence s'est installé.`,
+          type: 'cascade' as const,
+        },
+      ];
+    }
+  } else {
+    newState.amiDecayStreak = 0;
+  }
+
+  // Transition de saison spirituelle (Système 3)
+  const newSeason = getSeasonForAge(newAge);
+  if (newSeason !== (state.spiritualSeason ?? 'Réveil')) {
+    newState.spiritualSeason = newSeason;
+    const s = SPIRITUAL_SEASONS[newSeason];
+    newState.journal = [
+      ...(newState.journal ?? state.journal),
+      {
+        age: newAge,
+        text: `[SAISON] ${s.label} — ${s.description}`,
+        type: 'milestone' as const,
+      },
+    ];
   }
 
   // Flow décroît naturellement si inactif

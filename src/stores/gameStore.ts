@@ -67,6 +67,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       age: state.age,
       flowLevel: state.flow.value,
       category: state.currentEvent.category,
+      season: state.spiritualSeason,
       timestamp: Date.now(),
     }).catch(() => {});
 

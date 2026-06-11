@@ -1,6 +1,7 @@
 /** Système audio procédural + VFX — Web Audio API + Kenney sounds */
 
 let audioCtx: AudioContext | null = null;
+let masterCompressor: DynamicsCompressorNode | null = null;
 let buffers: Record<string, AudioBuffer> = {};
 let loaded = false;
 
@@ -11,6 +12,14 @@ const SOUND_FILES = [
 async function initAudio(): Promise<void> {
   if (loaded) return;
   audioCtx = new AudioContext();
+  // Compresseur maître — évite le clipping quand plusieurs sons jouent simultanément
+  masterCompressor = audioCtx.createDynamicsCompressor();
+  masterCompressor.threshold.value = -18;
+  masterCompressor.knee.value = 10;
+  masterCompressor.ratio.value = 4;
+  masterCompressor.attack.value = 0.003;
+  masterCompressor.release.value = 0.15;
+  masterCompressor.connect(audioCtx.destination);
   const promises = SOUND_FILES.map(async (name) => {
     const resp = await fetch(`/sounds/${name}.ogg`);
     const arrayBuf = await resp.arrayBuffer();
@@ -20,23 +29,30 @@ async function initAudio(): Promise<void> {
   loaded = true;
 }
 
+function getMasterOutput(): AudioNode {
+  return masterCompressor ?? audioCtx!.destination;
+}
+
 function play(name: string, volume: number = 0.5, rate: number = 1.0): void {
   if (!audioCtx || !buffers[name]) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   const source = audioCtx.createBufferSource();
   const gain = audioCtx.createGain();
   source.buffer = buffers[name];
   gain.gain.value = volume;
   source.playbackRate.value = rate;
-  source.connect(gain).connect(audioCtx.destination);
+  source.connect(gain).connect(getMasterOutput());
   source.start(0);
 }
 
 /** Sons procéduraux (synthétisés, pas de fichiers) */
 function playProcedural(type: 'success' | 'fail' | 'levelup' | 'combo'): void {
   if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   const ctx = audioCtx;
   const now = ctx.currentTime;
 
+  const out = getMasterOutput();
   if (type === 'success') {
     // Rising chime: C5 → E5 → G5
     [523, 659, 784].forEach((freq, i) => {
@@ -45,9 +61,9 @@ function playProcedural(type: 'success' | 'fail' | 'levelup' | 'combo'): void {
       osc.type = 'sine';
       osc.frequency.value = freq;
       gain.gain.setValueAtTime(0, now + i * 0.08);
-      gain.gain.linearRampToValueAtTime(0.15, now + i * 0.08 + 0.02);
+      gain.gain.linearRampToValueAtTime(0.10, now + i * 0.08 + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
-      osc.connect(gain).connect(ctx.destination);
+      osc.connect(gain).connect(out);
       osc.start(now + i * 0.08);
       osc.stop(now + i * 0.08 + 0.3);
     });
@@ -58,9 +74,9 @@ function playProcedural(type: 'success' | 'fail' | 'levelup' | 'combo'): void {
     osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(200, now);
     osc.frequency.exponentialRampToValueAtTime(60, now + 0.3);
-    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.setValueAtTime(0.08, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-    osc.connect(gain).connect(ctx.destination);
+    osc.connect(gain).connect(out);
     osc.start(now);
     osc.stop(now + 0.3);
   } else if (type === 'levelup') {
@@ -71,9 +87,9 @@ function playProcedural(type: 'success' | 'fail' | 'levelup' | 'combo'): void {
       osc.type = 'triangle';
       osc.frequency.value = freq;
       gain.gain.setValueAtTime(0, now + i * 0.1);
-      gain.gain.linearRampToValueAtTime(0.1, now + i * 0.1 + 0.03);
+      gain.gain.linearRampToValueAtTime(0.08, now + i * 0.1 + 0.03);
       gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.4);
-      osc.connect(gain).connect(ctx.destination);
+      osc.connect(gain).connect(out);
       osc.start(now + i * 0.1);
       osc.stop(now + i * 0.1 + 0.4);
     });
@@ -84,9 +100,9 @@ function playProcedural(type: 'success' | 'fail' | 'levelup' | 'combo'): void {
       const gain = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.value = 1200 + Math.random() * 400;
-      gain.gain.setValueAtTime(0.06, now + i * 0.05);
+      gain.gain.setValueAtTime(0.05, now + i * 0.05);
       gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.15);
-      osc.connect(gain).connect(ctx.destination);
+      osc.connect(gain).connect(out);
       osc.start(now + i * 0.05);
       osc.stop(now + i * 0.05 + 0.15);
     }
@@ -199,7 +215,10 @@ function playTrack(path: string, fadeIn = true): void {
   if (!audioCtx || !ambientRunning) return;
   const ctx = audioCtx;
 
-  // Déconnecter la piste précédente si elle existe
+  // Déconnecter proprement la piste précédente
+  if (ambientGain) {
+    try { ambientGain.disconnect(); } catch { /* ignore */ }
+  }
   if (ambientSource) {
     try { ambientSource.disconnect(); } catch { /* ignore */ }
     ambientSource = null;
@@ -209,6 +228,7 @@ function playTrack(path: string, fadeIn = true): void {
     currentAudio.pause();
     currentAudio = null;
   }
+  ambientGain = null;
 
   const audio = new Audio(path);
   audio.crossOrigin = 'anonymous';
@@ -223,7 +243,7 @@ function playTrack(path: string, fadeIn = true): void {
     gain.gain.linearRampToValueAtTime(AMBIENT_VOLUME, ctx.currentTime + FADE_IN_SEC);
   }
 
-  source.connect(gain).connect(ctx.destination);
+  source.connect(gain).connect(getMasterOutput());
   audio.play().catch(() => { /* autoplay blocked — ignore */ });
 
   // Passer à la piste suivante à la fin
@@ -343,7 +363,16 @@ export function getAmbientVolume(): number {
 }
 
 export function setAmbientPlaybackRate(rate: number): void {
-  if (currentAudio) {
-    currentAudio.playbackRate = Math.max(0.8, Math.min(1.2, rate));
-  }
+  if (!currentAudio) return;
+  const clamped = Math.max(0.8, Math.min(1.2, rate));
+  // Rampe douce sur 2s pour éviter les artefacts de pitch-shifting
+  const current = currentAudio.playbackRate;
+  const steps = 20;
+  const delta = (clamped - current) / steps;
+  let i = 0;
+  const ramp = setInterval(() => {
+    if (!currentAudio || i >= steps) { clearInterval(ramp); return; }
+    currentAudio.playbackRate = Math.max(0.8, Math.min(1.2, currentAudio.playbackRate + delta));
+    i++;
+  }, 100);
 }

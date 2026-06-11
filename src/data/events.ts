@@ -10,9 +10,21 @@ export function pickDecoys(
     (v) => v.category === category && v.id !== correctId
   );
   const others = VERSE_DATABASE.filter((v) => v.category !== category);
-  const pool = [...sameCategory, ...others];
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map((v) => v.id);
+
+  // Toujours privilégier les versets de la même catégorie pour des leurres cohérents
+  const shuffledSame = [...sameCategory].sort(() => Math.random() - 0.5);
+  const shuffledOthers = [...others].sort(() => Math.random() - 0.5);
+
+  const result: string[] = [];
+  for (const v of shuffledSame) {
+    if (result.length >= count) break;
+    result.push(v.id);
+  }
+  for (const v of shuffledOthers) {
+    if (result.length >= count) break;
+    result.push(v.id);
+  }
+  return result;
 }
 
 export const EVENT_DATABASE: AfflictionEvent[] = [
