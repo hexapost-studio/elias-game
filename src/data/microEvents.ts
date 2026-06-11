@@ -1,6 +1,50 @@
 import type { MicroEvent, LifeContext } from '../types/game';
 
 export const MICRO_EVENTS: MicroEvent[] = [
+  // ═══ 0-6 ans — Moments narratifs rares (probability < 1 = rare mais possible) ═══
+  {
+    id: 'micro-infant-001',
+    text: 'Tu arrives au monde en pleurant. {père} répète à mi-voix dans le couloir : "Merci, Seigneur. Merci." Il ne sait pas encore que ce murmure sera le premier son que tu mémoriseras.',
+    ageRange: [0, 0],
+    probability: 0.25,
+    statBonus: { foi: 1, paix: 1 },
+  },
+  {
+    id: 'micro-infant-002',
+    text: 'Un ancien de l\'église pose sa main rugueuse sur ton front de nourrisson et prononce quelque chose à voix basse. Tes parents échangent un regard. Toi, tu dors — mais ton esprit a enregistré chaque mot.',
+    ageRange: [0, 1],
+    probability: 0.20,
+    statBonus: { foi: 2 },
+  },
+  {
+    id: 'micro-infant-003',
+    text: '{père} t\'apprend à dire son nom et "merci à Dieu" en même temps. Les deux arrivent dans le même souffle. {mère} rit aux larmes. Pour eux, ce sont tes premiers mots. Pour toi, c\'est déjà le monde dans sa totalité.',
+    ageRange: [1, 2],
+    probability: 0.20,
+    statBonus: { paix: 2, foi: 1 },
+  },
+  {
+    id: 'micro-infant-004',
+    text: '{mère} s\'agenouille chaque nuit avant d\'éteindre la lumière. Tu fais semblant de dormir pour l\'observer. Ses lèvres bougent sans bruit. Tu sais que c\'est pour toi. Tu ne comprendras le poids de ces prières que des décennies plus tard.',
+    ageRange: [2, 4],
+    probability: 0.20,
+    statBonus: { foi: 2, paix: 1 },
+  },
+  {
+    id: 'micro-infant-005',
+    text: 'C\'est le dimanche de la Pentecôte. L\'église est bondée, les chants ébranlent les murs. Tu t\'agrippes à la jupe de {mère} et tu regardes tout ça les yeux écarquillés. Quelque chose en toi reconnaît cet endroit avant même de pouvoir le nommer.',
+    ageRange: [3, 5],
+    probability: 0.18,
+    statBonus: { foi: 3 },
+  },
+  {
+    id: 'micro-infant-006',
+    text: 'La nuit, entre le sommeil et l\'éveil, tu entends quelque chose — pas une voix, pas un rêve. Une certitude posée en toi comme une graine qu\'on ne voit pas encore mais qui est déjà vivante.',
+    ageRange: [4, 6],
+    probability: 0.15,
+    statBonus: { foi: 2, paix: 2 },
+  },
+
   // ═══ 0-6 ans — Petite enfance ═══
   {
     id: 'micro-001',
@@ -780,9 +824,11 @@ export function getMicroEventForAge(
   parentNames?: { father: string; mother: string },
   lifeContext?: LifeContext
 ): MicroEvent | null {
-  const available = MICRO_EVENTS.filter(
-    (e) => age >= e.ageRange[0] && age <= e.ageRange[1]
-  );
+  const available = MICRO_EVENTS.filter((e) => {
+    if (age < e.ageRange[0] || age > e.ageRange[1]) return false;
+    if (e.probability !== undefined && Math.random() > e.probability) return false;
+    return true;
+  });
   if (available.length === 0) return null;
 
   const selected = available[Math.floor(Math.random() * available.length)];
