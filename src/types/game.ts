@@ -140,6 +140,8 @@ export interface AfflictionEvent {
   arcSequence?: number;
   /** Texte alternatif selon des conditions de stats */
   narrativeVariants?: NarrativeVariant[];
+  /** Probabilité d'entrer dans le pool de sélection (0–1). Absent = toujours éligible. */
+  spawnProbability?: number;
   /** Stat minimum pour que cet événement apparaisse */
   minStat?: Partial<Record<StatName, number>>;
   /** Stat maximum pour que cet événement apparaisse */

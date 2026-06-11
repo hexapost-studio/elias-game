@@ -1,5 +1,107 @@
 [
   {
+    "id": "e-infant-001",
+    "title": "Les pleurs de la nuit",
+    "description": "Tu pleures sans que personne ne comprenne pourquoi. La maison est dans le noir. Ton père se lève, te prend dans ses bras et murmure une prière sur toi. Dans ses bras, quelque chose se calme — ou se brise.",
+    "ageRange": [0, 2],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-007",
+    "spawnProbability": 0.20,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "thematicFlavor": "Petite enfance",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-infant-002",
+    "title": "La fièvre du nourrisson",
+    "description": "Une chaleur brûlante envahit ton petit corps. Ta mère veille toute la nuit, son front contre le tien, sa prière comme un rempart entre toi et la mort. L'aube sera-t-elle une victoire ou un deuil ?",
+    "ageRange": [0, 3],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-003",
+    "spawnProbability": 0.20,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": -5,
+      "finances": 0
+    },
+    "thematicFlavor": "Petite enfance",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-infant-003",
+    "title": "La première chute",
+    "description": "Tu apprends à marcher. Tes genoux heurtent le carrelage froid. La douleur est nouvelle, inconnue. Tu lèves les yeux pour chercher un visage. Ce que tu trouves dans ce regard forge déjà ce que tu deviendras.",
+    "ageRange": [1, 3],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-003",
+    "spawnProbability": 0.20,
+    "statImpactOnFail": {
+      "foi": -1,
+      "paix": -2,
+      "physique": -3,
+      "finances": 0
+    },
+    "thematicFlavor": "Petite enfance",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-infant-004",
+    "title": "La dispute dans la maison",
+    "description": "Des voix s'élèvent. Tu ne comprends pas encore les mots, mais ton corps comprend la tension. Tu te fais tout petit dans ta chambre et tu attends que ça passe. La peur de l'abandon prend racine très tôt.",
+    "ageRange": [2, 5],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-001",
+    "spawnProbability": 0.20,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "thematicFlavor": "Petite enfance",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-infant-005",
+    "title": "L'arrivée de l'autre",
+    "description": "Un nouveau bébé entre dans la maison. Tout le monde se penche sur lui. Ta mère est ailleurs. Ton père est occupé. Tu te demandes si tu comptes encore. L'amertume naît avant même qu'on sache la nommer.",
+    "ageRange": [2, 5],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-005",
+    "spawnProbability": 0.20,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "thematicFlavor": "Petite enfance",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-infant-006",
+    "title": "Le livre de ton père",
+    "description": "Ton père te montre un livre différent des autres — plus épais, plus vieux. Il l'ouvre, pose sa main sur ta tête et te lit une phrase à voix haute. Tu ne comprends pas encore, mais les mots descendent quelque part en toi.",
+    "ageRange": [3, 6],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-001",
+    "spawnProbability": 0.20,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "thematicFlavor": "Petite enfance",
+    "decoyVerseIds": []
+  },
+  {
     "id": "e-fond-001",
     "title": "Le harcèlement scolaire",
     "description": "À l'école, un groupe d'élèves se moque de toi chaque jour à cause de ta foi. La peur te serre le ventre.",

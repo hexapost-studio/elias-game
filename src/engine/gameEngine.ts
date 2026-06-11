@@ -504,8 +504,9 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     }
   }
 
-  // Événements disponibles pour l'âge + filtrés par stats
-  const available = filterEventsByStats(getEventsForAge(state.age), state);
+  // Événements disponibles pour l'âge + filtrés par stats + spawnProbability
+  const available = filterEventsByStats(getEventsForAge(state.age), state)
+    .filter((e) => e.spawnProbability === undefined || Math.random() < e.spawnProbability);
   if (available.length === 0) return null;
 
   // Priorité aux arcs déjà commencés
