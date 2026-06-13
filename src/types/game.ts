@@ -246,6 +246,8 @@ export interface GameState {
   spiritualSeason: SpiritualSeasonName;
   /** Nombre d'années consécutives avec amiRelationship < 20 */
   amiDecayStreak: number;
+  /** Nombre total d'appels à call_friend (lifetime) — débloque des paliers de bonus */
+  callFriendCount: number;
   metrics: RunMetrics;
 }
 
