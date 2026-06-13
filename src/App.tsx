@@ -679,7 +679,7 @@ function App() {
             onClick={() => {
               const next = !ambientOn;
               setAmbientOn(next);
-              next ? startAmbient(spiritualSeason) : stopAmbient();
+              next ? startAmbient() : stopAmbient();
             }}
             title={ambientOn ? 'Couper la musique' : 'Activer la musique'}
             className="btn-music"
@@ -864,7 +864,7 @@ function App() {
           onToggleAmbient={() => {
             const next = !ambientOn;
             setAmbientOn(next);
-            next ? startAmbient(spiritualSeason) : stopAmbient();
+            next ? startAmbient() : stopAmbient();
           }}
           currentTitle={currentTitle?.name ?? null}
           age={age}

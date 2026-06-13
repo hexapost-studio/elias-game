@@ -16,7 +16,7 @@ import type {
   SpiritualSeasonName,
   SpiritualSeason,
 } from '../types/game';
-import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from '../data/events';
+import { getEventsForAge, pickDecoys, getEventById, resolveEventForAge } from '../data/events';
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
 import { getArcById } from '../data/storyArcs';
 import { getMicroEventForAge } from '../data/microEvents';
@@ -337,6 +337,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     completedArcs: [],
     encounteredArcIds: [],
     recentEventIds: [],
+    recentVerseIds: [],
     answeredArcEventIds: [],
     consecutiveFails: 0,
     reliefActive: false,
@@ -746,12 +747,20 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   // Sélection aléatoire — exclure les 5 événements récents si le pool le permet
   const deduped = pool.filter((e) => !state.recentEventIds.includes(e.id));
   const finalPool = deduped.length > 0 ? deduped : pool;
+
+  // Garde-fou verset — éviter le même verset correct que les 20 dernières questions
+  const verseDeduped = finalPool.filter((e) => !state.recentVerseIds?.includes(e.correctVerseId));
+  const poolFinal = verseDeduped.length > 0 ? verseDeduped : finalPool;
   // Sélection pondérée (Système 1) — poids basés sur les stats + saison spirituelle
   const seasonMult = getSeasonMultipliers(state.spiritualSeason ?? 'Réveil');
-  const weights = finalPool.map((e) => computeEventWeight(e, state, seasonMult));
-  const event = weightedPick(finalPool, weights);
-  const allDecoys = assignDecoys();
-  const fullEvent = allDecoys.find((e) => e.id === event.id) || event;
+  const weights = poolFinal.map((e) => computeEventWeight(e, state, seasonMult));
+  const event = weightedPick(poolFinal, weights);
+  // Leurres frais — exclure les versets récents pour éviter les répétitions de faux choix
+  const freshDecoys = pickDecoys(event.correctVerseId, event.category, 3, state.recentVerseIds ?? []);
+  const fullEvent = {
+    ...event,
+    decoyVerseIds: freshDecoys.length >= 3 ? freshDecoys : event.decoyVerseIds,
+  };
 
   // Appliquer la variante d'âge, puis la variante narrative
   const ageResolved = resolveEventForAge(fullEvent, state.age);
@@ -1006,6 +1015,13 @@ export function validateChoice(
   newState.recentEventIds = [
     event.id,
     ...state.recentEventIds.slice(0, 19),
+  ];
+
+  // Fenêtre glissante des versets récents (correct + leurres) — 20 slots
+  const allVerseIds = [verse.id, ...event.decoyVerseIds];
+  newState.recentVerseIds = [
+    ...allVerseIds,
+    ...(state.recentVerseIds ?? []).slice(0, 20 - allVerseIds.length),
   ];
 
   newState.stats = newStats;

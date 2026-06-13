@@ -317,24 +317,19 @@ export function playTheme(): void {
   playTrack('/audio/theme.mp3', true);
 }
 
-/** Joue la playlist en shuffle (musique d'ambiance). Stop le thème s'il jouait. */
-export function startAmbient(seasonName?: string): void {
-  // Si le thème joue encore, killCurrentSource() sera appelé dans playTrack()
+/** Joue la playlist en shuffle (musique d'ambiance). Stop le thème s'il jouait.
+ *  Le crossfade saisonnier est géré par le useEffect dans App.tsx. */
+export function startAmbient(): void {
   if (!musicActive) {
     musicActive = true;
     if (audioCtx?.state === 'suspended') audioCtx.resume();
     document.addEventListener('visibilitychange', _handleVisibility);
   }
 
-  // Priorité : piste de saison si disponible, sinon shuffle
-  if (seasonName && SEASON_TRACKS[seasonName]) {
-    playSeasonTrack(seasonName);
-  } else {
-    autoAdvance = true;
-    playlist = [...SOUNDTRACK_PATHS];
-    trackIndex = Math.floor(Math.random() * playlist.length);
-    playTrack(playlist[trackIndex], true);
-  }
+  autoAdvance = true;
+  playlist = [...SOUNDTRACK_PATHS];
+  trackIndex = Math.floor(Math.random() * playlist.length);
+  playTrack(playlist[trackIndex], true);
 }
 
 /**

@@ -236,6 +236,8 @@ export interface GameState {
   encounteredArcIds: string[];
   /** Fenêtre glissante des 5 derniers événements vus — empêche les répétitions */
   recentEventIds: string[];
+  /** Fenêtre glissante des 20 derniers IDs de versets vus (correct + leurres) — évite les répétitions */
+  recentVerseIds: string[];
   /** IDs des événements d'arc déjà répondus — permet d'enforcer l'ordre séquentiel des arcs */
   answeredArcEventIds: string[];
   /** Nombre de fails consécutifs — réinitialisé au premier succès */

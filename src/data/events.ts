@@ -13,12 +13,14 @@ export const TOTAL_EVENTS = EVENT_DATABASE.length;
 export function pickDecoys(
   correctId: string,
   category: string,
-  count: number = 3
+  count: number = 3,
+  excludeIds: string[] = []
 ): string[] {
+  const exclude = new Set([correctId, ...excludeIds]);
   const sameCategory = VERSE_DATABASE.filter(
-    (v) => v.category === category && v.id !== correctId
+    (v) => !exclude.has(v.id) && v.category === category
   );
-  const others = VERSE_DATABASE.filter((v) => v.category !== category);
+  const others = VERSE_DATABASE.filter((v) => !exclude.has(v.id) && v.category !== category);
 
   const shuffledSame = [...sameCategory].sort(() => Math.random() - 0.5);
   const shuffledOthers = [...others].sort(() => Math.random() - 0.5);
