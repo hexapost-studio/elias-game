@@ -181,13 +181,39 @@ export const TITLES: Title[] = [
     id: 'prodige',
     name: 'Le Prodige',
     description: 'Atteint 100 ans avec les 4 jauges > 50%',
+    priority: 100,
     condition: (m) => m.ageAtDeath >= 100 && m.successRate >= 60,
     bonus: { foi: 5, paix: 5 },
+  },
+  {
+    id: 'star',
+    name: 'La Star',
+    description: 'Taux de réussite > 85%',
+    priority: 90,
+    condition: (m) => m.successRate > 85 && m.totalEvents >= 15,
+    bonus: { foi: 4, paix: 4, finances: 4 },
+  },
+  {
+    id: 'anakazo',
+    name: 'L\'Anakazo',
+    description: 'Combo max ≥ 10',
+    priority: 80,
+    condition: (m) => m.maxCombo >= 10,
+    bonus: { physique: 3, finances: 3 },
+  },
+  {
+    id: 'fervent',
+    name: 'Le Fervent',
+    description: 'A atteint le Flow max (100) au moins une fois',
+    priority: 70,
+    condition: (m) => m.maxFlow >= 100,
+    bonus: { foi: 8 },
   },
   {
     id: 'combattant',
     name: 'Le Combattant',
     description: 'A survécu à 30+ événements avec un taux > 70%',
+    priority: 60,
     condition: (m) => m.totalEvents >= 30 && m.successRate >= 70,
     bonus: { physique: 5, foi: 3 },
   },
@@ -195,34 +221,15 @@ export const TITLES: Title[] = [
     id: 'sage',
     name: 'Le Sage',
     description: 'A débloqué 30+ versets dans le Codex',
+    priority: 50,
     condition: (m) => m.totalVersesUnlocked >= 30,
     bonus: { paix: 5, foi: 3 },
   },
   {
-    id: 'fervent',
-    name: 'Le Fervent',
-    description: 'A atteint le Flow max (100) au moins une fois',
-    condition: (m) => m.maxFlow >= 100,
-    bonus: { foi: 8 },
-  },
-  {
-    id: 'anakazo',
-    name: 'L\'Anakazo',
-    description: 'Combo max ≥ 10',
-    condition: (m) => m.maxCombo >= 10,
-    bonus: { physique: 3, finances: 3 },
-  },
-  {
-    id: 'star',
-    name: 'La Star',
-    description: 'Taux de réussite > 85%',
-    condition: (m) => m.successRate > 85 && m.totalEvents >= 15,
-    bonus: { foi: 4, paix: 4, finances: 4 },
-  },
-  {
     id: 'survivant',
     name: 'Le Survivant',
-    description: 'A survécu à 5+ événements en cascade',
+    description: 'A survécu à 20+ événements sans mourir',
+    priority: 40,
     condition: (m) => m.causeOfDeath === null && m.totalEvents >= 20,
     bonus: { physique: 8 },
   },
@@ -1223,8 +1230,8 @@ export function computeFinalMetrics(state: GameState, causeReason?: string): Run
 }
 
 export function determineTitle(metrics: RunMetrics): Title | null {
-  for (const title of TITLES) {
-    if (title.condition(metrics)) return title;
-  }
-  return null;
+  const eligible = TITLES.filter((t) => t.condition(metrics));
+  if (eligible.length === 0) return null;
+  eligible.sort((a, b) => b.priority - a.priority);
+  return eligible[0];
 }

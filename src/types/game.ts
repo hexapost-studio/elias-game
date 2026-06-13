@@ -253,6 +253,7 @@ export interface Title {
   id: string;
   name: string;
   description: string;
+  priority: number;
   condition: (metrics: RunMetrics) => boolean;
   bonus: Partial<StatImpact>;
 }
