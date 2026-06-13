@@ -193,6 +193,10 @@ const SOUNDTRACK_PATHS = [
   '/audio/soundtrack-1.mp3',
   '/audio/soundtrack-2.mp3',
   '/audio/soundtrack-3.mp3',
+  '/audio/soundtrack-4.mp3',
+  '/audio/soundtrack-5.mp3',
+  '/audio/soundtrack-6.mp3',
+  '/audio/soundtrack-explore-the-fire.mp3',
 ];
 
 let AMBIENT_VOLUME = 0.38;    // Volume cible — modifiable via setAmbientVolume()
