@@ -481,30 +481,32 @@ src/engine/
 
 ## 13. ROADMAP
 
-### Faits (29 interventions, 11 PRs)
+### Faits (30+ interventions, 12 PRs)
 ```
-[████████████████████████████████████] 100%
+[██████████████████████████████████████████████] 100%
 ```
 
-### Court terme (1-2 jours)
-- [ ] Créer les ~30 events des 5 arcs narratifs manquants
-- [ ] Ajouter 5+ events pour les âges 90-100
-- [ ] Ajouter 1-2 events pour sterilite
-- [ ] Masquer DevPanel + DebugView en production
+### Court terme — FAIT (PR #12)
+- [x] Créer les ~30 events des 5 arcs narratifs manquants → **76 events créés** (6 arcs)
+- [x] Ajouter 5+ events pour les âges 90-100 → **5 events senior**
+- [x] Ajouter 1-2 events pour sterilite → **1 event** (total: 2)
+- [x] Masquer DevPanel + DebugView en production → `import.meta.env.DEV`
 
-### Moyen terme (1 semaine)
-- [ ] Mode "découverte" (entraînement sans perte de stats)
-- [ ] Ajuster la courbe de difficulté senior (61+) 
-- [ ] Système de badges saisonniers
-- [ ] Wrap APK (PWA → Android)
-- [ ] Découpage de `gameEngine.ts` en modules
+### Prochaine session — ce qui rapporte le plus (3-4h)
+1. **Wrap APK Android** (10 min) `npx @pwabuilder/cli` → jeu publiable sur stores
+2. **Ajuster courbe difficulté senior** (1h) — baisser la difficulté 61+ pour que le joueur voie la fin
+3. **Découper gameEngine.ts** (2h) — 1325 lignes → 10 modules spécialisés
+4. **Mode découverte** (2h) — entraînement sans perte de stats pour apprendre les versets
 
-### Long terme (1 mois+)
+### Session suivante (1 semaine)
+- [ ] Système de badges saisonniers (récompenses visibles pour chaque saison traversée)
+- [ ] Défis quotidiens (verset du jour avec défi associé)
 - [ ] i18n : structure pour traduction anglaise
-- [ ] Défis quotidiens
+- [ ] Notifications push (rappel quotidien)
+
+### Plus tard (1 mois+)
 - [ ] Créateur d'arcs in-game
-- [ ] Notification push
-- [ ] Mode multijoueur (comparaison de stats)
+- [ ] Mode multijoueur (comparaison de stats entre joueurs)
 - [ ] Nouveaux types d'actions (voyager, étudier, fonder une famille)
 
 ---
