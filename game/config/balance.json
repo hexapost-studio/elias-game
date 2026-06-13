@@ -4,6 +4,8 @@
   "maxAge": 100,
   "initialStats": { "foi": 70, "paix": 70, "physique": 80, "finances": 50 },
   "eventChancePerYear": 0.4,
+  "microEventChance": 0.55,
+  "firstEventAge": 5,
 
   "flow": {
     "baseGain": 10,
@@ -11,7 +13,9 @@
     "thresholds": { "palier1": 33, "palier2": 66, "palier3": 100 },
     "multipliers": { "palier1": 1.0, "palier2": 1.5, "palier3": 2.5 },
     "naturalDecay": 2,
-    "penaltyAsymmetric": true
+    "penaltyAsymmetric": true,
+    "penaltyPalier3": 66,
+    "penaltyPalier2": 33
   },
 
   "burnout": {
@@ -25,7 +29,18 @@
     "physiqueDeclineRate": 1,
     "physiqueDeclineRateOld": 2,
     "paixDeclineStart": 61,
-    "paixDeclineRate": 1
+    "paixDeclineRate": 1,
+    "financeCost": {
+      "youngAdult": { "minAge": 18, "maxAge": 25, "cost": 2 },
+      "adult":      { "minAge": 26, "maxAge": 45, "cost": 3 },
+      "midlife":    { "minAge": 46, "maxAge": 65, "cost": 1 }
+    }
+  },
+
+  "actionPoints": {
+    "standard": 2,
+    "seniorMinAge": 60,
+    "seniorPoints": 3
   },
 
   "difficulty": {
@@ -35,8 +50,35 @@
   },
 
   "combo": {
-    "threshold": 5,
-    "bonusFoi": 2
+    "thresholds": {
+      "5":  { "foi": 3, "paix": 2 },
+      "10": { "foi": 5, "paix": 5, "physique": 3 },
+      "20": { "foi": 8, "paix": 8, "physique": 5, "finances": 5 }
+    },
+    "repeatBonus": { "foi": 3 },
+    "repeatEvery": 5
+  },
+
+  "ami": {
+    "decayStartAge": 8,
+    "decayPerYear": 3,
+    "floor": 10,
+    "streakAlertAfter": 2,
+    "streakThreshold": 20,
+    "friendIntroAge": 10,
+    "paliers": {
+      "5":  { "extraPaix": 1, "extraAmi": 2 },
+      "10": { "extraPaix": 2, "extraAmi": 3 },
+      "20": { "extraPaix": 3, "extraAmi": 4 }
+    }
+  },
+
+  "recentSlots": 20,
+
+  "music": {
+    "volume": 0.38,
+    "fadeInSec": 2.5,
+    "fadeOutSec": 1.8
   },
 
   "birthProfiles": [

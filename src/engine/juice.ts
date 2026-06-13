@@ -1,4 +1,5 @@
 /** Système audio procédural + VFX — Web Audio API + Kenney sounds */
+import { CONFIG } from '../../game/data/loader';
 
 let audioCtx: AudioContext | null = null;
 let masterCompressor: DynamicsCompressorNode | null = null;
@@ -199,9 +200,9 @@ const SOUNDTRACK_PATHS = [
   '/audio/soundtrack-explore-the-fire.mp3',
 ];
 
-let MUSIC_VOLUME = 0.38;       // Volume cible
-const FADE_IN_SEC  = 2.5;     // Durée fondu ouverture
-const FADE_OUT_SEC = 1.8;     // Durée fondu fermeture
+let MUSIC_VOLUME = CONFIG.music?.volume ?? 0.38;       // Volume cible
+const FADE_IN_SEC  = CONFIG.music?.fadeInSec ?? 2.5;     // Durée fondu ouverture
+const FADE_OUT_SEC = CONFIG.music?.fadeOutSec ?? 1.8;    // Durée fondu fermeture
 
 let musicActive = false;
 let currentAudio: HTMLAudioElement | null = null;

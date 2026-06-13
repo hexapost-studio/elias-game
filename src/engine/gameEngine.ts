@@ -28,24 +28,25 @@ const MAX_AGE = CONFIG.maxAge;
 
 /* ─── JAUGE DE FLOW ─── */
 
+const T = CONFIG.flow.thresholds;
 const FLOW_PALIER_THRESHOLDS: Record<FlowPalier, [number, number]> = {
-  1: [0, 33],
-  2: [34, 66],
-  3: [67, 100],
+  1: [0, T.palier1],
+  2: [T.palier1 + 1, T.palier2],
+  3: [T.palier2 + 1, T.palier3],
 };
 
 const FLOW_GAIN_BASE = CONFIG.flow.baseGain;
-const FLOW_MAX_TIME = CONFIG.flow.maxTime; // secondes max pour répondre
+const FLOW_MAX_TIME = CONFIG.flow.maxTime;
 const FLOW_PALIER_BONUS: Record<FlowPalier, number> = {
-  1: 1.0,
-  2: 1.5,
-  3: 2.5,
+  1: CONFIG.flow.multipliers.palier1,
+  2: CONFIG.flow.multipliers.palier2,
+  3: CONFIG.flow.multipliers.palier3,
 };
 
 /** Détermine le palier de Flow à partir de la valeur */
 export function getFlowPalier(value: number): FlowPalier {
-  if (value <= 33) return 1;
-  if (value <= 66) return 2;
+  if (value <= T.palier1) return 1;
+  if (value <= T.palier2) return 2;
   return 3;
 }
 
@@ -60,9 +61,9 @@ export function calculateFlowGain(
 /** Pénalité asymétrique — retombe au seuil inférieur du palier */
 export function calculateFlowPenalty(currentFlow: number): number {
   const palier = getFlowPalier(currentFlow);
-  if (palier === 3) return 66; // retombe en début de palier 2
-  if (palier === 2) return 33; // retombe en début de palier 1
-  return 0; // déjà au palier 1, retombe à 0
+  if (palier === 3) return CONFIG.flow.penaltyPalier3;
+  if (palier === 2) return CONFIG.flow.penaltyPalier2;
+  return 0;
 }
 
 /* ─── NOMS DES PARENTS ─── */
@@ -393,9 +394,9 @@ export function getCascadeEventsForAge(
 /* ─── BURNOUT ─── */
 
 export function calculateBurnoutRate(palier: FlowPalier): number {
-  if (palier === 3) return 3; // -3 physique par tour
-  if (palier === 2) return 1; // -1 physique par tour
-  return 0;
+  if (palier === 3) return CONFIG.burnout.palier3;
+  if (palier === 2) return CONFIG.burnout.palier2;
+  return CONFIG.burnout.palier1;
 }
 
 /* ─── GAME OVER ─── */
@@ -848,25 +849,24 @@ export function validateChoice(
     newState.combo = state.combo + 1;
     newState.maxCombo = Math.max(newState.maxCombo, newState.combo);
 
-    // Bonus combo — paliers progressifs
-    if (newState.combo === 5) {
-      newStats.foi  = Math.min(MAX_STAT, newStats.foi + 3);
-      newStats.paix = Math.min(MAX_STAT, newStats.paix + 2);
-      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x5] Ferveur montante — Foi +3, Paix +2', type: 'milestone' as const }];
-    } else if (newState.combo === 10) {
-      newStats.foi      = Math.min(MAX_STAT, newStats.foi + 5);
-      newStats.paix     = Math.min(MAX_STAT, newStats.paix + 5);
-      newStats.physique = Math.min(MAX_STAT, newStats.physique + 3);
-      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x10] Le feu de Dieu — Foi +5, Paix +5, Corps +3', type: 'milestone' as const }];
-    } else if (newState.combo === 20) {
-      newStats.foi      = Math.min(MAX_STAT, newStats.foi + 8);
-      newStats.paix     = Math.min(MAX_STAT, newStats.paix + 8);
-      newStats.physique = Math.min(MAX_STAT, newStats.physique + 5);
-      newStats.finances = Math.min(MAX_STAT, newStats.finances + 5);
-      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x20] PRODIGE — toutes stats +bonus', type: 'milestone' as const }];
-    } else if (newState.combo > 0 && newState.combo % 5 === 0) {
-      // Paliers suivants (25, 30, ...) : +3 foi
-      newStats.foi = Math.min(MAX_STAT, newStats.foi + 3);
+    // Bonus combo — paliers progressifs (depuis balance.json)
+    const ct = CONFIG.combo.thresholds as Record<string, Record<string, number>>;
+    if (ct[String(newState.combo)]) {
+      const bonus = ct[String(newState.combo)];
+      for (const [stat, val] of Object.entries(bonus)) {
+        newStats[stat as StatName] = Math.min(MAX_STAT, newStats[stat as StatName] + val);
+      }
+      newState.journal = [...(newState.journal || state.journal), {
+        age: state.age,
+        text: `[COMBO x${newState.combo}] Bonus : ${Object.entries(bonus).map(([s, v]) => `${s} +${v}`).join(', ')}`,
+        type: 'milestone' as const,
+      }];
+    } else if (newState.combo > 0 && newState.combo % CONFIG.combo.repeatEvery === 0) {
+      // Paliers suivants : bonus répété
+      const rb = CONFIG.combo.repeatBonus as Record<string, number>;
+      for (const [stat, val] of Object.entries(rb)) {
+        newStats[stat as StatName] = Math.min(MAX_STAT, newStats[stat as StatName] + val);
+      }
     }
 
     // Codex: débloquer le verset
@@ -1011,17 +1011,19 @@ export function validateChoice(
     }
   }
 
-  // Fenêtre glissante des événements récents — 20 slots pour mieux éviter les répétitions
+const R = CONFIG.recentSlots;
+
+  // Fenêtre glissante des événements récents
   newState.recentEventIds = [
     event.id,
-    ...state.recentEventIds.slice(0, 19),
+    ...state.recentEventIds.slice(0, R - 1),
   ];
 
-  // Fenêtre glissante des versets récents (correct + leurres) — 20 slots
+  // Fenêtre glissante des versets récents (correct + leurres)
   const allVerseIds = [verse.id, ...event.decoyVerseIds];
   newState.recentVerseIds = [
     ...allVerseIds,
-    ...(state.recentVerseIds ?? []).slice(0, 20 - allVerseIds.length),
+    ...(state.recentVerseIds ?? []).slice(0, R - allVerseIds.length),
   ];
 
   newState.stats = newStats;
@@ -1054,10 +1056,17 @@ const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Reco
     let extraPaix = 0;
     let extraAmi = 0;
     let note = '';
-    // Paliers de bonus passifs
-    if (count >= 20) { extraPaix = 3; extraAmi = 4; note = ' (Ami fidèle ×3 — 20e appel)'; }
-    else if (count >= 10) { extraPaix = 2; extraAmi = 3; note = ' (Ami proche ×2 — 10e appel)'; }
-    else if (count >= 5) { extraPaix = 1; extraAmi = 2; note = ' (Ami régulier ×1.5 — 5e appel)'; }
+    // Paliers de bonus passifs (depuis balance.json)
+    const paliers = CONFIG.ami.paliers as Record<string, { extraPaix: number; extraAmi: number }>;
+    const sortedKeys = Object.keys(paliers).map(Number).sort((a, b) => b - a);
+    for (const threshold of sortedKeys) {
+      if (count >= threshold) {
+        extraPaix = paliers[String(threshold)].extraPaix;
+        extraAmi = paliers[String(threshold)].extraAmi;
+        note = ` (Ami fidèle ×${threshold / 5} — ${threshold}e appel)`;
+        break;
+      }
+    }
     return {
       statDelta: { paix: 3 + extraPaix },
       label: `Appel à ${s.lifeContext.friendName} — Paix ${3 + extraPaix}${note}`,
@@ -1138,8 +1147,10 @@ export function advanceAge(state: GameState): {
   newState.phase = 'idle';
   newState.currentEvent = null;
   newState.lastEventResult = null;
-  // Reset actions volontaires — 2 points avant 60 ans, 3 points senior
-  newState.actionPoints = newAge >= 60 ? 3 : 2;
+  // Reset actions volontaires — palier senior à 60 ans
+  newState.actionPoints = newAge >= CONFIG.actionPoints.seniorMinAge
+    ? CONFIG.actionPoints.seniorPoints
+    : CONFIG.actionPoints.standard;
   newState.actionsThisYear = [];
 
   // Retirer les cascades déclenchées
@@ -1148,25 +1159,26 @@ export function advanceAge(state: GameState): {
   );
 
   // Dépenses financières par âge (Système d'argent)
-  if (newAge >= 18 && newAge <= 25) {
-    newStats.finances = Math.max(MIN_STAT, newStats.finances - 2);
-  } else if (newAge >= 26 && newAge <= 45) {
-    newStats.finances = Math.max(MIN_STAT, newStats.finances - 3);
-  } else if (newAge >= 46 && newAge <= 65) {
-    newStats.finances = Math.max(MIN_STAT, newStats.finances - 1);
+  const fc = CONFIG.aging.financeCost;
+  if (newAge >= fc.youngAdult.minAge && newAge <= fc.youngAdult.maxAge) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - fc.youngAdult.cost);
+  } else if (newAge >= fc.adult.minAge && newAge <= fc.adult.maxAge) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - fc.adult.cost);
+  } else if (newAge >= fc.midlife.minAge && newAge <= fc.midlife.maxAge) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - fc.midlife.cost);
   }
 
   // Pénalité de vieillissement
-  if (newAge > 40) {
-    newStats.physique = Math.max(MIN_STAT, newStats.physique - 1);
+  if (newAge >= CONFIG.aging.physiqueDeclineStart) {
+    newStats.physique = Math.max(MIN_STAT, newStats.physique - CONFIG.aging.physiqueDeclineRate);
   }
-  if (newAge > 60) {
-    newStats.physique = Math.max(MIN_STAT, newStats.physique - 2);
-    newStats.paix     = Math.max(MIN_STAT, newStats.paix     - 1);
+  if (newAge >= CONFIG.aging.paixDeclineStart) {
+    newStats.physique = Math.max(MIN_STAT, newStats.physique - CONFIG.aging.physiqueDeclineRateOld);
+    newStats.paix     = Math.max(MIN_STAT, newStats.paix     - CONFIG.aging.paixDeclineRate);
   }
 
-  // Introduction de l'ami d'enfance à 10 ans
-  if (!state.friendIntroduced && newAge >= 10) {
+  // Introduction de l'ami d'enfance
+  if (!state.friendIntroduced && newAge >= CONFIG.ami.friendIntroAge) {
     newState.friendIntroduced = true;
     newState.journal = [
       ...(newState.journal ?? state.journal),
@@ -1188,15 +1200,16 @@ export function advanceAge(state: GameState): {
     newStats.paix = Math.max(1, newStats.paix - 1);
   }
 
-  // Decay de l'amitié (Système 4) — -3 par an sans contact, plancher à 10
+  // Decay de l'amitié (Système 4) — perte par an sans contact, plancher
+  const ami = CONFIG.ami;
   const usedCallFriend = state.actionsThisYear.includes('call_friend');
-  if (!usedCallFriend && newAge >= 8) {
-    newState.amiRelationship = Math.max(10, (state.amiRelationship ?? 50) - 3);
+  if (!usedCallFriend && newAge >= ami.decayStartAge) {
+    newState.amiRelationship = Math.max(ami.floor, (state.amiRelationship ?? 50) - ami.decayPerYear);
   }
-  // Streak de froideur — journal si 2 ans consécutifs sous 20
-  if (newState.amiRelationship < 20) {
+  // Streak de froideur — journal si N années consécutives sous le seuil
+  if (newState.amiRelationship < ami.streakThreshold) {
     newState.amiDecayStreak = (state.amiDecayStreak ?? 0) + 1;
-    if (newState.amiDecayStreak === 2) {
+    if (newState.amiDecayStreak >= ami.streakAlertAfter) {
       newState.journal = [
         ...newState.journal,
         {
@@ -1267,10 +1280,10 @@ export function advanceAge(state: GameState): {
   const hasCascade = newState.queuedCascadeEvents.some(
     (q) => q.triggerAge === newAge
   );
-  // Pas d'épreuves interactives avant 5 ans — le bébé/très jeune enfant ne choisit pas de versets
+  // Pas d'épreuves interactives avant l'âge configuré
   const shouldGenerate =
-    newAge >= 5 &&
-    (hasCascade || Math.random() < 0.55 || state.failedVerseIds.length > 0);
+    newAge >= CONFIG.firstEventAge &&
+    (hasCascade || Math.random() < CONFIG.eventChancePerYear || state.failedVerseIds.length > 0);
 
   let eventGenerated = false;
   if (shouldGenerate) {
@@ -1283,7 +1296,7 @@ export function advanceAge(state: GameState): {
   }
 
   // Micro-événements passifs (indépendants des épreuves)
-  if (Math.random() < 0.55) {
+  if (Math.random() < CONFIG.microEventChance) {
     const micro = getMicroEventForAge(newAge, state.parentNames, state.lifeContext);
     if (micro) {
       newState.journal = [
