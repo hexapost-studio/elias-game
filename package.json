@@ -9,7 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "validate": "node tools/validate-data.cjs",
+    "add-event": "node tools/add-event.mjs",
+    "add-arc": "node tools/add-arc.mjs"
   },
   "dependencies": {
     "localforage": "^1.10.0",
