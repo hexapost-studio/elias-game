@@ -2888,5 +2888,1575 @@
       "foi": 2,
       "finances": 12
     }
+  },
+  {
+    "id": "arc-ami-1",
+    "title": "La rencontre de {ami}",
+    "description": "Tu as 8 ans et un nouveau voisin vient d'emménager. {ami} est ton âge et semble aussi timide que toi. Un regard échangé par-dessus la clôture. La vie t'offre peut-être le début de la plus belle amitié de ton existence.",
+    "ageRange": [8, 12],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-004",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -1,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 2,
+      "foi": 1
+    },
+    "thematicFlavor": "Les amitiés d'enfance sont les racines de l'âme.",
+    "cascadeEventId": "arc-ami-1-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-ami-1-c",
+    "title": "L'occasion manquée",
+    "description": "Tu es resté dans ton coin. Le nouveau voisin s'est fait d'autres amis. Pendant des années, tu te demanderas ce qui aurait pu être si tu avais osé ce premier sourire.",
+    "ageRange": [9, 13],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-ami-2",
+    "title": "Le secret confié",
+    "description": "Les années ont passé, et {ami} est devenu ton meilleur ami. Un jour, il/elle te confie un secret lourd, quelque chose de jamais partagé. Ce qu'il/elle te dit pourrait tout changer ou tout briser. Comment porter ce poids ?",
+    "ageRange": [12, 18],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 3,
+      "foi": 2
+    },
+    "thematicFlavor": "La confiance est le ciment de toute amitié véritable.",
+    "cascadeEventId": "arc-ami-2-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 2,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-1"
+      }
+    ]
+  },
+  {
+    "id": "arc-ami-2-c",
+    "title": "Le secret révélé",
+    "description": "Tu n'as pas su garder le secret. Il s'est répandu comme une traînée de poudre. {ami} ne te regarde plus avec les mêmes yeux. La confiance est brisée, peut-être pour toujours.",
+    "ageRange": [13, 19],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 2
+  },
+  {
+    "id": "arc-ami-3",
+    "title": "La première trahison",
+    "description": "{ami} a dit des choses dans ton dos. Les mots te reviennent, déformés mais blessants. La déception te serre la gorge. Tout ce que vous avez construit semble s'effondrer. Pardonner ou couper les ponts ?",
+    "ageRange": [16, 25],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-004",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 4,
+      "foi": 3
+    },
+    "thematicFlavor": "Les amitiés qui survivent à la trahison sont les plus solides.",
+    "cascadeEventId": "arc-ami-3-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-2"
+      }
+    ]
+  },
+  {
+    "id": "arc-ami-3-c",
+    "title": "La rupture",
+    "description": "Tu as laissé la blessure pourrir. Les mots ne sont jamais sortis. L'amitié s'est éteinte dans le silence, et chaque fois que tu croises {ami} dans la rue, ton cœur se serre.",
+    "ageRange": [17, 26],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 3
+  },
+  {
+    "id": "arc-ami-4",
+    "title": "Le pardon risqué",
+    "description": "Après la tempête, tu décides de tendre la main. Un message, un appel, une rencontre. Le pardon est un risque — {ami} pourrait te rejeter à nouveau. Mais quelque chose au fond de toi sait que l'amitié véritable mérite ce risque.",
+    "ageRange": [22, 35],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amer-009",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 5,
+      "foi": 3
+    },
+    "thematicFlavor": "Le pardon est le pont qui relie deux cœurs séparés.",
+    "cascadeEventId": "arc-ami-4-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 4,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-3"
+      }
+    ]
+  },
+  {
+    "id": "arc-ami-4-c",
+    "title": "L'orgueil qui sépare",
+    "description": "Tu n'as pas fait le premier pas. L'orgueil a été plus fort. Les années passeront et le fossé se creusera. L'amitié devient un souvenir doux-amer.",
+    "ageRange": [23, 36],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 4
+  },
+  {
+    "id": "arc-ami-5",
+    "title": "Les années de silence",
+    "description": "La vie vous a éloignés. {ami} a pris un chemin différent, et vous ne vous parlez plus comme avant. Un appel manqué, un anniversaire oublié, et le silence s'est installé. Tu regardes un vieille photo et tu te demandes si l'amitié peut survivre à l'absence.",
+    "ageRange": [30, 50],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-005",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 3,
+      "foi": 2
+    },
+    "thematicFlavor": "Une amitié qui endure le silence revient plus forte.",
+    "cascadeEventId": "arc-ami-5-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 5,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-4"
+      }
+    ]
+  },
+  {
+    "id": "arc-ami-5-c",
+    "title": "L'oubli",
+    "description": "Tu n'as pas relancé le contact. Les années ont passé et {ami} est devenu un étranger. Un jour tu apprendras son déménagement, et il sera trop tard.",
+    "ageRange": [31, 51],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 5
+  },
+  {
+    "id": "arc-ami-6",
+    "title": "Le retour de l'ami",
+    "description": "Après des années, {ami} réapparaît. Un message inattendu, un appel qui surprend. La vie a fait son œuvre sur vous deux. Les blessures sont cicatrisées, les regrets apaisés. Vous vous retrouvez comme si le temps n'avait pas passé. L'amitié reprend son souffle.",
+    "ageRange": [40, 60],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-003",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 4,
+      "foi": 3
+    },
+    "thematicFlavor": "Les vraies amitiés survivent à l'absence et au silence.",
+    "cascadeEventId": "arc-ami-6-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 6,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-5"
+      }
+    ]
+  },
+  {
+    "id": "arc-ami-6-c",
+    "title": "Le rendez-vous manqué",
+    "description": "Tu n'as pas répondu. La vie était trop occupée, les priorités ailleurs. {ami} n'a pas insisté. L'opportunité de renouer s'est envolée.",
+    "ageRange": [41, 61],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 6
+  },
+  {
+    "id": "arc-ami-7",
+    "title": "L'épreuve de la maladie",
+    "description": "{ami} tombe gravement malade. Les années de complicité, de rires et de larmes défilent devant tes yeux alors que tu t'assois à son chevet. La maladie est impitoyable, mais ta présence est ton dernier cadeau. Rester fort pour lui/elle ou t'effondrer avec lui/elle ?",
+    "ageRange": [55, 72],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Dans la maladie, l'amitié révèle sa véritable profondeur.",
+    "cascadeEventId": "arc-ami-7-c",
+    "storyArcId": "arc-ami",
+    "arcSequence": 7,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-6"
+      }
+    ]
+  },
+  {
+    "id": "arc-ami-7-c",
+    "title": "La fuite devant la souffrance",
+    "description": "La maladie de {ami} te terrifie. Tu trouves des excuses pour ne pas y aller. Les jours passent, puis les semaines. Quand tu trouves enfin le courage, il/elle est déjà parti(e). Le regret t'accompagnera.",
+    "ageRange": [56, 73],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -7,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ami",
+    "arcSequence": 7
+  },
+  {
+    "id": "arc-ami-8",
+    "title": "L'héritage de l'amitié",
+    "description": "{ami} n'est plus là. Mais en vidant sa chambre, tu trouves une lettre, écrite il y a longtemps : \\\"Merci d'avoir été mon ami. Sans toi, ma vie aurait été plus sombre.\\\" Les larmes coulent, mais ce sont des larmes de gratitude. Une amitié qui a traversé 60 ans ne meurt jamais vraiment — elle devient un héritage.",
+    "ageRange": [62, 78],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-002",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 6
+    },
+    "thematicFlavor": "L'amitié fidèle est le reflet de l'amour de Dieu.",
+    "storyArcId": "arc-ami",
+    "arcSequence": 8,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ami-7"
+      }
+    ]
+  },
+  {
+    "id": "arc-metier-1",
+    "title": "La vocation naissante",
+    "description": "Tu as 18 ans et tu dois choisir une voie. Tous tes amis semblent savoir ce qu'ils veulent faire, mais toi tu hésites. Une opportunité de {métier} se présente, modeste mais prometteuse. Est-ce un signe de Dieu ou une simple coïncidence ?",
+    "ageRange": [18, 25],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 2,
+      "finances": 2
+    },
+    "thematicFlavor": "Les premiers pas décident rarement de la destination, mais ils donnent le rythme.",
+    "cascadeEventId": "arc-metier-1-c",
+    "storyArcId": "arc-metier",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-metier-1-c",
+    "title": "L'occasion perdue",
+    "description": "Tu as laissé passer l'opportunité, par peur ou par indécision. Le temps passe et d'autres prennent ta place. Tu restes à attendre un signe qui ne vient pas.",
+    "ageRange": [19, 26],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-metier",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-metier-2",
+    "title": "Le premier emploi",
+    "description": "Ton premier vrai travail dans le {métier} commence. L'enthousiasme des débuts est vite confronté à la réalité : collègues difficiles, tâches ingrates, horaires épuisants. {ami} te conseille de tenir bon, que c'est un passage obligé. Mais est-ce vraiment la volonté de Dieu ?",
+    "ageRange": [20, 32],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-002",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": -2,
+      "finances": -1
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 2,
+      "finances": 3
+    },
+    "thematicFlavor": "Dieu prépare souvent dans l'humilité ceux qu'il destine à de grandes choses.",
+    "cascadeEventId": "arc-metier-2-c",
+    "storyArcId": "arc-metier",
+    "arcSequence": 2,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-metier-1"
+      }
+    ]
+  },
+  {
+    "id": "arc-metier-2-c",
+    "title": "L'abandon prématuré",
+    "description": "Tu as démissionné sans réfléchir, brûlé par l'orgueil ou le découragement. Les portes se ferment derrière toi, et tu regrettes de ne pas avoir persévéré.",
+    "ageRange": [21, 33],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -1,
+      "finances": -4
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-metier",
+    "arcSequence": 2
+  },
+  {
+    "id": "arc-metier-3",
+    "title": "Le dilemme éthique",
+    "description": "Ton supérieur te demande de falsifier un rapport pour sauver un contrat important. La pression est énorme : ta carrière, ta famille, tout est en jeu. {ami} te dit de suivre ta conscience, mais {conjoint} s'inquiète pour vos finances. Que faire quand obéir à Dieu semble insensé aux yeux du monde ?",
+    "ageRange": [28, 45],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-002",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -4,
+      "physique": -1,
+      "finances": -5
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 3
+    },
+    "thematicFlavor": "L'intégrité se révèle dans les choix impossibles.",
+    "cascadeEventId": "arc-metier-3-c",
+    "storyArcId": "arc-metier",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-metier-2"
+      }
+    ]
+  },
+  {
+    "id": "arc-metier-3-c",
+    "title": "Le compromis fatal",
+    "description": "Tu as cédé à la pression. Le rapport a été falsifié, le contrat signé. Mais ta conscience te ronge. Chaque nuit, tu te demandes qui tu es devenu.",
+    "ageRange": [29, 46],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -6,
+      "paix": -5,
+      "physique": -2,
+      "finances": 3
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-metier",
+    "arcSequence": 3
+  },
+  {
+    "id": "arc-metier-4",
+    "title": "La traversée du désert",
+    "description": "Ton entreprise de {métier} traverse une crise. Les commandes s'effondrent, les dettes s'accumulent. Les nuits sont longues et la tentation de tout abandonner est forte. {église} prie pour toi, mais la situation ne change pas. Dieu est-il vraiment présent dans cette traversée ?",
+    "ageRange": [35, 55],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -3,
+      "finances": -8
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 5
+    },
+    "thematicFlavor": "Le désert précède souvent la terre promise.",
+    "cascadeEventId": "arc-metier-4-c",
+    "storyArcId": "arc-metier",
+    "arcSequence": 4,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-metier-3"
+      }
+    ]
+  },
+  {
+    "id": "arc-metier-4-c",
+    "title": "La faillite",
+    "description": "Tu as tout perdu. L'entreprise a fermé, les créanciers réclament. Tu te sens humilié, vaincu. Le chemin du {métier} semble fini.",
+    "ageRange": [36, 56],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -6,
+      "paix": -7,
+      "physique": -3,
+      "finances": -10
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-metier",
+    "arcSequence": 4
+  },
+  {
+    "id": "arc-metier-5",
+    "title": "La transmission",
+    "description": "Les années ont passé et tu es devenu un maître dans ton {métier}. Un jeune collègue te demande de le former, comme quelqu'un t'a formé autrefois. En regardant tout le chemin parcouru — les échecs, les prières non exaucées, les miracles silencieux — tu réalises que ta vraie réussite n'est pas ce que tu as bâti, mais ce que tu transmets. Le {métier} n'était que le véhicule de quelque chose de plus grand.",
+    "ageRange": [45, 65],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-005",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 2
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 4,
+      "finances": 4
+    },
+    "thematicFlavor": "Le vrai succès n'est pas ce qu'on amasse mais ce qu'on lègue.",
+    "storyArcId": "arc-metier",
+    "arcSequence": 5,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-metier-4"
+      }
+    ]
+  },
+  {
+    "id": "arc-parents-1",
+    "title": "L'ombre du père",
+    "description": "Tu as 10 ans et tu commences à comprendre que ton père n'est pas le héros que tu imaginais. Ses absences, ses silences, ses colères. Ta mère essuie ses larmes en cachette. L'image que tu te faisais de l'autorité paternelle se fissure, et avec elle, peut-être, l'image de Dieu lui-même.",
+    "ageRange": [10, 16],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-005",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 2
+    },
+    "thematicFlavor": "Notre image de Dieu se forme souvent dans le regard de nos parents.",
+    "cascadeEventId": "arc-parents-1-c",
+    "storyArcId": "arc-parents",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-parents-1-c",
+    "title": "La blessure scellée",
+    "description": "Tu t'es enfermé dans ta chambre et dans ton silence. La déception envers ton père s'est transformée en mur. Personne ne saura ce que tu ressens.",
+    "ageRange": [11, 17],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-parents",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-parents-2",
+    "title": "La révolte adolescente",
+    "description": "L'adolescence est un champ de bataille entre toi et tes parents. Chaque parole est une provocation, chaque règle une oppression. {père} crie, {mère} pleure, et toi tu claques les portes. Mais au fond, ce n'est pas contre eux que tu te bats — c'est contre toi-même.",
+    "ageRange": [14, 22],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 4
+    },
+    "thematicFlavor": "La rébellion n'est souvent que l'envers de la douleur.",
+    "cascadeEventId": "arc-parents-2-c",
+    "storyArcId": "arc-parents",
+    "arcSequence": 2,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-parents-1"
+      }
+    ]
+  },
+  {
+    "id": "arc-parents-2-c",
+    "title": "La rupture consommée",
+    "description": "Les mots sont allés trop loin. Tu as quitté la maison en claquant la porte, jurant de ne jamais revenir. Le fossé entre toi et tes parents est devenu un abîme.",
+    "ageRange": [15, 23],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -1,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-parents",
+    "arcSequence": 2
+  },
+  {
+    "id": "arc-parents-3",
+    "title": "Le pont fragile",
+    "description": "Les années ont passé. Tu es devenu adulte et tu commences à comprendre que tes parents étaient juste des humains, avec leurs propres blessures. {mère} t'appelle pour ton anniversaire. Sa voix tremble un peu. Le silence entre vous est lourd de tout ce qui n'a pas été dit. C'est peut-être le moment de construire un pont.",
+    "ageRange": [22, 38],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-006",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    },
+    "thematicFlavor": "Devenir adulte, c'est apprendre à pardonner à ceux qui nous ont précédés.",
+    "cascadeEventId": "arc-parents-3-c",
+    "storyArcId": "arc-parents",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-parents-2"
+      }
+    ]
+  },
+  {
+    "id": "arc-parents-3-c",
+    "title": "L'occasion gâchée",
+    "description": "Tu n'as pas su trouver les mots. La conversation a tourné court. Le silence est retombé, peut-être pour des années encore.",
+    "ageRange": [23, 39],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-parents",
+    "arcSequence": 3
+  },
+  {
+    "id": "arc-parents-4",
+    "title": "La maladie de {père}",
+    "description": "L'appel que tu redoutais est arrivé. {père} est malade, gravement. Tu te rends à l'hôpital et tu vois cet homme autrefois si fort, diminué, vulnérable. Toutes les rancoeurs s'effacent devant la fragilité. Le temps presse. Que veux-tu lui dire avant qu'il ne soit trop tard ?",
+    "ageRange": [30, 52],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-009",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -2,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "La maladie des parents est souvent le dernier appel à la réconciliation.",
+    "cascadeEventId": "arc-parents-4-c",
+    "storyArcId": "arc-parents",
+    "arcSequence": 4,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-parents-3"
+      }
+    ]
+  },
+  {
+    "id": "arc-parents-4-c",
+    "title": "Le silence du regret",
+    "description": "Tu n'es pas allé à l'hôpital. Les vieilles blessures étaient trop fraîches. Le temps a passé et l'occasion de parler s'est envolée. Le poids du non-dit est devenu un fardeau permanent.",
+    "ageRange": [31, 53],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -7,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-parents",
+    "arcSequence": 4
+  },
+  {
+    "id": "arc-parents-5",
+    "title": "Les adieux",
+    "description": "Le jour est venu. {père} ou {mère} s'en va. Tu es là, main dans la main, à veiller les derniers instants. Les mots de la Bible que tu as lus enfant résonnent soudain avec une force nouvelle. Ce départ n'est pas une fin — c'est un passage. Mais le cœur saigne quand même.",
+    "ageRange": [35, 58],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-003",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "L'amour ne meurt pas avec le corps.",
+    "cascadeEventId": "arc-parents-5-c",
+    "storyArcId": "arc-parents",
+    "arcSequence": 5,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-parents-4"
+      }
+    ]
+  },
+  {
+    "id": "arc-parents-5-c",
+    "title": "L'absence rongée de regrets",
+    "description": "Tu n'étais pas là au moment du départ. Les circonstances, la distance, les excuses. Tu n'as pas pu lui dire au revoir. Ce vide te poursuivra longtemps.",
+    "ageRange": [36, 59],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-parents",
+    "arcSequence": 5
+  },
+  {
+    "id": "arc-parents-6",
+    "title": "L'héritage reçu",
+    "description": "En vidant la maison de tes parents, tu trouves des objets chargés de souvenirs. Une Bible usée, des lettres, une vieille photo de mariage. Et soudain, tu comprends : malgré leurs erreurs, ils t'ont transmis quelque chose de précieux. Leur foi, imparfaite mais réelle. Tu réalises que tu es le maillon d'une chaîne qui ne s'arrête pas à toi. L'héritage des parents n'est pas dans ce qu'ils ont laissé — mais dans ce qu'ils ont semé en toi.",
+    "ageRange": [40, 65],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-004",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 1
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 5,
+      "finances": 3
+    },
+    "thematicFlavor": "L'héritage spirituel est le seul trésor que la mort ne peut pas voler.",
+    "storyArcId": "arc-parents",
+    "arcSequence": 6,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-parents-5"
+      }
+    ]
+  },
+  {
+    "id": "arc-eglise-1",
+    "title": "Le premier service",
+    "description": "Tu as 15 ans et tu entres pour la première fois dans le lieu de culte de {église}. L'atmosphère est différente du dehors. Les chants, les visages, la présence. Quelque chose remue dans ton coeur. Tu ne sais pas encore nommer ce que tu ressens, mais tu sais que ce lieu n'est pas comme les autres.",
+    "ageRange": [15, 22],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-004",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
+    "thematicFlavor": "L'Église commence là où deux ou trois sont rassemblés en Son nom.",
+    "cascadeEventId": "arc-eglise-1-c",
+    "storyArcId": "arc-eglise",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-eglise-1-c",
+    "title": "L'indifférence",
+    "description": "Rien ne s'est passé. Le service t'a laissé froid. Les chants sonnaient faux, les prières semblaient vides. Tu es sorti comme tu es entré, sans avoir rien ressenti.",
+    "ageRange": [16, 23],
+    "category": "doute_incredulite",
+    "correctVerseId": "v-doute-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-eglise",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-eglise-2",
+    "title": "Le leadership",
+    "description": "Les anciens de {église} te proposent de prendre une responsabilité. Leur regard est confiant, mais toi tu te sens petit. Le poids de servir Dieu dans son église est immense. Entre la peur de mal faire et l'appel pressant de l'Esprit, tu dois choisir : rester dans l'ombre ou accepter d'être vu ?",
+    "ageRange": [25, 42],
+    "category": "combat_spirituel",
+    "correctVerseId": "v-combat-002",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
+    "thematicFlavor": "Le leadership dans l'Église commence par le service, pas par le titre.",
+    "cascadeEventId": "arc-eglise-2-c",
+    "storyArcId": "arc-eglise",
+    "arcSequence": 2,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-eglise-1"
+      }
+    ]
+  },
+  {
+    "id": "arc-eglise-2-c",
+    "title": "Le refus",
+    "description": "Tu as refusé la responsabilité, prétextant le manque de temps ou de compétence. Mais au fond, c'est la peur qui a parlé. L'occasion de servir est passée.",
+    "ageRange": [26, 43],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-eglise",
+    "arcSequence": 2
+  },
+  {
+    "id": "arc-eglise-3",
+    "title": "La crise interne",
+    "description": "Une division secoue {église}. Des frères et soeurs que tu aimais se déchirent. Les paroles blessantes volent, les camps se forment. Chacun croit défendre la vérité. Toi, tu vois le corps de Christ se déchirer et tu saignes avec lui. Prendre parti ou chercher la paix ?",
+    "ageRange": [32, 52],
+    "category": "combat_spirituel",
+    "correctVerseId": "v-combat-003",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -1,
+      "finances": -1
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "L'unité de l'Église est le test ultime de notre amour pour Dieu.",
+    "cascadeEventId": "arc-eglise-3-c",
+    "storyArcId": "arc-eglise",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-eglise-2"
+      }
+    ]
+  },
+  {
+    "id": "arc-eglise-3-c",
+    "title": "La division consommée",
+    "description": "Tu as pris parti, et la blessure s'est aggravée. Des membres ont quitté l'église. Le coeur de Dieu est attristé, et le tien aussi.",
+    "ageRange": [33, 53],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -6,
+      "paix": -6,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-eglise",
+    "arcSequence": 3
+  },
+  {
+    "id": "arc-eglise-4",
+    "title": "Le renouveau",
+    "description": "Après la tempête, le calme. {église} panse ses plaies mais ne meurt pas. Un vent de l'Esprit souffle à nouveau. Les cendres de la division deviennent un terreau fertile. De nouvelles familles arrivent, les jeunes se lèvent. Le phénix renaît de ses cendres. Et toi, tu es là, témoin de la fidélité de Dieu. Son Église n'est pas un bâtiment — c'est un peuple que rien ne peut détruire.",
+    "ageRange": [38, 60],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 6
+    },
+    "thematicFlavor": "L'Église de Dieu est plus forte que les portes du séjour des morts.",
+    "storyArcId": "arc-eglise",
+    "arcSequence": 4,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-eglise-3"
+      }
+    ]
+  },
+  {
+    "id": "arc-ville-1",
+    "title": "Le départ",
+    "description": "Tu quittes {ville}, le lieu qui t'a vu grandir. Tes valises sont bouclées, ta chambre est vide. {mère} pleure sur le pas de la porte, {père} te serre la main trop fort. En montant dans le train, tu regardes les toits de {ville} s'éloigner. Une partie de toi reste là, mais une autre s'envole vers l'inconnu.",
+    "ageRange": [20, 30],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-006",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": -1
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 2
+    },
+    "thematicFlavor": "Quitter son lieu d'origine est un exil qui forge l'identité.",
+    "cascadeEventId": "arc-ville-1-c",
+    "storyArcId": "arc-ville",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-ville-1-c",
+    "title": "L'enracinement par peur",
+    "description": "Tu n'es pas parti. La peur de l'inconnu a été plus forte que l'appel de l'aventure. Mais chaque fois que tu passes devant la gare, tu te demandes ce que ta vie aurait été ailleurs.",
+    "ageRange": [21, 31],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": -1
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ville",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-ville-2",
+    "title": "La vie en diaspora",
+    "description": "Dans ta nouvelle ville, tu es un étranger. Les coutumes sont différentes, les gens parlent autrement. Tu cherches une {église} où te sentir chez toi. Certains soirs, la nostalgie de {ville} te serre le coeur. Mais Dieu te montre que Lui aussi est présent ici, dans ce nouveau désert apprivoisé.",
+    "ageRange": [28, 48],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": -1,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 2
+    },
+    "thematicFlavor": "La nostalgie est un signe d'amour pour ses racines — mais Dieu est présent partout.",
+    "cascadeEventId": "arc-ville-2-c",
+    "storyArcId": "arc-ville",
+    "arcSequence": 2,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ville-1"
+      }
+    ]
+  },
+  {
+    "id": "arc-ville-2-c",
+    "title": "L'exil amer",
+    "description": "Tu n'as jamais réussi à t'adapter. La nouvelle ville t'a avalé. Tu vis en reclus, le coeur tourné vers le passé. La nostalgie est devenue une prison.",
+    "ageRange": [29, 49],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-ville",
+    "arcSequence": 2
+  },
+  {
+    "id": "arc-ville-3",
+    "title": "Le retour aux racines",
+    "description": "Après des années, tu retournes à {ville}. Les rues ont changé, les visages aussi. Mais quelque chose d'indicible est resté. Tu marches dans les lieux de ton enfance et tu réalises que tu n'es plus le même. Le départ t'a changé, la vie t'a formé. {ville} n'est plus la même — mais elle fait toujours partie de toi. Tu embrasses la terre natale avec la gratitude de celui qui a trouvé sa véritable patrie ailleurs.",
+    "ageRange": [42, 68],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-007",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "On ne retourne jamais chez soi — on y revient transformé.",
+    "storyArcId": "arc-ville",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-ville-2"
+      }
+    ]
+  },
+  {
+    "id": "arc-conjoint-1",
+    "title": "La rencontre de {conjoint}",
+    "description": "Tu n'y croyais plus. Les années passaient, les prières semblaient sans réponse. Et puis {conjoint} est apparu(e). Un regard, un sourire, une coïncidence qui n'en est pas une. Ton coeur s'emballe comme un adolescent. Mais comment être sûr(e) que c'est de Dieu ? L'amour et la raison s'affrontent dans ta tête.",
+    "ageRange": [22, 32],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    },
+    "thematicFlavor": "L'amour vrai naît souvent quand on ne le cherche plus.",
+    "cascadeEventId": "arc-conjoint-1-c",
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-conjoint-1-c",
+    "title": "L'occasion manquée",
+    "description": "Tu n'as pas osé. La peur du rejet, la crainte de te tromper. {conjoint} est parti(e) et tu es resté(e) seul(e) avec tes questions et tes regrets.",
+    "ageRange": [23, 33],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 1
+  },
+  {
+    "id": "arc-conjoint-2",
+    "title": "L'alliance",
+    "description": "Le jour du mariage est arrivé. {conjoint} est là, devant toi, rayonnant(e). Les mots de l'alliance résonnent : pour le meilleur et pour le pire. L'émotion te submerge. Ce n'est pas juste une cérémonie — c'est un covenant devant Dieu. Deux vies qui n'en feront plus qu'une, avec Lui au centre.",
+    "ageRange": [24, 38],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-004",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 3
+    },
+    "thematicFlavor": "Le mariage est une alliance qui reflète l'amour de Christ pour son Église.",
+    "cascadeEventId": "arc-conjoint-2-c",
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 2,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-conjoint-1"
+      }
+    ]
+  },
+  {
+    "id": "arc-conjoint-2-c",
+    "title": "L'engagement brisé",
+    "description": "Le mariage n'a pas eu lieu. Les doutes ont eu raison de toi. La peur de l'engagement a gagné. Tu es resté(e) seul(e) avec l'amertume de ce qui aurait pu être.",
+    "ageRange": [25, 39],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 2
+  },
+  {
+    "id": "arc-conjoint-3",
+    "title": "La tempête",
+    "description": "Le mariage traverse une crise profonde. Les mots blessent, les silences tuent. {conjoint} et toi, vous vous êtes perdus de vue. Le lit que vous partagez est devenu un champ de bataille. Les conseils de {ami} n'y font rien. Prier ensemble semble impossible. L'amour est-il assez fort pour traverser cette nuit ?",
+    "ageRange": [30, 48],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-002",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -7,
+      "physique": -1,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5,
+      "finances": 2
+    },
+    "thematicFlavor": "Les tempêtes du mariage révèlent la solidité de l'ancre.",
+    "cascadeEventId": "arc-conjoint-3-c",
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-conjoint-2"
+      }
+    ]
+  },
+  {
+    "id": "arc-conjoint-3-c",
+    "title": "La séparation",
+    "description": "La tempête a tout emporté. Vous avez choisi la séparation. Les enfants souffrent, la maison est vide, et toi tu te demandes où Dieu était dans tout ça.",
+    "ageRange": [31, 49],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -6,
+      "paix": -8,
+      "physique": -2,
+      "finances": -5
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 3
+  },
+  {
+    "id": "arc-conjoint-4",
+    "title": "Le renouveau",
+    "description": "Vous avez traversé l'orage. Les morceaux épars de votre mariage sont recollés, un par un, par des mains patientes. Les séances de conseil, les nuits de prière, les larmes versées ensemble. {conjoint} te regarde avec des yeux nouveaux. L'amour n'est plus celui des premiers jours — il est plus profond, plus vrai. Il a été éprouvé par le feu.",
+    "ageRange": [36, 58],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-002",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6,
+      "finances": 3
+    },
+    "thematicFlavor": "L'amour qui survit à la tempête est plus précieux que celui qui ne l'a jamais connue.",
+    "cascadeEventId": "arc-conjoint-4-c",
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 4,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-conjoint-3"
+      }
+    ]
+  },
+  {
+    "id": "arc-conjoint-4-c",
+    "title": "Le pardon impossible",
+    "description": "Les blessures étaient trop profondes. Le renouveau n'a pas eu lieu. Vous vivez sous le même toit comme des étrangers polis. Le mariage est un contrat, plus une alliance.",
+    "ageRange": [37, 59],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -1,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 4
+  },
+  {
+    "id": "arc-conjoint-5",
+    "title": "Les années de maturité",
+    "description": "Les enfants ont grandi, la maison est plus calme. Tu regardes {conjoint} traverser la pièce et tu vois toute une vie dans ce simple mouvement. Les cheveux gris, les rides, les gestes ralentis. L'amour n'est plus fiévreux — il est paisible comme un feu qui a brûlé toute la nuit. Vous vous comprenez sans mots. Vous êtes devenus un seul être.",
+    "ageRange": [48, 68],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-003",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": -1
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "La maturité d'un couple se mesure à la profondeur de son silence partagé.",
+    "cascadeEventId": "arc-conjoint-5-c",
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 5,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-conjoint-4"
+      }
+    ]
+  },
+  {
+    "id": "arc-conjoint-5-c",
+    "title": "L'éloignement",
+    "description": "Les années vous ont éloignés plus que rapprochés. Vous vivez des vies parallèles, chacun dans sa routine. L'amour n'est pas mort, mais il s'est endormi, faute d'attention.",
+    "ageRange": [49, 69],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": -1
+    },
+    "statImpactOnSuccess": {
+      "paix": 1
+    },
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 5
+  },
+  {
+    "id": "arc-conjoint-6",
+    "title": "Le départ de {conjoint}",
+    "description": "Le jour que tu redoutais est arrivé. {conjoint} n'est plus là. Le lit est trop grand, la maison trop silencieuse. Tu ouvres l'armoire et ses vêtements portent encore son odeur. Les souvenirs déferlent comme une vague. Mais au milieu de la douleur, une paix étrange. Tu n'es pas seul(e). Dieu est là, et Il tient la main de {conjoint} depuis l'éternité. L'alliance n'a pas été brisée — elle a été transférée dans une dimension que tes yeux ne voient pas encore.",
+    "ageRange": [62, 82],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-001",
+    "decoyVerseIds": [],
+    "spawnProbability": 0.3,
+    "statImpactOnFail": {
+      "foi": -7,
+      "paix": -8,
+      "physique": -3,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 7
+    },
+    "thematicFlavor": "L'amour ne s'arrête pas à la mort — il change simplement de forme.",
+    "storyArcId": "arc-conjoint",
+    "arcSequence": 6,
+    "prerequisites": [
+      {
+        "kind": "event_completed",
+        "eventId": "arc-conjoint-5"
+      }
+    ]
+  },
+  {
+    "id": "e-senior-004",
+    "title": "Les souvenirs qui consolent",
+    "description": "À 90 ans, le passé te visite chaque nuit. Les visages de ceux que tu as aimés défilent comme un film. {ami}, {conjoint}, tes parents. Certains souvenirs sont doux, d'autres piquent encore. Mais dans la lumière du matin, tu comprends que chaque souvenir est un cadeau. Même les douleurs d'autrefois sont devenues des leçons précieuses.",
+    "ageRange": [90, 100],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "La mémoire est le jardin où l'âme âgée se promène chaque jour."
+  },
+  {
+    "id": "e-senior-005",
+    "title": "La solitude de l'âge",
+    "description": "Les visites se font rares. Les amis sont partis les uns après les autres. {église} a changé, tu ne reconnais plus personne. Les journées sont longues et silencieuses. La solitude pèse comme une couverture de plomb. Où est Dieu dans ce désert de la vieillesse ?",
+    "ageRange": [90, 100],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "La solitude du soir peut être le lieu de la rencontre la plus intime avec Dieu."
+  },
+  {
+    "id": "e-senior-006",
+    "title": "L'Éternel est mon berger",
+    "description": "La peur de la mort vient te visiter certaines nuits. Le souffle est court, le coeur fragile. Tu te réveilles en sursaut, la main sur la poitrine. Mais quelque chose de plus fort que la peur se lève en toi — une confiance que tu n'as jamais connue aussi pure. Le Berger qui t'a conduit toute ta vie ne t'abandonnera pas au dernier vallon.",
+    "ageRange": [91, 100],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "Même dans la vallée de l'ombre de la mort, Il est avec moi."
+  },
+  {
+    "id": "e-senior-007",
+    "title": "La moisson des larmes",
+    "description": "Tu contemples ta vie et tu vois tout à la fois : les échecs, les victoires, les joies, les chagrins. Tant de larmes versées en secret, tant de prières jamais exaucées. Et pourtant, aujourd'hui, tout prend sens. Ce qui semblait être des détours était en réalité le chemin. La vie n'a pas été parfaite, mais elle a été pleine. Les larmes du matin ont fait place aux chants du soir.",
+    "ageRange": [92, 100],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 6
+    },
+    "thematicFlavor": "Ceux qui sèment avec larmes moissonneront avec chants d'allégresse."
+  },
+  {
+    "id": "e-senior-008",
+    "title": "Le chant du cygne",
+    "description": "Tu sens que l'heure approche. Mais la peur n'est plus là. Ce qui reste, c'est une gratitude immense. Chaque souffle est une prière, chaque battement de coeur une louange. Tu dictes tes dernières paroles à un petit-fils venu te voir. Ce que tu lui confies n'est pas une liste de biens matériels, mais un testament spirituel : \\\"Dieu a été fidèle. Il le sera toujours.\\\"",
+    "ageRange": [93, 100],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 7
+    },
+    "thematicFlavor": "La mort n'est pas un mur — c'est une porte."
+  },
+  {
+    "id": "e-steril-002",
+    "title": "L'adoption du coeur",
+    "description": "Après des années d'attente, de prières et de larmes, tu réalises que la stérilité n'est pas une punition mais un chemin différent. {conjoint} et toi décidez d'ouvrir votre cœur autrement. Un enfant a besoin d'une famille, et vous avez un amour à donner. L'adoption n'est pas un plan B — c'est peut-être le plan A que Dieu avait prévu depuis le début.",
+    "ageRange": [28, 55],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": 0,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 6,
+      "finances": 3
+    },
+    "thematicFlavor": "Dieu écrit souvent notre histoire avec des lettres que nous n'attendions pas."
   }
 ]

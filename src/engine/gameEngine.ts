@@ -231,7 +231,7 @@ export const TITLES: Title[] = [
     name: 'Le Survivant',
     description: 'A survécu à 20+ événements sans mourir',
     priority: 40,
-    condition: (m) => m.causeOfDeath === null && m.totalEvents >= 20,
+    condition: (m) => m.causeOfDeath === null && m.ageAtDeath < 100 && m.totalEvents >= 20,
     bonus: { physique: 8 },
   },
 ];

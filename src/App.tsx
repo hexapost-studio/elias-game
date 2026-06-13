@@ -562,7 +562,7 @@ function App() {
           />
         )}
 
-        <DebugView />
+        {import.meta.env.DEV && <DebugView />}
       </div>
     );
   }
@@ -914,7 +914,7 @@ function App() {
         </div>
       )}
 
-      <DebugView />
+      {import.meta.env.DEV && <DebugView />}
 
       {/* Prologue interactif */}
       {showPrologue && (
@@ -943,7 +943,7 @@ function App() {
         </div>
       )}
 
-      <DevPanel />
+      {import.meta.env.DEV && <DevPanel />}
     </div>
   );
 }
