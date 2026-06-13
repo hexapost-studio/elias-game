@@ -245,6 +245,37 @@ body {
   text-align: right;
 }
 
+/* ─── DANGER INDICATOR ─── */
+.stat-danger-warning {
+  animation: dangerPulse 1.8s ease-in-out infinite;
+}
+
+.stat-danger-warning .stat-track {
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.4);
+}
+
+.stat-danger-critical {
+  animation: dangerPulseFast 0.8s ease-in-out infinite;
+  background: rgba(220, 38, 38, 0.08);
+  border-radius: 6px;
+  padding: 2px 0;
+  margin: -2px 0;
+}
+
+.stat-danger-critical .stat-track {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes dangerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+@keyframes dangerPulseFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 /* ─── FLOW BAR ─── */
 #flow-bar {
   position: relative;
@@ -286,6 +317,42 @@ body {
   align-items: flex-end;
   min-width: 52px;
   line-height: 1.3;
+}
+
+/* ─── COMBO SEGMENTS ─── */
+.combo-segments {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+  padding-top: 3px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.combo-segment {
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  line-height: 1.6;
+}
+
+.combo-segment.active {
+  box-shadow: 0 0 6px currentColor;
+}
+
+.combo-value {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--accent-gold);
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(245,158,11,0.3);
 }
 
 /* ─── ELIAS PORTRAIT ─── */

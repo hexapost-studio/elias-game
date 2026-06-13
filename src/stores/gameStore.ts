@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { GameState, AfflictionEvent, PlayerAction } from '../types/game';
+import type { PrologueResult } from '../components/Prologue';
 import {
   createInitialState,
   advanceAge,
@@ -14,6 +15,7 @@ import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence
 interface GameStore extends GameState {
   gameOver: { isOver: boolean; reason?: string } | null;
   initGame: () => void;
+  startWithPrologue: (result: PrologueResult) => void;
   ageUp: (aiEvent?: AfflictionEvent) => void;
   chooseVerse: (verseId: string, timeToAnswer?: number) => void;
   dismissResult: () => void;
@@ -35,6 +37,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = createInitialState(
       used ? { title: null, bonus: {}, used: false } : inheritance
     );
+    set({ ...state, gameOver: null });
+    saveGame(state).catch(() => {});
+  },
+
+  startWithPrologue: (result: PrologueResult) => {
+    const inheritance = get().inheritance;
+    const used = inheritance?.used;
+    const state = createInitialState(
+      used ? { title: null, bonus: {}, used: false } : inheritance
+    );
+    // Override RNG stats with prologue choices
+    state.stats = result.stats;
+    state.profileName = result.profileName;
+    state.age = 14;
+    // Prologue journal entries
+    const storyEntries = result.storyBits.map((text) => ({
+      age: 0, text: `✦ ${text}`, type: 'milestone' as const,
+    }));
+    const introEntry = {
+      age: 0,
+      text: `[NAISSANCE] Élias est né à ${state.lifeContext.city}. Ses parents : ${state.parentNames.father} et ${state.parentNames.mother}. Profil: ${result.profileName}.`,
+      type: 'milestone' as const,
+    };
+    state.journal = [introEntry, ...storyEntries];
+    state.difficulty = 2 as const; // Skip easy mode — prologue already prepared them
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
   },

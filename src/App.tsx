@@ -20,6 +20,8 @@ import {
 } from './components/IconSystem';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
+import { Prologue } from './components/Prologue';
+import type { PrologueResult } from './components/Prologue';
 import { ArcTracker } from './components/ArcTracker';
 import { MainMenu } from './components/MainMenu';
 
@@ -89,6 +91,7 @@ function App() {
     actionsThisYear,
     spiritualSeason,
     initGame,
+    startWithPrologue,
     ageUp,
     dismissResult,
     hydrateFromSave,
@@ -100,6 +103,7 @@ function App() {
   const [showLexicon, setShowLexicon] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+  const [showPrologue, setShowPrologue] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ambientOn, setAmbientOn] = useState(false);
@@ -787,7 +791,7 @@ function App() {
                 ANNULER
               </button>
               <button
-                onClick={() => { setShowNewGameConfirm(false); initGame(); }}
+                onClick={() => { setShowNewGameConfirm(false); setShowPrologue(true); }}
                 className="btn-danger"
               >
                 RECOMMENCER
@@ -798,6 +802,16 @@ function App() {
       )}
 
       <DebugView />
+
+      {/* Prologue interactif */}
+      {showPrologue && (
+        <Prologue
+          onComplete={(result: PrologueResult) => {
+            setShowPrologue(false);
+            startWithPrologue(result);
+          }}
+        />
+      )}
 
       {/* Onboarding */}
       {showOnboarding && (

@@ -75,10 +75,13 @@ export function StatBar() {
       {statKeys.map((key) => {
         const value = stats[key];
         const danger = value <= 25;
+        const warning = value < 20;
+        const critical = value < 10;
+        const dangerClass = critical ? 'stat-danger-critical' : warning ? 'stat-danger-warning' : '';
         const color = STAT_COLORS[key];
 
         return (
-          <div key={key} className="stat-item" style={{ position: 'relative' }}>
+          <div key={key} className={`stat-item ${dangerClass}`} style={{ position: 'relative' }}>
             {floats[key].map((fi) => (
               <span
                 key={fi.id}

@@ -1040,7 +1040,6 @@ export function applyPlayerAction(
   action: import('../types/game').PlayerAction
 ): ActionEffect | null {
   if (state.actionPoints <= 0) return null;
-  if (state.actionsThisYear.includes(action)) return null;
 
   const effectFn = ACTION_EFFECTS[action];
   if (!effectFn) return null;
@@ -1048,21 +1047,35 @@ export function applyPlayerAction(
   const { statDelta, label, amiDelta } = effectFn(state);
   const newStats = { ...state.stats };
 
+  // Comptage des actions consécutives du même type
+  const consecutiveSameType = state.actionsThisYear.filter((a) => a === action).length + 1;
+  let fidelityMultiplier = 1;
+  let multiNote = '';
+  if (action === 'pray') {
+    if (consecutiveSameType >= 5) {
+      fidelityMultiplier = 2;
+      multiNote = ' (Fidélité ×2 — 5e prière)';
+    } else if (consecutiveSameType >= 3) {
+      fidelityMultiplier = 1.5;
+      multiNote = ' (Fidélité ×1.5 — 3e prière)';
+    }
+  }
+
   for (const [stat, val] of Object.entries(statDelta)) {
     newStats[stat as string] = Math.min(
       MAX_STAT,
-      Math.max(MIN_STAT, (newStats[stat as string] || 0) + (val ?? 0))
+      Math.max(MIN_STAT, (newStats[stat as string] || 0) + Math.round((val ?? 0) * fidelityMultiplier))
     );
   }
 
   const journalEntry: import('../types/game').JournalEntry = {
     age: state.age,
-    text: label,
+    text: label + multiNote,
     type: 'micro',
   };
 
   return {
-    label,
+    label: label + multiNote,
     newState: {
       ...state,
       stats: newStats,
