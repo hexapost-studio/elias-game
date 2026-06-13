@@ -5,7 +5,7 @@ import { FlowBar } from './components/FlowBar';
 import { VerseChoices } from './components/VerseChoices';
 import { EliasPortrait } from './components/EliasPortrait';
 import { getVerseById } from './data/verses';
-import { computeFinalMetrics, determineTitle } from './engine/gameEngine';
+import { computeFinalMetrics, determineTitle, SPIRITUAL_SEASONS } from './engine/gameEngine';
 import {
   ENEMY_COMPONENTS,
   Crown,
@@ -86,6 +86,7 @@ function App() {
     lifeContext,
     parentNames,
     actionsThisYear,
+    spiritualSeason,
     initGame,
     ageUp,
     dismissResult,
@@ -577,6 +578,26 @@ function App() {
           )}
         </span>
         <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {/* Badge saison spirituelle */}
+          {(() => {
+            const s = SPIRITUAL_SEASONS[spiritualSeason ?? 'Réveil'];
+            return (
+              <span
+                title={`Saison : ${s.label}`}
+                style={{
+                  fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
+                  padding: '2px 6px', borderRadius: 10,
+                  border: `1px solid ${s.color}55`,
+                  background: `${s.color}18`,
+                  color: s.color,
+                  fontFamily: 'var(--font-display)',
+                  cursor: 'default',
+                }}
+              >
+                {s.icon} {s.label}
+              </span>
+            );
+          })()}
           {combo > 2 && (() => {
             const nextMilestone = combo < 5 ? 5 : combo < 10 ? 10 : combo < 20 ? 20 : null;
             const tierColor = combo >= 20 ? '#a78bfa' : combo >= 10 ? '#fb923c' : combo >= 5 ? '#fbbf24' : '#f59e0b';

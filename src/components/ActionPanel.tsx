@@ -22,6 +22,7 @@ export function ActionPanel() {
   const friendName      = useGameStore((s) => s.lifeContext.friendName);
   const useAction       = useGameStore((s) => s.useAction);
   const phase           = useGameStore((s) => s.phase);
+  const amiRelationship = useGameStore((s) => s.amiRelationship);
 
   if (phase !== 'idle') return null;
 
@@ -59,6 +60,20 @@ export function ActionPanel() {
             ? `Appeler ${friendName}`
             : action.label;
 
+          const isCallFriend = action.id === 'call_friend';
+          const amiWeak = isCallFriend && amiRelationship < 25;
+          const amiStrong = isCallFriend && amiRelationship >= 75;
+          const displayEffect = isCallFriend
+            ? amiWeak   ? '+Paix ⚠ Lien faible'
+            : amiStrong ? '+Paix ✦ Lien fort'
+            : action.effect
+            : action.effect;
+          const callFriendBorder = isCallFriend && !used
+            ? amiWeak   ? '1px solid rgba(239,68,68,0.5)'
+            : amiStrong ? '1px solid rgba(52,211,153,0.5)'
+            : '1px solid var(--accent-violet)'
+            : undefined;
+
           return (
             <button
               key={action.id}
@@ -71,13 +86,17 @@ export function ActionPanel() {
                 gap: 2,
                 padding: '6px 10px',
                 borderRadius: 8,
-                border: used
+                border: callFriendBorder ?? (used
                   ? '1px solid var(--text-muted)'
-                  : '1px solid var(--accent-violet)',
+                  : '1px solid var(--accent-violet)'),
                 background: used
                   ? 'rgba(255,255,255,0.04)'
                   : exhausted
                   ? 'rgba(255,255,255,0.04)'
+                  : isCallFriend && amiWeak
+                  ? 'rgba(239,68,68,0.07)'
+                  : isCallFriend && amiStrong
+                  ? 'rgba(52,211,153,0.1)'
                   : 'rgba(139,92,246,0.12)',
                 opacity: disabled ? 0.45 : 1,
                 cursor: disabled ? 'not-allowed' : 'pointer',
@@ -97,10 +116,10 @@ export function ActionPanel() {
               </span>
               <span style={{
                 fontSize: 8,
-                color: 'var(--text-muted)',
+                color: amiWeak ? 'rgba(239,68,68,0.8)' : amiStrong ? 'rgba(52,211,153,0.8)' : 'var(--text-muted)',
                 whiteSpace: 'nowrap',
               }}>
-                {action.effect}
+                {displayEffect}
               </span>
               {used && (
                 <span style={{ fontSize: 8, color: 'var(--accent-violet)' }}>✓</span>

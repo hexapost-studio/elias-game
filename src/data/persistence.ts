@@ -33,6 +33,12 @@ export async function saveGame(state: GameState): Promise<void> {
     codex: state.codex,
     queuedCascadeEvents: state.queuedCascadeEvents,
     completedArcs: state.completedArcs,
+    encounteredArcIds: state.encounteredArcIds,
+    answeredArcEventIds: state.answeredArcEventIds,
+    consecutiveFails: state.consecutiveFails,
+    reliefActive: state.reliefActive,
+    spiritualSeason: state.spiritualSeason,
+    amiDecayStreak: state.amiDecayStreak,
     phase: state.phase,
     difficulty: state.difficulty,
     timestamp: Date.now(),
@@ -78,6 +84,7 @@ export interface EventLog {
   age: number;
   flowLevel: number;
   category: string;
+  season?: string;
   timestamp: number;
 }
 
@@ -112,7 +119,8 @@ export async function getAnalyticsSummary(): Promise<{
   successRate: number;
   avgTimeToAnswer: number;
   runsCompleted: number;
-  topCategories: { category: string; count: number }[];
+  topCategories: { category: string; count: number; failRate: number }[];
+  seasonFailRates: { season: string; failRate: number; count: number }[];
 }> {
   const events = (await localforage.getItem<EventLog[]>(ANALYTICS_KEY)) || [];
   const runs = (await localforage.getItem<RunLog[]>('elias-runs-v1')) || [];
@@ -120,14 +128,36 @@ export async function getAnalyticsSummary(): Promise<{
   const successes = events.filter((e) => e.correct).length;
   const avgTime = events.reduce((s, e) => s + e.timeToAnswer, 0) / (events.length || 1);
 
-  const catCount: Record<string, number> = {};
+  const catData: Record<string, { count: number; fails: number }> = {};
+  const seasonData: Record<string, { count: number; fails: number }> = {};
   for (const e of events) {
-    catCount[e.category] = (catCount[e.category] || 0) + 1;
+    if (!catData[e.category]) catData[e.category] = { count: 0, fails: 0 };
+    catData[e.category].count++;
+    if (!e.correct) catData[e.category].fails++;
+
+    if (e.season) {
+      if (!seasonData[e.season]) seasonData[e.season] = { count: 0, fails: 0 };
+      seasonData[e.season].count++;
+      if (!e.correct) seasonData[e.season].fails++;
+    }
   }
-  const topCategories = Object.entries(catCount)
-    .sort((a, b) => b[1] - a[1])
+
+  const topCategories = Object.entries(catData)
+    .sort((a, b) => b[1].count - a[1].count)
     .slice(0, 5)
-    .map(([category, count]) => ({ category, count }));
+    .map(([category, d]) => ({
+      category,
+      count: d.count,
+      failRate: d.count > 0 ? Math.round((d.fails / d.count) * 100) : 0,
+    }));
+
+  const seasonFailRates = Object.entries(seasonData)
+    .map(([season, d]) => ({
+      season,
+      count: d.count,
+      failRate: d.count > 0 ? Math.round((d.fails / d.count) * 100) : 0,
+    }))
+    .sort((a, b) => b.failRate - a.failRate);
 
   return {
     totalEvents: events.length,
@@ -135,6 +165,7 @@ export async function getAnalyticsSummary(): Promise<{
     avgTimeToAnswer: Math.round(avgTime * 10) / 10,
     runsCompleted: runs.length,
     topCategories,
+    seasonFailRates,
   };
 }
 

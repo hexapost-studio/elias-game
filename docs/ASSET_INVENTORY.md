@@ -83,7 +83,11 @@
 
 ---
 
-## 7. SONS — 6 fichiers OGG
+## 7. SONS & MUSIQUE
+
+> Document complet avec prompts Suno et guide d'intégration → **[AUDIO_DESIGN.md](./AUDIO_DESIGN.md)**
+
+**Sons UI actuels — Kenney (à remplacer) :**
 
 | Asset | Chemin | Usage |
 |-------|--------|-------|
@@ -94,7 +98,15 @@
 | tap-a.ogg | `public/sounds/tap-a.ogg` | Tap combo |
 | tap-b.ogg | `public/sounds/tap-b.ogg` | Tap secondaire |
 
-> **Remplacer par** : des sons plus thématiques (orgue, cloche d'église, harpe, gravier).
+**Musique de fond — 3 génériques (à remplacer par 1 piste/saison) :**
+
+| Asset | Chemin |
+|-------|--------|
+| soundtrack-1.mp3 | `public/audio/soundtrack-1.mp3` |
+| soundtrack-2.mp3 | `public/audio/soundtrack-2.mp3` |
+| soundtrack-3.mp3 | `public/audio/soundtrack-3.mp3` |
+
+> **13 nouveaux assets à produire** (6 MP3 + 7 OGG) — voir [AUDIO_DESIGN.md](./AUDIO_DESIGN.md) section 2.
 
 ---
 

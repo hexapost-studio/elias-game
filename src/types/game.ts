@@ -227,6 +227,16 @@ export interface GameState {
   encounteredArcIds: string[];
   /** Fenêtre glissante des 5 derniers événements vus — empêche les répétitions */
   recentEventIds: string[];
+  /** IDs des événements d'arc déjà répondus — permet d'enforcer l'ordre séquentiel des arcs */
+  answeredArcEventIds: string[];
+  /** Nombre de fails consécutifs — réinitialisé au premier succès */
+  consecutiveFails: number;
+  /** True quand le correcteur de frustration est actif — force un événement de grâce */
+  reliefActive: boolean;
+  /** Saison spirituelle courante — déterminée par la décennie d'âge */
+  spiritualSeason: SpiritualSeasonName;
+  /** Nombre d'années consécutives avec amiRelationship < 20 */
+  amiDecayStreak: number;
   metrics: RunMetrics;
 }
 
@@ -275,4 +285,20 @@ export interface JournalEntry {
   text: string;
   type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro';
   verseRef?: string;
+}
+
+export type SpiritualSeasonName =
+  | 'Réveil'
+  | 'Désert'
+  | 'Persécution'
+  | 'Abondance'
+  | 'Grâce';
+
+export interface SpiritualSeason {
+  name: SpiritualSeasonName;
+  label: string;
+  icon: string;
+  color: string;
+  description: string;
+  categoryMultipliers: Partial<Record<AfflictionCategory, number>>;
 }
