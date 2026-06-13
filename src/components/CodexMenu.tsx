@@ -49,12 +49,12 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
 
   if (cards.length === 0) {
     return (
-      <div style={{ position: 'absolute', inset: 0, zIndex: 30, background: 'var(--bg-main)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+      <div className="codex-empty-state">
         <BookOpen size={32} strokeWidth={1} style={{ opacity: 0.4 }} />
-        <div style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', padding: '0 32px' }}>
+        <div className="codex-empty-text">
           Aucun verset débloqué encore.<br />Surmonte des épreuves pour remplir ton Codex.
         </div>
-        <button onClick={onClose} style={{ padding: '10px 28px', background: 'var(--accent-violet)', border: 'none', borderRadius: 10, color: 'white', fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: 1.5, cursor: 'pointer' }}>
+        <button onClick={onClose} className="btn-primary" style={{ padding: '10px 28px', fontSize: 12, letterSpacing: 1.5 }}>
           RETOUR
         </button>
       </div>
