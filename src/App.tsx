@@ -16,6 +16,7 @@ import {
   Zap,
   Music,
   Moon,
+  RotateCw,
 } from './components/IconSystem';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
@@ -892,7 +893,7 @@ function App() {
             borderRadius: 16, padding: '28px 24px',
             maxWidth: 300, width: '100%', textAlign: 'center',
           }}>
-            <div style={{ fontSize: 32, marginBottom: 12 }}>🔄</div>
+            <RotateCw size={32} strokeWidth={1.5} style={{ color: 'var(--accent-gold)', opacity: 0.6 }} />
             <div style={{ fontFamily: 'var(--font-display)', fontSize: 14, color: '#fb7185', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>
               NOUVELLE PARTIE
             </div>

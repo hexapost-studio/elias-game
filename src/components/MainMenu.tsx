@@ -15,7 +15,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import {
-  BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon,
+  BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon, Volume2,
 } from './IconSystem';
 import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
 
@@ -176,7 +176,7 @@ export const MainMenu: FC<MainMenuProps> = ({
 
           {ambientOn && (
             <div style={{ padding: '4px 16px 8px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 28 }}>🔈</span>
+              <Volume2 size={14} strokeWidth={1.5} style={{ color: 'var(--text-muted)', minWidth: 28 }} />
               <input
                 type="range"
                 min={0}
