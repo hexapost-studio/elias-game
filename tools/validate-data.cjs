@@ -9,7 +9,7 @@ const path = require('path');
 const DATA_DIR = path.join(__dirname, '..', 'game', 'data');
 const SCHEMA_PATH = path.join(DATA_DIR, 'schemas', 'elias-schema.json');
 
-const CATEGORIES = ['peur_angoisse','impudicite_addiction','finances_paresse','amertume_rejet','combat_spirituel','identite_appel','doute_incredulite','orgueil_independance'];
+const CATEGORIES = ['peur_angoisse','impudicite_addiction','finances_paresse','amertume_rejet','combat_spirituel','identite_appel','doute_incredulite','orgueil_independance','saint_esprit','parole_de_dieu','amour_de_dieu','direction_divine','priere','soif_de_dieu','obeissance','culpabilite','sterilite','abondance_financiere','maladie_guerison','echec_reussite','tristesse_joie','decouragement','lourdeur_fatigue'];
 
 let errors = 0;
 let warnings = 0;
