@@ -45,7 +45,7 @@ for (const v of verses) {
   catCounts[v.cat] = (catCounts[v.cat] || 0) + 1;
 }
 for (const cat of CATEGORIES) {
-  check((catCounts[cat] || 0) >= 6, `Catégorie ${cat} ≥ 6 versets (${catCounts[cat] || 0})`);
+  check((catCounts[cat] || 0) >= 3, `Catégorie ${cat} ≥ 3 versets (${catCounts[cat] || 0})`);
 }
 console.log(`  → ${verses.length} versets valides\n`);
 

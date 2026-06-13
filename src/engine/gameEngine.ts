@@ -20,10 +20,11 @@ import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from 
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
 import { getArcById } from '../data/storyArcs';
 import { getMicroEventForAge } from '../data/microEvents';
+import { CONFIG } from '../../game/data/loader';
 
-const MAX_STAT = 100;
-const MIN_STAT = 0;
-const MAX_AGE = 100;
+const MAX_STAT = CONFIG.maxStat;
+const MIN_STAT = CONFIG.minStat;
+const MAX_AGE = CONFIG.maxAge;
 
 /* ─── JAUGE DE FLOW ─── */
 
@@ -33,8 +34,8 @@ const FLOW_PALIER_THRESHOLDS: Record<FlowPalier, [number, number]> = {
   3: [67, 100],
 };
 
-const FLOW_GAIN_BASE = 10;
-const FLOW_MAX_TIME = 15; // secondes max pour répondre
+const FLOW_GAIN_BASE = CONFIG.flow.baseGain;
+const FLOW_MAX_TIME = CONFIG.flow.maxTime; // secondes max pour répondre
 const FLOW_PALIER_BONUS: Record<FlowPalier, number> = {
   1: 1.0,
   2: 1.5,

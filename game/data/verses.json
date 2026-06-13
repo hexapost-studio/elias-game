@@ -1,131 +1,2174 @@
 [
-  {"id":"v-peur-001","ref":"2 Timothée 1.7","text":"Car ce n'est pas un esprit de timidité que Dieu nous a donné, mais un esprit de force, d'amour et de sagesse.","cat":"peur_angoisse","tags":["peur","timidité","crainte","force","amour","sagesse","esprit"],"impact":{"foi":3,"paix":4},"diff":1},
-  {"id":"v-peur-002","ref":"Psaume 27.1","text":"L'Éternel est ma lumière et mon salut: de qui aurai-je peur? L'Éternel est le rempart de ma vie: de qui aurai-je crainte?","cat":"peur_angoisse","tags":["peur","crainte","lumière","salut","rempart","protection"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-peur-003","ref":"Ésaïe 41.10","text":"Ne crains rien, car je suis avec toi; Ne promène pas des regards inquiets, car je suis ton Dieu; Je te fortifie, je viens à ton secours, Je te soutiens de ma droite triomphante.","cat":"peur_angoisse","tags":["crainte","inquiétude","secours","force","présence","dieu"],"impact":{"foi":2,"paix":4},"diff":1},
-  {"id":"v-peur-004","ref":"Philippiens 4.6-7","text":"Ne vous inquiétez de rien; mais en toute chose faites connaître vos besoins à Dieu par des prières et des supplications, avec des actions de grâces.","cat":"peur_angoisse","tags":["inquiétude","prière","paix","supplication","action de grâce"],"impact":{"paix":5,"foi":2},"diff":2},
-  {"id":"v-peur-005","ref":"Psaume 56.3-4","text":"Quand je suis dans la crainte, En toi je me confie. Je me confie en Dieu, je ne crains rien: Que peuvent me faire des hommes?","cat":"peur_angoisse","tags":["crainte","confiance","hommes","protection"],"impact":{"foi":2,"paix":3},"diff":2},
-  {"id":"v-peur-006","ref":"Josué 1.9","text":"Ne t'ai-je pas donné cet ordre: Fortifie-toi et prends courage? Ne t'effraie point et ne t'épouvante point, car l'Éternel est avec toi.","cat":"peur_angoisse","tags":["courage","force","effroi","entreprise","ordre"],"impact":{"foi":3,"paix":2,"physique":1},"diff":1},
-  {"id":"v-peur-007","ref":"Jean 14.27","text":"Je vous laisse la paix, je vous donne ma paix. Je ne vous donne pas comme le monde donne.","cat":"peur_angoisse","tags":["paix","trouble","alarme","cœur","monde"],"impact":{"paix":5,"foi":1},"diff":1},
-  {"id":"v-peur-008","ref":"Psaume 34.5","text":"Quand on tourne vers lui les regards, on est radieux de joie, et le visage ne se couvre pas de honte.","cat":"peur_angoisse","tags":["regard","joie","honte","radieux","dieu"],"impact":{"foi":2,"paix":2},"diff":2},
-  {"id":"v-peur-009","ref":"Romains 8.15","text":"Vous n'avez point reçu un esprit de servitude pour être encore dans la crainte; mais vous avez reçu un Esprit d'adoption.","cat":"peur_angoisse","tags":["servitude","crainte","adoption","père","esprit","filiation"],"impact":{"foi":4,"paix":3},"diff":2},
-  {"id":"v-peur-010","ref":"1 Pierre 5.7","text":"Déchargez-vous sur lui de tous vos soucis, car lui-même prend soin de vous.","cat":"peur_angoisse","tags":["soucis","charge","soin","confiance","abandon"],"impact":{"paix":3,"foi":2},"diff":1},
-  {"id":"v-imput-001","ref":"1 Corinthiens 6.15-20","text":"Ne savez-vous pas que vos corps sont les membres de Christ?… Fuyez l'impudicité.","cat":"impudicite_addiction","tags":["corps","temple","impudicité","esprit","péché","sainteté"],"impact":{"foi":4,"physique":3},"diff":2},
-  {"id":"v-imput-002","ref":"Galates 5.1","text":"C'est pour la liberté que Christ nous a affranchis. Demeurez donc fermes.","cat":"impudicite_addiction","tags":["liberté","affranchi","joug","servitude","ferme","christ"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-imput-003","ref":"Romains 6.14","text":"Car le péché n'aura point de pouvoir sur vous, puisque vous êtes sous la grâce.","cat":"impudicite_addiction","tags":["péché","loi","grâce","pouvoir","liberté"],"impact":{"foi":3,"paix":2},"diff":1},
-  {"id":"v-imput-004","ref":"2 Timothée 2.22","text":"Fuis les passions de la jeunesse, et recherche la justice, la foi, l'amour, la paix.","cat":"impudicite_addiction","tags":["passions","jeunesse","justice","foi","amour","paix","cœur pur"],"impact":{"foi":3,"paix":2,"physique":2},"diff":1},
-  {"id":"v-imput-005","ref":"1 Corinthiens 10.13","text":"Aucune tentation ne vous est survenue qui n'ait été humaine, et Dieu est fidèle.","cat":"impudicite_addiction","tags":["tentation","force","issue","fidèle","supporter"],"impact":{"foi":3,"paix":2,"physique":1},"diff":2},
-  {"id":"v-imput-006","ref":"Colossiens 3.5","text":"Faites donc mourir les membres qui sont sur la terre, l'impudicité, l'impureté.","cat":"impudicite_addiction","tags":["mortifier","impureté","passions","désirs","cupidité","idolâtrie"],"impact":{"foi":3,"physique":2},"diff":2},
-  {"id":"v-imput-007","ref":"Éphésiens 5.18","text":"Ne vous enivrez pas de vin, mais soyez remplis de l'Esprit.","cat":"impudicite_addiction","tags":["ivresse","vin","débauche","esprit","plénitude"],"impact":{"foi":3,"physique":2,"paix":1},"diff":1},
-  {"id":"v-imput-008","ref":"Proverbes 5.3-5","text":"Car les lèvres de la femme étrangère distillent le miel, mais à la fin elle est amère.","cat":"impudicite_addiction","tags":["séduction","mort","amertume","tranchant","piège"],"impact":{"foi":2,"physique":3,"paix":-1},"diff":3},
-  {"id":"v-imput-009","ref":"Romains 8.13","text":"Si vous vivez selon la chair, vous mourrez; mais si par l'Esprit vous faites mourir les actions du corps, vous vivrez.","cat":"impudicite_addiction","tags":["chair","esprit","mort","vie","actions","corps"],"impact":{"foi":4,"physique":2},"diff":2},
-  {"id":"v-imput-010","ref":"Tite 2.11-12","text":"Car la grâce de Dieu a été manifestée. Elle nous enseigne à renoncer à l'impiété.","cat":"impudicite_addiction","tags":["grâce","renoncement","convoitises","impiété","sagesse","piété"],"impact":{"foi":3,"paix":2},"diff":2},
-  {"id":"v-fin-001","ref":"Philippiens 4.19","text":"Et mon Dieu pourvoira à tous vos besoins selon sa richesse.","cat":"finances_paresse","tags":["besoins","richesse","gloire","pourvoira","providence"],"impact":{"foi":2,"finances":5},"diff":1},
-  {"id":"v-fin-002","ref":"Proverbes 6.9-11","text":"Jusques à quand, paresseux, seras-tu couché? Un peu de sommeil, et la pauvreté te surprendra.","cat":"finances_paresse","tags":["paresse","sommeil","pauvreté","disette","diligence"],"impact":{"foi":-1,"finances":-4,"physique":-1},"diff":1},
-  {"id":"v-fin-003","ref":"Deutéronome 8.18","text":"Souviens-toi de l'Éternel, car c'est lui qui te donne la force d'acquérir des richesses.","cat":"finances_paresse","tags":["richesses","force","alliance","mémoire","dieu"],"impact":{"foi":2,"finances":4},"diff":1},
-  {"id":"v-fin-004","ref":"Proverbes 10.4","text":"Celui qui agit d'une main lâche s'appauvrit, mais la main des diligents enrichit.","cat":"finances_paresse","tags":["diligence","pauvreté","richesse","main","lâche"],"impact":{"finances":4,"foi":1},"diff":1},
-  {"id":"v-fin-005","ref":"Malachie 3.10","text":"Apportez à la maison du trésor toutes les dîmes, mettez-moi à l'épreuve, dit l'Éternel.","cat":"finances_paresse","tags":["dîme","offrande","bénédiction","épreuve","abondance","trésor"],"impact":{"foi":3,"finances":4},"diff":2},
-  {"id":"v-fin-006","ref":"Proverbes 13.11","text":"La richesse mal acquise diminue, mais celui qui amasse peu à peu l'augmente.","cat":"finances_paresse","tags":["richesse","acquise","amasse","patience","intégrité"],"impact":{"finances":3,"foi":1},"diff":2},
-  {"id":"v-fin-007","ref":"2 Corinthiens 9.6","text":"Celui qui sème peu moissonnera peu, et celui qui sème abondamment moissonnera abondamment.","cat":"finances_paresse","tags":["semence","moisson","abondance","générosité","récolte"],"impact":{"foi":2,"finances":3},"diff":1},
-  {"id":"v-fin-008","ref":"Proverbes 22.7","text":"Le riche domine sur les pauvres, et celui qui emprunte est l'esclave de celui qui prête.","cat":"finances_paresse","tags":["dette","esclavage","emprunt","domination","richesse"],"impact":{"finances":-3,"foi":-1},"diff":2},
-  {"id":"v-fin-009","ref":"Ecclésiaste 5.18","text":"C'est pour l'homme une chose bonne de jouir du bien-être au milieu de tout son travail.","cat":"finances_paresse","tags":["travail","jouissance","bien-être","vie","don"],"impact":{"paix":2,"finances":2,"physique":1},"diff":2},
-  {"id":"v-fin-010","ref":"Proverbes 21.5","text":"Les projets de l'homme diligent ne mènent qu'à l'abondance.","cat":"finances_paresse","tags":["diligence","projets","abondance","hâte","disette"],"impact":{"finances":4,"foi":1},"diff":1},
-  {"id":"v-amer-001","ref":"Éphésiens 4.31","text":"Que toute amertume, toute animosité, toute colère disparaissent du milieu de vous.","cat":"amertume_rejet","tags":["amertume","colère","calomnie","méchanceté","animosité","pardon"],"impact":{"paix":4,"foi":2},"diff":1},
-  {"id":"v-amer-002","ref":"Jérémie 31.3","text":"Je t'aime d'un amour éternel; C'est pourquoi je te conserve ma bonté.","cat":"amertume_rejet","tags":["amour","éternel","bonté","rejet","élu"],"impact":{"foi":4,"paix":3},"diff":1},
-  {"id":"v-amer-003","ref":"Romains 8.1","text":"Il n'y a donc maintenant aucune condamnation pour ceux qui sont en Jésus-Christ.","cat":"amertume_rejet","tags":["condamnation","culpabilité","jugement","christ","liberté"],"impact":{"foi":4,"paix":3},"diff":1},
-  {"id":"v-amer-004","ref":"Matthieu 6.14-15","text":"Si vous pardonnez aux hommes leurs offenses, votre Père céleste vous pardonnera aussi.","cat":"amertume_rejet","tags":["pardon","offenses","père","réconciliation","condition"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-amer-005","ref":"Psaume 27.10","text":"Car mon père et ma mère m'abandonnent, mais l'Éternel me recueille.","cat":"amertume_rejet","tags":["abandon","père","mère","recueil","rejet","solitude"],"impact":{"foi":5,"paix":3},"diff":1},
-  {"id":"v-amer-006","ref":"Hébreux 12.15","text":"Veillez à ce qu'aucune racine d'amertume ne produise du trouble.","cat":"amertume_rejet","tags":["racine","amertume","grâce","trouble","infection","veille"],"impact":{"paix":3,"foi":2,"physique":-1},"diff":2},
-  {"id":"v-amer-007","ref":"1 Jean 4.18","text":"Il n'y a pas de crainte dans l'amour, mais l'amour parfait bannit la crainte.","cat":"amertume_rejet","tags":["crainte","amour","parfait","châtiment","bannir"],"impact":{"foi":3,"paix":4},"diff":2},
-  {"id":"v-amer-008","ref":"Éphésiens 1.6","text":"À la louange de la gloire de sa grâce qu'il nous a accordée en son Bien-Aimé.","cat":"amertume_rejet","tags":["louange","gloire","grâce","bien-aimé","acceptation"],"impact":{"foi":3,"paix":2},"diff":2},
-  {"id":"v-amer-009","ref":"Colossiens 3.13","text":"Supportez-vous les uns les autres et pardonnez-vous réciproquement.","cat":"amertume_rejet","tags":["pardon","support","plainte","réciprocité","seigneur"],"impact":{"foi":2,"paix":3},"diff":1},
-  {"id":"v-amer-010","ref":"Sophonie 3.17","text":"L'Éternel fera de toi sa plus grande joie; Il aura pour toi des transports d'allégresse.","cat":"amertume_rejet","tags":["joie","allégresse","héros","salut","amour","présence"],"impact":{"foi":4,"paix":3},"diff":2},
-  {"id":"v-combat-001","ref":"Éphésiens 6.12","text":"Nous n'avons pas à lutter contre la chair et le sang, mais contre les dominations.","cat":"combat_spirituel","tags":["lutte","chair","sang","dominations","ténèbres","esprits","combat"],"impact":{"foi":4,"paix":2,"physique":1},"diff":2},
-  {"id":"v-combat-002","ref":"2 Corinthiens 10.4-5","text":"Les armes de notre combat ne sont pas charnelles, mais puissantes pour renverser des forteresses.","cat":"combat_spirituel","tags":["armes","forteresses","raisonnements","hauteur","connaissance","combat"],"impact":{"foi":5,"paix":2},"diff":2},
-  {"id":"v-combat-003","ref":"Jacques 4.7","text":"Soumettez-vous donc à Dieu; résistez au diable, et il fuira loin de vous.","cat":"combat_spirituel","tags":["soumission","résistance","diable","fuite","autorité"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-combat-004","ref":"1 Jean 4.4","text":"Celui qui est en vous est plus grand que celui qui est dans le monde.","cat":"combat_spirituel","tags":["victoire","vaincus","plus grand","monde","enfants","dieu"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-combat-005","ref":"Romains 8.37","text":"Dans toutes ces choses nous sommes plus que vainqueurs par celui qui nous a aimés.","cat":"combat_spirituel","tags":["vainqueurs","amour","victoire","triomphe","christ"],"impact":{"foi":3,"paix":2,"physique":1},"diff":1},
-  {"id":"v-combat-006","ref":"Apocalypse 12.11","text":"Ils l'ont vaincu à cause du sang de l'Agneau et à cause de la parole de leur témoignage.","cat":"combat_spirituel","tags":["vaincu","sang","agneau","témoignage","mort","victoire"],"impact":{"foi":5,"paix":2,"physique":1},"diff":3},
-  {"id":"v-combat-007","ref":"Ésaïe 54.17","text":"Toute arme fabriquée contre toi sera sans effet.","cat":"combat_spirituel","tags":["armes","langue","justice","héritage","serviteurs","protection"],"impact":{"foi":4,"paix":3,"finances":1},"diff":2},
-  {"id":"v-combat-008","ref":"Galates 5.16","text":"Marchez selon l'Esprit, et vous n'accomplirez pas les désirs de la chair.","cat":"combat_spirituel","tags":["esprit","chair","désirs","marche","victoire"],"impact":{"foi":3,"physique":2},"diff":1},
-  {"id":"v-ident-001","ref":"Jérémie 29.11","text":"Car je connais les projets que j'ai formés sur vous, projets de paix et non de malheur.","cat":"identite_appel","tags":["projets","avenir","espérance","paix","destinée","plan"],"impact":{"foi":4,"paix":3},"diff":1},
-  {"id":"v-ident-002","ref":"Éphésiens 2.10","text":"Nous sommes son ouvrage, créés pour de bonnes œuvres que Dieu a préparées d'avance.","cat":"identite_appel","tags":["ouvrage","création","bonnes œuvres","préparées","destinée"],"impact":{"foi":3,"paix":2,"finances":1},"diff":1},
-  {"id":"v-ident-003","ref":"Psaume 139.13-14","text":"C'est toi qui m'as tissé dans le sein de ma mère. Je suis une créature merveilleuse.","cat":"identite_appel","tags":["création","merveilleux","louange","identité","tissé","reins"],"impact":{"foi":3,"paix":2},"diff":1},
-  {"id":"v-ident-004","ref":"1 Pierre 2.9","text":"Vous êtes une race élue, un sacerdoce royal, une nation sainte.","cat":"identite_appel","tags":["élu","sacerdoce","royal","saint","acquis","lumière","ténèbres"],"impact":{"foi":4,"paix":2},"diff":2},
-  {"id":"v-ident-005","ref":"Proverbes 18.16","text":"Les dons d'un homme lui élargissent la voie, et lui donnent accès auprès des grands.","cat":"identite_appel","tags":["dons","voie","accès","grands","faveur","destinée"],"impact":{"foi":1,"finances":3,"paix":1},"diff":2},
-  {"id":"v-ident-006","ref":"Ésaïe 43.1","text":"Ne crains rien, car je te rachète, je t'appelle par ton nom: tu es à moi!","cat":"identite_appel","tags":["rachat","nom","appartenance","crainte","appelé"],"impact":{"foi":4,"paix":3},"diff":1},
-  {"id":"v-ident-007","ref":"Psaume 20.5","text":"Que l'Éternel accomplisse tous tes desseins!","cat":"identite_appel","tags":["desseins","accomplissement","plan","volonté"],"impact":{"foi":2,"finances":2,"paix":1},"diff":1},
-  {"id":"v-ident-008","ref":"Deutéronome 28.13","text":"L'Éternel fera de toi la tête et non la queue, tu seras toujours en haut.","cat":"identite_appel","tags":["tête","queue","haut","bas","domination","obéissance"],"impact":{"foi":2,"finances":3,"paix":1},"diff":2},
-  {"id":"v-doute-001","ref":"Marc 11.24","text":"Tout ce que vous demanderez en priant, croyez que vous l'avez reçu.","cat":"doute_incredulite","tags":["prière","foi","croyance","réception","accomplissement"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-doute-002","ref":"Hébreux 11.1","text":"Or la foi est une ferme assurance des choses qu'on espère, une démonstration de celles qu'on ne voit pas.","cat":"doute_incredulite","tags":["foi","assurance","espérance","démonstration","invisible"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-doute-003","ref":"Jacques 1.6","text":"Que celui qui doute est semblable au flot de la mer, agité par le vent.","cat":"doute_incredulite","tags":["doute","foi","vague","vent","instabilité"],"impact":{"foi":-2,"paix":-2},"diff":1},
-  {"id":"v-doute-004","ref":"Matthieu 17.20","text":"Si vous aviez de la foi comme un grain de sénevé, rien ne vous serait impossible.","cat":"doute_incredulite","tags":["foi","grain","sénevé","montagne","impossible","miracle"],"impact":{"foi":4,"paix":1,"physique":1},"diff":2},
-  {"id":"v-doute-005","ref":"Psaume 37.5","text":"Recommande ton sort à l'Éternel, mets en lui ta confiance, et il agira.","cat":"doute_incredulite","tags":["confiance","recommandation","action","sort","seigneur"],"impact":{"foi":3,"paix":2,"finances":1},"diff":1},
-  {"id":"v-doute-006","ref":"2 Corinthiens 5.7","text":"Car nous marchons par la foi et non par la vue.","cat":"doute_incredulite","tags":["foi","marche","vue","confiance","invisible"],"impact":{"foi":3,"paix":1},"diff":1},
-  {"id":"v-orgueil-001","ref":"Proverbes 16.18","text":"L'orgueil précède la ruine, et la fierté spirituelle précède la chute.","cat":"orgueil_independance","tags":["orgueil","ruine","chute","fierté","humilité"],"impact":{"foi":-2,"paix":-2,"finances":-1},"diff":1},
-  {"id":"v-orgueil-002","ref":"Jacques 4.6","text":"Dieu résiste aux orgueilleux, mais il fait grâce aux humbles.","cat":"orgueil_independance","tags":["orgueil","humilité","grâce","résistance","dieu"],"impact":{"foi":3,"paix":2},"diff":1},
-  {"id":"v-orgueil-003","ref":"Philippiens 2.3","text":"Ne faites rien par esprit de parti ou par vaine gloire, mais que l'humilité vous fasse regarder les autres comme supérieurs.","cat":"orgueil_independance","tags":["humilité","gloire","parti","autres","estime"],"impact":{"foi":2,"paix":3},"diff":2},
-  {"id":"v-orgueil-004","ref":"Proverbes 11.2","text":"Quand vient l'orgueil, vient aussi l'ignominie; mais la sagesse est avec les humbles.","cat":"orgueil_independance","tags":["orgueil","ignominie","sagesse","humilité"],"impact":{"foi":2,"paix":2,"finances":-1},"diff":2},
-  {"id":"v-orgueil-005","ref":"Matthieu 23.12","text":"Quiconque s'élèvera sera abaissé, et quiconque s'abaissera sera élevé.","cat":"orgueil_independance","tags":["élévation","abaissement","humilité","orgueil","principe"],"impact":{"foi":2,"paix":2},"diff":1},
-  {"id":"v-orgueil-006","ref":"1 Pierre 5.5-6","text":"Humiliez-vous sous la puissante main de Dieu, afin qu'il vous élève au temps convenable.","cat":"orgueil_independance","tags":["humilité","soumission","anciens","élévation","grâce","temps"],"impact":{"foi":3,"paix":2,"finances":1},"diff":2},
-
-  {"id":"v-gueris-001","ref":"Ésaïe 53.5","text":"Il a été blessé pour nos péchés, brisé pour nos iniquités; le châtiment qui nous donne la paix est tombé sur lui, et c'est par ses meurtrissures que nous sommes guéris.","cat":"maladie_guerison","tags":["guérison","meurtrissures","sacrifice","santé","paix"],"impact":{"foi":3,"physique":4},"diff":1},
-  {"id":"v-gueris-002","ref":"Jacques 5.14-15","text":"Quelqu'un est-il malade parmi vous? Qu'il appelle les anciens de l'Église, et que les anciens prient pour lui; la prière faite avec foi sauvera le malade.","cat":"maladie_guerison","tags":["maladie","anciens","prière","onction","salut","foi"],"impact":{"foi":4,"physique":3},"diff":2},
-  {"id":"v-gueris-003","ref":"Jérémie 17.14","text":"Guéris-moi, Éternel, et je serai guéri; sauve-moi, et je serai sauvé; car tu es ma gloire.","cat":"maladie_guerison","tags":["guérison","salut","gloire","prière","santé"],"impact":{"foi":4,"physique":3},"diff":1},
-
-  {"id":"v-culpa-001","ref":"1 Jean 1.9","text":"Si nous confessons nos péchés, il est fidèle et juste pour nous les pardonner et pour nous purifier de toute iniquité.","cat":"culpabilite","tags":["confession","pardon","péchés","fidèle","purification"],"impact":{"foi":4,"paix":3},"diff":1},
-  {"id":"v-culpa-002","ref":"Psaume 103.12","text":"Autant l'orient est éloigné de l'occident, autant il éloigne de nous nos transgressions.","cat":"culpabilite","tags":["pardon","transgressions","éloignement","grâce","libération"],"impact":{"foi":3,"paix":4},"diff":1},
-  {"id":"v-culpa-003","ref":"Michée 7.19","text":"Il aura encore compassion de nous, il mettra sous ses pieds nos iniquités; tu jetteras au fond de la mer tous leurs péchés.","cat":"culpabilite","tags":["compassion","iniquités","péchés","mer","pardon"],"impact":{"foi":3,"paix":3},"diff":2},
-
-  {"id":"v-decour-001","ref":"Galates 6.9","text":"Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relâchons pas.","cat":"decouragement","tags":["persévérance","moisson","bien","lassitude","temps"],"impact":{"foi":2,"paix":3},"diff":1},
-  {"id":"v-decour-002","ref":"Psaume 42.5","text":"Pourquoi t'abats-tu, mon âme, et gémis-tu au-dedans de moi? Espère en Dieu, car je le louerai encore; il est mon salut et mon Dieu.","cat":"decouragement","tags":["découragement","âme","espoir","louange","salut"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-decour-003","ref":"Ésaïe 40.31","text":"Ceux qui se confient en l'Éternel renouvellent leur force. Ils prennent le vol comme les aigles; ils courent sans se fatiguer, ils marchent sans se lasser.","cat":"decouragement","tags":["force","confiance","renouveau","aigle","endurance"],"impact":{"foi":3,"paix":2,"physique":2},"diff":1},
-
-  {"id":"v-direct-001","ref":"Proverbes 3.5-6","text":"Confie-toi en l'Éternel de tout ton cœur et ne t'appuie pas sur ta sagesse. Reconnais-le dans toutes tes voies, et il aplanira tes sentiers.","cat":"direction_divine","tags":["confiance","direction","voie","cœur","sagesse"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-direct-002","ref":"Psaume 32.8","text":"Je t'instruirai et te montrerai la voie que tu dois suivre; je te conseillerai, j'aurai les yeux sur toi.","cat":"direction_divine","tags":["instruction","voie","conseil","protection","guidance"],"impact":{"foi":3,"paix":2},"diff":1},
-  {"id":"v-direct-003","ref":"Ésaïe 30.21","text":"Tes oreilles entendront une parole derrière toi, qui dira: C'est ici le chemin, marchez-y, quand vous iriez à droite ou à gauche.","cat":"direction_divine","tags":["voix","chemin","direction","obéissance","voie"],"impact":{"foi":4,"paix":2},"diff":2},
-  {"id":"v-direct-004","ref":"Jean 16.13","text":"Quand le Consolateur sera venu, l'Esprit de vérité, il vous guidera dans toute la vérité.","cat":"direction_divine","tags":["esprit","vérité","guide","consolateur","direction"],"impact":{"foi":3,"paix":3},"diff":2},
-  {"id":"v-direct-005","ref":"Proverbes 16.9","text":"Le cœur de l'homme médite sa voie, mais c'est l'Éternel qui dirige ses pas.","cat":"direction_divine","tags":["cœur","voie","direction","souveraineté","pas"],"impact":{"foi":2,"paix":3},"diff":1},
-
-  {"id":"v-echec-001","ref":"Philippiens 4.13","text":"Je puis tout par celui qui me fortifie.","cat":"echec_reussite","tags":["force","victoire","puissance","christ","possibilité"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-echec-002","ref":"Romains 8.28","text":"Nous savons, du reste, que toutes choses concourent au bien de ceux qui aiment Dieu, de ceux qui sont appelés selon son dessein.","cat":"echec_reussite","tags":["bien","amour","dieu","providence","toutes choses"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-echec-003","ref":"Josué 1.8","text":"Tu méditeras ce livre de la loi jour et nuit... alors tu auras du succès dans tes entreprises et tu réussiras.","cat":"echec_reussite","tags":["méditation","loi","succès","réussite","entreprises"],"impact":{"foi":3,"finances":2},"diff":2},
-
-  {"id":"v-esprit-001","ref":"Actes 1.8","text":"Vous recevrez une puissance, le Saint-Esprit surviendra sur vous, et vous serez mes témoins jusqu'aux extrémités de la terre.","cat":"saint_esprit","tags":["puissance","saint-esprit","témoin","onction","force"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-esprit-002","ref":"Jean 14.16-17","text":"Il vous donnera un autre Consolateur, afin qu'il demeure éternellement avec vous, l'Esprit de vérité.","cat":"saint_esprit","tags":["consolateur","esprit","vérité","éternel","présence"],"impact":{"foi":3,"paix":4},"diff":2},
-  {"id":"v-esprit-003","ref":"Romains 8.26","text":"L'Esprit vient en aide à notre faiblesse, car nous ne savons pas ce qu'il nous convient de demander dans nos prières.","cat":"saint_esprit","tags":["faiblesse","prière","aide","esprit","intercession"],"impact":{"foi":3,"paix":3},"diff":2},
-  {"id":"v-esprit-004","ref":"1 Corinthiens 12.7","text":"Or, à chacun la manifestation de l'Esprit est donnée pour l'utilité commune.","cat":"saint_esprit","tags":["don","esprit","manifestation","communauté","utilité"],"impact":{"foi":3,"paix":2},"diff":2},
-
-  {"id":"v-joie-001","ref":"Néhémie 8.10","text":"La joie de l'Éternel est votre force.","cat":"tristesse_joie","tags":["joie","force","éternel","tristesse","victoire"],"impact":{"paix":4,"foi":2},"diff":1},
-  {"id":"v-joie-002","ref":"Psaume 30.6","text":"Les pleurs durent ce qu'il reste de la nuit, mais à l'aurore viennent les cris de joie.","cat":"tristesse_joie","tags":["pleurs","nuit","aurore","joie","espérance"],"impact":{"paix":4,"foi":2},"diff":1},
-  {"id":"v-joie-003","ref":"Jean 16.22","text":"Je vous reverrai, et votre cœur se réjouira, et nul ne vous ravira votre joie.","cat":"tristesse_joie","tags":["joie","cœur","ravir","espérance","réjouissance"],"impact":{"paix":3,"foi":3},"diff":2},
-
-  {"id":"v-abond-001","ref":"Jean 10.10","text":"Je suis venu afin que les brebis aient la vie, et qu'elles soient dans l'abondance.","cat":"abondance_financiere","tags":["abondance","vie","brebis","prospérité","christ"],"impact":{"foi":2,"finances":4},"diff":1},
-  {"id":"v-abond-002","ref":"3 Jean 1.2","text":"Bien-aimé, je souhaite que tu prospères à tous égards et sois en bonne santé, comme prospère l'état de ton âme.","cat":"abondance_financiere","tags":["prospérité","santé","âme","richesse","bien-être"],"impact":{"foi":2,"finances":3,"physique":2},"diff":1},
-  {"id":"v-abond-003","ref":"2 Corinthiens 9.8","text":"Dieu peut vous combler de toutes sortes de grâces, afin que, ayant toujours en toutes choses de quoi satisfaire à tous vos besoins, vous ayez encore en abondance pour toute bonne œuvre.","cat":"abondance_financiere","tags":["grâce","besoins","abondance","oeuvre","bénédiction"],"impact":{"foi":3,"finances":4},"diff":2},
-
-  {"id":"v-lourd-001","ref":"Matthieu 11.28","text":"Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos.","cat":"lourdeur_fatigue","tags":["fatigue","repos","charge","christ","soulagement"],"impact":{"paix":5,"physique":2},"diff":1},
-  {"id":"v-lourd-002","ref":"Ésaïe 40.29","text":"Il donne de la force à celui qui est fatigué, et il multiplie les forces de celui qui est sans vigueur.","cat":"lourdeur_fatigue","tags":["force","fatigue","vigueur","renouveau","dieu"],"impact":{"foi":2,"physique":4},"diff":1},
-  {"id":"v-lourd-004","ref":"Psaume 68.20","text":"Le Seigneur, notre Dieu, nous affranchit de la mort. Béni soit le Seigneur, qui chaque jour nous soutient.","cat":"lourdeur_fatigue","tags":["soutien","fardeau","journée","bénédiction","mort"],"impact":{"foi":3,"physique":3,"paix":2},"diff":2},
-
-  {"id":"v-obeis-001","ref":"1 Samuel 15.22","text":"L'obéissance vaut mieux que les sacrifices, et la docilité vaut mieux que la graisse des béliers.","cat":"obeissance","tags":["obéissance","sacrifice","docilité","béliers","soumission"],"impact":{"foi":4,"paix":2},"diff":2},
-  {"id":"v-obeis-002","ref":"Jean 14.15","text":"Si vous m'aimez, gardez mes commandements.","cat":"obeissance","tags":["amour","commandements","obéissance","christ","fidélité"],"impact":{"foi":3,"paix":2},"diff":1},
-  {"id":"v-obeis-003","ref":"Deutéronome 28.1","text":"Si tu obéis à la voix de l'Éternel, ton Dieu, en observant et en pratiquant tous ses commandements... toutes ces bénédictions se réaliseront pour toi.","cat":"obeissance","tags":["obéissance","bénédictions","voix","éternel","récompense"],"impact":{"foi":3,"finances":2},"diff":1},
-
-  {"id":"v-parole-001","ref":"Hébreux 4.12","text":"La parole de Dieu est vivante et efficace, plus tranchante qu'une épée quelconque à deux tranchants.","cat":"parole_de_dieu","tags":["parole","vivante","efficace","épée","force"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-parole-002","ref":"Psaume 119.105","text":"Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.","cat":"parole_de_dieu","tags":["parole","lampe","lumière","sentier","direction"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-parole-003","ref":"Jean 8.32","text":"Vous connaîtrez la vérité, et la vérité vous affranchira.","cat":"parole_de_dieu","tags":["vérité","connaissance","liberté","affranchissement","parole"],"impact":{"foi":3,"paix":4},"diff":1},
-  {"id":"v-parole-004","ref":"Matthieu 4.4","text":"L'homme ne vivra pas de pain seulement, mais de toute parole qui sort de la bouche de Dieu.","cat":"parole_de_dieu","tags":["pain","parole","vie","nourriture","bouche de Dieu"],"impact":{"foi":4,"physique":1},"diff":1},
-
-  {"id":"v-priere-001","ref":"Matthieu 7.7","text":"Demandez, et l'on vous donnera; cherchez, et vous trouverez; frappez, et l'on vous ouvrira.","cat":"priere","tags":["demande","cherche","frappe","prière","réponse"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-priere-002","ref":"Jérémie 33.3","text":"Invoque-moi, et je te répondrai; je t'annoncerai de grandes choses, des choses cachées que tu ne connais pas.","cat":"priere","tags":["invocation","réponse","révélation","choses cachées","prière"],"impact":{"foi":4,"paix":2},"diff":1},
-  {"id":"v-priere-003","ref":"1 Thessaloniciens 5.17","text":"Priez sans cesse.","cat":"priere","tags":["prière","constance","persévérance","communion","dieu"],"impact":{"foi":3,"paix":2},"diff":1},
-
-  {"id":"v-soif-001","ref":"Psaume 42.2","text":"Mon âme soupire après toi, ô Dieu! Mon âme a soif de Dieu, du Dieu vivant.","cat":"soif_de_dieu","tags":["soif","âme","désir","dieu vivant","intimité"],"impact":{"foi":4,"paix":3},"diff":1},
-  {"id":"v-soif-002","ref":"Matthieu 5.6","text":"Heureux ceux qui ont faim et soif de la justice, car ils seront rassasiés!","cat":"soif_de_dieu","tags":["faim","soif","justice","béatitude","rassasié"],"impact":{"foi":3,"paix":3},"diff":1},
-  {"id":"v-soif-003","ref":"Ésaïe 55.1","text":"Vous tous qui avez soif, venez aux eaux, même celui qui n'a pas d'argent! Venez, achetez et mangez, sans argent et sans rien payer.","cat":"soif_de_dieu","tags":["soif","eaux","grâce","gratuit","abondance"],"impact":{"foi":3,"paix":4},"diff":2},
-
-  {"id":"v-steril-001","ref":"Psaume 113.9","text":"Il donne une maison à la femme stérile, il la rend joyeuse, mère de nombreux enfants. Alléluia!","cat":"sterilite","tags":["stérilité","maison","mère","enfants","joie"],"impact":{"foi":4,"paix":4},"diff":2},
-
-  {"id":"v-amour-001","ref":"Jean 3.16","text":"Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.","cat":"amour_de_dieu","tags":["amour","fils","monde","vie éternelle","sacrifice"],"impact":{"foi":5,"paix":3},"diff":1},
-  {"id":"v-amour-002","ref":"Romains 5.8","text":"Mais Dieu prouve son amour envers nous, en ce que, lorsque nous étions encore des pécheurs, Christ est mort pour nous.","cat":"amour_de_dieu","tags":["amour","preuve","pécheurs","mort","christ"],"impact":{"foi":4,"paix":3},"diff":1}
-]
+  {
+    "id": "v-peur-001",
+    "ref": "2 Timothée 1.7",
+    "text": "Car ce n'est pas un esprit de timidité que Dieu nous a donné, mais un esprit de force, d'amour et de sagesse.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "peur",
+      "timidité",
+      "crainte",
+      "force",
+      "amour",
+      "sagesse",
+      "esprit"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-peur-002",
+    "ref": "Psaume 27.1",
+    "text": "L'Éternel est ma lumière et mon salut: de qui aurai-je peur? L'Éternel est le rempart de ma vie: de qui aurai-je crainte?",
+    "cat": "peur_angoisse",
+    "tags": [
+      "peur",
+      "crainte",
+      "lumière",
+      "salut",
+      "rempart",
+      "protection"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-peur-003",
+    "ref": "Ésaïe 41.10",
+    "text": "Ne crains rien, car je suis avec toi; Ne promène pas des regards inquiets, car je suis ton Dieu; Je te fortifie, je viens à ton secours, Je te soutiens de ma droite triomphante.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "crainte",
+      "inquiétude",
+      "secours",
+      "force",
+      "présence",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-peur-004",
+    "ref": "Philippiens 4.6-7",
+    "text": "Ne vous inquiétez de rien; mais en toute chose faites connaître vos besoins à Dieu par des prières et des supplications, avec des actions de grâces.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "inquiétude",
+      "prière",
+      "paix",
+      "supplication",
+      "action de grâce"
+    ],
+    "impact": {
+      "paix": 5,
+      "foi": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-peur-005",
+    "ref": "Psaume 56.3-4",
+    "text": "Quand je suis dans la crainte, En toi je me confie. Je me confie en Dieu, je ne crains rien: Que peuvent me faire des hommes?",
+    "cat": "peur_angoisse",
+    "tags": [
+      "crainte",
+      "confiance",
+      "hommes",
+      "protection"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-peur-006",
+    "ref": "Josué 1.9",
+    "text": "Ne t'ai-je pas donné cet ordre: Fortifie-toi et prends courage? Ne t'effraie point et ne t'épouvante point, car l'Éternel est avec toi.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "courage",
+      "force",
+      "effroi",
+      "entreprise",
+      "ordre"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "physique": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-peur-007",
+    "ref": "Jean 14.27",
+    "text": "Je vous laisse la paix, je vous donne ma paix. Je ne vous donne pas comme le monde donne.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "paix",
+      "trouble",
+      "alarme",
+      "cœur",
+      "monde"
+    ],
+    "impact": {
+      "paix": 5,
+      "foi": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-peur-008",
+    "ref": "Psaume 34.5",
+    "text": "Quand on tourne vers lui les regards, on est radieux de joie, et le visage ne se couvre pas de honte.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "regard",
+      "joie",
+      "honte",
+      "radieux",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-peur-009",
+    "ref": "Romains 8.15",
+    "text": "Vous n'avez point reçu un esprit de servitude pour être encore dans la crainte; mais vous avez reçu un Esprit d'adoption.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "servitude",
+      "crainte",
+      "adoption",
+      "père",
+      "esprit",
+      "filiation"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-peur-010",
+    "ref": "1 Pierre 5.7",
+    "text": "Déchargez-vous sur lui de tous vos soucis, car lui-même prend soin de vous.",
+    "cat": "peur_angoisse",
+    "tags": [
+      "soucis",
+      "charge",
+      "soin",
+      "confiance",
+      "abandon"
+    ],
+    "impact": {
+      "paix": 3,
+      "foi": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-imput-001",
+    "ref": "1 Corinthiens 6.15-20",
+    "text": "Ne savez-vous pas que vos corps sont les membres de Christ?… Fuyez l'impudicité.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "corps",
+      "temple",
+      "impudicité",
+      "esprit",
+      "péché",
+      "sainteté"
+    ],
+    "impact": {
+      "foi": 4,
+      "physique": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-imput-002",
+    "ref": "Galates 5.1",
+    "text": "C'est pour la liberté que Christ nous a affranchis. Demeurez donc fermes.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "liberté",
+      "affranchi",
+      "joug",
+      "servitude",
+      "ferme",
+      "christ"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-imput-003",
+    "ref": "Romains 6.14",
+    "text": "Car le péché n'aura point de pouvoir sur vous, puisque vous êtes sous la grâce.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "péché",
+      "loi",
+      "grâce",
+      "pouvoir",
+      "liberté"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-imput-004",
+    "ref": "2 Timothée 2.22",
+    "text": "Fuis les passions de la jeunesse, et recherche la justice, la foi, l'amour, la paix.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "passions",
+      "jeunesse",
+      "justice",
+      "foi",
+      "amour",
+      "paix",
+      "cœur pur"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "physique": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-imput-005",
+    "ref": "1 Corinthiens 10.13",
+    "text": "Aucune tentation ne vous est survenue qui n'ait été humaine, et Dieu est fidèle.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "tentation",
+      "force",
+      "issue",
+      "fidèle",
+      "supporter"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "physique": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-imput-006",
+    "ref": "Colossiens 3.5",
+    "text": "Faites donc mourir les membres qui sont sur la terre, l'impudicité, l'impureté.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "mortifier",
+      "impureté",
+      "passions",
+      "désirs",
+      "cupidité",
+      "idolâtrie"
+    ],
+    "impact": {
+      "foi": 3,
+      "physique": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-imput-007",
+    "ref": "Éphésiens 5.18",
+    "text": "Ne vous enivrez pas de vin, mais soyez remplis de l'Esprit.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "ivresse",
+      "vin",
+      "débauche",
+      "esprit",
+      "plénitude"
+    ],
+    "impact": {
+      "foi": 3,
+      "physique": 2,
+      "paix": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-imput-008",
+    "ref": "Proverbes 5.3-5",
+    "text": "Car les lèvres de la femme étrangère distillent le miel, mais à la fin elle est amère.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "séduction",
+      "mort",
+      "amertume",
+      "tranchant",
+      "piège"
+    ],
+    "impact": {
+      "foi": 2,
+      "physique": 3,
+      "paix": -1
+    },
+    "diff": 3
+  },
+  {
+    "id": "v-imput-009",
+    "ref": "Romains 8.13",
+    "text": "Si vous vivez selon la chair, vous mourrez; mais si par l'Esprit vous faites mourir les actions du corps, vous vivrez.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "chair",
+      "esprit",
+      "mort",
+      "vie",
+      "actions",
+      "corps"
+    ],
+    "impact": {
+      "foi": 4,
+      "physique": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-imput-010",
+    "ref": "Tite 2.11-12",
+    "text": "Car la grâce de Dieu a été manifestée. Elle nous enseigne à renoncer à l'impiété.",
+    "cat": "impudicite_addiction",
+    "tags": [
+      "grâce",
+      "renoncement",
+      "convoitises",
+      "impiété",
+      "sagesse",
+      "piété"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-fin-001",
+    "ref": "Philippiens 4.19",
+    "text": "Et mon Dieu pourvoira à tous vos besoins selon sa richesse.",
+    "cat": "finances_paresse",
+    "tags": [
+      "besoins",
+      "richesse",
+      "gloire",
+      "pourvoira",
+      "providence"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 5
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-fin-002",
+    "ref": "Proverbes 6.9-11",
+    "text": "Jusques à quand, paresseux, seras-tu couché? Un peu de sommeil, et la pauvreté te surprendra.",
+    "cat": "finances_paresse",
+    "tags": [
+      "paresse",
+      "sommeil",
+      "pauvreté",
+      "disette",
+      "diligence"
+    ],
+    "impact": {
+      "foi": -1,
+      "finances": -4,
+      "physique": -1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-fin-003",
+    "ref": "Deutéronome 8.18",
+    "text": "Souviens-toi de l'Éternel, car c'est lui qui te donne la force d'acquérir des richesses.",
+    "cat": "finances_paresse",
+    "tags": [
+      "richesses",
+      "force",
+      "alliance",
+      "mémoire",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-fin-004",
+    "ref": "Proverbes 10.4",
+    "text": "Celui qui agit d'une main lâche s'appauvrit, mais la main des diligents enrichit.",
+    "cat": "finances_paresse",
+    "tags": [
+      "diligence",
+      "pauvreté",
+      "richesse",
+      "main",
+      "lâche"
+    ],
+    "impact": {
+      "finances": 4,
+      "foi": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-fin-005",
+    "ref": "Malachie 3.10",
+    "text": "Apportez à la maison du trésor toutes les dîmes, mettez-moi à l'épreuve, dit l'Éternel.",
+    "cat": "finances_paresse",
+    "tags": [
+      "dîme",
+      "offrande",
+      "bénédiction",
+      "épreuve",
+      "abondance",
+      "trésor"
+    ],
+    "impact": {
+      "foi": 3,
+      "finances": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-fin-006",
+    "ref": "Proverbes 13.11",
+    "text": "La richesse mal acquise diminue, mais celui qui amasse peu à peu l'augmente.",
+    "cat": "finances_paresse",
+    "tags": [
+      "richesse",
+      "acquise",
+      "amasse",
+      "patience",
+      "intégrité"
+    ],
+    "impact": {
+      "finances": 3,
+      "foi": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-fin-007",
+    "ref": "2 Corinthiens 9.6",
+    "text": "Celui qui sème peu moissonnera peu, et celui qui sème abondamment moissonnera abondamment.",
+    "cat": "finances_paresse",
+    "tags": [
+      "semence",
+      "moisson",
+      "abondance",
+      "générosité",
+      "récolte"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-fin-008",
+    "ref": "Proverbes 22.7",
+    "text": "Le riche domine sur les pauvres, et celui qui emprunte est l'esclave de celui qui prête.",
+    "cat": "finances_paresse",
+    "tags": [
+      "dette",
+      "esclavage",
+      "emprunt",
+      "domination",
+      "richesse"
+    ],
+    "impact": {
+      "finances": -3,
+      "foi": -1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-fin-009",
+    "ref": "Ecclésiaste 5.18",
+    "text": "C'est pour l'homme une chose bonne de jouir du bien-être au milieu de tout son travail.",
+    "cat": "finances_paresse",
+    "tags": [
+      "travail",
+      "jouissance",
+      "bien-être",
+      "vie",
+      "don"
+    ],
+    "impact": {
+      "paix": 2,
+      "finances": 2,
+      "physique": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-fin-010",
+    "ref": "Proverbes 21.5",
+    "text": "Les projets de l'homme diligent ne mènent qu'à l'abondance.",
+    "cat": "finances_paresse",
+    "tags": [
+      "diligence",
+      "projets",
+      "abondance",
+      "hâte",
+      "disette"
+    ],
+    "impact": {
+      "finances": 4,
+      "foi": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-001",
+    "ref": "Éphésiens 4.31",
+    "text": "Que toute amertume, toute animosité, toute colère disparaissent du milieu de vous.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "amertume",
+      "colère",
+      "calomnie",
+      "méchanceté",
+      "animosité",
+      "pardon"
+    ],
+    "impact": {
+      "paix": 4,
+      "foi": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-002",
+    "ref": "Jérémie 31.3",
+    "text": "Je t'aime d'un amour éternel; C'est pourquoi je te conserve ma bonté.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "amour",
+      "éternel",
+      "bonté",
+      "rejet",
+      "élu"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-003",
+    "ref": "Romains 8.1",
+    "text": "Il n'y a donc maintenant aucune condamnation pour ceux qui sont en Jésus-Christ.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "condamnation",
+      "culpabilité",
+      "jugement",
+      "christ",
+      "liberté"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-004",
+    "ref": "Matthieu 6.14-15",
+    "text": "Si vous pardonnez aux hommes leurs offenses, votre Père céleste vous pardonnera aussi.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "pardon",
+      "offenses",
+      "père",
+      "réconciliation",
+      "condition"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-005",
+    "ref": "Psaume 27.10",
+    "text": "Car mon père et ma mère m'abandonnent, mais l'Éternel me recueille.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "abandon",
+      "père",
+      "mère",
+      "recueil",
+      "rejet",
+      "solitude"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-006",
+    "ref": "Hébreux 12.15",
+    "text": "Veillez à ce qu'aucune racine d'amertume ne produise du trouble.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "racine",
+      "amertume",
+      "grâce",
+      "trouble",
+      "infection",
+      "veille"
+    ],
+    "impact": {
+      "paix": 3,
+      "foi": 2,
+      "physique": -1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-amer-007",
+    "ref": "1 Jean 4.18",
+    "text": "Il n'y a pas de crainte dans l'amour, mais l'amour parfait bannit la crainte.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "crainte",
+      "amour",
+      "parfait",
+      "châtiment",
+      "bannir"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-amer-008",
+    "ref": "Éphésiens 1.6",
+    "text": "À la louange de la gloire de sa grâce qu'il nous a accordée en son Bien-Aimé.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "louange",
+      "gloire",
+      "grâce",
+      "bien-aimé",
+      "acceptation"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-amer-009",
+    "ref": "Colossiens 3.13",
+    "text": "Supportez-vous les uns les autres et pardonnez-vous réciproquement.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "pardon",
+      "support",
+      "plainte",
+      "réciprocité",
+      "seigneur"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amer-010",
+    "ref": "Sophonie 3.17",
+    "text": "L'Éternel fera de toi sa plus grande joie; Il aura pour toi des transports d'allégresse.",
+    "cat": "amertume_rejet",
+    "tags": [
+      "joie",
+      "allégresse",
+      "héros",
+      "salut",
+      "amour",
+      "présence"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-combat-001",
+    "ref": "Éphésiens 6.12",
+    "text": "Nous n'avons pas à lutter contre la chair et le sang, mais contre les dominations.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "lutte",
+      "chair",
+      "sang",
+      "dominations",
+      "ténèbres",
+      "esprits",
+      "combat"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2,
+      "physique": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-combat-002",
+    "ref": "2 Corinthiens 10.4-5",
+    "text": "Les armes de notre combat ne sont pas charnelles, mais puissantes pour renverser des forteresses.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "armes",
+      "forteresses",
+      "raisonnements",
+      "hauteur",
+      "connaissance",
+      "combat"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-combat-003",
+    "ref": "Jacques 4.7",
+    "text": "Soumettez-vous donc à Dieu; résistez au diable, et il fuira loin de vous.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "soumission",
+      "résistance",
+      "diable",
+      "fuite",
+      "autorité"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-combat-004",
+    "ref": "1 Jean 4.4",
+    "text": "Celui qui est en vous est plus grand que celui qui est dans le monde.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "victoire",
+      "vaincus",
+      "plus grand",
+      "monde",
+      "enfants",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-combat-005",
+    "ref": "Romains 8.37",
+    "text": "Dans toutes ces choses nous sommes plus que vainqueurs par celui qui nous a aimés.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "vainqueurs",
+      "amour",
+      "victoire",
+      "triomphe",
+      "christ"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "physique": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-combat-006",
+    "ref": "Apocalypse 12.11",
+    "text": "Ils l'ont vaincu à cause du sang de l'Agneau et à cause de la parole de leur témoignage.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "vaincu",
+      "sang",
+      "agneau",
+      "témoignage",
+      "mort",
+      "victoire"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 2,
+      "physique": 1
+    },
+    "diff": 3
+  },
+  {
+    "id": "v-combat-007",
+    "ref": "Ésaïe 54.17",
+    "text": "Toute arme fabriquée contre toi sera sans effet.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "armes",
+      "langue",
+      "justice",
+      "héritage",
+      "serviteurs",
+      "protection"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-combat-008",
+    "ref": "Galates 5.16",
+    "text": "Marchez selon l'Esprit, et vous n'accomplirez pas les désirs de la chair.",
+    "cat": "combat_spirituel",
+    "tags": [
+      "esprit",
+      "chair",
+      "désirs",
+      "marche",
+      "victoire"
+    ],
+    "impact": {
+      "foi": 3,
+      "physique": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-ident-001",
+    "ref": "Jérémie 29.11",
+    "text": "Car je connais les projets que j'ai formés sur vous, projets de paix et non de malheur.",
+    "cat": "identite_appel",
+    "tags": [
+      "projets",
+      "avenir",
+      "espérance",
+      "paix",
+      "destinée",
+      "plan"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-ident-002",
+    "ref": "Éphésiens 2.10",
+    "text": "Nous sommes son ouvrage, créés pour de bonnes œuvres que Dieu a préparées d'avance.",
+    "cat": "identite_appel",
+    "tags": [
+      "ouvrage",
+      "création",
+      "bonnes œuvres",
+      "préparées",
+      "destinée"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "finances": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-ident-003",
+    "ref": "Psaume 139.13-14",
+    "text": "C'est toi qui m'as tissé dans le sein de ma mère. Je suis une créature merveilleuse.",
+    "cat": "identite_appel",
+    "tags": [
+      "création",
+      "merveilleux",
+      "louange",
+      "identité",
+      "tissé",
+      "reins"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-ident-004",
+    "ref": "1 Pierre 2.9",
+    "text": "Vous êtes une race élue, un sacerdoce royal, une nation sainte.",
+    "cat": "identite_appel",
+    "tags": [
+      "élu",
+      "sacerdoce",
+      "royal",
+      "saint",
+      "acquis",
+      "lumière",
+      "ténèbres"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-ident-005",
+    "ref": "Proverbes 18.16",
+    "text": "Les dons d'un homme lui élargissent la voie, et lui donnent accès auprès des grands.",
+    "cat": "identite_appel",
+    "tags": [
+      "dons",
+      "voie",
+      "accès",
+      "grands",
+      "faveur",
+      "destinée"
+    ],
+    "impact": {
+      "foi": 1,
+      "finances": 3,
+      "paix": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-ident-006",
+    "ref": "Ésaïe 43.1",
+    "text": "Ne crains rien, car je te rachète, je t'appelle par ton nom: tu es à moi!",
+    "cat": "identite_appel",
+    "tags": [
+      "rachat",
+      "nom",
+      "appartenance",
+      "crainte",
+      "appelé"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-ident-007",
+    "ref": "Psaume 20.5",
+    "text": "Que l'Éternel accomplisse tous tes desseins!",
+    "cat": "identite_appel",
+    "tags": [
+      "desseins",
+      "accomplissement",
+      "plan",
+      "volonté"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 2,
+      "paix": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-ident-008",
+    "ref": "Deutéronome 28.13",
+    "text": "L'Éternel fera de toi la tête et non la queue, tu seras toujours en haut.",
+    "cat": "identite_appel",
+    "tags": [
+      "tête",
+      "queue",
+      "haut",
+      "bas",
+      "domination",
+      "obéissance"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 3,
+      "paix": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-doute-001",
+    "ref": "Marc 11.24",
+    "text": "Tout ce que vous demanderez en priant, croyez que vous l'avez reçu.",
+    "cat": "doute_incredulite",
+    "tags": [
+      "prière",
+      "foi",
+      "croyance",
+      "réception",
+      "accomplissement"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-doute-002",
+    "ref": "Hébreux 11.1",
+    "text": "Or la foi est une ferme assurance des choses qu'on espère, une démonstration de celles qu'on ne voit pas.",
+    "cat": "doute_incredulite",
+    "tags": [
+      "foi",
+      "assurance",
+      "espérance",
+      "démonstration",
+      "invisible"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-doute-003",
+    "ref": "Jacques 1.6",
+    "text": "Que celui qui doute est semblable au flot de la mer, agité par le vent.",
+    "cat": "doute_incredulite",
+    "tags": [
+      "doute",
+      "foi",
+      "vague",
+      "vent",
+      "instabilité"
+    ],
+    "impact": {
+      "foi": -2,
+      "paix": -2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-doute-004",
+    "ref": "Matthieu 17.20",
+    "text": "Si vous aviez de la foi comme un grain de sénevé, rien ne vous serait impossible.",
+    "cat": "doute_incredulite",
+    "tags": [
+      "foi",
+      "grain",
+      "sénevé",
+      "montagne",
+      "impossible",
+      "miracle"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 1,
+      "physique": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-doute-005",
+    "ref": "Psaume 37.5",
+    "text": "Recommande ton sort à l'Éternel, mets en lui ta confiance, et il agira.",
+    "cat": "doute_incredulite",
+    "tags": [
+      "confiance",
+      "recommandation",
+      "action",
+      "sort",
+      "seigneur"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "finances": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-doute-006",
+    "ref": "2 Corinthiens 5.7",
+    "text": "Car nous marchons par la foi et non par la vue.",
+    "cat": "doute_incredulite",
+    "tags": [
+      "foi",
+      "marche",
+      "vue",
+      "confiance",
+      "invisible"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-orgueil-001",
+    "ref": "Proverbes 16.18",
+    "text": "L'orgueil précède la ruine, et la fierté spirituelle précède la chute.",
+    "cat": "orgueil_independance",
+    "tags": [
+      "orgueil",
+      "ruine",
+      "chute",
+      "fierté",
+      "humilité"
+    ],
+    "impact": {
+      "foi": -2,
+      "paix": -2,
+      "finances": -1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-orgueil-002",
+    "ref": "Jacques 4.6",
+    "text": "Dieu résiste aux orgueilleux, mais il fait grâce aux humbles.",
+    "cat": "orgueil_independance",
+    "tags": [
+      "orgueil",
+      "humilité",
+      "grâce",
+      "résistance",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-orgueil-003",
+    "ref": "Philippiens 2.3",
+    "text": "Ne faites rien par esprit de parti ou par vaine gloire, mais que l'humilité vous fasse regarder les autres comme supérieurs.",
+    "cat": "orgueil_independance",
+    "tags": [
+      "humilité",
+      "gloire",
+      "parti",
+      "autres",
+      "estime"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-orgueil-004",
+    "ref": "Proverbes 11.2",
+    "text": "Quand vient l'orgueil, vient aussi l'ignominie; mais la sagesse est avec les humbles.",
+    "cat": "orgueil_independance",
+    "tags": [
+      "orgueil",
+      "ignominie",
+      "sagesse",
+      "humilité"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 2,
+      "finances": -1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-orgueil-005",
+    "ref": "Matthieu 23.12",
+    "text": "Quiconque s'élèvera sera abaissé, et quiconque s'abaissera sera élevé.",
+    "cat": "orgueil_independance",
+    "tags": [
+      "élévation",
+      "abaissement",
+      "humilité",
+      "orgueil",
+      "principe"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-orgueil-006",
+    "ref": "1 Pierre 5.5-6",
+    "text": "Humiliez-vous sous la puissante main de Dieu, afin qu'il vous élève au temps convenable.",
+    "cat": "orgueil_independance",
+    "tags": [
+      "humilité",
+      "soumission",
+      "anciens",
+      "élévation",
+      "grâce",
+      "temps"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "finances": 1
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-gueris-001",
+    "ref": "Ésaïe 53.5",
+    "text": "Il a été blessé pour nos péchés, brisé pour nos iniquités; le châtiment qui nous donne la paix est tombé sur lui, et c'est par ses meurtrissures que nous sommes guéris.",
+    "cat": "maladie_guerison",
+    "tags": [
+      "guérison",
+      "meurtrissures",
+      "sacrifice",
+      "santé",
+      "paix"
+    ],
+    "impact": {
+      "foi": 3,
+      "physique": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-gueris-002",
+    "ref": "Jacques 5.14-15",
+    "text": "Quelqu'un est-il malade parmi vous? Qu'il appelle les anciens de l'Église, et que les anciens prient pour lui; la prière faite avec foi sauvera le malade.",
+    "cat": "maladie_guerison",
+    "tags": [
+      "maladie",
+      "anciens",
+      "prière",
+      "onction",
+      "salut",
+      "foi"
+    ],
+    "impact": {
+      "foi": 4,
+      "physique": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-gueris-003",
+    "ref": "Jérémie 17.14",
+    "text": "Guéris-moi, Éternel, et je serai guéri; sauve-moi, et je serai sauvé; car tu es ma gloire.",
+    "cat": "maladie_guerison",
+    "tags": [
+      "guérison",
+      "salut",
+      "gloire",
+      "prière",
+      "santé"
+    ],
+    "impact": {
+      "foi": 4,
+      "physique": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-culpa-001",
+    "ref": "1 Jean 1.9",
+    "text": "Si nous confessons nos péchés, il est fidèle et juste pour nous les pardonner et pour nous purifier de toute iniquité.",
+    "cat": "culpabilite",
+    "tags": [
+      "confession",
+      "pardon",
+      "péchés",
+      "fidèle",
+      "purification"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-culpa-002",
+    "ref": "Psaume 103.12",
+    "text": "Autant l'orient est éloigné de l'occident, autant il éloigne de nous nos transgressions.",
+    "cat": "culpabilite",
+    "tags": [
+      "pardon",
+      "transgressions",
+      "éloignement",
+      "grâce",
+      "libération"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-culpa-003",
+    "ref": "Michée 7.19",
+    "text": "Il aura encore compassion de nous, il mettra sous ses pieds nos iniquités; tu jetteras au fond de la mer tous leurs péchés.",
+    "cat": "culpabilite",
+    "tags": [
+      "compassion",
+      "iniquités",
+      "péchés",
+      "mer",
+      "pardon"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-decour-001",
+    "ref": "Galates 6.9",
+    "text": "Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relâchons pas.",
+    "cat": "decouragement",
+    "tags": [
+      "persévérance",
+      "moisson",
+      "bien",
+      "lassitude",
+      "temps"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-decour-002",
+    "ref": "Psaume 42.5",
+    "text": "Pourquoi t'abats-tu, mon âme, et gémis-tu au-dedans de moi? Espère en Dieu, car je le louerai encore; il est mon salut et mon Dieu.",
+    "cat": "decouragement",
+    "tags": [
+      "découragement",
+      "âme",
+      "espoir",
+      "louange",
+      "salut"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-decour-003",
+    "ref": "Ésaïe 40.31",
+    "text": "Ceux qui se confient en l'Éternel renouvellent leur force. Ils prennent le vol comme les aigles; ils courent sans se fatiguer, ils marchent sans se lasser.",
+    "cat": "decouragement",
+    "tags": [
+      "force",
+      "confiance",
+      "renouveau",
+      "aigle",
+      "endurance"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2,
+      "physique": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-direct-001",
+    "ref": "Proverbes 3.5-6",
+    "text": "Confie-toi en l'Éternel de tout ton cœur et ne t'appuie pas sur ta sagesse. Reconnais-le dans toutes tes voies, et il aplanira tes sentiers.",
+    "cat": "direction_divine",
+    "tags": [
+      "confiance",
+      "direction",
+      "voie",
+      "cœur",
+      "sagesse"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-direct-002",
+    "ref": "Psaume 32.8",
+    "text": "Je t'instruirai et te montrerai la voie que tu dois suivre; je te conseillerai, j'aurai les yeux sur toi.",
+    "cat": "direction_divine",
+    "tags": [
+      "instruction",
+      "voie",
+      "conseil",
+      "protection",
+      "guidance"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-direct-003",
+    "ref": "Ésaïe 30.21",
+    "text": "Tes oreilles entendront une parole derrière toi, qui dira: C'est ici le chemin, marchez-y, quand vous iriez à droite ou à gauche.",
+    "cat": "direction_divine",
+    "tags": [
+      "voix",
+      "chemin",
+      "direction",
+      "obéissance",
+      "voie"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-direct-004",
+    "ref": "Jean 16.13",
+    "text": "Quand le Consolateur sera venu, l'Esprit de vérité, il vous guidera dans toute la vérité.",
+    "cat": "direction_divine",
+    "tags": [
+      "esprit",
+      "vérité",
+      "guide",
+      "consolateur",
+      "direction"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-direct-005",
+    "ref": "Proverbes 16.9",
+    "text": "Le cœur de l'homme médite sa voie, mais c'est l'Éternel qui dirige ses pas.",
+    "cat": "direction_divine",
+    "tags": [
+      "cœur",
+      "voie",
+      "direction",
+      "souveraineté",
+      "pas"
+    ],
+    "impact": {
+      "foi": 2,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-echec-001",
+    "ref": "Philippiens 4.13",
+    "text": "Je puis tout par celui qui me fortifie.",
+    "cat": "echec_reussite",
+    "tags": [
+      "force",
+      "victoire",
+      "puissance",
+      "christ",
+      "possibilité"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-echec-002",
+    "ref": "Romains 8.28",
+    "text": "Nous savons, du reste, que toutes choses concourent au bien de ceux qui aiment Dieu, de ceux qui sont appelés selon son dessein.",
+    "cat": "echec_reussite",
+    "tags": [
+      "bien",
+      "amour",
+      "dieu",
+      "providence",
+      "toutes choses"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-echec-003",
+    "ref": "Josué 1.8",
+    "text": "Tu méditeras ce livre de la loi jour et nuit... alors tu auras du succès dans tes entreprises et tu réussiras.",
+    "cat": "echec_reussite",
+    "tags": [
+      "méditation",
+      "loi",
+      "succès",
+      "réussite",
+      "entreprises"
+    ],
+    "impact": {
+      "foi": 3,
+      "finances": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-esprit-001",
+    "ref": "Actes 1.8",
+    "text": "Vous recevrez une puissance, le Saint-Esprit surviendra sur vous, et vous serez mes témoins jusqu'aux extrémités de la terre.",
+    "cat": "saint_esprit",
+    "tags": [
+      "puissance",
+      "saint-esprit",
+      "témoin",
+      "onction",
+      "force"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-esprit-002",
+    "ref": "Jean 14.16-17",
+    "text": "Il vous donnera un autre Consolateur, afin qu'il demeure éternellement avec vous, l'Esprit de vérité.",
+    "cat": "saint_esprit",
+    "tags": [
+      "consolateur",
+      "esprit",
+      "vérité",
+      "éternel",
+      "présence"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-esprit-003",
+    "ref": "Romains 8.26",
+    "text": "L'Esprit vient en aide à notre faiblesse, car nous ne savons pas ce qu'il nous convient de demander dans nos prières.",
+    "cat": "saint_esprit",
+    "tags": [
+      "faiblesse",
+      "prière",
+      "aide",
+      "esprit",
+      "intercession"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-esprit-004",
+    "ref": "1 Corinthiens 12.7",
+    "text": "Or, à chacun la manifestation de l'Esprit est donnée pour l'utilité commune.",
+    "cat": "saint_esprit",
+    "tags": [
+      "don",
+      "esprit",
+      "manifestation",
+      "communauté",
+      "utilité"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-joie-001",
+    "ref": "Néhémie 8.10",
+    "text": "La joie de l'Éternel est votre force.",
+    "cat": "tristesse_joie",
+    "tags": [
+      "joie",
+      "force",
+      "éternel",
+      "tristesse",
+      "victoire"
+    ],
+    "impact": {
+      "paix": 4,
+      "foi": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-joie-002",
+    "ref": "Psaume 30.6",
+    "text": "Les pleurs durent ce qu'il reste de la nuit, mais à l'aurore viennent les cris de joie.",
+    "cat": "tristesse_joie",
+    "tags": [
+      "pleurs",
+      "nuit",
+      "aurore",
+      "joie",
+      "espérance"
+    ],
+    "impact": {
+      "paix": 4,
+      "foi": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-joie-003",
+    "ref": "Jean 16.22",
+    "text": "Je vous reverrai, et votre cœur se réjouira, et nul ne vous ravira votre joie.",
+    "cat": "tristesse_joie",
+    "tags": [
+      "joie",
+      "cœur",
+      "ravir",
+      "espérance",
+      "réjouissance"
+    ],
+    "impact": {
+      "paix": 3,
+      "foi": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-abond-001",
+    "ref": "Jean 10.10",
+    "text": "Je suis venu afin que les brebis aient la vie, et qu'elles soient dans l'abondance.",
+    "cat": "abondance_financiere",
+    "tags": [
+      "abondance",
+      "vie",
+      "brebis",
+      "prospérité",
+      "christ"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-abond-002",
+    "ref": "3 Jean 1.2",
+    "text": "Bien-aimé, je souhaite que tu prospères à tous égards et sois en bonne santé, comme prospère l'état de ton âme.",
+    "cat": "abondance_financiere",
+    "tags": [
+      "prospérité",
+      "santé",
+      "âme",
+      "richesse",
+      "bien-être"
+    ],
+    "impact": {
+      "foi": 2,
+      "finances": 3,
+      "physique": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-abond-003",
+    "ref": "2 Corinthiens 9.8",
+    "text": "Dieu peut vous combler de toutes sortes de grâces, afin que, ayant toujours en toutes choses de quoi satisfaire à tous vos besoins, vous ayez encore en abondance pour toute bonne œuvre.",
+    "cat": "abondance_financiere",
+    "tags": [
+      "grâce",
+      "besoins",
+      "abondance",
+      "oeuvre",
+      "bénédiction"
+    ],
+    "impact": {
+      "foi": 3,
+      "finances": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-lourd-001",
+    "ref": "Matthieu 11.28",
+    "text": "Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos.",
+    "cat": "lourdeur_fatigue",
+    "tags": [
+      "fatigue",
+      "repos",
+      "charge",
+      "christ",
+      "soulagement"
+    ],
+    "impact": {
+      "paix": 5,
+      "physique": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-lourd-002",
+    "ref": "Ésaïe 40.29",
+    "text": "Il donne de la force à celui qui est fatigué, et il multiplie les forces de celui qui est sans vigueur.",
+    "cat": "lourdeur_fatigue",
+    "tags": [
+      "force",
+      "fatigue",
+      "vigueur",
+      "renouveau",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 2,
+      "physique": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-lourd-004",
+    "ref": "Psaume 68.20",
+    "text": "Le Seigneur, notre Dieu, nous affranchit de la mort. Béni soit le Seigneur, qui chaque jour nous soutient.",
+    "cat": "lourdeur_fatigue",
+    "tags": [
+      "soutien",
+      "fardeau",
+      "journée",
+      "bénédiction",
+      "mort"
+    ],
+    "impact": {
+      "foi": 3,
+      "physique": 3,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-obeis-001",
+    "ref": "1 Samuel 15.22",
+    "text": "L'obéissance vaut mieux que les sacrifices, et la docilité vaut mieux que la graisse des béliers.",
+    "cat": "obeissance",
+    "tags": [
+      "obéissance",
+      "sacrifice",
+      "docilité",
+      "béliers",
+      "soumission"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-obeis-002",
+    "ref": "Jean 14.15",
+    "text": "Si vous m'aimez, gardez mes commandements.",
+    "cat": "obeissance",
+    "tags": [
+      "amour",
+      "commandements",
+      "obéissance",
+      "christ",
+      "fidélité"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-obeis-003",
+    "ref": "Deutéronome 28.1",
+    "text": "Si tu obéis à la voix de l'Éternel, ton Dieu, en observant et en pratiquant tous ses commandements... toutes ces bénédictions se réaliseront pour toi.",
+    "cat": "obeissance",
+    "tags": [
+      "obéissance",
+      "bénédictions",
+      "voix",
+      "éternel",
+      "récompense"
+    ],
+    "impact": {
+      "foi": 3,
+      "finances": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-parole-001",
+    "ref": "Hébreux 4.12",
+    "text": "La parole de Dieu est vivante et efficace, plus tranchante qu'une épée quelconque à deux tranchants.",
+    "cat": "parole_de_dieu",
+    "tags": [
+      "parole",
+      "vivante",
+      "efficace",
+      "épée",
+      "force"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-parole-002",
+    "ref": "Psaume 119.105",
+    "text": "Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.",
+    "cat": "parole_de_dieu",
+    "tags": [
+      "parole",
+      "lampe",
+      "lumière",
+      "sentier",
+      "direction"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-parole-003",
+    "ref": "Jean 8.32",
+    "text": "Vous connaîtrez la vérité, et la vérité vous affranchira.",
+    "cat": "parole_de_dieu",
+    "tags": [
+      "vérité",
+      "connaissance",
+      "liberté",
+      "affranchissement",
+      "parole"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-parole-004",
+    "ref": "Matthieu 4.4",
+    "text": "L'homme ne vivra pas de pain seulement, mais de toute parole qui sort de la bouche de Dieu.",
+    "cat": "parole_de_dieu",
+    "tags": [
+      "pain",
+      "parole",
+      "vie",
+      "nourriture",
+      "bouche de Dieu"
+    ],
+    "impact": {
+      "foi": 4,
+      "physique": 1
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-priere-001",
+    "ref": "Matthieu 7.7",
+    "text": "Demandez, et l'on vous donnera; cherchez, et vous trouverez; frappez, et l'on vous ouvrira.",
+    "cat": "priere",
+    "tags": [
+      "demande",
+      "cherche",
+      "frappe",
+      "prière",
+      "réponse"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-priere-002",
+    "ref": "Jérémie 33.3",
+    "text": "Invoque-moi, et je te répondrai; je t'annoncerai de grandes choses, des choses cachées que tu ne connais pas.",
+    "cat": "priere",
+    "tags": [
+      "invocation",
+      "réponse",
+      "révélation",
+      "choses cachées",
+      "prière"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-priere-003",
+    "ref": "1 Thessaloniciens 5.17",
+    "text": "Priez sans cesse.",
+    "cat": "priere",
+    "tags": [
+      "prière",
+      "constance",
+      "persévérance",
+      "communion",
+      "dieu"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-soif-001",
+    "ref": "Psaume 42.2",
+    "text": "Mon âme soupire après toi, ô Dieu! Mon âme a soif de Dieu, du Dieu vivant.",
+    "cat": "soif_de_dieu",
+    "tags": [
+      "soif",
+      "âme",
+      "désir",
+      "dieu vivant",
+      "intimité"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-soif-002",
+    "ref": "Matthieu 5.6",
+    "text": "Heureux ceux qui ont faim et soif de la justice, car ils seront rassasiés!",
+    "cat": "soif_de_dieu",
+    "tags": [
+      "faim",
+      "soif",
+      "justice",
+      "béatitude",
+      "rassasié"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-soif-003",
+    "ref": "Ésaïe 55.1",
+    "text": "Vous tous qui avez soif, venez aux eaux, même celui qui n'a pas d'argent! Venez, achetez et mangez, sans argent et sans rien payer.",
+    "cat": "soif_de_dieu",
+    "tags": [
+      "soif",
+      "eaux",
+      "grâce",
+      "gratuit",
+      "abondance"
+    ],
+    "impact": {
+      "foi": 3,
+      "paix": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-steril-001",
+    "ref": "Psaume 113.9",
+    "text": "Il donne une maison à la femme stérile, il la rend joyeuse, mère de nombreux enfants. Alléluia!",
+    "cat": "sterilite",
+    "tags": [
+      "stérilité",
+      "maison",
+      "mère",
+      "enfants",
+      "joie"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-amour-001",
+    "ref": "Jean 3.16",
+    "text": "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.",
+    "cat": "amour_de_dieu",
+    "tags": [
+      "amour",
+      "fils",
+      "monde",
+      "vie éternelle",
+      "sacrifice"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amour-002",
+    "ref": "Romains 5.8",
+    "text": "Mais Dieu prouve son amour envers nous, en ce que, lorsque nous étions encore des pécheurs, Christ est mort pour nous.",
+    "cat": "amour_de_dieu",
+    "tags": [
+      "amour",
+      "preuve",
+      "pécheurs",
+      "mort",
+      "christ"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amour-003",
+    "ref": "Jean 15.13",
+    "text": "Il n'y a pas de plus grand amour que de donner sa vie pour ses amis.",
+    "cat": "amour_de_dieu",
+    "tags": [
+      "sacrifice",
+      "amour",
+      "amitié"
+    ],
+    "impact": {
+      "paix": 4,
+      "foi": 2
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-amour-004",
+    "ref": "1 Jean 4.19",
+    "text": "Nous l'aimons parce qu'il nous a aimés le premier.",
+    "cat": "amour_de_dieu",
+    "tags": [
+      "amour",
+      "initiative",
+      "grâce"
+    ],
+    "impact": {
+      "paix": 3,
+      "foi": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-steril-002",
+    "ref": "Psaume 113.9",
+    "text": "Il donne une maison à celle qui était stérile, il fait d'elle une mère joyeuse au milieu de ses enfants.",
+    "cat": "sterilite",
+    "tags": [
+      "stérilité",
+      "fécondité",
+      "joie"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 4
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-steril-003",
+    "ref": "Ésaïe 54.1",
+    "text": "Réjouis-toi, stérile, toi qui n'as pas enfanté! Éclate en cris de joie, toi qui n'as pas éprouvé les douleurs de l'enfantement! Car les enfants de l'abandonnée seront plus nombreux que les enfants de celle qui a un mari.",
+    "cat": "sterilite",
+    "tags": [
+      "stérilité",
+      "promesse",
+      "réjouissance"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 3
+    },
+    "diff": 2
+  },
+{"id":"v-amour-003","ref":"Jean 15.13","text":"Il n'y a pas de plus grand amour que de donner sa vie pour ses amis.","cat":"amour_de_dieu","tags":["sacrifice","amour","amitié"],"impact":{"paix":4,"foi":2},"diff":1},
+{"id":"v-amour-004","ref":"1 Jean 4.19","text":"Nous l'aimons parce qu'il nous a aimés le premier.","cat":"amour_de_dieu","tags":["amour","initiative","grâce"],"impact":{"paix":3,"foi":3},"diff":1},
+{"id":"v-steril-002","ref":"Psaume 113.9","text":"Il donne une maison à celle qui était stérile, il fait d'elle une mère joyeuse au milieu de ses enfants.","cat":"sterilite","tags":["stérilité","fécondité","joie"],"impact":{"foi":4,"paix":4},"diff":2},
+{"id":"v-steril-003","ref":"Ésaïe 54.1","text":"Réjouis-toi, stérile, toi qui n'as pas enfanté! Éclate en cris de joie, toi qui n'as pas éprouvé les douleurs de l'enfantement! Car les enfants de l'abandonnée seront plus nombreux que les enfants de celle qui a un mari.","cat":"sterilite","tags":["stérilité","promesse","réjouissance"],"impact":{"foi":5,"paix":3},"diff":2}]

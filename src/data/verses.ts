@@ -1974,7 +1974,79 @@ export function getVersesByCategory(
   category: string,
   limit?: number
 ): VerseEntry[] {
-  const verses = VERSES_BY_CATEGORY[category] || [];
+  const verses = VERSES_BY_CATEGORY[category] || [  {
+    id: "v-amour-003",
+    ref: "Jean 15.13",
+    text: "Il n'y a pas de plus grand amour que de donner sa vie pour ses amis.",
+    cat: "amour_de_dieu",
+    tags: ["sacrifice","amour","amitié"],
+    impact: { foi: 2, paix: 4, physique: 0, finances: 0 },
+    diff: 1,
+  },
+  {
+    id: "v-amour-004",
+    ref: "1 Jean 4.19",
+    text: "Nous l'aimons parce qu'il nous a aimés le premier.",
+    cat: "amour_de_dieu",
+    tags: ["amour","initiative","grâce"],
+    impact: { foi: 3, paix: 3, physique: 0, finances: 0 },
+    diff: 1,
+  },
+  {
+    id: "v-steril-002",
+    ref: "Psaume 113.9",
+    text: "Il donne une maison à celle qui était stérile, il fait d'elle une mère joyeuse au milieu de ses enfants.",
+    cat: "sterilite",
+    tags: ["stérilité","fécondité","joie"],
+    impact: { foi: 4, paix: 4, physique: 0, finances: 0 },
+    diff: 2,
+  },
+  {
+    id: "v-steril-003",
+    ref: "Ésaïe 54.1",
+    text: "Réjouis-toi, stérile, toi qui n'as pas enfanté! Éclate en cris de joie, toi qui n'as pas éprouvé les douleurs de l'enfantement! Car les enfants de l'abandonnée seront plus nombreux que les enfants de celle qui a un mari.",
+    cat: "sterilite",
+    tags: ["stérilité","promesse","réjouissance"],
+    impact: { foi: 5, paix: 3, physique: 0, finances: 0 },
+    diff: 2,
+  },
+  {
+    id: 'v-amour-003',
+    ref: 'Jean 15.13',
+    text: "Il n'y a pas de plus grand amour que de donner sa vie pour ses amis.",
+    cat: 'amour_de_dieu',
+    tags: ['sacrifice', 'amour', 'amitié'],
+    impact: { paix: 4, foi: 2 },
+    diff: 1,
+  },
+  {
+    id: 'v-amour-004',
+    ref: '1 Jean 4.19',
+    text: "Nous l'aimons parce qu'il nous a aimés le premier.",
+    cat: 'amour_de_dieu',
+    tags: ['amour', 'initiative', 'grâce'],
+    impact: { paix: 3, foi: 3 },
+    diff: 1,
+  },
+  {
+    id: 'v-steril-002',
+    ref: 'Psaume 113.9',
+    text: "Il donne une maison à celle qui était stérile, il fait d'elle une mère joyeuse au milieu de ses enfants.",
+    cat: 'sterilite',
+    tags: ['stérilité', 'fécondité', 'joie'],
+    impact: { foi: 4, paix: 4 },
+    diff: 2,
+  },
+  {
+    id: 'v-steril-003',
+    ref: 'Ésaïe 54.1',
+    text: "Réjouis-toi, stérile, toi qui n'as pas enfanté! Éclate en cris de joie, toi qui n'as pas éprouvé les douleurs de l'enfantement! Car les enfants de l'abandonnée seront plus nombreux que les enfants de celle qui a un mari.",
+    cat: 'sterilite',
+    tags: ['stérilité', 'promesse', 'réjouissance'],
+    impact: { foi: 5, paix: 3 },
+    diff: 2,
+  },
+];
   return limit ? verses.slice(0, limit) : verses;
 }
 

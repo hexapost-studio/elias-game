@@ -335,54 +335,27 @@ function App() {
 
         {/* Life Review overlay */}
         {showLifeReview ? (
-          <div style={{
-            position: 'absolute', inset: 0, zIndex: 10,
-            background: '#120d07',
-            display: 'flex', flexDirection: 'column',
-            animation: 'fadeIn 0.25s ease',
-          }}>
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '16px 20px 12px',
-              borderBottom: '1px solid rgba(245,158,11,0.15)',
-              flexShrink: 0,
-            }}>
+          <div className="life-review-screen">
+            <div className="life-review-header">
               <button
                 onClick={() => setShowLifeReview(false)}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  color: 'var(--text-muted)', fontSize: 12, padding: '4px 8px',
-                  fontFamily: 'var(--font-body)',
-                }}
+                className="btn-back-text"
               >
                 ← Retour
               </button>
-              <div style={{
-                fontFamily: 'var(--font-display)', fontSize: 12,
-                color: 'var(--accent-gold)', letterSpacing: 2,
-              }}>
+              <div className="life-review-header-title">
                 MA VIE
               </div>
               <button
                 onClick={handleExportJournal}
-                style={{
-                  background: 'rgba(245,158,11,0.1)',
-                  border: '1px solid rgba(245,158,11,0.25)',
-                  borderRadius: 8, cursor: 'pointer',
-                  color: 'var(--accent-gold)', fontSize: 10,
-                  padding: '4px 10px', fontFamily: 'var(--font-body)',
-                  fontWeight: 600, letterSpacing: 0.5,
-                }}
+                className="btn-copy"
               >
                 COPIER
               </button>
             </div>
-            <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px' }}>
+            <div className="life-review-content">
               {mergedJournal.length === 0 ? (
-                <div style={{
-                  textAlign: 'center', color: 'var(--text-muted)',
-                  fontSize: 12, padding: '40px 0',
-                }}>
+                <div className="codex-empty-text" style={{ padding: '40px 0' }}>
                   Aucune entrée de journal.
                 </div>
               ) : (
@@ -393,26 +366,19 @@ function App() {
                         {entry.type === 'milestone' ? (
                           <span>{entry.text}</span>
                         ) : entry.type === 'micro' ? (
-                          <><span style={{ opacity: 0.6 }}>{entry.age}a</span>{' '}
-                          <span style={{ opacity: 0.7, marginRight: 3 }}>·</span>
+                          <><span className="entry-age-before">{entry.age}a</span>{' '}
+                          <span className="entry-separator">·</span>
                           {entry.text}</>
                         ) : (
-                          <><span style={{ opacity: 0.65 }}>{entry.age}a</span> {entry.text}</>
+                          <><span className="entry-age-before">{entry.age}a</span> {entry.text}</>
                         )}
                       </div>
                     );
                   }
                   return (
-                    <div key={`r-ai-${idx}`} style={{
-                      padding: '5px 0 5px 10px',
-                      borderBottom: '1px solid rgba(245,158,11,0.08)',
-                      borderLeft: '2px solid rgba(245,158,11,0.3)',
-                      fontSize: 12, lineHeight: 1.65,
-                      fontStyle: 'italic', color: 'var(--text-secondary)',
-                      marginBottom: 2,
-                    }}>
-                      <span style={{ opacity: 0.65 }}>{entry.age}a</span>
-                      {' '}<span style={{ color: 'rgba(245,158,11,0.85)', marginRight: 4 }}>✦</span>
+                    <div key={`r-ai-${idx}`} className="journal-ai-entry">
+                      <span className="entry-age-tag">{entry.age}a</span>
+                      {' '}<span className="entry-star">✦</span>
                       {entry.text}
                     </div>
                   );
@@ -422,10 +388,10 @@ function App() {
           </div>
         ) : (
           <div id="gameover-screen">
-            <div style={{ marginBottom: 8, color: isVictory ? 'var(--accent-gold)' : 'var(--text-muted)' }}>
+            <div style={{ marginBottom: 8 }}>
               {isVictory
-                ? <Crown size={48} strokeWidth={1} />
-                : <Church size={48} strokeWidth={1} />
+                ? <Crown size={48} strokeWidth={1} style={{ color: 'var(--accent-gold)' }} />
+                : <Church size={48} strokeWidth={1} style={{ color: 'var(--text-muted)' }} />
               }
             </div>
 
@@ -435,7 +401,7 @@ function App() {
 
             {title && (
               <div className="title-badge">
-                <Star size={14} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }} />
+                <Star size={14} strokeWidth={1.5} className="inline-icon-no-mr" />
                 {title.name}
               </div>
             )}
@@ -452,11 +418,11 @@ function App() {
             {title && (
               <div className="inheritance-box">
                 <div style={{ color: 'var(--accent-gold)', marginBottom: 4, fontWeight: 600 }}>
-                  <Award size={12} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />
+                  <Award size={12} strokeWidth={1.5} className="inline-icon" />
                   Héritage débloqué
                 </div>
                 {title.description}<br />
-                <span style={{ color: 'var(--color-foi)', fontSize: 11 }}>
+                <span className="bonus-text">
                   Bonus : {Object.entries(title.bonus)
                     .map(([s, v]) => `${s.charAt(0).toUpperCase() + s.slice(1)} +${v}`)
                     .join(' · ')}
@@ -465,32 +431,16 @@ function App() {
             )}
 
             {/* Secondary actions */}
-            <div style={{ display: 'flex', gap: 10, width: '100%', maxWidth: 280 }}>
+            <div className="btn-row">
               <button
                 onClick={() => setShowLifeReview(true)}
-                style={{
-                  flex: 1, padding: '11px 0',
-                  background: 'rgba(245,158,11,0.07)',
-                  border: '1px solid rgba(245,158,11,0.22)',
-                  borderRadius: 10, cursor: 'pointer',
-                  fontFamily: 'var(--font-display)', fontSize: 10,
-                  fontWeight: 700, letterSpacing: 1,
-                  color: 'var(--text-secondary)',
-                }}
+                className="btn-secondary"
               >
                 JOURNAL
               </button>
               <button
                 onClick={() => setShowShareCard(true)}
-                style={{
-                  flex: 1, padding: '11px 0',
-                  background: 'rgba(124,58,237,0.07)',
-                  border: '1px solid rgba(124,58,237,0.22)',
-                  borderRadius: 10, cursor: 'pointer',
-                  fontFamily: 'var(--font-display)', fontSize: 10,
-                  fontWeight: 700, letterSpacing: 1,
-                  color: '#a78bfa',
-                }}
+                className="btn-share-alt"
               >
                 PARTAGER
               </button>
@@ -527,7 +477,7 @@ function App() {
       <div id="vignette" />
 
       {/* Title bar avec burger menu */}
-      <div id="title-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 8, paddingRight: 8 }}>
+      <div id="title-bar" className="compact">
         <button
           className="burger-btn"
           onClick={() => { playClick(); setShowMainMenu(true); }}
@@ -536,11 +486,11 @@ function App() {
           <span /><span /><span />
         </button>
         <div className="game-title">
-          <Church size={12} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 8 }} />
+          <Church size={12} strokeWidth={1.5} className="inline-icon-no-mr" style={{ marginRight: 8 }} />
           ÉLIAS
-          <Zap size={12} strokeWidth={1.5} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: 8 }} />
+          <Zap size={12} strokeWidth={1.5} className="inline-icon-no-mr" style={{ marginLeft: 8 }} />
         </div>
-        <div style={{ width: 26 }} />
+        <div className="title-spacer" />
       </div>
 
       <StatBar />
@@ -549,7 +499,7 @@ function App() {
 
       <div id="elias-section">
         <EliasPortrait />
-        <div className="elias-age-label" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+        <div className="elias-age-label age-label-column">
           <span><span>{age}</span> ANS</span>
           {(() => {
             let label = 'ENFANT';
@@ -571,29 +521,26 @@ function App() {
       </div>
 
       <div id="info-bar">
-        <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+        <span className="info-bar-item">
           <span>{totalEvents} épreuves · {successRate}%</span>
           {crisesRemaining < 2 && (
-            <span title="Grâces de crise restantes" style={{ fontSize: 11, letterSpacing: 1, color: crisesRemaining === 0 ? '#ef4444' : '#f87171' }}>
+            <span title="Grâces de crise restantes" className="crisis-badge" style={{ color: crisesRemaining === 0 ? '#ef4444' : '#f87171' }}>
               {'♡'.repeat(crisesRemaining)}{'♥'.repeat(Math.max(0, 2 - crisesRemaining))}
             </span>
           )}
         </span>
-        <span style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+        <span className="info-bar-item">
           {/* Badge saison spirituelle */}
           {(() => {
             const s = SPIRITUAL_SEASONS[spiritualSeason ?? 'Réveil'];
             return (
               <span
                 title={`Saison : ${s.label}`}
+                className="badge-season"
                 style={{
-                  fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
-                  padding: '2px 6px', borderRadius: 10,
                   border: `1px solid ${s.color}55`,
                   background: `${s.color}18`,
                   color: s.color,
-                  fontFamily: 'var(--font-display)',
-                  cursor: 'default',
                 }}
               >
                 {s.icon} {s.label}
@@ -605,9 +552,9 @@ function App() {
             const tierColor = combo >= 20 ? '#a78bfa' : combo >= 10 ? '#fb923c' : combo >= 5 ? '#fbbf24' : '#f59e0b';
             return (
               <span className="combo-badge" style={{ background: `linear-gradient(135deg, ${tierColor}, #92400e)`, fontSize: combo >= 10 ? 13 : 11, padding: combo >= 5 ? '4px 14px' : '3px 12px' }}>
-                <Zap size={combo >= 10 ? 13 : 11} strokeWidth={2} style={{ display: 'inline', verticalAlign: 'middle' }} />
+                <Zap size={combo >= 10 ? 13 : 11} strokeWidth={2} className="inline-icon-no-mr" />
                 x{combo}
-                {nextMilestone && <span style={{ fontSize: 9, opacity: 0.7, marginLeft: 4 }}>→{nextMilestone}</span>}
+                {nextMilestone && <span className="combo-next">{nextMilestone}</span>}
               </span>
             );
           })()}
@@ -615,19 +562,7 @@ function App() {
           <button
             onClick={() => { playClick(); setShowCodex(true); }}
             title="Codex des versets"
-            style={{
-              padding: '2px 9px',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 12,
-              fontSize: 10,
-              background: 'var(--bg-card)',
-              cursor: 'pointer',
-              color: 'var(--text-muted)',
-              fontFamily: 'var(--font-body)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}
+            className="btn-codex"
           >
             <BookOpen size={10} strokeWidth={1.5} />
             CODEX
@@ -639,25 +574,16 @@ function App() {
               next ? startAmbient() : stopAmbient();
             }}
             title={ambientOn ? 'Couper la musique' : 'Activer la musique'}
-            style={{
-              padding: '3px 8px',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 10,
-              background: ambientOn ? 'rgba(245,158,11,0.15)' : 'var(--bg-card)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}
+            className="btn-music"
+            style={{ background: ambientOn ? 'rgba(245,158,11,0.15)' : 'var(--bg-card)' }}
           >
             <img
               src={ambientOn
                 ? '/ui/travelbook/UI_TravelBook_IconPause01a.png'
                 : '/ui/travelbook/UI_TravelBook_IconPlay01a.png'}
               alt={ambientOn ? 'pause' : 'play'}
+              className="music-icon"
               style={{
-                height: 10,
-                imageRendering: 'pixelated',
                 filter: ambientOn
                   ? 'brightness(2) saturate(2) hue-rotate(260deg)'
                   : 'brightness(1.5) saturate(0.5)',
@@ -679,10 +605,10 @@ function App() {
         <div
           ref={journalRef}
           id="journal-area"
-          style={{ opacity: phase === 'result' ? 0.5 : 1, transition: 'opacity 0.3s' }}
+          className={phase === 'result' ? 'journal-area-dimmed' : 'journal-area-normal'}
         >
           {journal.length === 0 ? (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-muted)', fontSize: 12, fontStyle: 'italic' }}>
+            <div className="journal-empty">
               Le voyage d'Élias commence...
             </div>
           ) : (
@@ -707,37 +633,27 @@ function App() {
                       {entry.type === 'milestone' ? (
                         <span>{entry.text}</span>
                       ) : entry.type === 'micro' ? (
-                        <><span style={{ opacity: 0.6 }}>{entry.age}a</span>{' '}
-                        <span style={{ opacity: 0.7, marginRight: 3 }}>·</span>
+                        <><span className="entry-age-before">{entry.age}a</span>{' '}
+                        <span className="entry-separator">·</span>
                         {entry.text}</>
                       ) : (
-                        <><span style={{ opacity: 0.65 }}>{entry.age}a</span> {entry.text}</>
+                        <><span className="entry-age-before">{entry.age}a</span> {entry.text}</>
                       )}
                     </div>
                   );
                 }
                 // Entrée IA
                 return (
-                  <div key={`ai-${idx}`} style={{
-                    padding: '6px 0 6px 10px',
-                    borderBottom: '1px solid rgba(245,158,11,0.1)',
-                    borderLeft: '2px solid rgba(245,158,11,0.4)',
-                    fontSize: 11,
-                    lineHeight: 1.65,
-                    fontStyle: 'italic',
-                    color: entry.generating ? 'var(--text-muted)' : 'var(--text-secondary)',
-                    animation: 'fadeIn 0.4s ease',
-                    marginBottom: 2,
-                  }}>
+                  <div key={`ai-${idx}`} className={`journal-ai-entry${entry.generating ? ' generating' : ''}`}>
                     {entry.generating ? (
-                      <span style={{ opacity: 0.65 }}>
+                      <span className="entry-age-tag">
                         <span>{entry.age}a</span> ✦ Élias écrit dans son journal...
                       </span>
                     ) : (
                       <>
-                        <span style={{ opacity: 0.65 }}>{entry.age}a</span>
+                        <span className="entry-age-tag">{entry.age}a</span>
                         {' '}
-                        <span style={{ color: 'rgba(245,158,11,0.85)', marginRight: 4 }}>✦</span>
+                        <span className="entry-star">✦</span>
                         {entry.text}
                       </>
                     )}
@@ -759,7 +675,7 @@ function App() {
       {/* Succès flash (auto-dismiss) */}
       {showResult && currentEvent && (
         <div className="result-flash success">
-          <div style={{ fontSize: 48, marginBottom: 8, color: 'var(--success)' }}>✦</div>
+          <div className="result-flash-icon" style={{ color: 'var(--success)' }}>✦</div>
           <div className="result-verse" style={{ color: 'var(--success)' }}>VICTOIRE</div>
         </div>
       )}
@@ -768,74 +684,42 @@ function App() {
       {showVerseConfirm && currentEvent && (() => {
         const verse = getVerseById(currentEvent.correctVerseId);
         return (
-          <div
-            style={{
-              position: 'absolute', inset: 0, zIndex: 15,
-              background: 'rgba(10,5,20,0.93)',
-              display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center',
-              padding: '24px 20px',
-              animation: 'fadeIn 0.2s ease',
-            }}
-          >
-            <div style={{ fontSize: 36, marginBottom: 12, color: 'var(--danger)' }}>✕</div>
+          <div className="verse-confirm-overlay">
+            <div className="result-flash-icon" style={{ color: 'var(--danger)' }}>✕</div>
 
-            <div style={{ fontSize: 11, color: 'var(--danger)', fontWeight: 700, letterSpacing: 1.5, marginBottom: 16, textTransform: 'uppercase' }}>
+            <div className="verse-fail-label">
               Épreuve non surmontée
             </div>
 
             {/* Carte verset */}
-            <div style={{
-              width: '100%',
-              background: '#f5d4a0',
-              borderRadius: 12,
-              padding: '20px 18px',
-              marginBottom: 20,
-              border: '2px solid rgba(139,58,38,0.4)',
-              backgroundImage: 'url(/ui/travelbook/UI_TravelBook_BookPageRight01a.png)',
-              backgroundSize: 'cover',
-              imageRendering: 'pixelated',
-            }}>
-              <div style={{ fontSize: 10, color: '#8b5a38', fontWeight: 700, letterSpacing: 1, marginBottom: 8, textTransform: 'uppercase' }}>
+            <div className="verse-confirm-card">
+              <div className="verse-confirm-label">
                 La bonne réponse
               </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 700, color: '#6b2020', marginBottom: 10, letterSpacing: 1 }}>
+              <div className="verse-ref-text">
                 {verse?.reference}
               </div>
-              <div style={{ fontSize: 13, color: '#3a1f10', lineHeight: 1.75, fontStyle: 'italic' }}>
+              <div className="verse-body-text">
                 « {verse?.text} »
               </div>
-              <div style={{ marginTop: 12, fontSize: 10, color: '#8b5a38', borderTop: '1px solid rgba(139,58,38,0.2)', paddingTop: 8 }}>
+              <div className="verse-category-line">
                 Catégorie : {currentEvent.category.replace(/_/g, ' ')}
               </div>
             </div>
 
             <button
               onClick={() => { setShowVerseConfirm(false); dismissResult(); }}
-              style={{
-                padding: '14px 40px',
-                background: 'var(--accent-violet)',
-                border: 'none',
-                borderRadius: 12,
-                color: 'white',
-                fontFamily: 'var(--font-display)',
-                fontSize: 13,
-                fontWeight: 700,
-                letterSpacing: 2,
-                cursor: 'pointer',
-                boxShadow: '0 0 20px rgba(245,158,11,0.35)',
-              }}
+              className="btn-primary"
             >
               J'AI COMPRIS{' '}
               <img
                 src="/ui/travelbook/UI_TravelBook_IconTick01a.png"
                 alt="✓"
-                style={{ height: 10, imageRendering: 'pixelated', verticalAlign: 'middle', marginLeft: 6,
-                  filter: 'brightness(0) invert(1)' }}
+                className="tick-icon"
               />
             </button>
 
-            <div style={{ marginTop: 10, fontSize: 10, color: 'var(--text-muted)' }}>
+            <div className="verse-confirm-footer">
               Le verset est ajouté à ton Codex pour révision
             </div>
           </div>
@@ -882,49 +766,29 @@ function App() {
 
       {/* Confirmation Nouvelle Partie */}
       {showNewGameConfirm && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 300,
-          background: 'rgba(5,2,12,0.9)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: 24, animation: 'fadeIn 0.2s ease',
-        }}>
-          <div style={{
-            background: 'var(--bg-card)',
-            border: '1px solid rgba(251,113,133,0.3)',
-            borderRadius: 16, padding: '28px 24px',
-            maxWidth: 300, width: '100%', textAlign: 'center',
-          }}>
-            <RotateCw size={32} strokeWidth={1.5} style={{ color: 'var(--accent-gold)', opacity: 0.6 }} />
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 14, color: '#fb7185', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>
+        <div className="confirm-dialog">
+          <div className="confirm-dialog-content">
+            <RotateCw size={32} strokeWidth={1.5} className="confirm-icon" />
+            <div className="confirm-dialog-title">
               NOUVELLE PARTIE
             </div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 24 }}>
+            <div className="confirm-dialog-text">
               La partie en cours sera perdue.{currentTitle && (
-                <><br /><span style={{ color: 'var(--accent-gold)' }}>
+                <><br /><span className="confirm-inheritance-text">
                   Le titre « {currentTitle.name} » sera préservé comme héritage.
                 </span></>
               )}
             </div>
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="btn-row">
               <button
                 onClick={() => setShowNewGameConfirm(false)}
-                style={{
-                  flex: 1, padding: '12px 0', background: 'transparent',
-                  border: '1px solid var(--border-subtle)', borderRadius: 10,
-                  color: 'var(--text-muted)', fontFamily: 'var(--font-display)',
-                  fontSize: 11, fontWeight: 700, cursor: 'pointer',
-                }}
+                className="btn-cancel"
               >
                 ANNULER
               </button>
               <button
                 onClick={() => { setShowNewGameConfirm(false); initGame(); }}
-                style={{
-                  flex: 1, padding: '12px 0', background: 'rgba(251,113,133,0.15)',
-                  border: '1px solid rgba(251,113,133,0.4)', borderRadius: 10,
-                  color: '#fb7185', fontFamily: 'var(--font-display)',
-                  fontSize: 11, fontWeight: 700, cursor: 'pointer',
-                }}
+                className="btn-danger"
               >
                 RECOMMENCER
               </button>
@@ -947,13 +811,7 @@ function App() {
 
       {/* Loading */}
       {loading && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 10000,
-          background: '#120d07', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-          fontFamily: "'Cinzel', serif", color: '#f59e0b',
-          fontSize: 14, letterSpacing: 2,
-        }}>
+        <div className="loading-screen">
           CHARGEMENT...
         </div>
       )}

@@ -46,65 +46,33 @@ export const MainMenu: FC<MainMenuProps> = ({
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 200,
-        display: 'flex',
-      }}
+      className="menu-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       {/* Overlay sombre */}
       <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(5,2,12,0.75)',
-          animation: 'fadeIn 0.15s ease',
-        }}
+        className="menu-overlay-bg"
         onClick={onClose}
       />
 
       {/* Panel slide-in depuis la gauche */}
       <div
-        style={{
-          position: 'relative',
-          width: 260,
-          maxWidth: '78vw',
-          height: '100%',
-          background: 'linear-gradient(170deg, #2a1a08 0%, #120d07 100%)',
-          borderRight: '1px solid rgba(245,158,11,0.25)',
-          display: 'flex',
-          flexDirection: 'column',
-          animation: 'slideInLeft 0.2s ease',
-          boxShadow: '4px 0 40px rgba(0,0,0,0.6)',
-          paddingBottom: 24,
-        }}
+        className="menu-panel"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{
-          padding: '20px 20px 16px',
-          borderBottom: '1px solid rgba(245,158,11,0.15)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
+        <div className="menu-header">
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, color: 'var(--accent-gold)', letterSpacing: 2 }}>
+            <div className="menu-title">
               ÉLIAS
             </div>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 3 }}>
+            <div className="menu-subtitle">
               {age} ans · {successRate}% de réussite
             </div>
           </div>
           <button
             onClick={onClose}
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: 'var(--text-muted)', padding: 6, borderRadius: 8,
-              display: 'flex', alignItems: 'center',
-            }}
+            className="menu-close-btn"
           >
             <XIcon size={16} strokeWidth={2} />
           </button>
@@ -112,26 +80,17 @@ export const MainMenu: FC<MainMenuProps> = ({
 
         {/* Titre actuel */}
         {currentTitle && (
-          <div style={{
-            margin: '12px 16px',
-            padding: '10px 14px',
-            background: 'rgba(251,191,36,0.08)',
-            border: '1px solid rgba(251,191,36,0.25)',
-            borderRadius: 10,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}>
-            <Star size={12} strokeWidth={1.5} style={{ color: 'var(--accent-gold)', flexShrink: 0 }} />
+          <div className="menu-current-title-box">
+            <Star size={12} strokeWidth={1.5} className="menu-star-icon" />
             <div>
-              <div style={{ fontSize: 9, color: 'var(--accent-gold)', letterSpacing: 1, fontWeight: 600 }}>TITRE ACTUEL</div>
-              <div style={{ fontSize: 11, color: '#fde68a', marginTop: 2 }}>{currentTitle}</div>
+              <div className="menu-current-title-label">TITRE ACTUEL</div>
+              <div className="menu-current-title-value">{currentTitle}</div>
             </div>
           </div>
         )}
 
         {/* Options */}
-        <div style={{ flex: 1, padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 4, overflowY: 'auto' }}>
+        <div className="menu-options-area">
 
           <MenuSection label="JOUER" />
 
@@ -228,11 +187,7 @@ export const MainMenu: FC<MainMenuProps> = ({
 // ── Sous-composants ─────────────────────────────────────────────────────────
 
 const MenuSection: FC<{ label: string }> = ({ label }) => (
-  <div style={{
-    fontSize: 9, color: 'var(--text-muted)', fontWeight: 700,
-    letterSpacing: 1.5, padding: '8px 8px 4px', marginTop: 4,
-    borderBottom: '1px solid rgba(124,58,237,0.12)',
-  }}>
+  <div className="menu-section-label">
     {label}
   </div>
 );
