@@ -109,6 +109,10 @@ function App() {
   const [ambientOn, setAmbientOn] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
   const [showLifeReview, setShowLifeReview] = useState(false);
+  // Accessibilité
+  const [dyslexicMode, setDyslexicMode] = useState(false);
+  const [reducedSounds, setReducedSounds] = useState(false);
+  const [slowTimer, setSlowTimer] = useState(false);
   const journalRef = useRef<HTMLDivElement>(null);
   const gameOverSoundPlayed = useRef(false);
 
@@ -131,10 +135,52 @@ function App() {
         const saved = await loadGame();
         if (saved) hydrateFromSave(saved);
       }
+      // Charger les préférences d'accessibilité
+      try {
+        const prefsRaw = localStorage.getItem('accessibility-prefs');
+        if (prefsRaw) {
+          const prefs = JSON.parse(prefsRaw);
+          setDyslexicMode(prefs.dyslexicMode ?? false);
+          setReducedSounds(prefs.reducedSounds ?? false);
+          setSlowTimer(prefs.slowTimer ?? false);
+        }
+      } catch {}
       setLoading(false);
     }
     init();
   }, []);
+
+  // Appliquer la classe dyslexic-mode sur #root
+  useEffect(() => {
+    const root = document.getElementById('root');
+    if (!root) return;
+    if (dyslexicMode) {
+      root.classList.add('dyslexic-mode');
+    } else {
+      root.classList.remove('dyslexic-mode');
+    }
+    // Sauvegarder les préférences
+    localStorage.setItem('accessibility-prefs', JSON.stringify({ dyslexicMode, reducedSounds, slowTimer }));
+  }, [dyslexicMode, reducedSounds, slowTimer]);
+
+  // Appliquer slow-timer sur game-container
+  useEffect(() => {
+    const container = document.getElementById('game-container');
+    if (!container) return;
+    if (slowTimer) {
+      container.classList.add('slow-timer');
+    } else {
+      container.classList.remove('slow-timer');
+    }
+  }, [slowTimer]);
+
+  // Appliquer reducedSounds
+  useEffect(() => {
+    if (reducedSounds) {
+      stopAmbient();
+      setAmbientOn(false);
+    }
+  }, [reducedSounds]);
 
   const journal = state.journal;
 
@@ -158,6 +204,8 @@ function App() {
     if (phase === 'result' && lastEventResult) {
       if (lastEventResult === 'success') {
         playSuccess();
+        // Haptic feedback : succès
+        try { navigator.vibrate([5, 50, 10]); } catch {}
         if (containerRef.current) {
           spawnParticles(containerRef.current, 'success', 10);
           glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
@@ -171,6 +219,8 @@ function App() {
       } else {
         // Échec → confirmation manuelle, le joueur doit lire le verset
         playFail();
+        // Haptic feedback : échec
+        try { navigator.vibrate(20); } catch {}
         screenShake(6, 400);
         if (containerRef.current) {
           spawnParticles(containerRef.current, 'fail', 6);
@@ -765,6 +815,26 @@ function App() {
           currentTitle={currentTitle?.name ?? null}
           age={age}
           successRate={successRate}
+          dyslexicMode={dyslexicMode}
+          reducedSounds={reducedSounds}
+          slowTimer={slowTimer}
+          onToggleDyslexic={() => {
+            setDyslexicMode((prev) => !prev);
+            playClick();
+          }}
+          onToggleReducedSounds={() => {
+            const next = !reducedSounds;
+            setReducedSounds(next);
+            if (next) {
+              stopAmbient();
+              setAmbientOn(false);
+            }
+            playClick();
+          }}
+          onToggleSlowTimer={() => {
+            setSlowTimer((prev) => !prev);
+            playClick();
+          }}
         />
       )}
 

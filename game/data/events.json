@@ -2734,5 +2734,159 @@
       "paix": 6
     },
     "thematicFlavor": "La vie n'est pas finie tant que l'amour de Dieu n'a pas eu le dernier mot."
+  },
+  {
+    "id": "e-ami-001",
+    "title": "Le secret confié",
+    "description": "Tu as grandi près de {ami}. Aujourd'hui, {ami} te confie un secret lourd, quelque chose qu'il/elle n'a jamais dit à personne. Ce qu'il/elle partage pourrait tout changer — ou tout briser. Comment vas-tu porter ce poids ?",
+    "ageRange": [
+      14,
+      18
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 3
+    }
+  },
+  {
+    "id": "e-ami-002",
+    "title": "La dispute",
+    "description": "Une parole de trop a tout fait exploser entre toi et {ami}. Les mots ont dépassé les pensées. Le silence s'installe, lourd et épais. Pardonner ou laisser partir ? Le choix te déchire.",
+    "ageRange": [
+      20,
+      35
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    }
+  },
+  {
+    "id": "e-ami-003",
+    "title": "Le retour",
+    "description": "Après des années sans nouvelles, {ami} réapparaît soudainement. Le temps a passé, les blessures peut-être aussi. Retrouver l'ami d'autrefois ou rester sur la réserve ? Le cœur balance entre la joie et la méfiance.",
+    "ageRange": [
+      30,
+      50
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amer-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 5
+    }
+  },
+  {
+    "id": "e-ami-004",
+    "title": "Le départ",
+    "description": "{ami} tombe malade. Les années pèsent sur celui/celle qui a partagé tant de chemins avec toi. Le départ approche, et avec lui, la question la plus dure : comment dire au revoir à celui/celle qui a été un frère/une soeur ?",
+    "ageRange": [
+      60,
+      80
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    }
+  },
+  {
+    "id": "e-fin-001",
+    "title": "L'opportunité",
+    "description": "Un investissement prometteur se présente à toi. Un collègue te propose d'entrer dans un projet qui demande 10 unités de finances. Le risque est réel, mais le potentiel aussi. Saisir l'opportunité ou rester prudent ?",
+    "ageRange": [
+      20,
+      40
+    ],
+    "category": "finances_paresse",
+    "correctVerseId": "v-fin-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": -10
+    },
+    "statImpactOnSuccess": {
+      "finances": 15
+    }
+  },
+  {
+    "id": "e-fin-002",
+    "title": "La crise",
+    "description": "Ton employeur annonce une restructuration. Ton poste est sur la sellette. Les mots « plan social » flottent dans l'air. La peur du lendemain t'étreint. Comment faire face à cette insécurité ?",
+    "ageRange": [
+      25,
+      55
+    ],
+    "category": "finances_paresse",
+    "correctVerseId": "v-fin-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": -1,
+      "finances": -8
+    },
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 2,
+      "finances": 2
+    }
+  },
+  {
+    "id": "e-fin-003",
+    "title": "L'héritage",
+    "description": "Un parent éloigné dont tu n'avais plus de nouvelles te lègue une somme inattendue. Cet argent tombe à pic, mais il ravive aussi des souvenirs douloureux. Recevoir avec gratitude ou refuser par fierté ?",
+    "ageRange": [
+      40,
+      70
+    ],
+    "category": "abondance_financiere",
+    "correctVerseId": "v-abond-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "finances": 12
+    }
   }
 ]

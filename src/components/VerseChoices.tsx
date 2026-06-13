@@ -77,6 +77,8 @@ export function VerseChoices() {
     if (hasAnswered) return;
     if (timerRef.current) clearInterval(timerRef.current);
     const finalTime = Math.max(0.1, timeSpent);
+    // Haptic feedback : vibration courte
+    try { navigator.vibrate(5); } catch {}
     chooseVerse(verseId, Math.round(finalTime * 10) / 10);
   };
 

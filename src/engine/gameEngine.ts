@@ -342,6 +342,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     reliefActive: false,
     spiritualSeason: 'Réveil' as SpiritualSeasonName,
     amiDecayStreak: 0,
+    callFriendCount: 0,
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -1031,7 +1032,21 @@ const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Reco
   pray:        () => ({ statDelta: { foi: 4, paix: 1 },        label: 'Temps de prière — Foi +4, Paix +1' }),
   fast:        () => ({ statDelta: { foi: 5, physique: -2 },   label: 'Jeûne — Foi +5, Corps -2' }),
   serve:       (s) => ({ statDelta: { paix: 4, finances: 1 },  label: `Service à ${s.lifeContext.churchName} — Paix +4, Finances +1` }),
-  call_friend: (s) => ({ statDelta: { paix: 3 },               label: `Appel à ${s.lifeContext.friendName} — Paix +3`, amiDelta: 8 }),
+  call_friend: (s) => {
+    const count = (s as any).callFriendCount || 0;
+    let extraPaix = 0;
+    let extraAmi = 0;
+    let note = '';
+    // Paliers de bonus passifs
+    if (count >= 20) { extraPaix = 3; extraAmi = 4; note = ' (Ami fidèle ×3 — 20e appel)'; }
+    else if (count >= 10) { extraPaix = 2; extraAmi = 3; note = ' (Ami proche ×2 — 10e appel)'; }
+    else if (count >= 5) { extraPaix = 1; extraAmi = 2; note = ' (Ami régulier ×1.5 — 5e appel)'; }
+    return {
+      statDelta: { paix: 3 + extraPaix },
+      label: `Appel à ${s.lifeContext.friendName} — Paix ${3 + extraPaix}${note}`,
+      amiDelta: 8 + extraAmi,
+    };
+  },
   read_word:   () => ({ statDelta: { foi: 3, paix: 1 },        label: 'Lecture de la Parole — Foi +3, Paix +1' }),
 };
 
@@ -1081,6 +1096,9 @@ export function applyPlayerAction(
       stats: newStats,
       actionPoints: state.actionPoints - 1,
       actionsThisYear: [...state.actionsThisYear, action],
+      callFriendCount: action === 'call_friend'
+        ? (state.callFriendCount ?? 0) + 1
+        : (state.callFriendCount ?? 0),
       amiRelationship: amiDelta
         ? Math.min(100, state.amiRelationship + amiDelta)
         : state.amiRelationship,
@@ -1111,6 +1129,15 @@ export function advanceAge(state: GameState): {
   newState.queuedCascadeEvents = state.queuedCascadeEvents.filter(
     (q) => q.triggerAge !== newAge
   );
+
+  // Dépenses financières par âge (Système d'argent)
+  if (newAge >= 18 && newAge <= 25) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - 2);
+  } else if (newAge >= 26 && newAge <= 45) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - 3);
+  } else if (newAge >= 46 && newAge <= 65) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - 1);
+  }
 
   // Pénalité de vieillissement
   if (newAge > 40) {

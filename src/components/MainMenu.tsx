@@ -29,6 +29,12 @@ interface MainMenuProps {
   currentTitle: string | null;
   age: number;
   successRate: number;
+  dyslexicMode: boolean;
+  reducedSounds: boolean;
+  slowTimer: boolean;
+  onToggleDyslexic: () => void;
+  onToggleReducedSounds: () => void;
+  onToggleSlowTimer: () => void;
 }
 
 export const MainMenu: FC<MainMenuProps> = ({
@@ -41,6 +47,12 @@ export const MainMenu: FC<MainMenuProps> = ({
   currentTitle,
   age,
   successRate,
+  dyslexicMode,
+  reducedSounds,
+  slowTimer,
+  onToggleDyslexic,
+  onToggleReducedSounds,
+  onToggleSlowTimer,
 }) => {
   const [volume, setVolume] = useState(Math.round(getAmbientVolume() * 100));
 
@@ -151,6 +163,47 @@ export const MainMenu: FC<MainMenuProps> = ({
               <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 28, textAlign: 'right' }}>{volume}%</span>
             </div>
           )}
+
+          <MenuSection label="ACCESSIBILITÉ" />
+
+          <MenuButton
+            icon={
+              <span style={{ fontSize: 15, color: dyslexicMode ? 'var(--accent-gold-light)' : 'var(--text-muted)' }}>
+                Aa
+              </span>
+            }
+            label={dyslexicMode ? 'Police dyslexique : ON' : 'Police dyslexique : OFF'}
+            sublabel="OpenDyslexic pour une lecture facilitée"
+            color={dyslexicMode ? 'var(--accent-gold-light)' : 'var(--text-muted)'}
+            onClick={onToggleDyslexic}
+            active={dyslexicMode}
+          />
+
+          <MenuButton
+            icon={
+              <span style={{ fontSize: 15, color: reducedSounds ? 'var(--accent-gold-light)' : 'var(--text-muted)' }}>
+                ♪
+              </span>
+            }
+            label={reducedSounds ? 'Sons réduits : ON' : 'Sons réduits : OFF'}
+            sublabel="Coupe la musique ambiante, garde les effets"
+            color={reducedSounds ? 'var(--accent-gold-light)' : 'var(--text-muted)'}
+            onClick={onToggleReducedSounds}
+            active={reducedSounds}
+          />
+
+          <MenuButton
+            icon={
+              <span style={{ fontSize: 15, color: slowTimer ? 'var(--accent-gold-light)' : 'var(--text-muted)' }}>
+                ⏱
+              </span>
+            }
+            label={slowTimer ? 'Timer long : ON' : 'Timer long : OFF'}
+            sublabel="×2 pour les versets — plus de temps pour répondre"
+            color={slowTimer ? 'var(--accent-gold-light)' : 'var(--text-muted)'}
+            onClick={onToggleSlowTimer}
+            active={slowTimer}
+          />
 
           <MenuSection label="PARTIE" />
 

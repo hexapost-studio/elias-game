@@ -1457,3 +1457,17 @@ body {
   border-radius: 1px;
   transition: all 0.2s ease;
 }
+
+/* ─── ACCESSIBILITÉ ─── */
+.dyslexic-mode {
+  font-family: 'OpenDyslexic', 'Inter', sans-serif !important;
+  letter-spacing: 0.05em;
+}
+
+.dyslexic-mode * {
+  font-family: 'OpenDyslexic', 'Inter', sans-serif !important;
+}
+
+.slow-timer .timer-fill {
+  transition: width 2s linear !important;
+}
