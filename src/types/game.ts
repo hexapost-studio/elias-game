@@ -248,6 +248,8 @@ export interface GameState {
   amiDecayStreak: number;
   /** Nombre total d'appels à call_friend (lifetime) — débloque des paliers de bonus */
   callFriendCount: number;
+  /** True quand l'ami d'enfance {friendName} a été rencontré narrativement dans cette session */
+  friendIntroduced: boolean;
   metrics: RunMetrics;
 }
 

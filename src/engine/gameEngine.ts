@@ -343,6 +343,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     spiritualSeason: 'Réveil' as SpiritualSeasonName,
     amiDecayStreak: 0,
     callFriendCount: 0,
+    friendIntroduced: false,
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -1146,6 +1147,19 @@ export function advanceAge(state: GameState): {
   if (newAge > 60) {
     newStats.physique = Math.max(MIN_STAT, newStats.physique - 2);
     newStats.paix     = Math.max(MIN_STAT, newStats.paix     - 1);
+  }
+
+  // Introduction de l'ami d'enfance à 10 ans
+  if (!state.friendIntroduced && newAge >= 10) {
+    newState.friendIntroduced = true;
+    newState.journal = [
+      ...(newState.journal ?? state.journal),
+      {
+        age: newAge,
+        text: `[AMI] Tu as grandi avec ${state.lifeContext.friendName}. Une amitié sincère est née au fil des années.`,
+        type: 'milestone' as const,
+      },
+    ];
   }
 
   // Decay naturel — pression de fond (évite mid-game trop facile)

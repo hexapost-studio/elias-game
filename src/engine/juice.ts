@@ -187,7 +187,7 @@ export function glowFlash(el: HTMLElement, color: string = '#10b981'): void {
   }, 400);
 }
 
-/* ─── MUSIQUE D'AMBIANCE — 3 soundtracks MP3 ─── */
+/* ─── MUSIC MANAGER — UNE SEULE SOURCE À LA FOIS ─── */
 
 const SOUNDTRACK_PATHS = [
   '/audio/soundtrack-1.mp3',
@@ -199,119 +199,221 @@ const SOUNDTRACK_PATHS = [
   '/audio/soundtrack-explore-the-fire.mp3',
 ];
 
-let AMBIENT_VOLUME = 0.38;    // Volume cible — modifiable via setAmbientVolume()
-const FADE_IN_SEC  = 2.5;    // Durée fondu ouverture
-const FADE_OUT_SEC = 1.8;    // Durée fondu fermeture
+let MUSIC_VOLUME = 0.38;       // Volume cible
+const FADE_IN_SEC  = 2.5;     // Durée fondu ouverture
+const FADE_OUT_SEC = 1.8;     // Durée fondu fermeture
 
-let ambientRunning = false;
+let musicActive = false;
 let currentAudio: HTMLAudioElement | null = null;
-let ambientGain: GainNode | null = null;
-let ambientSource: MediaElementAudioSourceNode | null = null;
+let currentGain: GainNode | null = null;
+let currentSource: MediaElementAudioSourceNode | null = null;
 let trackIndex = 0;
-let fadeOutTimer: ReturnType<typeof setTimeout> | null = null;
+let playlist: string[] = [];
+let autoAdvance = false;      // true = playlist, false = single track
+let fadeCleanupTimer: ReturnType<typeof setTimeout> | null = null;
 
 export function isAmbientPlaying(): boolean {
-  return ambientRunning;
+  return musicActive;
 }
 
-/** Charge et joue une piste MP3 dans le contexte Web Audio (pour fade via GainNode). */
-function playTrack(path: string, fadeIn = true): void {
-  if (!audioCtx || !ambientRunning) return;
+/** Nettoie la piste en cours (fade out + déconnexion). */
+function killCurrentSource(): void {
+  if (fadeCleanupTimer) { clearTimeout(fadeCleanupTimer); fadeCleanupTimer = null; }
+
+  // Fade out sur le gain existant
+  if (currentGain && audioCtx) {
+    const ctx = audioCtx;
+    const g = currentGain;
+    g.gain.cancelScheduledValues(ctx.currentTime);
+    g.gain.setValueAtTime(g.gain.value, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0, ctx.currentTime + FADE_OUT_SEC);
+  }
+
+  // Déconnexion propre après le fondu
+  fadeCleanupTimer = setTimeout(() => {
+    if (currentAudio) {
+      currentAudio.onended = null;
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    if (currentSource) {
+      try { currentSource.disconnect(); } catch { /* ignore */ }
+      currentSource = null;
+    }
+    if (currentGain) {
+      try { currentGain.disconnect(); } catch { /* ignore */ }
+      currentGain = null;
+    }
+  }, (FADE_OUT_SEC + 0.1) * 1000);
+}
+
+/* ─── MAPPING SAISON → PISTE ─── */
+
+const SEASON_TRACKS: Record<string, string> = {
+  'Réveil':      '/audio/ambient-reveil.mp3',
+  'Désert':      '/audio/ambient-desert.mp3',
+  'Persécution': '/audio/ambient-persecution.mp3',
+  'Abondance':   '/audio/ambient-abondance.mp3',
+  'Grâce':       '/audio/ambient-grace.mp3',
+};
+
+/** Joue UNE piste — stop ce qui jouait avant. */
+function playTrack(path: string, fadeIn = true, loop = false): void {
+  if (!audioCtx || !musicActive) return;
   const ctx = audioCtx;
 
-  // Déconnecter proprement la piste précédente
-  if (ambientGain) {
-    try { ambientGain.disconnect(); } catch { /* ignore */ }
-  }
-  if (ambientSource) {
-    try { ambientSource.disconnect(); } catch { /* ignore */ }
-    ambientSource = null;
-  }
-  if (currentAudio) {
-    currentAudio.onended = null;
-    currentAudio.pause();
-    currentAudio = null;
-  }
-  ambientGain = null;
+  // Tuer la précédente
+  killCurrentSource();
 
   const audio = new Audio(path);
   audio.crossOrigin = 'anonymous';
   audio.preload = 'auto';
+  audio.loop = loop;
 
   const source = ctx.createMediaElementSource(audio);
   const gain = ctx.createGain();
 
-  // Fondu entrant
-  gain.gain.value = fadeIn ? 0 : AMBIENT_VOLUME;
+  gain.gain.value = fadeIn ? 0 : MUSIC_VOLUME;
   if (fadeIn) {
-    gain.gain.linearRampToValueAtTime(AMBIENT_VOLUME, ctx.currentTime + FADE_IN_SEC);
+    gain.gain.linearRampToValueAtTime(MUSIC_VOLUME, ctx.currentTime + FADE_IN_SEC);
   }
 
   source.connect(gain).connect(getMasterOutput());
-  audio.play().catch(() => { /* autoplay blocked — ignore */ });
+  audio.play().catch(() => { /* autoplay blocked or 404 — ignore */ });
 
-  // Passer à la piste suivante à la fin
+  // Fin de piste : avance dans la playlist (sauf si loop activé)
   audio.onended = () => {
-    if (!ambientRunning) return;
-    trackIndex = (trackIndex + 1) % SOUNDTRACK_PATHS.length;
-    playTrack(SOUNDTRACK_PATHS[trackIndex], true);
+    if (!musicActive || !autoAdvance || playlist.length === 0) return;
+    trackIndex = (trackIndex + 1) % playlist.length;
+    playTrack(playlist[trackIndex], true);
   };
 
   currentAudio  = audio;
-  ambientSource = source;
-  ambientGain   = gain;
-}
-
-export function startAmbient(): void {
-  if (ambientRunning) return;
-  ambientRunning = true;
-
-  // Reprendre le contexte audio si suspendu (politique autoplay navigateurs)
-  if (audioCtx?.state === 'suspended') audioCtx.resume();
-
-  // Démarrer à une piste aléatoire
-  trackIndex = Math.floor(Math.random() * SOUNDTRACK_PATHS.length);
-  playTrack(SOUNDTRACK_PATHS[trackIndex], true);
-
-  // Couper la musique quand l'onglet est caché, reprendre au retour
-  document.addEventListener('visibilitychange', _handleVisibility);
+  currentSource = source;
+  currentGain   = gain;
 }
 
 function _handleVisibility() {
   if (document.hidden) {
     if (currentAudio) currentAudio.pause();
   } else {
-    if (ambientRunning && currentAudio) currentAudio.play().catch(() => {});
+    if (musicActive && currentAudio) currentAudio.play().catch(() => {});
   }
 }
 
-export function stopAmbient(): void {
-  if (!ambientRunning) return;
-  ambientRunning = false;
+/* ─── EXPORTS PUBLICS ─── */
 
-  // Fondu sortant avant de couper
-  if (ambientGain && audioCtx) {
-    const ctx = audioCtx;
-    const gain = ambientGain;
-    gain.gain.cancelScheduledValues(ctx.currentTime);
-    gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + FADE_OUT_SEC);
+/** Joue le thème du menu (une seule fois, pas de boucle). */
+export function playTheme(): void {
+  autoAdvance = false;
+  playlist = [];
+
+  if (!musicActive) {
+    musicActive = true;
+    if (audioCtx?.state === 'suspended') audioCtx.resume();
+    document.addEventListener('visibilitychange', _handleVisibility);
   }
 
-  // Couper après le fondu
-  if (fadeOutTimer) clearTimeout(fadeOutTimer);
-  fadeOutTimer = setTimeout(() => {
-    if (currentAudio) {
-      currentAudio.onended = null;
-      currentAudio.pause();
-      currentAudio = null;
-    }
-    if (ambientSource) {
-      try { ambientSource.disconnect(); } catch { /* ignore */ }
-      ambientSource = null;
-    }
-    ambientGain = null;
-  }, (FADE_OUT_SEC + 0.1) * 1000);
+  playTrack('/audio/theme.mp3', true);
+}
+
+/** Joue la playlist en shuffle (musique d'ambiance). Stop le thème s'il jouait. */
+export function startAmbient(seasonName?: string): void {
+  // Si le thème joue encore, killCurrentSource() sera appelé dans playTrack()
+  if (!musicActive) {
+    musicActive = true;
+    if (audioCtx?.state === 'suspended') audioCtx.resume();
+    document.addEventListener('visibilitychange', _handleVisibility);
+  }
+
+  // Priorité : piste de saison si disponible, sinon shuffle
+  if (seasonName && SEASON_TRACKS[seasonName]) {
+    playSeasonTrack(seasonName);
+  } else {
+    autoAdvance = true;
+    playlist = [...SOUNDTRACK_PATHS];
+    trackIndex = Math.floor(Math.random() * playlist.length);
+    playTrack(playlist[trackIndex], true);
+  }
+}
+
+/**
+ * Joue la piste d'une saison en boucle (loop). Utilisé quand les fichiers
+ * ambient-{season}.mp3 existeront dans public/audio/.
+ * Si le fichier n'existe pas, le .catch() silencieux gère l'erreur.
+ */
+export function playSeasonTrack(seasonName: string): void {
+  const path = SEASON_TRACKS[seasonName];
+  if (!path) return;
+
+  autoAdvance = false;
+  playlist = [];
+
+  if (!musicActive) {
+    musicActive = true;
+    if (audioCtx?.state === 'suspended') audioCtx.resume();
+    document.addEventListener('visibilitychange', _handleVisibility);
+  }
+
+  playTrack(path, true, true); // loop = true, la piste tourne jusqu'à la prochaine saison
+}
+
+/** Crossfade vers une piste quelconque (pour transition de saison). */
+export function crossfadeTo(path: string): void {
+  if (!path) return;
+
+  autoAdvance = false;
+  playlist = [];
+
+  if (!musicActive) {
+    musicActive = true;
+    if (audioCtx?.state === 'suspended') audioCtx.resume();
+    document.addEventListener('visibilitychange', _handleVisibility);
+  }
+
+  playTrack(path, true, false);
+}
+
+/** Arrête toute musique. */
+export function stopAmbient(): void {
+  if (!musicActive) return;
+  musicActive = false;
+  autoAdvance = false;
+  playlist = [];
+
+  killCurrentSource();
+  document.removeEventListener('visibilitychange', _handleVisibility);
+}
+
+export function stopTheme(): void {
+  // Alias : stopAmbient fait la même chose (une seule source)
+  stopAmbient();
+}
+
+export function setAmbientPlaybackRate(rate: number): void {
+  if (!currentAudio) return;
+  const clamped = Math.max(0.8, Math.min(1.2, rate));
+  const current = currentAudio.playbackRate;
+  const steps = 20;
+  const delta = (clamped - current) / steps;
+  let i = 0;
+  const ramp = setInterval(() => {
+    if (!currentAudio || i >= steps) { clearInterval(ramp); return; }
+    currentAudio.playbackRate = Math.max(0.8, Math.min(1.2, currentAudio.playbackRate + delta));
+    i++;
+  }, 100);
+}
+
+export function setAmbientVolume(v: number): void {
+  MUSIC_VOLUME = Math.max(0, Math.min(1, v));
+  if (currentGain && audioCtx) {
+    currentGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    currentGain.gain.setValueAtTime(MUSIC_VOLUME, audioCtx.currentTime);
+  }
+}
+
+export function getAmbientVolume(): number {
+  return MUSIC_VOLUME;
 }
 
 /* ─── INIT ─── */

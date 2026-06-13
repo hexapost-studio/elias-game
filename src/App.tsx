@@ -29,7 +29,7 @@ import { MainMenu } from './components/MainMenu';
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate, playTheme, stopTheme } from './engine/juice';
+import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate, playTheme, crossfadeTo, playSeasonTrack } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
@@ -267,6 +267,17 @@ function App() {
     const min = Math.min(stats.foi, stats.paix, stats.physique, stats.finances);
     setAmbientPlaybackRate(min <= 20 ? 0.92 : min <= 35 ? 0.96 : 1.0);
   }, [stats, ambientOn]);
+
+  // Season crossfade: quand la saison spirituelle change, bascule la piste
+  // Les fichiers ambient-*.mp3 doivent exister dans public/audio/
+  // Si absents, le .catch() silencieux gère l'erreur (rien ne joue)
+  useEffect(() => {
+    if (!ambientOn || !spiritualSeason) return;
+    const seasonSlug = spiritualSeason
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlève accents
+      .toLowerCase();
+    crossfadeTo(`/audio/ambient-${seasonSlug}.mp3`);
+  }, [spiritualSeason, ambientOn]);
 
   // ── Journal vivant : entrée IA à chaque anniversaire ─────────────────────
   useEffect(() => {
@@ -668,7 +679,7 @@ function App() {
             onClick={() => {
               const next = !ambientOn;
               setAmbientOn(next);
-              next ? startAmbient() : stopAmbient();
+              next ? startAmbient(spiritualSeason) : stopAmbient();
             }}
             title={ambientOn ? 'Couper la musique' : 'Activer la musique'}
             className="btn-music"
@@ -853,7 +864,7 @@ function App() {
           onToggleAmbient={() => {
             const next = !ambientOn;
             setAmbientOn(next);
-            next ? startAmbient() : stopAmbient();
+            next ? startAmbient(spiritualSeason) : stopAmbient();
           }}
           currentTitle={currentTitle?.name ?? null}
           age={age}

@@ -24,6 +24,7 @@ export function ActionPanel() {
   const useAction       = useGameStore((s) => s.useAction);
   const phase           = useGameStore((s) => s.phase);
   const amiRelationship = useGameStore((s) => s.amiRelationship);
+  const friendIntroduced = useGameStore((s) => s.friendIntroduced);
 
   if (phase !== 'idle') return null;
 
@@ -56,21 +57,25 @@ export function ActionPanel() {
         {ACTIONS.map((action) => {
           const used      = actionsThisYear.includes(action.id);
           const exhausted = actionPoints <= 0;
-          const disabled  = used || exhausted;
+          const locked    = action.id === 'call_friend' && !friendIntroduced;
+          const disabled  = used || exhausted || locked;
           const displayLabel = action.id === 'call_friend'
-            ? `Appeler ${friendName}`
+            ? locked ? '???' : `Appeler ${friendName}`
             : action.label;
 
           const isCallFriend = action.id === 'call_friend';
           const amiWeak = isCallFriend && amiRelationship < 25;
           const amiStrong = isCallFriend && amiRelationship >= 75;
-          const displayEffect = isCallFriend
+          const displayEffect = locked
+            ? '🔒 Enfant'
+            : isCallFriend
             ? amiWeak   ? '+Paix ⚠ Lien faible'
             : amiStrong ? '+Paix ✦ Lien fort'
             : action.effect
             : action.effect;
           const callFriendBorder = isCallFriend && !used
-            ? amiWeak   ? '1px solid rgba(239,68,68,0.5)'
+            ? locked ? '1px solid rgba(100,100,100,0.3)'
+            : amiWeak   ? '1px solid rgba(239,68,68,0.5)'
             : amiStrong ? '1px solid rgba(52,211,153,0.5)'
             : '1px solid var(--accent-violet)'
             : undefined;
@@ -94,6 +99,8 @@ export function ActionPanel() {
                   ? 'rgba(255,255,255,0.04)'
                   : exhausted
                   ? 'rgba(255,255,255,0.04)'
+                  : locked
+                  ? 'rgba(100,100,100,0.04)'
                   : isCallFriend && amiWeak
                   ? 'rgba(239,68,68,0.07)'
                   : isCallFriend && amiStrong
