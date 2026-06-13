@@ -120,6 +120,13 @@ export interface MicroEvent {
   statBonus?: Partial<StatImpact>;
 }
 
+export type EventRequirement =
+  | { kind: 'event_completed'; eventId: string }      // Event doit avoir été rencontré (succès ou échec)
+  | { kind: 'event_succeeded'; eventId: string }       // Event doit avoir été réussi
+  | { kind: 'verse_unlocked'; verseId: string }         // Verset doit être débloqué dans le Codex
+  | { kind: 'arc_completed'; arcId: string }            // Arc doit être terminé
+  | { kind: 'event_failed'; eventId: string };          // Event doit avoir échoué (rédemption)
+
 export interface AfflictionEvent {
   id: string;
   title: string;
@@ -146,6 +153,8 @@ export interface AfflictionEvent {
   minStat?: Partial<Record<StatName, number>>;
   /** Stat maximum pour que cet événement apparaisse */
   maxStat?: Partial<Record<StatName, number>>;
+  /** Liste de prérequis : tous doivent être remplis pour que l'event apparaisse */
+  prerequisites?: EventRequirement[];
   /** Relation minimum avec {ami} pour que cet event apparaisse */
   minAmiRelationship?: number;
   /**

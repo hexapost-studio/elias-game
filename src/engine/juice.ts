@@ -362,6 +362,27 @@ export function getAmbientVolume(): number {
   return AMBIENT_VOLUME;
 }
 
+/* ─── THÈME DE LANCEMENT — joué une fois au démarrage ─── */
+
+let themeAudio: HTMLAudioElement | null = null;
+
+export function playTheme(): void {
+  if (themeAudio) {
+    themeAudio.pause();
+    themeAudio = null;
+  }
+  themeAudio = new Audio('/audio/theme.mp3');
+  themeAudio.volume = 0.5;
+  themeAudio.play().catch(() => { /* autoplay blocked */ });
+}
+
+export function stopTheme(): void {
+  if (themeAudio) {
+    themeAudio.pause();
+    themeAudio = null;
+  }
+}
+
 export function setAmbientPlaybackRate(rate: number): void {
   if (!currentAudio) return;
   const clamped = Math.max(0.8, Math.min(1.2, rate));

@@ -26,7 +26,7 @@ import { MainMenu } from './components/MainMenu';
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate } from './engine/juice';
+import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate, playTheme, stopTheme } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
@@ -119,6 +119,7 @@ function App() {
   useEffect(() => {
     async function init() {
       initJuice();
+      playTheme();
       const seen = await hasSeenOnboarding();
       if (!seen) {
         setShowOnboarding(true);
