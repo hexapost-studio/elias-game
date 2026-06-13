@@ -623,6 +623,52 @@ function filterEventsByStats(
   });
 }
 
+/**
+ * Filtre les événements selon leurs prérequis (système d'arbre de déblocage).
+ * Un event avec des prerequisites[] caché tant que toutes les conditions ne sont pas remplies.
+ */
+function filterEventsByPrerequisites(
+  events: AfflictionEvent[],
+  state: GameState
+): AfflictionEvent[] {
+  // Collecte des IDs d'events déjà rencontrés dans le journal
+  const answeredEventIds = new Set(state.answeredArcEventIds);
+  // Versets débloqués dans le codex
+  const unlockedVerses = new Set(
+    Object.entries(state.codex)
+      .filter(([_, e]) => e.unlocked)
+      .map(([id, _]) => id)
+  );
+  // Arcs complétés
+  const completedArcIds = new Set(state.completedArcs.map(a => a.arcId));
+
+  return events.filter((e) => {
+    if (!e.prerequisites || e.prerequisites.length === 0) return true;
+    return e.prerequisites.every((req) => {
+      switch (req.kind) {
+        case 'event_completed':
+          return answeredEventIds.has(req.eventId);
+        case 'event_succeeded':
+          // Vérifie dans le journal si l'event a été réussi
+          return state.journal.some(
+            (j) => j.type === 'success' && j.text.includes(req.eventId.substring(0, 12))
+          );
+        case 'event_failed':
+          // Vérifie dans le journal si l'event a échoué
+          return state.journal.some(
+            (j) => j.type === 'fail' && j.text.includes(req.eventId.substring(0, 12))
+          );
+        case 'verse_unlocked':
+          return unlockedVerses.has(req.verseId);
+        case 'arc_completed':
+          return completedArcIds.has(req.arcId);
+        default:
+          return true;
+      }
+    });
+  });
+}
+
 export function generateEvent(state: GameState): AfflictionEvent | null {
   // Correcteur de frustration (Système 2) — 3 fails consécutifs → event de grâce
   if (state.reliefActive) {
@@ -653,9 +699,10 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     }
   }
 
-  // Événements disponibles pour l'âge + filtrés par stats + spawnProbability
-  const available = filterEventsByStats(getEventsForAge(state.age), state)
+  // Événements disponibles pour l'âge + filtrés par stats + spawnProbability + prérequis
+  const statFiltered = filterEventsByStats(getEventsForAge(state.age), state)
     .filter((e) => e.spawnProbability === undefined || Math.random() < e.spawnProbability);
+  const available = filterEventsByPrerequisites(statFiltered, state);
   if (available.length === 0) return null;
 
   // Priorité aux arcs en cours — en respectant l'ordre séquentiel
