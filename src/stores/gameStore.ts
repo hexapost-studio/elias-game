@@ -11,6 +11,7 @@ import {
   applyPlayerAction,
 } from '../engine/gameEngine';
 import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
+import { trackEvent } from '../services/analytics';
 
 interface GameStore extends GameState {
   gameOver: { isOver: boolean; reason?: string } | null;
@@ -75,6 +76,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       newState.phase = 'event';
     }
     const over = checkGameOver(newState);
+    if (over.isOver) {
+      trackEvent({ type: 'death', age: newState.age, detail: over.reason || undefined, timestamp: Date.now() });
+      trackEvent({ type: 'run_complete', age: newState.age, detail: 'aged_out', timestamp: Date.now() });
+    }
     set({ ...newState, gameOver: over.isOver ? over : null });
     saveGame(get()).catch(() => {});
   },
@@ -97,6 +102,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       season: state.spiritualSeason,
       timestamp: Date.now(),
     }).catch(() => {});
+
+    // Analytics basique localStorage
+    trackEvent({ type: 'event_answered', age: state.age, detail: correct ? 'success' : 'fail', timestamp: Date.now() });
+    if (!correct) {
+      trackEvent({ type: 'verse_error', age: state.age, detail: state.currentEvent.correctVerseId, timestamp: Date.now() });
+    }
 
     // Titre + héritage si game over
     let finalTitle = null;
@@ -124,6 +135,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         title: finalTitle?.name || null,
         timestamp: Date.now(),
       }).catch(() => {});
+
+      // Analytics basique localStorage
+      trackEvent({ type: 'death', age: state.age, detail: over.reason || undefined, timestamp: Date.now() });
+      trackEvent({ type: 'run_complete', age: state.age, detail: finalTitle?.name || 'no_title', timestamp: Date.now() });
     }
 
     const resultState = {
