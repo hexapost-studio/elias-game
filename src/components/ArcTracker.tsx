@@ -1,18 +1,19 @@
 import { useGameStore } from '../stores/gameStore';
 import { STORY_ARCS } from '../data/storyArcs';
+import { Handshake, BookOpen, Landmark, Zap, Sparkles, Users, Hammer, Home, Church, Building2, Heart } from 'lucide-react';
 
-const ARC_ICONS: Record<string, string> = {
-  'arc-louise':   '🤝',
-  'arc-mathias':  '📖',
-  'arc-heritage': '🏛️',
-  'arc-tentation':'⚡',
-  'arc-guerison': '✨',
-  'arc-ami':      '👥',
-  'arc-metier':   '⚒️',
-  'arc-parents':  '🏠',
-  'arc-eglise':   '⛪',
-  'arc-ville':    '🏙️',
-  'arc-conjoint': '💍',
+const ARC_ICONS: Record<string, React.ReactNode> = {
+  'arc-louise':   <Handshake size={10} strokeWidth={1.5} />,
+  'arc-mathias':  <BookOpen size={10} strokeWidth={1.5} />,
+  'arc-heritage': <Landmark size={10} strokeWidth={1.5} />,
+  'arc-tentation':<Zap size={10} strokeWidth={1.5} />,
+  'arc-guerison': <Sparkles size={10} strokeWidth={1.5} />,
+  'arc-ami':      <Users size={10} strokeWidth={1.5} />,
+  'arc-metier':   <Hammer size={10} strokeWidth={1.5} />,
+  'arc-parents':  <Home size={10} strokeWidth={1.5} />,
+  'arc-eglise':   <Church size={10} strokeWidth={1.5} />,
+  'arc-ville':    <Building2 size={10} strokeWidth={1.5} />,
+  'arc-conjoint': <Heart size={10} strokeWidth={1.5} />,
 };
 
 const ARC_SHORT: Record<string, string> = {
@@ -96,7 +97,7 @@ export function ArcTracker() {
               animation: active ? 'arcPulse 2s ease-in-out infinite' : 'none',
             }}
           >
-            <span style={{ fontSize: 10 }}>{ARC_ICONS[arc.id] ?? '◆'}</span>
+            <span style={{ display: 'flex', alignItems: 'center', fontSize: 10 }}>{ARC_ICONS[arc.id] ?? <span style={{ fontSize: 10 }}>◆</span>}</span>
             <span>{ARC_SHORT[arc.id] ?? resolveArcName(arc.name, lifeContext.city, lifeContext.friendName, lifeContext.profession, lifeContext.churchName, lifeContext.spouseName)}</span>
             {completed && <span style={{ fontSize: 8 }}>✓</span>}
           </div>

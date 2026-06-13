@@ -50,7 +50,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
   if (cards.length === 0) {
     return (
       <div style={{ position: 'absolute', inset: 0, zIndex: 30, background: 'var(--bg-main)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-        <div style={{ fontSize: 32 }}>📖</div>
+        <BookOpen size={32} strokeWidth={1} style={{ opacity: 0.4 }} />
         <div style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', padding: '0 32px' }}>
           Aucun verset débloqué encore.<br />Surmonte des épreuves pour remplir ton Codex.
         </div>

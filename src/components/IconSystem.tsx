@@ -125,4 +125,6 @@ export {
   ChevronRight, XIcon, Check, AlertTriangle, Clock, Sparkles, Feather,
   Crown, ScrollText, Music, Moon, SunDim, User, Users, Church, Bookmark,
   Compass, Target, Wind, Mountain, Scale, GripHorizontal, RefreshCw,
+  Volume2, Handshake, Phone, Landmark, Hammer, Home, Building2,
+  RotateCw,
 } from 'lucide-react';

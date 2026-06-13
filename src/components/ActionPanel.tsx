@@ -1,19 +1,20 @@
 import { useGameStore } from '../stores/gameStore';
 import type { PlayerAction } from '../types/game';
+import { Heart, Handshake, Phone, BookOpen } from 'lucide-react';
 
 interface ActionDef {
   id: PlayerAction;
   label: string;
   effect: string;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 const ACTIONS: ActionDef[] = [
-  { id: 'pray',        label: 'Prier',        effect: '+Foi',      icon: '🙏' },
-  { id: 'fast',        label: 'Jeûner',       effect: '+Foi −Corps', icon: '✦' },
-  { id: 'serve',       label: 'Servir',       effect: '+Paix',     icon: '🤝' },
-  { id: 'call_friend', label: 'Appeler',      effect: '+Paix +Lien', icon: '📞' },
-  { id: 'read_word',   label: 'Lire',         effect: '+Foi',      icon: '📖' },
+  { id: 'pray',        label: 'Prier',        effect: '+Foi',      icon: <Heart size={14} strokeWidth={1.5} /> },
+  { id: 'fast',        label: 'Jeûner',       effect: '+Foi −Corps', icon: <span style={{ fontSize: 14 }}>✦</span> },
+  { id: 'serve',       label: 'Servir',       effect: '+Paix',     icon: <Handshake size={14} strokeWidth={1.5} /> },
+  { id: 'call_friend', label: 'Appeler',      effect: '+Paix +Lien', icon: <Phone size={14} strokeWidth={1.5} /> },
+  { id: 'read_word',   label: 'Lire',         effect: '+Foi',      icon: <BookOpen size={14} strokeWidth={1.5} /> },
 ];
 
 export function ActionPanel() {
@@ -104,7 +105,7 @@ export function ActionPanel() {
                 minWidth: 58,
               }}
             >
-              <span style={{ fontSize: 16, lineHeight: 1 }}>{action.icon}</span>
+              <span style={{ fontSize: 16, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{action.icon}</span>
               <span style={{
                 fontSize: 9,
                 fontWeight: 700,

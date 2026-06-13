@@ -26,7 +26,7 @@ const STEPS = [
     color: '#f59e0b',
   },
   {
-    icon: '🏆',
+    icon: '✦',
     title: 'Débloquez le Codex et les Titres',
     description: 'Chaque verset utilisé avec succès rejoint votre Grimoire. Complétez-les tous. Terminez une partie pour débloquer un Titre et son héritage pour la prochaine run.',
     detail: [

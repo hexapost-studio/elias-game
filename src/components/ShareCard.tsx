@@ -19,7 +19,7 @@ export const ShareCard: FC<ShareCardProps> = ({
 
   const parts = [
     `✦ La vie d'Élias ✦`,
-    `Âge : ${age} ans${isVictory ? ' · VICTOIRE 🏆' : ''}`,
+    `Âge : ${age} ans${isVictory ? ' · VICTOIRE' : ''}`,
   ];
   if (titleName) parts.push(`Titre : ${titleName}`);
   parts.push(`Réussite : ${successRate}% · Combo max : ×${maxCombo}`);
