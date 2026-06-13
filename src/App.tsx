@@ -366,11 +366,11 @@ function App() {
                         {entry.type === 'milestone' ? (
                           <span>{entry.text}</span>
                         ) : entry.type === 'micro' ? (
-                          <><span style={{ opacity: 0.6 }}>{entry.age}a</span>{' '}
-                          <span style={{ opacity: 0.7, marginRight: 3 }}>·</span>
+                          <><span className="entry-age-before">{entry.age}a</span>{' '}
+                          <span className="entry-separator">·</span>
                           {entry.text}</>
                         ) : (
-                          <><span style={{ opacity: 0.65 }}>{entry.age}a</span> {entry.text}</>
+                          <><span className="entry-age-before">{entry.age}a</span> {entry.text}</>
                         )}
                       </div>
                     );
@@ -378,7 +378,7 @@ function App() {
                   return (
                     <div key={`r-ai-${idx}`} className="journal-ai-entry">
                       <span className="entry-age-tag">{entry.age}a</span>
-                      {' '}<span style={{ color: 'rgba(245,158,11,0.85)', marginRight: 4 }}>✦</span>
+                      {' '}<span className="entry-star">✦</span>
                       {entry.text}
                     </div>
                   );
@@ -653,7 +653,7 @@ function App() {
                       <>
                         <span className="entry-age-tag">{entry.age}a</span>
                         {' '}
-                        <span style={{ color: 'rgba(245,158,11,0.85)', marginRight: 4 }}>✦</span>
+                        <span className="entry-star">✦</span>
                         {entry.text}
                       </>
                     )}

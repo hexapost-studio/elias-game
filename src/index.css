@@ -1295,6 +1295,11 @@ body {
   opacity: 0.65;
 }
 
+.entry-star {
+  color: rgba(245,158,11,0.85);
+  margin-right: 4px;
+}
+
 .entry-separator {
   opacity: 0.7;
   margin-right: 3px;
