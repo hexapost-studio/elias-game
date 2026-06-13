@@ -1,6 +1,21 @@
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { XIcon } from './IconSystem';
+
+const BIBLE_QUOTES = [
+  '"Car je connais les projets que j\'ai formés pour vous, dit l\'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l\'espérance." — Jérémie 29:11',
+  '"Je puis tout par celui qui me fortifie." — Philippiens 4:13',
+  '"L\'Éternel est mon berger: je ne manquerai de rien." — Psaume 23:1',
+  '"Ne crains rien, car je suis avec toi; ne promène pas des regards inquiets, car je suis ton Dieu." — Ésaïe 41:10',
+  '"Tout est possible à celui qui croit." — Marc 9:23',
+  '"Dieu est notre refuge et notre force, un secours qui ne manque jamais dans la détresse." — Psaume 46:2',
+  '"Heureux ceux qui pleurent, car ils seront consolés." — Matthieu 5:4',
+  '"La foi est une ferme assurance des choses qu\'on espère, une démonstration de celles qu\'on ne voit pas." — Hébreux 11:1',
+  '"Que votre lumière luise ainsi devant les hommes, afin qu\'ils voient vos bonnes œuvres, et qu\'ils glorifient votre Père qui est dans les cieux." — Matthieu 5:16',
+  '"L\'amour de Dieu est répandu dans nos cœurs par le Saint-Esprit qui nous a été donné." — Romains 5:5',
+  '"Cherchez premièrement le royaume et la justice de Dieu; et toutes ces choses vous seront données par-dessus." — Matthieu 6:33',
+  '"Sois fort et courageux, ne t\'effraie point et ne t\'épouvante point, car l\'Éternel, ton Dieu, est avec toi dans tout ce que tu entreprendras." — Josué 1:9',
+];
 
 interface ShareCardProps {
   age: number;
@@ -16,6 +31,7 @@ export const ShareCard: FC<ShareCardProps> = ({
   age, successRate, maxCombo, titleName, isVictory, completedArcsCount, onClose,
 }) => {
   const [copied, setCopied] = useState(false);
+  const quoteRef = useRef(BIBLE_QUOTES[Math.floor(Math.random() * BIBLE_QUOTES.length)]);
 
   const parts = [
     `✦ La vie d'Élias ✦`,
@@ -24,7 +40,8 @@ export const ShareCard: FC<ShareCardProps> = ({
   if (titleName) parts.push(`Titre : ${titleName}`);
   parts.push(`Réussite : ${successRate}% · Combo max : ×${maxCombo}`);
   if (completedArcsCount > 0) parts.push(`Arcs complétés : ${completedArcsCount}`);
-  parts.push('', `Joue Élias ➜ ${window.location.origin}`);
+  parts.push('', `${quoteRef.current}`);
+  parts.push('', `Joue Élias ➜ https://la-vie-d-elias.jouons.cc`);
   const shareText = parts.join('\n');
 
   const handleCopy = async () => {
@@ -42,6 +59,12 @@ export const ShareCard: FC<ShareCardProps> = ({
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
   };
+
+  // Auto-copie au montage
+  useEffect(() => {
+    const timer = setTimeout(() => { handleCopy(); }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleShare = async () => {
     if ('share' in navigator) {

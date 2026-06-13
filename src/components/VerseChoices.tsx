@@ -3,7 +3,11 @@ import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
 import { AFFLICTION_ICONS, AFFLICTION_COLORS, Clock } from './IconSystem';
 
-const FLOW_MAX_TIME = 15;
+const PALIER_TIMER: Record<number, number | null> = {
+  1: null,   // Pas de timer
+  2: 30,     // 30s
+  3: 15,     // 15s
+};
 
 export function VerseChoices() {
   const currentEvent = useGameStore((s) => s.currentEvent);
@@ -19,7 +23,8 @@ export function VerseChoices() {
   const ageDifficulty = age <= 15 ? 1 : age <= 50 ? 2 : 3;
   const effectiveDifficulty = Math.max(difficulty, ageDifficulty) as typeof difficulty;
 
-  const [timeLeft, setTimeLeft] = useState(FLOW_MAX_TIME);
+  const maxTime = PALIER_TIMER[flowPalier] ?? 0;
+  const [timeLeft, setTimeLeft] = useState(maxTime);
   const [started, setStarted] = useState(false);
   const [shuffledIds, setShuffledIds] = useState<string[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -28,21 +33,23 @@ export function VerseChoices() {
 
   if (!started) {
     setStarted(true);
-    setTimeLeft(FLOW_MAX_TIME);
+    setTimeLeft(maxTime);
     setShuffledIds(
       [currentEvent.correctVerseId, ...currentEvent.decoyVerseIds].sort(
         () => Math.random() - 0.5
       )
     );
-    timerRef.current = setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 0) {
-          if (timerRef.current) clearInterval(timerRef.current);
-          return 0;
-        }
-        return t - 0.1;
-      });
-    }, 100);
+    if (maxTime > 0) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft((t) => {
+          if (t <= 0) {
+            if (timerRef.current) clearInterval(timerRef.current);
+            return 0;
+          }
+          return t - 0.1;
+        });
+      }, 100);
+    }
   }
 
   useEffect(() => {
@@ -60,10 +67,11 @@ export function VerseChoices() {
   }, [phase]);
 
   const hasAnswered = lastEventResult !== null;
-  const timeSpent = FLOW_MAX_TIME - timeLeft;
+  const timeSpent = maxTime - timeLeft;
   const CatIcon = AFFLICTION_ICONS[currentEvent.category] || Clock;
   const catColor = AFFLICTION_COLORS[currentEvent.category] || 'var(--text-muted)';
-  const isUrgent = timeLeft <= 5;
+  const isUrgent = maxTime > 0 && timeLeft <= Math.min(5, maxTime * 0.3);
+  const noTimer = maxTime <= 0;
 
   const handleChoose = (verseId: string) => {
     if (hasAnswered) return;
@@ -77,13 +85,14 @@ export function VerseChoices() {
 
   return (
     <div>
-      {/* Timer */}
+      {/* Timer — caché en palier 1 (pas de pression) */}
+      {!noTimer && (
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         <div className="timer-bar" style={{ background: 'rgba(255,255,255,0.08)' }}>
           <div
             className="timer-fill"
             style={{
-              width: `${(timeLeft / FLOW_MAX_TIME) * 100}%`,
+              width: `${maxTime > 0 ? (timeLeft / maxTime) * 100 : 0}%`,
               background: isUrgent ? 'var(--danger)' : 'var(--accent-violet)',
               boxShadow: isUrgent ? '0 0 8px var(--danger)' : 'none',
             }}
@@ -94,6 +103,7 @@ export function VerseChoices() {
           {timeLeft.toFixed(1)}s
         </span>
       </div>
+      )}
 
       {/* Event card */}
       <div className="event-card">

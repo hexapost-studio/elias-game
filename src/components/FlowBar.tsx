@@ -33,7 +33,16 @@ const PALIER_CONFIG: Record<number, {
 
 export function FlowBar() {
   const flow = useGameStore((s) => s.flow);
+  const combo = useGameStore((s) => s.combo);
   const p = PALIER_CONFIG[flow.palier];
+
+  const COMBO_SEGMENTS = [
+    { threshold: 0, label: '0-4', color: '#d4d4d4', bg: 'rgba(212,212,212,0.15)' },
+    { threshold: 5, label: '5-9', color: '#fbbf24', bg: 'rgba(251,191,36,0.15)' },
+    { threshold: 10, label: '10-19', color: '#fb923c', bg: 'rgba(251,146,60,0.15)' },
+    { threshold: 20, label: '20+', color: '#c084fc', bg: 'rgba(192,132,252,0.15)' },
+  ];
+  const activeSegmentIndex = combo >= 20 ? 3 : combo >= 10 ? 2 : combo >= 5 ? 1 : 0;
 
   return (
     <div id="flow-bar">
@@ -56,6 +65,25 @@ export function FlowBar() {
           <span style={{ opacity: 0.7, fontFamily: 'var(--font-body)', letterSpacing: 0 }}>{p.multiplier}</span>
         </span>
       </div>
+      {/* Combo bar segmentée */}
+      {combo > 0 && (
+        <div className="combo-segments">
+          {COMBO_SEGMENTS.map((seg, i) => (
+            <div
+              key={i}
+              className={`combo-segment ${i <= activeSegmentIndex ? 'active' : ''}`}
+              style={{
+                background: i <= activeSegmentIndex ? seg.color : seg.bg,
+                borderColor: i <= activeSegmentIndex ? seg.color : 'transparent',
+                color: i <= activeSegmentIndex ? '#120d07' : seg.color,
+              }}
+            >
+              {seg.label}
+            </div>
+          ))}
+          <span className="combo-value">×{combo}</span>
+        </div>
+      )}
     </div>
   );
 }
