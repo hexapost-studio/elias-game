@@ -36,6 +36,17 @@ const STEPS = [
     ],
     color: '#10b981',
   },
+  {
+    icon: '✦',
+    title: 'Une dernière chose...',
+    description: 'Ce jeu t\'aide à mémoriser les Écritures. Mais souviens-toi : ta valeur devant Dieu ne dépend pas de ta connaissance des versets. Si tu te trompes dans le jeu, ce n\'est pas un échec spirituel. C\'est juste une occasion d\'apprendre.',
+    detail: [
+      'Le but est d\'apprendre la Parole, pas d\'être parfait',
+      'Chaque erreur est une chance de mémoriser un verset',
+      'Dieu ne t\'aime pas plus si tu gagnes au jeu',
+    ],
+    color: '#c084fc',
+  },
 ];
 
 const TOTAL_STEPS = STEPS.length + 1; // +1 for interactive step

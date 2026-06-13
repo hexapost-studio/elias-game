@@ -23,6 +23,7 @@ import { Onboarding } from './components/Onboarding';
 import { Prologue } from './components/Prologue';
 import type { PrologueResult } from './components/Prologue';
 import { ArcTracker } from './components/ArcTracker';
+import { DailyVerse } from './components/DailyVerse';
 import { MainMenu } from './components/MainMenu';
 
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
@@ -483,6 +484,48 @@ function App() {
                 </span>
               </div>
             )}
+
+            {/* Conclusion narrative */}
+            <div className="gameover-conclusion" style={{ margin: '16px 0', textAlign: 'center' }}>
+              <div style={{ fontSize: 12, color: 'var(--accent-gold)', fontWeight: 600, marginBottom: 8 }}>
+                Que retenir de cette vie ?
+              </div>
+              <div style={{
+                fontSize: 14, lineHeight: 1.6, color: 'var(--text-secondary)',
+                fontStyle: 'italic', marginBottom: 12,
+              }}>
+                « {(() => {
+                  const titleVerses: Record<string, string> = {
+                    'Le Prodige': "Car je connais les projets que j'ai formés sur vous, dit l'Éternel... Jérémie 29.11",
+                    'La Star': 'Je puis tout par celui qui me fortifie. Philippiens 4.13',
+                    "L'Anakazo": 'Fortifie-toi et prends courage ! Josué 1.9',
+                    'Le Fervent': "L'Éternel est ma lumière et mon salut. Psaume 27.1",
+                    'Le Combattant': "J'ai combattu le bon combat, j'ai achevé la course. 2 Timothée 4.7",
+                    'Le Sage': 'La crainte de l\'Éternel est le commencement de la sagesse. Proverbes 9.10',
+                    'Le Survivant': 'Je puis tout par celui qui me fortifie. Philippiens 4.13',
+                  };
+                  if (title && titleVerses[title.name]) return titleVerses[title.name];
+                  const fallbackVerses = [
+                    "Car ce n'est pas un esprit de timidité que Dieu nous a donnés... 2 Timothée 1.7",
+                    "L'Éternel est ma lumière et mon salut: de qui aurai-je peur ? Psaume 27.1",
+                    'Je vous laisse la paix, je vous donne ma paix. Jean 14.27',
+                    'Nous savons que toutes choses concourent au bien de ceux qui aiment Dieu. Romains 8.28',
+                  ];
+                  return fallbackVerses[Math.floor(Math.random() * fallbackVerses.length)];
+                })() } »
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 8 }}>
+                {(() => {
+                  if (stats.foi > 70) return "Élias a marché avec Dieu jusqu'au bout.";
+                  if (stats.paix > 70) return "La paix d'Élias a traversé les tempêtes.";
+                  if (stats.physique > 70) return 'Élias a combattu le bon combat jusqu\'à la fin.';
+                  if (stats.finances > 70) return 'Élias a été fidèle dans les petites et grandes choses.';
+                  return "Élias a terminé sa course. La grâce l'attendait au bout du chemin.";
+                })()}
+              </div>
+            </div>
+
+            <DailyVerse />
 
             {/* Secondary actions */}
             <div className="btn-row">

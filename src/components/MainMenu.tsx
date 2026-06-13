@@ -18,6 +18,7 @@ import {
   BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon, Volume2,
 } from './IconSystem';
 import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
+import { DailyVerse } from './DailyVerse';
 
 interface MainMenuProps {
   onClose: () => void;
@@ -100,6 +101,8 @@ export const MainMenu: FC<MainMenuProps> = ({
             </div>
           </div>
         )}
+
+        <DailyVerse />
 
         {/* Options */}
         <div className="menu-options-area">
