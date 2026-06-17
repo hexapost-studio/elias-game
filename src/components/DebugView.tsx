@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
+import { shuffledChoiceIds } from '../engine/choiceOrder';
 import '../debug.css';
 
 const FLOW_MAX_TIME = 15;
@@ -13,21 +14,32 @@ export function DebugView() {
 
   const [visible, setVisible] = useState(false);
   const [timeLeft, setTimeLeft] = useState(FLOW_MAX_TIME);
-  const [chosenIds, setChosenIds] = useState<string[]>([]);
   const journalRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Timer
+  // L'ordre des propositions est DÉRIVÉ (mélange seedé sur l'id de l'événement) au lieu
+  // d'être posé en state dans un effet → déterministe et sans set-state-in-effect.
+  const chosenIds =
+    phase === 'event' && currentEvent
+      ? shuffledChoiceIds(currentEvent.id, currentEvent.correctVerseId, currentEvent.decoyVerseIds)
+      : [];
+
+  // Reset state-on-prop-change (pendant le rendu, pas dans un effet) : quand un nouvel
+  // événement devient actif, le chrono repart de FLOW_MAX_TIME.
+  const eventKey = phase === 'event' && currentEvent ? currentEvent.id : null;
+  const [prevEventKey, setPrevEventKey] = useState(eventKey);
+  if (prevEventKey !== eventKey) {
+    setPrevEventKey(eventKey);
+    setTimeLeft(FLOW_MAX_TIME);
+  }
+
+  // L'effet ne fait QUE piloter l'intervalle (système externe) : son setState part du
+  // callback de tick (différé) → pas de set-state-in-effect.
+  const active = phase === 'event' && visible && eventKey !== null;
   useEffect(() => {
-    if (phase === 'event' && visible) {
-      setTimeLeft(FLOW_MAX_TIME);
-      setChosenIds([currentEvent!.correctVerseId, ...currentEvent!.decoyVerseIds].sort(() => Math.random() - 0.5));
-      timerRef.current = setInterval(() => setTimeLeft(t => Math.max(0, t - 0.1)), 100);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [phase === 'event', visible]);
+    if (!active) return;
+    const id = setInterval(() => setTimeLeft((t) => Math.max(0, t - 0.1)), 100);
+    return () => clearInterval(id);
+  }, [active, eventKey]);
 
   useEffect(() => {
     if (visible) journalRef.current?.scrollTo({ top: journalRef.current.scrollHeight, behavior: 'smooth' });

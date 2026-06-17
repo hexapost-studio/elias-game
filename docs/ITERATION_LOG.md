@@ -604,6 +604,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   validate), zéro nouvelle dette. Comportement dev-tool préservé.
 - **Rollback** : `git revert <hash itér. 25>`.
 
+### Itération 26 — Phase 1 / T-5 : `DebugView.tsx` (set-state-in-effect ×1 + exhaustive-deps ×2 → 0)
+- **Recherche** : un seul effet « timer » concentrait les 3 erreurs : `setTimeLeft`/
+  `setChosenIds` synchrones (set-state-in-effect) + deps manquantes (`currentEvent`,
+  `phase`) + expression complexe `phase === 'event'` dans le tableau de deps.
+- **Application** (dérivation + état-marqueur + helper pur) : (1) l'ordre des propositions
+  est **dérivé** au rendu via un mélange seedé sur l'id de l'événement —
+  `src/engine/choiceOrder.ts` (`seededShuffle` Fisher–Yates + `shuffledChoiceIds`,
+  déterministe, ne mute pas) — plus de `chosenIds` en state. (2) le reset du chrono à
+  l'arrivée d'un événement passe en **state-on-prop-change pendant le rendu**
+  (`prevEventKey`). (3) l'effet résiduel ne pilote QUE l'intervalle (système externe),
+  deps propres `[active, eventKey]`, son `setTimeLeft` partant du tick différé.
+- **Test** : `tests/choiceOrder.test.ts` (6 cas) — déterminisme par seed, permutation
+  conservée, non-mutation, stabilité par id d'événement.
+- **Résultat** : `DebugView.tsx` **3 → 0** (errorCount 0, warningCount 0). Porte QA verte
+  (tsc + vitest 186 + build + validate), zéro nouvelle dette. Bonus : ordre des choix
+  désormais reproductible.
+- **Rollback** : `git revert <hash itér. 26>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
