@@ -23,6 +23,7 @@ import type {
   StatName, SpiritualSeasonName, Calling, EarnedTrait, LifeContext,
 } from '../types/game';
 import { getTraitById } from '../data/traits';
+import { pickEchoCallback, type Echo } from '../engine/echoes';
 
 export type LifeStage = 'enfant' | 'ado' | 'adulte' | 'senior';
 
@@ -40,6 +41,8 @@ export interface OfflineJournalContext {
   lifeContext?: LifeContext;
   parentNames?: { father: string; mother: string };
   actionsThisYear?: string[];
+  /** Moments marquants passés (traits/arcs datés) → rappels narratifs occasionnels. */
+  echoes?: Echo[];
 }
 
 type Rng = () => number;
@@ -205,8 +208,11 @@ export function generateOfflineJournal(
 
   const opener = pick(rng, openers);
 
-  // Touche de contexte occasionnelle (Appel ou ami) pour ancrer la voix.
+  // Touche de contexte occasionnelle (rappel d'un moment passé, Appel ou ami).
   const tails: string[] = [];
+  // Rappel narratif d'un moment ancien : priorité (double poids) car il crée la continuité.
+  const echoCallback = ctx.echoes ? pickEchoCallback(ctx.echoes, ctx.age, rng) : null;
+  if (echoCallback) tails.push(echoCallback, echoCallback);
   if (ctx.calling && rng() < 0.33) {
     tails.push(`Au fond, je sens que ma route est celle ${aOf(ctx.calling)} — ${ctx.calling.tagline.toLowerCase()}.`);
   }

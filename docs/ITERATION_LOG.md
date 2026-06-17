@@ -51,9 +51,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   amont). Prochaine fois : repérer les early-returns dès l'analyse.
 - **Rollback** : `git revert <hash itération 1>`.
 
-### Itération 2 — _(à définir : recherche → analyse → consensus)_
-Pistes en réserve (analyse) :
-- **Conséquences ramifiées** (Slay the Princess) : un choix qui altère durablement la run.
-- **Expansion minimaliste** (A Dark Room) : déblocage progressif de systèmes au fil de l'âge.
-- **Juice de réussite/échec** : feedback tactile/visuel renforcé sur le choix de verset.
-- **Codex vivant** (80 Days) : variété de texte générée dynamiquement dans la révision.
+### Itération 2 — Mémoire narrative à rappels (« echoes »)
+- **Recherche** : force des grands jeux textuels (*Citizen Sleeper*, *Steins;Gate*) — les
+  moments pivots RÉSONNENT plus tard ; les rappels littéraires créent la continuité.
+- **Analyse** : dans Élias, chaque événement est isolé. Les traits et arcs sont pourtant
+  des moments DATÉS (`earnedAtAge`, `completedAtAge`) → matière à rappels, déjà en mémoire.
+  (Juice du choix de verset déjà bien câblé → on ne touche pas, gain marginal.)
+- **Consensus** : un système d'échos **dérivé** de l'état (comme `traits.ts`), zéro nouveau
+  champ → save-compatible. Le narrateur tisse occasionnellement un rappel d'un moment ancien
+  (recul ≥ 5 ans). Critère : rappels déterministes seedés, slots résolus, jamais dominants.
+- **Application** : `src/engine/echoes.ts` (`deriveEchoes`, `pickEchoCallback`, purs),
+  branché dans `offlineNarrator` (tail à double poids), `App.tsx` passe `deriveEchoes(state)`.
+- **Résultat** : le journal évoque parfois « mes 20 ans, quand je suis devenu X » des années
+  plus tard. 8 tests (77 verts), tsc + build OK.
+- **Rétro / process** : la stratégie « dériver d'un état déjà daté plutôt qu'ajouter du state »
+  se confirme comme **patron par défaut** (save-compat + testabilité pure). Process amélioré :
+  *vérifier d'abord si le besoin est déjà câblé* (le juice l'était) avant de prévoir du travail
+  — un check de 2 commandes a évité une itération à faible valeur.
+- **Rollback** : `git revert <hash itération 2>`.
+
+### Itération 3 — _(à définir)_
+Pistes en réserve : expansion minimaliste (A Dark Room, annonce des systèmes débloqués) ·
+codex vivant (80 Days, variété de révision) · conséquences ramifiées (choix narratif).

@@ -36,6 +36,7 @@ import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, sc
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
+import { deriveEchoes } from './engine/echoes';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
@@ -303,10 +304,14 @@ function App() {
       .filter((t) => t.earnedAtAge === age)
       .map((t) => t.id);
 
+    // Échos : moments marquants passés (traits/arcs) → rappels narratifs occasionnels.
+    const echoes = deriveEchoes(s);
+
     // 1) Narrateur offline — toujours disponible, écrit tout de suite.
     const offline = generateOfflineJournal({
       age, stats, season: spiritualSeason, calling, traits,
       newTraitIds, recentResults, successRate, lifeContext, parentNames, actionsThisYear,
+      echoes,
     });
     setAiJournalEntries((prev) => [
       ...prev.filter((e) => e.age !== age),
