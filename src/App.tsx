@@ -148,7 +148,9 @@ function App() {
   type AiJournalEntry = { age: number; text: string; generating: boolean };
   const [aiJournalEntries, setAiJournalEntries] = useState<AiJournalEntry[]>([]);
   const [pendingAiEvent, setPendingAiEvent] = useState<AfflictionEvent | null>(null);
-  const [generatingAiEvent, setGeneratingAiEvent] = useState(false);
+  // Garde anti-réentrance de la génération IA : un ref (jamais lu au rendu) plutôt qu'un
+  // state → pas de setState dans l'effet, pas de re-render inutile.
+  const generatingAiEvent = useRef(false);
 
   const state = useGameStore.getState();
   // Init juice + load save + onboarding
@@ -180,7 +182,8 @@ function App() {
       flushLocalQueue().catch(() => {});
     }
     init();
-  }, []);
+    // hydrateFromSave est une action Zustand (référence stable) → l'effet reste mono-exécution.
+  }, [hydrateFromSave]);
 
   // Appliquer la classe dyslexic-mode sur #root
   useEffect(() => {
@@ -348,6 +351,11 @@ function App() {
       newTraitIds, recentResults, successRate, lifeContext, parentNames, actionsThisYear,
       echoes,
     });
+    // Exception ASSUMÉE à set-state-in-effect : génération de CONTENU (narratif aléatoire,
+    // non dérivable au rendu) accumulé par âge puis raffiné en async (IA) — c'est le cas
+    // légitime « effet qui produit des données » (cf. doc React). Un vrai retrait imposerait
+    // de remonter la génération dans l'action `advanceAge` du store (évolution future).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAiJournalEntries((prev) => [
       ...prev.filter((e) => e.age !== age),
       { age, text: offline, generating: isAiEnabled() },
@@ -380,14 +388,14 @@ function App() {
 
   // ── Événements dynamiques : pré-génération en arrière-plan ───────────────
   useEffect(() => {
-    if (!isAiEnabled() || phase !== 'idle' || generatingAiEvent || pendingAiEvent) return;
+    if (!isAiEnabled() || phase !== 'idle' || generatingAiEvent.current || pendingAiEvent) return;
     // 1 chance sur 3 de générer un événement IA pour la prochaine fois
     if (Math.random() > 0.33) return;
 
-    setGeneratingAiEvent(true);
+    generatingAiEvent.current = true;
     generateDynamicEvent(age, stats, lifeContext, parentNames, playerName)
       .then((narrative) => {
-        if (!narrative) { setGeneratingAiEvent(false); return; }
+        if (!narrative) { generatingAiEvent.current = false; return; }
         const event: AfflictionEvent = {
           id:              `ai-${Date.now()}`,
           title:           narrative.title,
@@ -400,9 +408,9 @@ function App() {
           thematicFlavor:  narrative.thematicFlavor,
         };
         setPendingAiEvent(event);
-        setGeneratingAiEvent(false);
+        generatingAiEvent.current = false;
       })
-      .catch(() => setGeneratingAiEvent(false));
+      .catch(() => { generatingAiEvent.current = false; });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
