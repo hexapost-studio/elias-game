@@ -973,8 +973,10 @@ export function validateChoice(
     };
 
     newState.lastEventResult = 'success';
+    // ...newState.journal (pas state.journal) — sinon l'entrée bonus [COMBO xN] posée juste
+    // au-dessus serait écrasée et le bonus, bien qu'appliqué aux stats, n'apparaîtrait jamais.
     newState.journal = [
-      ...state.journal,
+      ...newState.journal,
       {
         age: state.age,
         text: `[VICTOIRE] ${event.title} surmonté par ${verse.reference} (COMBO:${newState.combo})`,

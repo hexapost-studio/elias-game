@@ -264,6 +264,25 @@ describe('T8: Système de Codex', () => {
     expect(newState.codex[event.correctVerseId].timesUsed).toBe(1);
   });
 
+  it('régression : un palier de combo conserve SON entrée de journal [COMBO xN] (itér. 17)', () => {
+    const state = createInitialState();
+    state.age = 10;
+    state.phase = 'event';
+    state.combo = 4; // ce succès porte le combo à 5 → palier (balance.json thresholds.5)
+
+    const event = getEventById('e-fond-004');
+    if (!event) return;
+    state.currentEvent = event;
+
+    const { newState } = validateChoice(state, event.correctVerseId);
+    expect(newState.combo).toBe(5);
+    // Les DEUX entrées doivent coexister (le bug rebâtissait le journal depuis state.journal,
+    // écrasant l'entrée combo posée juste avant).
+    const texts = newState.journal.map((e) => e.text);
+    expect(texts.some((t) => t.includes('[COMBO x5]'))).toBe(true);
+    expect(texts.some((t) => t.includes('[VICTOIRE]'))).toBe(true);
+  });
+
   it('une erreur enregistre le comptage dans le Codex', () => {
     const state = createInitialState();
     state.age = 10;

@@ -428,6 +428,26 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   10→10, module/test à 0). Logique pure testée ; le moteur ne fait que mapper vers le journal.
 - **Rollback** : `git revert <hash itération 16>`.
 
+### Itération 17 — Fix : un bonus de combo conserve son annonce de journal
+- **Recherche** : repéré pendant l'itér. 16. À un palier de combo (5/10/20, `balance.json`),
+  `validateChoice` posait bien l'entrée `[COMBO xN] Bonus : …` dans `newState.journal`… mais le bloc
+  `[VICTOIRE]` juste en dessous **reconstruisait** le journal depuis `...state.journal` (l'original),
+  **écrasant** l'entrée combo. Le bonus s'appliquait aux stats, mais sa ligne n'apparaissait jamais —
+  une récompense gagnée mais invisible.
+- **Analyse** : bug d'accumulation classique (repartir de l'état d'entrée au lieu de l'état en cours
+  de construction). Fix minimal : le bloc `[VICTOIRE]` doit étendre `...newState.journal`. Ordre
+  résultant `[COMBO xN]` puis `[VICTOIRE]` — l'annonce du palier précède le résumé de victoire, lecture
+  cohérente. Aucun test n'assertait l'ordre du succès (les tests journal portent sur `journal[0]` = naissance).
+- **Application** : une ligne (`...state.journal` → `...newState.journal`) + commentaire d'avertissement.
+  `tests/gameEngine.test.ts` : +1 régression (combo porté à 5 → les deux entrées `[COMBO x5]` ET
+  `[VICTOIRE]` coexistent).
+- **Résultat** : le bonus de combo est désormais visible au journal là où il est gagné. 156 tests verts
+  (+1), tsc + build + `npm run validate` OK, **zéro** dette lint (`gameEngine.ts` 10→10). Réversible.
+- **Rétro / process** : illustre la règle « dériver/accumuler depuis l'état en cours, jamais re-partir
+  de l'entrée » — le même piège que les réassignations successives de `journal`. Garde-fou : test de
+  coexistence des entrées.
+- **Rollback** : `git revert <hash itération 17>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
