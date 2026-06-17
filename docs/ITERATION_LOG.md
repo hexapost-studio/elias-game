@@ -89,6 +89,29 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   sinon on ment au joueur. Table déclarative = ajout d'un palier = 1 ligne.
 - **Rollback** : `git revert <hash itération 3>`.
 
-### Itération 4 — _(à définir)_
-Pistes en réserve : codex vivant (80 Days, variété de révision) · conséquences ramifiées
-(choix narratif altérant la run) · « onboarding zéro-friction » (premières minutes).
+### Itération 4 — Réactions de victoire contextuelles (juice)
+- **Recherche** : le juice des grands jeux récompense le beat répété par de la *variété*
+  (pas le même feedback 500 fois). L'utilisateur a explicitement demandé « fun, juice ».
+- **Analyse** : surmonter une épreuve = le moment le plus répété d'Élias, et il affichait
+  toujours « VICTOIRE ». Le câblage juice (son/particules/shake) était bon, mais le *texte*
+  était figé.
+- **Consensus** : un système de réaction varié selon combo / catégorie vaincue / saison.
+  Critère : bannière qui monte avec le combo, sous-ligne thématique optionnelle, déterministe
+  testable, jamais bloquant (la bannière suffit seule).
+- **Application** : `src/engine/reactions.ts` (`pickVictoryBanner`, `pickVictorySubline`,
+  purs), figé dans la branche succès de l'effet de résultat, sous-ligne animée dans le flash.
+- **Résultat** : « INARRÊTABLE / EN FEU » sur gros combo, « La peur a reculé » après une
+  épreuve d'angoisse, etc. 8 tests (90 verts), tsc + build OK.
+- **Rétro / process** : en lintant les fichiers touchés j'ai relevé de la **dette eslint
+  pré-existante** dans `App.tsx` (`Math.random` en rendu L593, init de ref L392, ternaires
+  d'effet L776/998). Non liée à l'itération → laissée intacte, mais **mise en réserve** comme
+  candidate « durcissement normes AAA ». Process amélioré : lint ciblé sur les fichiers
+  touchés à chaque itération pour ne jamais *ajouter* de dette, sans s'éparpiller à corriger
+  l'existant dans la même passe.
+- **Rollback** : `git revert <hash itération 4>`.
+
+### Réserve (analysée, non encore planifiée)
+- **Durcissement normes AAA** : nettoyer la dette eslint d'`App.tsx` (pureté du rendu).
+- **Codex vivant** (80 Days) : variété de texte à la révision des versets.
+- **Conséquences ramifiées** : choix narratif altérant durablement la run (gros scope).
+- **Onboarding zéro-friction** : soigner les premières minutes (Prologue/Onboarding existants).

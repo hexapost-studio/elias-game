@@ -37,6 +37,7 @@ import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAg
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
 import { deriveEchoes } from './engine/echoes';
+import { pickVictoryBanner, pickVictorySubline } from './engine/reactions';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
@@ -107,6 +108,7 @@ function App() {
   } = useGameStore();
 
   const [showResult, setShowResult] = useState(false);
+  const [victory, setVictory] = useState<{ banner: string; subline: string }>({ banner: 'VICTOIRE', subline: '' });
   const [showVerseConfirm, setShowVerseConfirm] = useState(false);
   const [showCodex, setShowCodex] = useState(false);
   const [showLexicon, setShowLexicon] = useState(false);
@@ -216,6 +218,11 @@ function App() {
     if (phase === 'result' && lastEventResult) {
       if (lastEventResult === 'success') {
         playSuccess();
+        // Réaction de victoire contextuelle (juice + variété sur le beat le plus répété).
+        setVictory({
+          banner: pickVictoryBanner(combo),
+          subline: pickVictorySubline({ category: currentEvent?.category, combo, season: spiritualSeason }),
+        });
         // Haptic feedback : succès
         try { navigator.vibrate([5, 50, 10]); } catch {}
         if (containerRef.current) {
@@ -891,7 +898,10 @@ function App() {
       {showResult && currentEvent && (
         <div className="result-flash success">
           <div className="result-flash-icon" style={{ color: 'var(--success)' }}>✦</div>
-          <div className="result-verse" style={{ color: 'var(--success)' }}>VICTOIRE</div>
+          <div className="result-verse" style={{ color: 'var(--success)' }}>{victory.banner}</div>
+          {victory.subline && (
+            <div className="result-subline">{victory.subline}</div>
+          )}
         </div>
       )}
 
