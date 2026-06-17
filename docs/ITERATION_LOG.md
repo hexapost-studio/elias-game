@@ -70,6 +70,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   — un check de 2 commandes a évité une itération à faible valeur.
 - **Rollback** : `git revert <hash itération 2>`.
 
-### Itération 3 — _(à définir)_
-Pistes en réserve : expansion minimaliste (A Dark Room, annonce des systèmes débloqués) ·
-codex vivant (80 Days, variété de révision) · conséquences ramifiées (choix narratif).
+### Itération 3 — Révélations de capacités (« l'univers s'étend »)
+- **Recherche** : A Dark Room — le monde se dévoile au fil du jeu ; la croissance se
+  *ressent* quand chaque nouveau pouvoir est annoncé.
+- **Analyse** : Élias active des mécaniques à des âges précis (agir à 8, saisons à 10,
+  mémorisation accrue à 16, référence seule à 51, sagesse à 60) — mais le joueur ne
+  l'apprenait jamais. Seuils vérifiés dans le code et `balance.json` avant d'écrire.
+- **Consensus** : table DÉCLARATIVE âge → annonce, poussée comme entrée « milestone »
+  (réutilise l'UI de journal existante, zéro UI nouvelle). Critère : annonce pile au palier,
+  alignée sur les mécaniques réelles, aucune année ordinaire polluée.
+- **Application** : `src/engine/reveals.ts` (`CAPABILITY_REVEALS`, `revealsAtAge`, purs),
+  appel dans `advanceAge`.
+- **Résultat** : à 8/10/16/51/60 ans, le journal annonce la nouvelle capacité acquise.
+  5 tests (82 verts), tsc + build OK.
+- **Rétro / process** : avant d'écrire les textes d'annonce, j'ai **vérifié chaque seuil
+  dans le code source réel** (`age <= 15 ? 1 : 2`, `seniorMinAge: 60`) — règle de process
+  ajoutée : *une annonce au joueur doit être tracée jusqu'à la mécanique qu'elle décrit*,
+  sinon on ment au joueur. Table déclarative = ajout d'un palier = 1 ligne.
+- **Rollback** : `git revert <hash itération 3>`.
+
+### Itération 4 — _(à définir)_
+Pistes en réserve : codex vivant (80 Days, variété de révision) · conséquences ramifiées
+(choix narratif altérant la run) · « onboarding zéro-friction » (premières minutes).

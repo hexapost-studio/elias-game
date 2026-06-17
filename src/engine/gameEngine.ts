@@ -24,6 +24,7 @@ import { CONFIG } from '../../game/data/loader';
 import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, type Rng } from './rng';
+import { revealsAtAge } from './reveals';
 import type { Calling, EarnedTrait } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
@@ -1249,6 +1250,15 @@ export function advanceAge(state: GameState): {
     ? CONFIG.actionPoints.seniorPoints
     : CONFIG.actionPoints.standard;
   newState.actionsThisYear = [];
+
+  // Révélations de capacités (« l'univers s'étend ») — annonce des paliers franchis.
+  const reveals = revealsAtAge(newAge);
+  if (reveals.length > 0) {
+    newState.journal = [
+      ...newState.journal,
+      ...reveals.map((r) => ({ age: newAge, text: r.text, type: 'milestone' as const })),
+    ];
+  }
 
   // Retirer les cascades déclenchées
   newState.queuedCascadeEvents = state.queuedCascadeEvents.filter(
