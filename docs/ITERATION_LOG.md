@@ -175,11 +175,36 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   ref L395, no-unused-expressions L779/1007) reste isolée — candidate forte pour l'itér. suivante.
 - **Rollback** : `git revert <hash itération 7>`.
 
+### Itération 8 — Durcissement normes AAA (pureté du rendu de `App.tsx`)
+- **Recherche** : exigence explicite « normes AAA / bonnes pratiques ». En React, le rendu
+  doit être PUR et IDEMPOTENT : pas de `Math.random` ni d'effet de bord (son) pendant le rendu.
+- **Analyse** : 4 dettes répétées dans `App.tsx`, relevées au fil des itér. 1–7 et mises en
+  réserve : (a) `Math.random` en rendu (verset de secours game over, L596), (b) son de fin de
+  partie joué EN rendu via garde de ref (L392), (c)+(d) ternaire utilisé comme instruction
+  (`no-unused-expressions`, toggles ambiance).
+- **Consensus** : itération de QUALITÉ bornée aux 4 dettes cataloguées, zéro changement de
+  comportement, réversible. Pas de refonte large (cf. découverte ci-dessous).
+- **Application** : (a) index du verset de secours dérivé d'un état stable `(age + unlockedCount)`
+  → rendu pur ; (b) son de fin déplacé dans un `useEffect` dédié (clé `gameOver.isOver/reason`) ;
+  (c)+(d) `next ? a() : b()` → `if (next) a(); else b();`.
+- **Résultat** : les 4 règles ciblées ne renvoient plus aucun hit dans `App.tsx` (26→22 erreurs
+  ESLint sur le fichier), comportement identique. 103 verts, tsc + build OK.
+- **Rétro / process** : en mesurant `npm run lint`, DÉCOUVERTE — la base était déjà ROUGE à
+  l'échelle du projet (67 problèmes, surtout `react-hooks/set-state-in-effect` du plugin
+  expérimental), bien au-delà des 4 dettes d'`App.tsx`. Décision : NE PAS tout corriger d'un coup
+  (gros refactor risqué → viole « ne rien casser »). Règle de process ajoutée : *quand on ouvre un
+  chantier qualité, mesurer d'abord l'ampleur réelle ; livrer un périmètre borné et re-scoper le
+  reste en réserve, plutôt que de se laisser aspirer.* L'invariant tenu reste : **ne jamais
+  AJOUTER de dette** (lint ciblé par itération) — la base rouge globale est un chantier à part.
+- **Rollback** : `git revert <hash itération 8>`.
+
 ### Réserve (analysée, non encore planifiée)
 - **Déterminisation complète de la naissance / graine partageable** (roguelite, partie 2) :
   faire passer `generateLifeContext`/`generateParentNames`/`generateBirthStats` par le `Rng`
   seedé → même graine = même destinée → graines de monde partageables (rejouer/défier un run).
-- **Durcissement normes AAA** : nettoyer la dette eslint d'`App.tsx` (pureté du rendu).
+- **Assainissement lint global (chantier dédié)** : ~60 erreurs `react-hooks/set-state-in-effect`
+  / `purity` / `refs` réparties dans le projet (base déjà rouge avant la boucle). À traiter
+  fichier par fichier, hors boucle juice, avec garde anti-régression (gros scope, risqué).
 - **Codex vivant** (80 Days) : variété de texte à la révision des versets.
 - **Conséquences ramifiées** : choix narratif altérant durablement la run (gros scope).
 - **Onboarding zéro-friction** : soigner les premières minutes (Prologue/Onboarding existants).

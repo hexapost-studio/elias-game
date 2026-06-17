@@ -252,6 +252,16 @@ function App() {
     }
   }, [phase, lastEventResult]);
 
+  // Son de fin de partie — EFFET (pas en rendu) : un effet sonore ne doit jamais
+  // partir pendant le rendu. Joué une seule fois à la bascule en game over.
+  useEffect(() => {
+    if (gameOver?.isOver && !gameOverSoundPlayed.current) {
+      gameOverSoundPlayed.current = true;
+      if (gameOver.reason === 'victory') playLevelUp();
+      else playFail();
+    }
+  }, [gameOver?.isOver, gameOver?.reason]);
+
   // Combo sound
   const prevCombo = useRef(0);
   useEffect(() => {
@@ -389,11 +399,7 @@ function App() {
   // ─── GAME OVER ───
   if (gameOver?.isOver) {
     const isVictory = gameOver.reason === 'victory';
-    if (!gameOverSoundPlayed.current) {
-      gameOverSoundPlayed.current = true;
-      if (isVictory) playLevelUp();
-      else playFail();
-    }
+    // (Le son de fin est joué par un effet dédié — rendu pur.)
     const unlockedCount = Object.values(codex).filter((c) => c.unlocked).length;
     const metrics = computeFinalMetrics(state);
     const title = determineTitle(metrics);
@@ -593,7 +599,9 @@ function App() {
                     'Je vous laisse la paix, je vous donne ma paix. Jean 14.27',
                     'Nous savons que toutes choses concourent au bien de ceux qui aiment Dieu. Romains 8.28',
                   ];
-                  return fallbackVerses[Math.floor(Math.random() * fallbackVerses.length)];
+                  // Rendu PUR : index dérivé d'un état stable (âge + versets débloqués),
+                  // pas de Math.random en rendu — verset constant sur les re-renders.
+                  return fallbackVerses[(age + unlockedCount) % fallbackVerses.length];
                 })() } »
               </div>
               <div style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 8 }}>
@@ -776,7 +784,7 @@ function App() {
             onClick={() => {
               const next = !ambientOn;
               setAmbientOn(next);
-              next ? startAmbient() : stopAmbient();
+              if (next) startAmbient(); else stopAmbient();
             }}
             title={ambientOn ? 'Couper la musique' : 'Activer la musique'}
             className="btn-music"
@@ -1004,7 +1012,7 @@ function App() {
           onToggleAmbient={() => {
             const next = !ambientOn;
             setAmbientOn(next);
-            next ? startAmbient() : stopAmbient();
+            if (next) startAmbient(); else stopAmbient();
           }}
           currentTitle={currentTitle?.name ?? null}
           age={age}
