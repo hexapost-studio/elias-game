@@ -25,6 +25,7 @@ import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, rngPick, type Rng } from './rng';
 import { revealsAtAge } from './reveals';
+import { countUnlocked, collectionRewardText } from './collection';
 import { generateOpeningVignette } from './opening';
 import { resolvePlayerName, personalize } from './identity';
 import type { Calling, EarnedTrait } from '../types/game';
@@ -905,6 +906,9 @@ export function validateChoice(
   if (correct) {
     // === SUCCÈS ===
 
+    // État du verset AVANT déblocage — pour célébrer son entrée au Grimoire (itér. 16).
+    const wasUnlocked = state.codex[verse.id]?.unlocked ?? false;
+
     // Correcteur de frustration (Système 2) — réinitialiser le compteur de fails
     newState.consecutiveFails = 0;
     newState.reliefActive = false;
@@ -978,6 +982,20 @@ export function validateChoice(
         verseRef: verse.reference,
       },
     ];
+
+    // Récompense de collection (itér. 16) : un verset qui REJOINT le Grimoire (1ʳᵉ fois)
+    // est célébré, du tout premier au corpus complet — la promesse de l'onboarding rendue
+    // tangible. `...newState.journal` pour survivre (le bloc précédent rebâtit le journal).
+    if (!wasUnlocked) {
+      newState.journal = [
+        ...newState.journal,
+        {
+          age: state.age,
+          text: collectionRewardText(verse.reference, countUnlocked(newCodex), VERSE_DATABASE.length),
+          type: 'milestone' as const,
+        },
+      ];
+    }
 
     // Flags de conséquence (B) : le succès pose les flags déclarés → branchement narratif.
     if (event.setsFlagsOnSuccess?.length) {

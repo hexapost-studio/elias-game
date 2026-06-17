@@ -407,6 +407,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   **zéro** dette lint (`reveals.ts`/`gameStore.ts`/test à 0). Logique pure testée ; le store ne fait que mapper.
 - **Rollback** : `git revert <hash itération 15>`.
 
+### Itération 16 — Récompense de collection (le Grimoire enfin tangible)
+- **Recherche** : l'onboarding promet « chaque verset utilisé avec succès rejoint votre Grimoire »
+  (étape 3 du tuto), mais **rien dans le jeu ne le signalait** — toute victoire produisait le même
+  `[VICTOIRE]`, qu'un verset soit neuf ou déjà collecté. La mécanique de collection — pilier du
+  « manque de récompenses » du feedback joueur — n'avait **aucun feedback en jeu**.
+- **Analyse** : célébrer le moment où un verset est débloqué pour la 1ʳᵉ fois, **dès le tout premier**
+  (récompense précoce) jusqu'au corpus complet. Réutiliser le langage « milestone journal » déjà employé
+  par combos / arcs / révélations (cohérence, zéro UI nouvelle). Tiers : ouverture (1er), paliers
+  (10/25/50), complet (= total), sinon progression `(n/total)`.
+- **Application** : module pur neuf `engine/collection.ts` — `countUnlocked(codex)` +
+  `collectionRewardText(ref, count, total)`. Dans `validateChoice` (succès), on capture `wasUnlocked`
+  AVANT le déblocage et, si `!wasUnlocked`, on append une entrée `milestone` **après** `[VICTOIRE]`
+  (avec `...newState.journal` pour survivre au rebâtissage du journal). `tests/collection.test.ts`
+  (+6 : comptage, chaque tier, entrée ordinaire). NB : bug pré-existant non touché (l'entrée combo
+  ligne ~950 est écrasée par la reconstruction `[VICTOIRE]` ligne ~972) — hors scope.
+- **Résultat** : au tout premier verset gagné, « ✦ Ton Grimoire s'ouvre… » ; ensuite chaque verset
+  neuf est marqué, avec paliers spéciaux à 10/25/50 et fermeture du livre à 118. 155 tests verts (+6),
+  tsc + build + `npm run validate` (118 versets / 186 events) OK, **zéro** dette lint (`gameEngine.ts`
+  10→10, module/test à 0). Logique pure testée ; le moteur ne fait que mapper vers le journal.
+- **Rollback** : `git revert <hash itération 16>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

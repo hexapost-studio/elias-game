@@ -28,7 +28,7 @@ Vite + Zustand + localforage** (PWA).
 
 ```bash
 npx tsc --noEmit      # types
-npx vitest run        # tests (actuellement 149 verts)
+npx vitest run        # tests (actuellement 155 verts)
 npx vite build        # bundle prod
 npm run validate      # validateur de données (118 versets, 186 events)
 # + diff lint par fichier touché vs HEAD : zéro nouvelle erreur
@@ -48,7 +48,7 @@ npm run validate      # validateur de données (118 versets, 186 events)
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (15 livrées)
+## État des itérations (16 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -59,7 +59,8 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 12 | **B-1** — Branchement moteur (flags + DFS + arc-louise) | `30f2068` |
 | 13 | **B-2** — Visualizer du branchement (bandeau de pas `●─●─◆─○`) | `e9ef1f1` |
 | 14 | Onboarding zéro-friction — tuto enchaîne sur le Prologue (1ʳᵉ vie nommée) | `d4518a6` |
-| 15 | Feedback précoce — le Prologue rattrape [ÉVEIL]/[SAISONS] (mode d'emploi ActionPanel) | (ce commit) |
+| 15 | Feedback précoce — le Prologue rattrape [ÉVEIL]/[SAISONS] (mode d'emploi ActionPanel) | `d59310a` |
+| 16 | Récompense de collection — chaque verset qui rejoint le Grimoire est célébré (`[GRIMOIRE]`) | (ce commit) |
 
 **Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
 
