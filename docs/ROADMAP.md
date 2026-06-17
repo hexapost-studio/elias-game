@@ -25,7 +25,8 @@
 - [x] **T-6** `src/components/ActionPanel.tsx` — rules-of-hooks ×1 → 0 (renommage useAction→runAction, faux positif) → itér. 27 / `4003612`
 - [x] **T-7** `src/components/ShareCard.tsx` — purity ×1 + refs ×1 + exhaustive-deps ×1 → 0 (init paresseuse du tirage + helper copie + deps honnêtes) → itér. 28 / `63132ba`
 - [x] **T-8** `src/components/VerseChoices.tsx` — purity ×1 + refs ×1 + rules-of-hooks ×1 → 0 (ordre seedé dérivé `choiceOrder.ts` + timer en effet + Hooks remontés) → itér. 29
-- [ ] **T-9** `src/App.tsx` — purity ×5 + exhaustive-deps ×2 + set-state-in-effect ×5 (**à découper en sous-commits**)
+- [x] **T-9** `src/App.tsx` — purity ×5 + exhaustive-deps ×2 + set-state-in-effect ×5 → 0 (5 sous-commits T-9a..e, vérif navigateur) → itér. 31 / `283d1c9`→`88568b7`
+      ↳ **Phase 1 TERMINÉE : `react-hooks/* = 0` sur tout le projet.** (1 exception assumée+justifiée : génération du journal vivant.)
 
 ### Phase 1bis — Dette de TYPE révélée (le `tsc --noEmit` était creux — cf. itér. 30)
 > Le vrai typecheck (`tsc -p tsconfig.app.json`) expose **12 erreurs préexistantes** masquées depuis

@@ -684,6 +684,30 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   dans ce commit (tâche dédiée, cf. ROADMAP Phase 1bis).
 - **Rollback** : `git revert <hash itér. 30>`.
 
+### Itération 31 — Phase 1 / T-9 : `App.tsx` (12 erreurs hooks → 0, en 5 sous-commits vérifiés au navigateur)
+- **Recherche** : le « monstre » de la Phase 1 — 5 purity + 5 set-state-in-effect + 2 exhaustive-deps
+  dans le fichier de rendu central, mêlant état UI et effets de bord (son, particules, IA). Ces effets
+  ne sont PAS validables par la porte sans navigateur → vérif `run-elias` réintégrée pour cette tâche.
+- **Sous-commits** (1 famille à la fois, porte QA + smoke navigateur à chaque) :
+  - **T-9a** purity ×5 : `BackgroundParticles` — `Math.random` au rendu (`useMemo`) → initialiseur
+    paresseux `useState(() => …)`.
+  - **T-9b** L293 : reset des modales de fin → « reset state on prop change » au rendu (suivi `prevOver`).
+  - **T-9c** L199 : `setAmbientOn(false)` sur `reducedSounds` → reset au rendu + `stopAmbient()` en effet.
+  - **T-9d** L226 : **result flash dérivé** — `showResult`/`showVerseConfirm` dérivés de
+    (`phase`+`lastEventResult`), bannière/revers tirés par un **RNG seedé sur l'id d'événement**
+    (déterministe, stable, plus de `Math.random` au rendu) ; 4 `useState` supprimés ; l'effet ne garde
+    que le juice impératif + l'auto-dismiss en callback de timer (deps honnêtes). **Vérif navigateur** :
+    flash succès auto-dismiss + modale d'échec (verset révélé, grâce) affichée puis fermée, 0 erreur console.
+  - **T-9e** : `generatingAiEvent` `useState`→`useRef` (garde non rendue → supprime un set-state-in-effect) ;
+    `hydrateFromSave` ajouté aux deps de l'effet d'init ; **1 exception ASSUMÉE** (eslint-disable justifié)
+    sur la génération du journal vivant — contenu narratif aléatoire accumulé + raffiné async = cas
+    légitime « effet qui produit des données » (retrait complet = remonter la génération dans `advanceAge`,
+    évolution future notée).
+- **Résultat** : **`react-hooks/* = 0 sur tout le projet`** (la base était à 67 problèmes en début de
+  chantier itér. 21). `tsc -b` inchangé (12 baseline), vitest 190, build + validate OK. Chaque sous-commit
+  revertable, smoke navigateur vert (journal se peuple, jeu progresse, 0 erreur console).
+- **Rollback** : `git revert` de chaque sous-commit (T-9a…T-9e) indépendamment.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
