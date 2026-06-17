@@ -36,6 +36,7 @@ import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
 import { deriveEchoes } from './engine/echoes';
 import { pickVictoryBanner, pickVictorySubline, pickSetbackLabel, pickSetbackEncouragement } from './engine/reactions';
+import { mulberry32, hashSeed } from './engine/rng';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
@@ -107,10 +108,23 @@ function App() {
     hydrateFromSave,
   } = useGameStore();
 
-  const [showResult, setShowResult] = useState(false);
-  const [victory, setVictory] = useState<{ banner: string; subline: string }>({ banner: 'VICTOIRE', subline: '' });
-  const [setback, setSetback] = useState<{ label: string; grace: string }>({ label: 'Épreuve non surmontée', grace: '' });
-  const [showVerseConfirm, setShowVerseConfirm] = useState(false);
+  // Affichage du résultat DÉRIVÉ du store (phase + dernier résultat) : showResult et
+  // showVerseConfirm retombent à false exactement quand dismissResult() repasse en 'idle'.
+  // Plus aucun setState dans l'effet de résultat (qui ne fait plus que le juice impératif).
+  const showResult = phase === 'result' && lastEventResult === 'success';
+  const showVerseConfirm = phase === 'result' && lastEventResult === 'fail';
+  // Réaction tirée par un RNG SEEDÉ sur l'événement → déterministe et stable entre rendus
+  // (plus de Math.random au rendu, plus besoin de la figer en state).
+  const reactionRng = currentEvent ? mulberry32(hashSeed(`${currentEvent.id}:${combo}`)) : Math.random;
+  const victory = showResult
+    ? {
+        banner: pickVictoryBanner(combo, reactionRng),
+        subline: pickVictorySubline({ category: currentEvent?.category, combo, season: spiritualSeason }, reactionRng),
+      }
+    : { banner: 'VICTOIRE', subline: '' };
+  const setback = showVerseConfirm
+    ? { label: pickSetbackLabel(reactionRng), grace: pickSetbackEncouragement(reactionRng) }
+    : { label: 'Épreuve non surmontée', grace: '' };
   const [showCodex, setShowCodex] = useState(false);
   const [showLexicon, setShowLexicon] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -205,9 +219,9 @@ function App() {
 
   const journal = state.journal;
 
-  // Scroll journal
+  // Scroll journal (en phase 'idle' ; showResult est faux hors 'result' par construction)
   useEffect(() => {
-    if (!showResult && phase === 'idle') {
+    if (phase === 'idle') {
       journalRef.current?.scrollTo({
         top: journalRef.current.scrollHeight,
         behavior: 'smooth',
@@ -221,42 +235,30 @@ function App() {
     if (containerRef.current) setShakeContainer(containerRef.current);
   }, []);
 
+  // Effet de RÉSULTAT : ne fait QUE le juice impératif (son/particules/vibration) sur la
+  // transition. La bannière et les modales sont dérivées au rendu (cf. plus haut) ; seul
+  // l'auto-dismiss du succès reste ici, et son setState part du callback différé du timer.
   useEffect(() => {
-    if (phase === 'result' && lastEventResult) {
-      if (lastEventResult === 'success') {
-        playSuccess();
-        // Réaction de victoire contextuelle (juice + variété sur le beat le plus répété).
-        setVictory({
-          banner: pickVictoryBanner(combo),
-          subline: pickVictorySubline({ category: currentEvent?.category, combo, season: spiritualSeason }),
-        });
-        // Haptic feedback : succès
-        try { navigator.vibrate([5, 50, 10]); } catch { /* vibrate non supporté */ }
-        if (containerRef.current) {
-          spawnParticles(containerRef.current, 'success', 10);
-          glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
-        }
-        setShowResult(true);
-        const timer = setTimeout(() => {
-          setShowResult(false);
-          dismissResult();
-        }, 1500);
-        return () => clearTimeout(timer);
-      } else {
-        // Échec → confirmation manuelle, le joueur doit lire le verset.
-        // Réaction de revers contextuelle : libellé varié + grâce (jamais punitif).
-        setSetback({ label: pickSetbackLabel(), grace: pickSetbackEncouragement() });
-        playFail();
-        // Haptic feedback : échec
-        try { navigator.vibrate(20); } catch { /* vibrate non supporté */ }
-        screenShake(6, 400);
-        if (containerRef.current) {
-          spawnParticles(containerRef.current, 'fail', 6);
-        }
-        setShowVerseConfirm(true);
+    if (phase !== 'result' || !lastEventResult) return;
+    if (lastEventResult === 'success') {
+      playSuccess();
+      try { navigator.vibrate([5, 50, 10]); } catch { /* vibrate non supporté */ }
+      if (containerRef.current) {
+        spawnParticles(containerRef.current, 'success', 10);
+        glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
+      }
+      const timer = setTimeout(() => dismissResult(), 1500);
+      return () => clearTimeout(timer);
+    } else {
+      // Échec → confirmation manuelle, le joueur doit lire le verset.
+      playFail();
+      try { navigator.vibrate(20); } catch { /* vibrate non supporté */ }
+      screenShake(6, 400);
+      if (containerRef.current) {
+        spawnParticles(containerRef.current, 'fail', 6);
       }
     }
-  }, [phase, lastEventResult]);
+  }, [phase, lastEventResult, dismissResult]);
 
   // Son de fin de partie — EFFET (pas en rendu) : un effet sonore ne doit jamais
   // partir pendant le rendu. Joué une seule fois à la bascule en game over.
@@ -975,7 +977,7 @@ function App() {
             )}
 
             <button
-              onClick={() => { setShowVerseConfirm(false); dismissResult(); }}
+              onClick={() => dismissResult()}
               className="btn-primary"
             >
               J'AI COMPRIS{' '}
