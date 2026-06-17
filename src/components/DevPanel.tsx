@@ -29,26 +29,33 @@ function isDevMode(): boolean {
 }
 
 export default function DevPanel() {
-  const [visible, setVisible] = useState(false);
+  // État initial DÉRIVÉ (init paresseuse) plutôt que posé dans un effet : ?dev ou flag
+  // localStorage décident de la visibilité dès le 1er rendu (invariant 3).
+  const [visible, setVisible] = useState(isDevMode);
   const [status, setStatus] = useState(getAiRuntimeStatus());
   const [inputKey, setInputKey] = useState('');
   const [selectedModel, setSelectedModel] = useState(FREE_MODELS[0]);
   const [tapCount, setTapCount] = useState(0);
 
-  // Réactivation via ?dev ou tapotement x7 sur le titre caché
+  // Le franchissement du seuil (7 taps) est traité DANS le handler (cf. handleTap) — pas
+  // dans un effet. Cet effet ne fait QUE débouncer le compteur : son seul setState part
+  // d'un timer différé (callback hors cycle de rendu), donc pas de set-state-in-effect.
   useEffect(() => {
-    setVisible(isDevMode());
-  }, []);
-
-  useEffect(() => {
-    if (tapCount >= 7) {
-      localStorage.setItem('elias-dev-mode', '1');
-      setVisible(true);
-      setTapCount(0);
-    }
+    if (tapCount === 0) return;
     const t = setTimeout(() => setTapCount(0), 2000);
     return () => clearTimeout(t);
   }, [tapCount]);
+
+  const handleTap = () => {
+    const next = tapCount + 1;
+    if (next >= 7) {
+      localStorage.setItem('elias-dev-mode', '1');
+      setVisible(true);
+      setTapCount(0);
+    } else {
+      setTapCount(next);
+    }
+  };
 
   const refresh = () => setStatus(getAiRuntimeStatus());
 
@@ -75,7 +82,7 @@ export default function DevPanel() {
     return (
       <div
         style={{ position: 'fixed', bottom: 0, right: 0, width: 40, height: 40, zIndex: 9999 }}
-        onClick={() => setTapCount(c => c + 1)}
+        onClick={handleTap}
       />
     );
   }

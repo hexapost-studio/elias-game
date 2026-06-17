@@ -20,7 +20,7 @@
 - [x] **T-1** `src/hooks/useTypewriter.ts` — set-state-in-effect ×1 → 0 (dérivation rendu + test jsdom) → itér. 22 / `e9440b1`
 - [x] **T-2** `src/components/StatBar.tsx` — set-state-in-effect ×1 → 0 (souscription store + helper pur) → itér. 23 / `871f74a`
 - [x] **T-3** `src/components/DailyVerse.tsx` — set-state-in-effect ×1 → 0 (dérivation rendu, helper pur) → itér. 24 / `f7421b2`
-- [ ] **T-4** `src/components/DevPanel.tsx` — set-state-in-effect ×2
+- [x] **T-4** `src/components/DevPanel.tsx` — set-state-in-effect ×2 → 0 (init paresseuse + handler de seuil) → itér. 25 / `9070680`
 - [ ] **T-5** `src/components/DebugView.tsx` — set-state-in-effect ×1 + exhaustive-deps ×2
 - [ ] **T-6** `src/components/ActionPanel.tsx` — rules-of-hooks ×1
 - [ ] **T-7** `src/components/ShareCard.tsx` — purity ×1 + refs ×1 + exhaustive-deps ×1

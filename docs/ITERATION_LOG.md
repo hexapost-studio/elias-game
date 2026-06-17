@@ -588,6 +588,22 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   validate), zéro nouvelle dette. Rendu identique.
 - **Rollback** : `git revert <hash itér. 24>`.
 
+### Itération 25 — Phase 1 / T-4 : `DevPanel.tsx` (set-state-in-effect ×2 → 0)
+- **Recherche** : deux effets fautifs. (1) effet `[]` `setVisible(isDevMode())` = init
+  dérivable. (2) effet `[tapCount]` qui, au seuil de 7 taps, faisait
+  `setVisible(true)`/`setTapCount(0)` **dans** l'effet → conséquence d'un événement (tap)
+  mal placée.
+- **Application** : (1) visibilité en **init paresseuse** `useState(isDevMode)` — plus
+  d'effet. (2) le franchissement du seuil passe dans un handler `handleTap` (event), pas
+  dans un effet. L'effet résiduel ne **débounce** que le compteur : son unique `setState`
+  part d'un `setTimeout` différé (hors cycle de rendu) → non flaggé.
+- **Test** : `tests/devPanel.test.tsx` (jsdom, `@testing-library/react`, service IA mocké,
+  localStorage en mémoire) — 4 cas : caché par défaut, visible si flag, 7 taps activent +
+  posent le flag, 6 taps insuffisants.
+- **Résultat** : `DevPanel.tsx` **2 → 0**. Porte QA verte (tsc + vitest 180 + build +
+  validate), zéro nouvelle dette. Comportement dev-tool préservé.
+- **Rollback** : `git revert <hash itér. 25>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
