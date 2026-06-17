@@ -265,10 +265,39 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   pas juste affichée.
 - **Rollback** : `git revert <hash itération 10>`.
 
+### Itération 11 — Smart skip « texte déjà-lu » (débloqué par `A`)
+- **Recherche** : suite figée `… → (skip) → B`. Le doc (§2) cadre le smart skip comme « s'arrêter au
+  texte **non-lu** ». Constat d'architecture : contrairement à un VN pur, nos **trials sont interactifs**
+  (les réponses ne sont pas dans la graine) → un « fast-forward jusqu'à l'âge N » s'arrêterait à chaque
+  trial (gain faible). La **seule** surface narrative animée que le joueur « lit » est
+  `currentEvent.description`, révélée au typewriter dans `VerseChoices` (le journal est du texte brut).
+- **Analyse** : la vraie valeur = système ambiant « texte déjà lu → instantané, texte neuf → animé +
+  repère », actif sur **toutes** les parties (pas que les replays), et reconnaissant un beat **par
+  empreinte de contenu** (donc d'une partie à l'autre, ce que la graine déterministe rend fiable).
+  Choix utilisateur confirmé (3 options présentées) : cette voie plutôt que « skip de l'intro » ou
+  « fast-forward à l'âge N » (déconseillé).
+- **Consensus** : (1) module autonome `settings/seenText.ts` calqué sur `textSpeed` —
+  `textKey` (empreinte `hashSeed`, normalisée, `''` si vide), `isSeen`/`markSeen` persistés localStorage,
+  plafond souple `MAX_KEYS` (events IA = texte unique → borner), `clearSeen` ; (2) dans `VerseChoices`,
+  `useTypewriter(desc, { enabled: !alreadySeen })` (lecture **synchrone** = pas de course d'anim),
+  badge `✦ nouveau` dérivé de `!alreadySeen` (aucun `setState`-in-effect ajouté), `markSeen` au `descDone` ;
+  (3) CSS `.scene-new-badge` discret, `prefers-reduced-motion` respecté. Réversible : retirer le fichier
+  + 1 import rend tout « neuf ».
+- **Application** : `settings/seenText.ts` (neuf) ; 3 lignes + 1 effet + badge dans `VerseChoices.tsx` ;
+  `.scene-new-badge` + keyframes dans `index.css` ; `tests/seenText.test.ts` (neuf, 8 cas).
+- **Résultat** : un beat déjà lu s'affiche d'un bloc (plus de re-frappe d'une scène connue au replay),
+  un beat neuf s'anime et porte « ✦ nouveau » puis est classé une fois lu. 126 tests verts (8 neufs),
+  tsc + build OK, zéro dette lint ajoutée (`VerseChoices` 4→4, `seenText.ts` 0).
+- **Rétro / process** : 1er jet utilisait `useState`+`useEffect` pour figer le badge → a introduit une
+  erreur `set-state-in-effect` (lint 4→5). Corrigé en dérivant le badge **purement** de `!alreadySeen` :
+  le badge s'efface ~juste après la fin de lecture (le beat vient d'être classé) — comportement *plus*
+  juste (« lu → classé ») ET zéro dette. Leçon : préférer une dérivation pure d'un état déjà présent à
+  un miroir en `state` (rappel du patron « dériver plutôt qu'ajouter du state »).
+- **Rollback** : `git revert <hash itération 11>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
-- **Smart skip vers le non-lu** (débloqué par `A`) : rejouer une vie connue en accéléré jusqu'au
-  contenu non encore vu (cf. `docs/DESIGN_PARTIE2.md` §2).
+- ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
 - **Conséquences ramifiées (`B`)** : arcs narratifs locaux (nœuds→arêtes) + flags de conséquence +
   validation DFS d'atteignabilité + visualizer à la *Academical* (cf. `DESIGN_PARTIE2.md` §5). Gros cycle dédié.
 - **Assainissement lint global (chantier dédié)** : ~60 erreurs `react-hooks/set-state-in-effect`

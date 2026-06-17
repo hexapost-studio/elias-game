@@ -3,6 +3,7 @@ import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
 import { AFFLICTION_ICONS, AFFLICTION_COLORS, Clock } from './IconSystem';
 import { useTypewriter } from '../hooks/useTypewriter';
+import { textKey, isSeen, markSeen } from '../settings/seenText';
 
 const PALIER_TIMER: Record<number, number | null> = {
   1: null,   // Pas de timer
@@ -32,8 +33,17 @@ export function VerseChoices() {
 
   // Révélation « machine à écrire » de la scène (pacing littéraire).
   const description = currentEvent?.description ?? '';
+  // Smart skip : un beat déjà lu s'affiche d'un bloc ; un beat neuf s'anime + porte « ✦ nouveau ».
+  const sceneKey = textKey(description);
+  const alreadySeen = isSeen(sceneKey);
+  const isNewScene = sceneKey !== '' && !alreadySeen;
   const { shown: shownDescription, done: descDone, skip: skipDescription } =
-    useTypewriter(description);
+    useTypewriter(description, { enabled: !alreadySeen });
+
+  // File le beat une fois entièrement révélé (texte neuf seulement) → « lu, classé ».
+  useEffect(() => {
+    if (descDone && sceneKey !== '' && !isSeen(sceneKey)) markSeen(sceneKey);
+  }, [descDone, sceneKey]);
 
   if (!currentEvent || phase !== 'event') return null;
 
@@ -122,6 +132,11 @@ export function VerseChoices() {
           <div className="event-title" style={{ marginBottom: 0 }}>
             {currentEvent.title}
           </div>
+          {isNewScene && (
+            <span className="scene-new-badge" title="Scène jamais lue">
+              ✦ nouveau
+            </span>
+          )}
         </div>
         <div
           className="event-description"

@@ -43,7 +43,7 @@ Référence visuelle de branchement (à garder en tête pour `B`) :
 |---|---|---|---|---|---|
 | **D** | **Identité du personnage** (saisir un nom, semer l'identité) | Moyen, borné | Faible | **Fort** (racine du retour « ça ne nous ressemble pas ») | ✅ **LIVRÉ** (itér. 9) |
 | **A** | **Graines partageables** (déterminiser toute la naissance) | Moyen, moteur | Moyen | Fort (rejouabilité, « rejoue ma vie ») | ✅ **LIVRÉ** (itér. 10) |
-| **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | **PROCHAIN** (après *smart skip*) |
+| **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | **PROCHAIN** (smart skip ✅ itér. 11) |
 | **C** | **Assainissement lint global** (~60 `set-state-in-effect`) | Gros, fastidieux | Élevé | Nul côté joueur (qualité) | Chantier à part |
 
 > Pourquoi `D` puis `A` : `D` adresse le retour joueur n°1 et est borné/peu risqué ; `A` le
@@ -62,7 +62,7 @@ lieux honnête (à re-vérifier dans le code avant d'agir — cf. `[[feedback-co
 |---|---|---|---|
 | **State tracking (variables silencieuses)** | Se « souvenir » d'un choix mineur pour altérer plus tard | ✅ Partiel : `traits`, `completedArcs`, `codex`, échos (itér. 2) | Étendre avec `B` (flags de conséquence) |
 | **Log / Backlog** | Retrouver le contexte, anti-clic-trop-vite | ✅ Journal existant (scroll arrière) | Vérifier profondeur ; OK a priori |
-| **Smart Skip / Fast-forward** | S'arrête au texte **non lu** → rejouabilité | ⚠️ Skip de la frappe (itér. 1) mais **pas** de « skip jusqu'au non-lu » | Candidat itér. (lié à `A` : skip d'une vie déjà vue) |
+| **Smart Skip / Fast-forward** | S'arrête au texte **non lu** → rejouabilité | ✅ **LIVRÉ (itér. 11)** : système « texte déjà-lu → instantané, neuf → animé + ✦ nouveau » par empreinte de contenu (`settings/seenText.ts`) | — |
 | **Goulets d'étranglement** | Illusion de liberté sans explosion combinatoire | ❌ Pas de branches → non applicable tant que `B` n'est pas fait | Cœur de `B` |
 | **Save-scumming (slots multiples)** | Oser les choix risqués | ⚠️ 1 sauvegarde auto (localforage) | À évaluer avec `B` (sinon peu utile en procédural) |
 | **Branching Visualizer** | Biais de complétion (voir les chemins grisés) | ❌ | Cible de `B` (forme = graphe *Academical*) |
@@ -223,8 +223,9 @@ Application → Rétro → Rollback) :
 - **Itér. 10 — `A` Graines partageables** : `rng` injecté dans toute la naissance, partage du
   seed, réactivation du test de détermination. Critère : même graine = mêmes stats/identité de
   départ ; garde anti-régression verte.
-- **Puis** : *smart skip vers le non-lu* (débloqué par `A`), puis **`B`** (arcs ramifiés +
-  validation DFS + visualizer à la *Academical*) comme cycle dédié.
+- **Itér. 11 — *smart skip vers le non-lu*** (débloqué par `A`) : système « texte déjà-lu →
+  instantané » par empreinte de contenu (`settings/seenText.ts`), badge ✦ nouveau dans `VerseChoices`.
+- **Puis** : **`B`** (arcs ramifiés + validation DFS + visualizer à la *Academical*) comme cycle dédié.
 - **`C`** (lint global) : chantier séparé, fichier par fichier, hors boucle juice.
 
 **Invariants à ne jamais lâcher** : réversible (1 commit/itér.), modulaire, **systèmes pas
