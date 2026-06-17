@@ -43,7 +43,7 @@ Référence visuelle de branchement (à garder en tête pour `B`) :
 |---|---|---|---|---|---|
 | **D** | **Identité du personnage** (saisir un nom, semer l'identité) | Moyen, borné | Faible | **Fort** (racine du retour « ça ne nous ressemble pas ») | ✅ **LIVRÉ** (itér. 9) |
 | **A** | **Graines partageables** (déterminiser toute la naissance) | Moyen, moteur | Moyen | Fort (rejouabilité, « rejoue ma vie ») | ✅ **LIVRÉ** (itér. 10) |
-| **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | 🟡 **B-1 LIVRÉ** (itér. 12 : moteur flags + branchement + DFS + arc-louise) ; **B-2 visualizer = PROCHAIN** (itér. 13) |
+| **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | ✅ **LIVRÉ** — B-1 moteur (itér. 12 : flags + branchement + DFS + arc-louise) **+ B-2 visualizer** (itér. 13 : bandeau de pas `●─●─◆─○` + variante grisée) |
 | **C** | **Assainissement lint global** (~60 `set-state-in-effect`) | Gros, fastidieux | Élevé | Nul côté joueur (qualité) | Chantier à part |
 
 > Pourquoi `D` puis `A` : `D` adresse le retour joueur n°1 et est borné/peu risqué ; `A` le
@@ -65,7 +65,7 @@ lieux honnête (à re-vérifier dans le code avant d'agir — cf. `[[feedback-co
 | **Smart Skip / Fast-forward** | S'arrête au texte **non lu** → rejouabilité | ✅ **LIVRÉ (itér. 11)** : système « texte déjà-lu → instantané, neuf → animé + ✦ nouveau » par empreinte de contenu (`settings/seenText.ts`) | — |
 | **Goulets d'étranglement** | Illusion de liberté sans explosion combinatoire | ✅ **LIVRÉ (itér. 12)** : modèle « spine + variantes hors-spine », `eventIds[]` = goulets de convergence (arc-louise diverge séq 3, converge séq 4) | Cœur de `B-1` ✅ |
 | **Save-scumming (slots multiples)** | Oser les choix risqués | ⚠️ 1 sauvegarde auto (localforage) | À évaluer avec `B` (sinon peu utile en procédural) |
-| **Branching Visualizer** | Biais de complétion (voir les chemins grisés) | ❌ | **Cible de `B-2` (itér. 13)** : `ArcTracker.tsx` piloté par `state.flags`+`answeredArcEventIds` (forme = graphe *Academical*) |
+| **Branching Visualizer** | Biais de complétion (voir les chemins grisés) | ✅ **LIVRÉ (itér. 13)** : `ArcTracker.tsx` déplie l'arc actif en bandeau de pas `●─●─◆─○` + variante non prise en grisé (`engine/arcProgress.ts` pur, dérivé de `answeredArcEventIds`+`currentEvent`) | — |
 | **Flavor text (« le mythe du choix »)** | Choix A et B → même résultat, mais phrase d'intro adaptée. Coût `if/else`, impact immersion massif | ✅ Très présent : réactions victoire/revers (itér. 4/7), codex vivant (itér. 6), vignette (itér. 5) | **C'est notre force actuelle — continuer** |
 | **Pacing par le clic** | Isoler une phrase/un mot sur écran vide = impact dramatique impossible en littérature | ✅ Amorcé par le typewriter (itér. 1) | Exploiter dans `B` pour les beats forts |
 
@@ -126,7 +126,7 @@ départ attendues pour un seed fixe). Garde anti-régression obligatoire.
 
 ---
 
-## 5. `B` — Conséquences ramifiées (🟡 B-1 livré itér. 12 ; B-2 visualizer = itér. 13)
+## 5. `B` — Conséquences ramifiées (✅ B-1 itér. 12 + B-2 itér. 13)
 
 Le plus « exceptionnel » : un choix narratif qui **altère durablement** la run. C'est ici
 qu'entrent le **graphe**, les **goulets d'étranglement** et la **visualisation** (réf.
@@ -142,7 +142,9 @@ qu'entrent le **graphe**, les **goulets d'étranglement** et la **visualisation*
 > variantes). (3) Validation = `engine/storyGraph.ts` `validateStoryGraph()` (DFS itératif LIFO, cf. §5.2),
 > en garde CI (`tests/storyGraph.test.ts`). Arc exemplaire **arc-louise** : réussir/échouer la séquence 2
 > aiguille deux variantes de séquence 3 (`arc-louise-3` apaisé / `arc-louise-3-hard` exigeant) qui
-> convergent sur `arc-louise-4`. **Reste B-2** : le visualizer (`ArcTracker.tsx`).
+> convergent sur `arc-louise-4`. **B-2 livré (itér. 13)** : `ArcTracker.tsx` déplie l'arc actif en
+> bandeau de pas `●─●─◆─○` (module pur `engine/arcProgress.ts`, cascades `-c` exclues du graphe car
+> détours d'échec), avec la variante non prise en grisé une fois la bifurcation franchie.
 
 ### 5.1 Modèle (léger, modulaire, sans casser le procédural)
 On **ne remplace pas** la simulation par un graphe global. On introduit des **arcs ramifiés

@@ -334,6 +334,35 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   par flag) + `isArcStepUnlocked` (convergence), sans dépendre du RNG de `generateEvent`.
 - **Rollback** : `git revert <hash itération 12>`.
 
+### Itération 13 — Conséquences ramifiées `B-2` (visualizer du branchement)
+- **Recherche** : `B-1` (itér. 12) a câblé le branchement **dans le moteur**, mais il restait
+  **invisible** pour le joueur — pas de « biais de complétion » (voir les chemins grisés, donner envie
+  de rejouer, cf. *Academical*/Twine §0). Le `ArcTracker.tsx` existant n'affichait qu'une **bande de
+  pastilles** (une par arc), sans étapes internes ni branches.
+- **Analyse** : rendre B-1 **lisible** sans nouveau state — tout est déjà dérivable de
+  `answeredArcEventIds` + `currentEvent` + `EVENT_DATABASE`. Forme retenue (choix utilisateur, 3 maquettes
+  ASCII comparées) : **« bandeau de pas en ligne »** sous les pastilles, l'arc actif déplié en
+  `●─●─◆─○` + sous-ligne grisée `╲┄◌` pour la variante non prise.
+- **Application** : module pur neuf `engine/arcProgress.ts` — `getArcShape` (forme : séquences →
+  variantes, **cascades `-c` exclues** car détours d'échec, pas de vraies bifurcations) + `getArcProgress`
+  (overlay joueur : `done`/`current`/`todo`, `takenId` vs `skippedIds`). `ArcTracker.tsx` : 2ᵉ ligne
+  monospace dérivée (dots colorés par statut, `◆` bifurcation, sous-ligne grisée révélée **seulement
+  une fois la branche choisie** — ne spoile pas), légende « arc · étape n/N ». Rendu **100 % pur**
+  (aucun `useState`/`useEffect` ajouté) ; **bonus AAA** : garde `@media (prefers-reduced-motion: reduce)`
+  ajoutée sur `arcPulse` (l'ancienne pulsation des pastilles n'était pas gardée — lacune corrigée
+  en passant). `tests/arcProgress.test.ts` (neuf, 6 cas : fork louise, voie grâce/exigeante, branche
+  non révélée avant choix, non-régression `arc-heritage`).
+- **Résultat** : pendant un beat d'arc, le joueur voit sa progression `●─●─◆─○`, la **bifurcation**
+  à venir, et — une fois le choix fait — la **variante ratée en grisé** (envie de rejouer). 145 tests
+  verts (6 neufs), tsc + build + `npm run validate` (186 events) OK, **zéro** dette lint
+  (`ArcTracker.tsx` 0→0, `arcProgress.ts` & tests 0). Réversible : 1 commit.
+- **Rétro / process** : 1er jet comptait les cascades `-c` (arc-taggées) comme variantes → `seq 1`
+  paraissait bifurqué (test rouge `['arc-louise-1','arc-louise-1-c']`). Corrigé en **excluant les cibles
+  de `cascadeEventId`** : seul le vrai embranchement (flag-gated, `arc-louise-3-hard`, qui n'est cascade
+  de personne) reste un `◆`. Leçon : distinguer *détour d'échec* (cascade) de *divergence persistante*
+  (branche de conséquence). Logique extraite en module pur **testée** ; le `.tsx` ne fait que mapper.
+- **Rollback** : `git revert <hash itération 13>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
