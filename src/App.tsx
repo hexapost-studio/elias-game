@@ -286,13 +286,20 @@ function App() {
     prevAge.current = age;
   }, [age]);
 
-  // Reset game-over sound guard when a new game begins
-  useEffect(() => {
-    if (!gameOver?.isOver) {
-      gameOverSoundPlayed.current = false;
+  // Reset des modales de fin quand une nouvelle partie commence : fait PENDANT le rendu
+  // (pattern « reset state on prop change ») au lieu d'un setState dans un effet.
+  const overNow = gameOver?.isOver ?? false;
+  const [prevOver, setPrevOver] = useState(overNow);
+  if (prevOver !== overNow) {
+    setPrevOver(overNow);
+    if (!overNow) {
       setShowShareCard(false);
       setShowLifeReview(false);
     }
+  }
+  // Garde sonore de game-over : reset d'un ref (non concerné par set-state-in-effect).
+  useEffect(() => {
+    if (!gameOver?.isOver) gameOverSoundPlayed.current = false;
   }, [gameOver?.isOver]);
 
   // Dynamic music: slow the track slightly when any stat is critically low
