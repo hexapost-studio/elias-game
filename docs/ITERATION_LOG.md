@@ -634,6 +634,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   nouveau test dédié.)
 - **Rollback** : `git revert <hash itér. 27>`.
 
+### Itération 28 — Phase 1 / T-7 : `ShareCard.tsx` (purity ×1 + refs ×1 + exhaustive-deps ×1 → 0)
+- **Recherche** : (1) `useRef(BIBLE_QUOTES[Math.floor(Math.random()…)])` appelait
+  `Math.random()` au rendu → `react-hooks/purity` ; (2) `quoteRef.current` lu au rendu →
+  `react-hooks/refs` ; (3) l'effet d'auto-copie `[]` appelait `handleCopy` (closure sur
+  `shareText`) → `exhaustive-deps`.
+- **Application** : (1+2) la citation est tirée **une seule fois** via l'initialiseur
+  paresseux `useState(() => …)` (autorisé à être impur, hors rendu) → plus de
+  `Math.random` au rendu ni de ref-au-rendu ; (3) logique de copie extraite en helper
+  `copyToClipboard(text)` (presse-papier + repli `execCommand`), réutilisée par
+  `handleCopy`/`handleShare` ; l'effet d'auto-copie devient auto-suffisant et dépend de
+  `[shareText]` (primitive stable sur la vie de la carte) → dépendance honnête.
+- **Test** : `tests/shareCard.test.tsx` (jsdom, clipboard + timers mockés) — 4 cas : résumé
+  rendu, **citation stable entre deux rendus** (tirage unique), bouton COPIER, auto-copie
+  ~300 ms après montage.
+- **Résultat** : `ShareCard.tsx` **3 → 0** (errors 0, warnings 0). Porte QA verte
+  (tsc + vitest 190 + build + validate), zéro nouvelle dette.
+- **Rollback** : `git revert <hash itér. 28>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
