@@ -363,6 +363,29 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   (branche de conséquence). Logique extraite en module pur **testée** ; le `.tsx` ne fait que mapper.
 - **Rollback** : `git revert <hash itération 13>`.
 
+### Itération 14 — Onboarding zéro-friction (la première vie n'est jamais anonyme)
+- **Recherche** : le parcours d'un nouveau joueur était `load → <Onboarding> (tuto) → onComplete:
+  setShowOnboarding(false) + markOnboardingDone() → état PAR DÉFAUT` (`createInitialState`, âge 0,
+  nom « Élias », identité random, bouton « +1 ÂGE SUIVANT » nu). Le **Prologue** — saisie du nom
+  (itér. 9 / **D**) **et** choix formateurs des stats — n'était atteignable **que** via *menu →
+  Nouvelle Partie → RECOMMENCER* (`App.tsx`). Donc la feature construite contre le feedback joueur
+  *« le personnage ne nous ressemble pas »* était **invisible pendant la première vie**, la plus
+  décisive pour la rétention.
+- **Analyse** : invariant à poser — *un nouveau joueur ne commence jamais une vie par défaut ; la
+  création de personnage fait partie de l'onboarding*. Fix déjà à moitié là (le `<Prologue>` est câblé
+  et appelle `startWithPrologue`) → il suffit de **brancher le Prologue à la fin du tuto**. Pur wiring
+  d'orchestration (légitimement dans `App.tsx`, pas de nouvelle logique à extraire).
+- **Application** : dans `App.tsx`, `<Onboarding onComplete>` ajoute `setShowPrologue(true)` après
+  `markOnboardingDone()`. Une ligne. Le reste de la chaîne (nom → 4 choix → vie nommée à 14 ans, journal
+  personnalisé) existait déjà.
+- **Résultat** : tuto → naissance (nom + choix) → première vie personnalisée, sans détour par le menu.
+  145 tests verts (inchangé — wiring), tsc + build + `npm run validate` (186 events) OK, **zéro** dette
+  lint (`App.tsx` 22→22, base déjà rouge non aggravée). Réversible : 1 commit.
+- **Cas-limite** : fermeture pendant le Prologue → `markOnboardingDone` déjà posé → au reload, état
+  par défaut jouable (identique à avant) ou relance via *Nouvelle Partie*. Joueurs existants (onboarding
+  vu + save) inchangés. Pas de régression.
+- **Rollback** : `git revert <hash itération 14>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

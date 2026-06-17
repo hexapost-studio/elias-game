@@ -1132,6 +1132,10 @@ function App() {
           onComplete={() => {
             setShowOnboarding(false);
             markOnboardingDone();
+            // Onboarding zéro-friction (itér. 14) : aucune première vie anonyme —
+            // on enchaîne sur le Prologue (nom + choix formateurs) au lieu de
+            // déposer le joueur sur un Élias par défaut.
+            setShowPrologue(true);
           }}
         />
       )}

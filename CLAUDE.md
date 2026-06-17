@@ -48,7 +48,7 @@ npm run validate      # validateur de données (118 versets, 186 events)
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (13 livrées)
+## État des itérations (14 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -58,13 +58,15 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 11 | Smart skip « texte déjà-lu → instantané » | `6fa599a` |
 | 12 | **B-1** — Branchement moteur (flags + DFS + arc-louise) | `30f2068` |
 | 13 | **B-2** — Visualizer du branchement (bandeau de pas `●─●─◆─○`) | `e9ef1f1` |
+| 14 | Onboarding zéro-friction — tuto enchaîne sur le Prologue (1ʳᵉ vie nommée) | (ce commit) |
 
 **Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
 
 ## Réserve (analysée, non planifiée)
 
 - **Assainissement lint global** (~60 `set-state-in-effect`, base déjà rouge) — chantier dédié, risqué.
-- **Onboarding zéro-friction** (soigner les premières minutes).
+- ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
+  récompense précoce, micro-feedback dans les toutes premières années.
 - **Save-scumming / slots multiples** (à évaluer en contexte procédural).
 - **Feedback/bug-report Supabase** : partiellement câblé (`onOpenFeedback` dans `App.tsx`) — **PARKÉ**
   en attente des `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`.
