@@ -18,7 +18,7 @@
 
 ### Phase 1 — Assainissement hooks (27 erreurs restantes, par fichier, du + sûr au + risqué)
 - [x] **T-1** `src/hooks/useTypewriter.ts` — set-state-in-effect ×1 → 0 (dérivation rendu + test jsdom) → itér. 22 / `e9440b1`
-- [ ] **T-2** `src/components/StatBar.tsx` — set-state-in-effect ×1
+- [x] **T-2** `src/components/StatBar.tsx` — set-state-in-effect ×1 → 0 (souscription store + helper pur) → itér. 23 / `871f74a`
 - [ ] **T-3** `src/components/DailyVerse.tsx` — set-state-in-effect ×1
 - [ ] **T-4** `src/components/DevPanel.tsx` — set-state-in-effect ×2
 - [ ] **T-5** `src/components/DebugView.tsx` — set-state-in-effect ×1 + exhaustive-deps ×2

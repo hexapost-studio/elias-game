@@ -1,8 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import type { StatName } from '../types/game';
+import {
+  STAT_KEYS,
+  emptyFloatMap,
+  diffStatFloats,
+  addFloats,
+  removeFloat,
+} from '../engine/statFloats';
 
-const statKeys: StatName[] = ['foi', 'paix', 'physique', 'finances'];
+const statKeys: StatName[] = STAT_KEYS;
 
 const STAT_LABELS: Record<StatName, string> = {
   foi: 'Foi', paix: 'Paix', physique: 'Physique', finances: 'Finances',
@@ -29,46 +36,32 @@ const TB_FILTERS: Record<StatName, string> = {
   finances: 'brightness(1.6) saturate(1.8)',
 };
 
-type FloatItem = { id: number; delta: number };
-
 export function StatBar() {
   const stats = useGameStore((s) => s.stats);
-  const prevStatsRef = useRef<Record<StatName, number> | null>(null);
-  const [floats, setFloats] = useState<Record<StatName, FloatItem[]>>({
-    foi: [], paix: [], physique: [], finances: [],
-  });
+  const [floats, setFloats] = useState(emptyFloatMap);
 
+  // Les floats `+N/-N` réagissent à la *transition* des stats (pas dérivables de l'état
+  // présent). On les pilote via une souscription au store : le listener s'exécute HORS
+  // du cycle de rendu React (comme un gestionnaire d'événement), donc aucun
+  // set-state-in-effect. L'effet ne fait que poser/retirer la souscription.
   useEffect(() => {
-    if (prevStatsRef.current === null) {
-      prevStatsRef.current = { ...stats };
-      return;
-    }
-    const prev = prevStatsRef.current;
-    const newEntries: Array<[StatName, FloatItem]> = [];
-
-    for (const key of statKeys) {
-      const delta = stats[key] - prev[key];
-      if (delta !== 0) {
-        const id = performance.now() + Math.random();
-        newEntries.push([key, { id, delta }]);
+    let idSeed = 0;
+    const nextId = () => {
+      idSeed += 1;
+      return performance.now() + idSeed;
+    };
+    const unsubscribe = useGameStore.subscribe((state, prevState) => {
+      const entries = diffStatFloats(prevState.stats, state.stats, nextId);
+      if (entries.length === 0) return;
+      setFloats((f) => addFloats(f, entries));
+      for (const [key, item] of entries) {
         setTimeout(() => {
-          setFloats(f => ({ ...f, [key]: f[key].filter(i => i.id !== id) }));
+          setFloats((f) => removeFloat(f, key, item.id));
         }, 800);
       }
-    }
-
-    prevStatsRef.current = { ...stats };
-
-    if (newEntries.length > 0) {
-      setFloats(f => {
-        const next = { ...f };
-        for (const [key, item] of newEntries) {
-          next[key] = [...f[key], item];
-        }
-        return next;
-      });
-    }
-  }, [stats]);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <div id="stat-bar">

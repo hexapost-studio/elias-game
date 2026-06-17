@@ -555,6 +555,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   préservé (rendu identique à l'œil, plus performant car moins de setState).
 - **Rollback** : `git revert <hash itér. 22>`.
 
+### Itération 23 — Phase 1 / T-2 : `StatBar.tsx` (set-state-in-effect ×1 → 0)
+- **Recherche** : `StatBar` détectait les variations de stats dans un effet `[stats]`
+  (diff vs `prevStatsRef`) et émettait les floats `+N/-N` via `setFloats` **dans** l'effet
+  → 1 `react-hooks/set-state-in-effect`. Ces floats sont des artefacts d'animation liés à
+  la *transition* (non dérivables de l'état présent), donc on ne peut pas simplement les
+  dériver au rendu.
+- **Application** (souscription store + helper pur, invariants 2/4) : la détection passe
+  d'un effet de rendu à une **souscription Zustand** (`useGameStore.subscribe((state,
+  prevState) => …)`). Le listener s'exécute hors du cycle de rendu (comme un gestionnaire
+  d'événement) → `setFloats` y est légitime, plus aucun set-state-in-effect. L'effet ne
+  fait que poser/retirer la souscription (`return unsubscribe`). Logique extraite, pure et
+  déterministe, dans `src/engine/statFloats.ts` (`diffStatFloats`/`addFloats`/`removeFloat`
+  + `emptyFloatMap`, ids injectés) — `StatBar` redevient un mappeur.
+- **Test** : `tests/statFloats.test.ts` (8 cas) — détection hausse/baisse/multi-stats,
+  immutabilité de la map, retrait par (stat, id), no-op sans changement.
+- **Résultat** : `StatBar.tsx` **1 → 0**. Porte QA verte (tsc + vitest 171 + build +
+  validate), zéro nouvelle dette. Comportement visuel inchangé.
+- **Rollback** : `git revert <hash itér. 23>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
