@@ -75,6 +75,11 @@ export function isAiEnabled(): boolean {
 /** @deprecated Utiliser isAiEnabled() — gardé pour compatibilité */
 export const AI_AVAILABLE = detectBackend() !== null;
 
+/** Type du backend IA actif (sans exposer de clé) — pour le diagnostic feedback. */
+export function getActiveBackendType(): string | null {
+  return detectBackend()?.type ?? null;
+}
+
 // ── Activation/désactivation runtime (dev mode) ───────────────────────────────
 
 export function activateAiRuntime(key: string, model?: string): void {

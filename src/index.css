@@ -1176,6 +1176,56 @@ body {
   cursor: default;
 }
 
+/* ─── PASTILLES DE TRAITS ─── */
+#traits-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 4px 12px 0;
+  justify-content: center;
+}
+.trait-chip {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  cursor: default;
+  white-space: nowrap;
+  animation: trait-pop 0.4s ease-out;
+}
+@keyframes trait-pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.gameover-calling {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-align: center;
+  margin: 6px 0 2px;
+  opacity: 0.92;
+}
+.gameover-calling-icon {
+  margin-right: 5px;
+}
+#gameover-traits-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin: 8px 0 4px;
+}
+#gameover-traits-bar .trait-chip {
+  font-size: 10px;
+  padding: 3px 9px;
+  border: 1px solid;
+  background: rgba(255,255,255,0.03);
+}
+
 /* ─── MENU ─── */
 .menu-overlay {
   position: fixed;
@@ -1470,4 +1520,49 @@ body {
 
 .slow-timer .timer-fill {
   transition: width 2s linear !important;
+}
+
+/* ─── FEEDBACK ─── */
+.feedback-fab {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 150;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.feedback-fab:hover {
+  opacity: 1;
+  color: #86efac;
+  border-color: rgba(134,239,172,0.4);
+}
+
+.feedback-link {
+  margin-top: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-body);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.8;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.feedback-link:hover {
+  color: #86efac;
+  opacity: 1;
 }

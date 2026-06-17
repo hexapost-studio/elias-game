@@ -171,11 +171,14 @@ export interface NarrativeVariant {
 }
 
 export interface StatCondition {
-  type: 'birth_profile' | 'stat_check';
-  profileName?: string;     // ex: 'Équilibré', 'Foi de fer'
-  stat?: StatName;
+  type: 'birth_profile' | 'stat_check' | 'season' | 'has_trait' | 'calling';
+  profileName?: string;     // ex: 'Équilibré', 'Foi de fer'  (type birth_profile)
+  stat?: StatName;          // (type stat_check)
   operator?: 'lt' | 'gt' | 'lte' | 'gte';
   value?: number;
+  season?: SpiritualSeasonName; // (type season)
+  traitId?: string;             // (type has_trait)
+  callingId?: string;           // (type calling)
 }
 
 export interface StoryArc {
@@ -252,7 +255,68 @@ export interface GameState {
   callFriendCount: number;
   /** True quand l'ami d'enfance {friendName} a été rencontré narrativement dans cette session */
   friendIntroduced: boolean;
+  /**
+   * Appel / Destinée de cette run — tiré à la naissance (pondéré).
+   * Recadre toute la partie : biais de saisons, poids des catégories, titre de fin.
+   * Optionnel pour rétro-compat des saves antérieures.
+   */
+  calling?: Calling;
+  /** Traits gagnés en cours de vie (Wildermyth-like) — façonnent contenu + narration. */
+  traits: EarnedTrait[];
+  /** Seed de la run (PRNG seedé) — reproductibilité + diagnostic + partage futur. */
+  seed: number;
   metrics: RunMetrics;
+}
+
+/* ─── APPEL / DESTINÉE ─────────────────────────────────────────────────────── */
+
+/**
+ * Un « Appel » tiré à la naissance qui recadre toute la run.
+ * Inspiré des classes/backgrounds (Citizen Sleeper) et des destinées (CK).
+ */
+export interface Calling {
+  id: string;
+  name: string;
+  /** Sous-titre court affiché sous le nom. */
+  tagline: string;
+  description: string;
+  icon: string;   // glyphe (cohérent avec les saisons : ✦ ◈ ⚔ …)
+  color: string;  // hex
+  /** Figure biblique de référence (flavor). */
+  figure?: string;
+  /** Probabilité relative de tirage à la naissance. */
+  weight: number;
+  /** Bonus de stats appliqués à la naissance. */
+  startBonus?: Partial<StatImpact>;
+  /** Multiplicateurs sur la probabilité de chaque saison spirituelle. */
+  seasonBias?: Partial<Record<SpiritualSeasonName, number>>;
+  /** Multiplicateurs sur le poids de sélection des catégories d'événements. */
+  categoryBias?: Partial<Record<AfflictionCategory, number>>;
+  /** Saveur du titre de fin lié à l'Appel. */
+  titleFlavor?: string;
+}
+
+/* ─── TRAITS ──────────────────────────────────────────────────────────────── */
+
+/** Définition d'un trait acquérable. */
+export interface Trait {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  /** Multiplicateurs sur le poids de sélection des catégories (façonne le contenu suivant). */
+  categoryBias?: Partial<Record<AfflictionCategory, number>>;
+  /** Bonus de stats one-shot au moment de l'acquisition. */
+  gainBonus?: Partial<StatImpact>;
+  /** Fragment de narration injectable par le narrateur offline. */
+  narrationHook?: string;
+}
+
+/** Instance d'un trait gagné par Élias. */
+export interface EarnedTrait {
+  id: string;
+  earnedAtAge: number;
 }
 
 export interface CodexEntry {

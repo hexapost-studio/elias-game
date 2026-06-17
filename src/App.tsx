@@ -17,6 +17,7 @@ import {
   Music,
   Moon,
   RotateCw,
+  MessageSquare,
 } from './components/IconSystem';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
@@ -28,9 +29,13 @@ import { MainMenu } from './components/MainMenu';
 
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
+const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
+import { flushLocalQueue } from './services/feedback';
 import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate, playTheme, crossfadeTo, playSeasonTrack } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
+import { generateOfflineJournal } from './services/offlineNarrator';
+import { getTraitById } from './data/traits';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
@@ -91,6 +96,8 @@ function App() {
     parentNames,
     actionsThisYear,
     spiritualSeason,
+    calling,
+    traits,
     initGame,
     startWithPrologue,
     ageUp,
@@ -102,6 +109,7 @@ function App() {
   const [showVerseConfirm, setShowVerseConfirm] = useState(false);
   const [showCodex, setShowCodex] = useState(false);
   const [showLexicon, setShowLexicon] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
   const [showPrologue, setShowPrologue] = useState(false);
@@ -147,6 +155,8 @@ function App() {
         }
       } catch {}
       setLoading(false);
+      // Renvoyer les feedbacks mis en file locale (best-effort, si Supabase configuré)
+      flushLocalQueue().catch(() => {});
     }
     init();
   }, []);
@@ -279,33 +289,51 @@ function App() {
     crossfadeTo(`/audio/ambient-${seasonSlug}.mp3`);
   }, [spiritualSeason, ambientOn]);
 
-  // ── Journal vivant : entrée IA à chaque anniversaire ─────────────────────
+  // ── Journal vivant : narrateur offline (immédiat) + IA en bonus ──────────
   useEffect(() => {
-    if (!isAiEnabled() || age === 0 || phase === 'gameover') return;
+    if (age === 0 || phase === 'gameover') return;
     const s = useGameStore.getState();
+
+    // Résultats récents (succès/échec) et traits gagnés cette année — contexte narratif.
+    const recentResults = s.journal
+      .filter((e) => e.type === 'success' || e.type === 'fail')
+      .slice(-3)
+      .map((e) => (e.type === 'success' ? 'success' : 'fail') as 'success' | 'fail');
+    const newTraitIds = (s.traits ?? [])
+      .filter((t) => t.earnedAtAge === age)
+      .map((t) => t.id);
+
+    // 1) Narrateur offline — toujours disponible, écrit tout de suite.
+    const offline = generateOfflineJournal({
+      age, stats, season: spiritualSeason, calling, traits,
+      newTraitIds, recentResults, successRate, lifeContext, parentNames, actionsThisYear,
+    });
+    setAiJournalEntries((prev) => [
+      ...prev.filter((e) => e.age !== age),
+      { age, text: offline, generating: isAiEnabled() },
+    ]);
+
+    // 2) IA narrative — si un backend est branché, raffine l'entrée (bonus).
+    if (!isAiEnabled()) return;
     const recentTitles = s.journal
       .filter((e) => e.type !== 'milestone')
       .slice(-5)
       .map((e) => e.text.replace(/^\d+a\s+/, '').split('.')[0]);
 
-    // Ajouter un placeholder "en génération..."
-    setAiJournalEntries((prev) => [
-      ...prev.filter((e) => e.age !== age),
-      { age, text: '', generating: true },
-    ]);
-
     generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames, actionsThisYear)
       .then((text) => {
-        if (!text) {
-          setAiJournalEntries((prev) => prev.filter((e) => !(e.age === age && e.generating)));
-          return;
-        }
         setAiJournalEntries((prev) =>
-          prev.map((e) => (e.age === age && e.generating ? { age, text, generating: false } : e))
+          prev.map((e) =>
+            e.age === age && e.generating
+              ? { age, text: text || e.text || offline, generating: false }
+              : e
+          )
         );
       })
       .catch(() =>
-        setAiJournalEntries((prev) => prev.filter((e) => !(e.age === age && e.generating)))
+        setAiJournalEntries((prev) =>
+          prev.map((e) => (e.age === age && e.generating ? { ...e, generating: false } : e))
+        )
       );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [age]);
@@ -472,6 +500,34 @@ function App() {
               </div>
             )}
 
+            {calling && (
+              <div className="gameover-calling" style={{ color: calling.color }}>
+                <span className="gameover-calling-icon">{calling.icon}</span>
+                {calling.titleFlavor
+                  ? calling.titleFlavor
+                  : `Sur la voie ${calling.name}`}
+              </div>
+            )}
+
+            {traits.length > 0 && (
+              <div id="gameover-traits-bar">
+                {traits.map((t) => {
+                  const def = getTraitById(t.id);
+                  if (!def) return null;
+                  return (
+                    <span
+                      key={t.id}
+                      className="trait-chip"
+                      style={{ borderColor: def.color, color: def.color }}
+                      title={def.description}
+                    >
+                      {def.icon} {def.name}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+
             <div className="gameover-stats">
               <div>Âge : <strong>{age}</strong> ans</div>
               <div>Épreuves : <strong>{totalEvents}</strong></div>
@@ -557,6 +613,14 @@ function App() {
             <button className="btn-restart" onClick={initGame}>
               NOUVELLE PARTIE {title ? '✦ HÉRITAGE' : ''}
             </button>
+
+            <button
+              className="feedback-link"
+              onClick={() => { playClick(); setShowFeedback(true); }}
+            >
+              <MessageSquare size={12} strokeWidth={1.8} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+              Un bug ? Une idée ? Donne ton avis
+            </button>
           </div>
         )}
 
@@ -572,6 +636,10 @@ function App() {
             onClose={() => setShowShareCard(false)}
           />
         )}
+
+        <Suspense fallback={null}>
+          {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
+        </Suspense>
 
         {import.meta.env.DEV && <DebugView />}
       </div>
@@ -638,6 +706,20 @@ function App() {
           )}
         </span>
         <span className="info-bar-item">
+          {/* Badge Appel / Destinée de la run */}
+          {calling && (
+            <span
+              title={`Appel : ${calling.name} — ${calling.description}`}
+              className="badge-season"
+              style={{
+                border: `1px solid ${calling.color}55`,
+                background: `${calling.color}18`,
+                color: calling.color,
+              }}
+            >
+              {calling.icon} {calling.name}
+            </span>
+          )}
           {/* Badge saison spirituelle */}
           {(() => {
             const s = SPIRITUAL_SEASONS[spiritualSeason ?? 'Réveil'];
@@ -700,6 +782,26 @@ function App() {
           </button>
         </span>
       </div>
+
+      {/* Pastilles de traits gagnés en cours de vie */}
+      {traits && traits.length > 0 && (
+        <div id="traits-bar">
+          {traits.map((t) => {
+            const def = getTraitById(t.id);
+            if (!def) return null;
+            return (
+              <span
+                key={t.id}
+                className="trait-chip"
+                title={`${def.name} (acquis à ${t.earnedAtAge} ans) — ${def.description}`}
+                style={{ border: `1px solid ${def.color}55`, background: `${def.color}14`, color: def.color }}
+              >
+                {def.icon} {def.name}
+              </span>
+            );
+          })}
+        </div>
+      )}
 
       <div id="content-area">
         {/* Enemy SVG background */}
@@ -848,9 +950,22 @@ function App() {
         )}
       </div>
 
+      {/* Bouton flottant discret — signaler un bug / donner son avis */}
+      {phase !== 'event' && (
+        <button
+          onClick={() => { playClick(); setShowFeedback(true); }}
+          title="Signaler un bug ou donner ton avis"
+          aria-label="Donner mon avis"
+          className="feedback-fab"
+        >
+          <MessageSquare size={16} strokeWidth={1.8} />
+        </button>
+      )}
+
       <Suspense fallback={null}>
         {showCodex && <CodexMenu onClose={() => setShowCodex(false)} />}
         {showLexicon && <LexiconMenu onClose={() => setShowLexicon(false)} />}
+        {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
       </Suspense>
 
       {/* Menu burger principal */}
@@ -859,6 +974,7 @@ function App() {
           onClose={() => setShowMainMenu(false)}
           onOpenCodex={() => setShowCodex(true)}
           onOpenLexicon={() => setShowLexicon(true)}
+          onOpenFeedback={() => { setShowMainMenu(false); setShowFeedback(true); }}
           onNewGame={() => { setShowMainMenu(false); setShowNewGameConfirm(true); }}
           ambientOn={ambientOn}
           onToggleAmbient={() => {

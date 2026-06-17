@@ -126,5 +126,5 @@ export {
   Crown, ScrollText, Music, Moon, SunDim, User, Users, Church, Bookmark,
   Compass, Target, Wind, Mountain, Scale, GripHorizontal, RefreshCw,
   Volume2, Handshake, Phone, Landmark, Hammer, Home, Building2,
-  RotateCw,
+  RotateCw, MessageSquare, Bug, Send, Copy, Mail, ChevronDown, Loader,
 } from 'lucide-react';

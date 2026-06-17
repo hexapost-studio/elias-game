@@ -479,6 +479,79 @@ src/engine/
 
 ---
 
+## 12.bis SYSTÈME « NOUVELLE AVENTURE À CHAQUE LANCEMENT »
+
+Inspiré des meilleurs du genre (BitLife pour la rejouabilité émergente, Wildermyth /
+Crusader Kings pour les traits acquis et la narration personnelle, Hades pour la
+variété de texte conditionnée). Objectif : **aucune partie ne ressemble à la précédente**,
+y compris **sans backend IA**.
+
+### Schéma systémique d'une run
+```
+  RunIdentity (par partie)
+  ├─ seed (mulberry32)         → colonne vertébrale reproductible
+  ├─ Appel / Destinée          → pickCalling(rng), 6 vocations
+  │     └─ startBonus · seasonBias · categoryBias · titleFlavor
+  └─ profil de naissance       → stats de départ
+        │
+        ▼
+  SÉLECTION DE CONTENU
+  computeEventWeight = affinité stats × saison × calling.categoryBias × trait.categoryBias
+        │
+        ▼
+  SAISONS ÉMERGENTES (re-roll par décennie, seed ^ âge)
+  base(âge) × modificateurs d'état × calling.seasonBias × anti-répétition
+        │
+        ▼
+  TRAITS GAGNÉS EN VIE (dérivés de l'état — codex / métriques / arcs)
+  → façonnent le contenu suivant + bonus one-shot + hook de narration
+        │
+        ▼
+  NARRATEUR OFFLINE (templates + slot-filling pondéré)
+  hook de trait > séries victoires/échecs > actions > saison > stats extrêmes > musing de stade
+  (l'IA, si branchée, reste prioritaire — bonus)
+        │
+        ▼
+  FIN : titre + titleFlavor de l'Appel + pastilles de traits → héritage
+```
+
+### Les 4 leviers (implémentés)
+1. **Appel / Destinée par partie** — `game/data/callings.json`, `src/data/callings.ts`. 6 vocations
+   (berger, évangéliste, bâtisseur, intercesseur, combattant, disciple) tirées au seed.
+2. **Saisons spirituelles émergentes** — `computeSeasonTransition()` : plus de calendrier fixe,
+   la saison naît de l'état + l'Appel, re-tirée à chaque décennie.
+3. **Traits gagnés** — `src/data/traits.ts`, 12 traits dérivés de l'état (zéro compteur dédié →
+   rétro-compatible saves). `evaluateTraitAwards()` appelé après chaque épreuve.
+4. **Narrateur offline riche** — `src/services/offlineNarrator.ts` : journal intime varié sans IA.
+
+Tests : `tests/replayability.test.ts` (15 cas — Appel seedé/varié, saisons déterministes,
+traits décernés, narrateur déterministe+varié).
+
+### Roadmap personnalisation par phases
+
+**Partie 1 (FAIT — cette session) : identité ÉMERGENTE.**
+L'Appel est *tiré* au seed. Toute l'architecture (RunIdentity, `getCallingById`,
+`narrativeVariants` conditionnées `calling`/`has_trait`/`season`) est déjà en place pour
+brancher un **choix** sans refactor.
+
+**Partie 2 (prochaine étape) : identité CHOISIE — « le perso me ressemble ».**
+- Écran de création au lancement : le joueur **choisit son Appel** (`getCallingById(id)` au lieu de
+  `pickCalling(rng)` dans `createInitialState`) — l'unique point à modifier.
+- Saisir un **prénom** + sélectionner ses **parents / ville / église** (aujourd'hui `Math.random`
+  dans `lifeContext`/`parentNames`) → le narrateur offline les injecte déjà via `fillSlots()`.
+- Conserver le seed comme « graine de monde » partageable (rejouer la même destinée).
+- *Aucun nouveau système* : on remplace des tirages aléatoires par des choix.
+
+**Partie 3 et après : identité INCARNÉE & PERSISTANTE.**
+- **Avatar / portrait** évoluant avec les traits et les saisons (cf. ASSET_INVENTORY).
+- **Lignée / héritage étendu** : plusieurs vies d'une même famille, traits transmis aux descendants.
+- **Don spirituel secondaire** débloqué en cours de vie (2ᵉ couche au-dessus de l'Appel).
+- **Narration IA branchée** comme couche premium par-dessus le narrateur offline (déjà prioritaire
+  quand `isAiEnabled()`).
+- **Contenu communautaire** : arcs et Appels créés par les joueurs (cf. « Créateur d'arcs in-game »).
+
+---
+
 ## 13. ROADMAP
 
 ### Faits (30+ interventions, 12 PRs)
@@ -491,6 +564,12 @@ src/engine/
 - [x] Ajouter 5+ events pour les âges 90-100 → **5 events senior**
 - [x] Ajouter 1-2 events pour sterilite → **1 event** (total: 2)
 - [x] Masquer DevPanel + DebugView en production → `import.meta.env.DEV`
+- [x] **Feedback / bug-report en jeu** (suite playtest) → menu burger (« Signaler / Donner mon avis »),
+  bouton flottant discret en partie, et lien sur l'écran Game Over. Modal : type (bug/idée/avis),
+  message, contact optionnel, **diagnostic technique anonyme** joint. Transport : **Supabase REST**
+  (primaire) → notif **Discord** optionnelle → **fallback local** (localforage) + copier/mailto.
+  Code : `src/services/feedback.ts`, `src/components/FeedbackModal.tsx`. Config : voir `.env.local.example`
+  et le schéma SQL ci-dessous. Lève le manque « aucun moyen de signaler un bug » du playtest.
 
 ### Prochaine session — ce qui rapporte le plus (3-4h)
 1. **Wrap APK Android** (10 min) `npx @pwabuilder/cli` → jeu publiable sur stores
@@ -508,6 +587,32 @@ src/engine/
 - [ ] Créateur d'arcs in-game
 - [ ] Mode multijoueur (comparaison de stats entre joueurs)
 - [ ] Nouveaux types d'actions (voyager, étudier, fonder une famille)
+
+---
+
+## ANNEXE : Table Supabase `feedback`
+
+À exécuter une fois dans le projet Supabase (SQL Editor), puis renseigner
+`VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` dans `.env.local`.
+
+```sql
+create table public.feedback (
+  id uuid primary key default gen_random_uuid(),
+  kind text not null check (kind in ('bug','idea','praise')),
+  message text not null,
+  contact text,
+  diagnostics jsonb,
+  app_version text,
+  created_at timestamptz default now()
+);
+alter table public.feedback enable row level security;
+-- Insert anonyme autorisé (clé anon), aucune lecture publique :
+create policy "anon insert feedback" on public.feedback
+  for insert to anon with check (true);
+```
+
+Sans cette table / ces variables, le feedback retombe proprement sur le stockage
+local (`elias-feedback-queue-v1`) et reste exportable par mail/copier.
 
 ---
 

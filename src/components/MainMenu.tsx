@@ -15,7 +15,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import {
-  BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon, Volume2,
+  BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon, Volume2, MessageSquare,
 } from './IconSystem';
 import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
 import { DailyVerse } from './DailyVerse';
@@ -24,6 +24,7 @@ interface MainMenuProps {
   onClose: () => void;
   onOpenCodex: () => void;
   onOpenLexicon: () => void;
+  onOpenFeedback: () => void;
   onNewGame: () => void;
   ambientOn: boolean;
   onToggleAmbient: () => void;
@@ -42,6 +43,7 @@ export const MainMenu: FC<MainMenuProps> = ({
   onClose,
   onOpenCodex,
   onOpenLexicon,
+  onOpenFeedback,
   onNewGame,
   ambientOn,
   onToggleAmbient,
@@ -206,6 +208,16 @@ export const MainMenu: FC<MainMenuProps> = ({
             color={slowTimer ? 'var(--accent-gold-light)' : 'var(--text-muted)'}
             onClick={onToggleSlowTimer}
             active={slowTimer}
+          />
+
+          <MenuSection label="COMMUNAUTÉ" />
+
+          <MenuButton
+            icon={<MessageSquare size={15} strokeWidth={1.5} />}
+            label="Signaler / Donner mon avis"
+            sublabel="Bug, idée ou encouragement"
+            color="#86efac"
+            onClick={() => { onClose(); onOpenFeedback(); }}
           />
 
           <MenuSection label="PARTIE" />

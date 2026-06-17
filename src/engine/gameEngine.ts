@@ -21,6 +21,10 @@ import { getVerseById, VERSE_DATABASE } from '../data/verses';
 import { getArcById } from '../data/storyArcs';
 import { getMicroEventForAge } from '../data/microEvents';
 import { CONFIG } from '../../game/data/loader';
+import { pickCalling } from '../data/callings';
+import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
+import { mulberry32, makeSeed, rngWeightedPick, type Rng } from './rng';
+import type { Calling, EarnedTrait } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
 const MIN_STAT = CONFIG.minStat;
@@ -289,10 +293,28 @@ export function recordVerseError(
 
 /* ─── ÉTAT INITIAL ─── */
 
-export function createInitialState(inheritance?: Inheritance): GameState {
+export function createInitialState(inheritance?: Inheritance, forcedSeed?: number): GameState {
+  // Seed de run + PRNG seedé pour la « colonne vertébrale » (Appel, saisons, traits).
+  const seed = forcedSeed ?? makeSeed();
+  const rng: Rng = mulberry32(seed);
+
   const { stats, profileName } = generateBirthStats();
   const parentNames = generateParentNames();
   const lifeContext = generateLifeContext();
+
+  // Appel / Destinée — tiré pondéré (Partie 2 : choisi par le joueur).
+  const calling: Calling = pickCalling(rng);
+
+  // Stats de départ = naissance + héritage + bonus d'Appel.
+  const b = inheritance?.bonus ?? {};
+  const cb = calling.startBonus ?? {};
+  const startStats = {
+    foi: Math.min(100, stats.foi + (b.foi || 0) + (cb.foi || 0)),
+    paix: Math.min(100, stats.paix + (b.paix || 0) + (cb.paix || 0)),
+    physique: Math.min(100, stats.physique + (b.physique || 0) + (cb.physique || 0)),
+    finances: Math.min(100, stats.finances + (b.finances || 0) + (cb.finances || 0)),
+  };
+
   const state: GameState = {
     age: 0,
     profileName,
@@ -302,14 +324,10 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     actionsThisYear: [],
     amiRelationship: 50,
     crisesRemaining: 2,
-    stats: inheritance?.bonus
-      ? {
-          foi: Math.min(100, stats.foi + (inheritance.bonus.foi || 0)),
-          paix: Math.min(100, stats.paix + (inheritance.bonus.paix || 0)),
-          physique: Math.min(100, stats.physique + (inheritance.bonus.physique || 0)),
-          finances: Math.min(100, stats.finances + (inheritance.bonus.finances || 0)),
-        }
-      : stats,
+    stats: startStats,
+    calling,
+    traits: [],
+    seed,
     difficulty: 1,
     flow: { value: 33, palier: 1, timeToAnswer: 0, burnoutRate: 0 },
     combo: 0,
@@ -317,7 +335,7 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     journal: [
       {
         age: 0,
-        text: `Élias est né à ${lifeContext.city}. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}. Il deviendra ${lifeContext.profession}.${
+        text: `Élias est né à ${lifeContext.city}. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}. Il deviendra ${lifeContext.profession}. Appel pressenti : ${calling.name} — ${calling.tagline}.${
           inheritance?.title
             ? ` Héritage: "${inheritance.title.name}" (bonus actif).`
             : ''
@@ -460,20 +478,25 @@ export function applyNarrativeVariant(
 
   for (const variant of event.narrativeVariants) {
     const c = variant.condition;
+    let match = false;
     if (c.type === 'birth_profile') {
-      if (state.profileName === c.profileName) {
-        return { ...event, title: variant.title, description: variant.description };
-      }
+      match = state.profileName === c.profileName;
     } else if (c.type === 'stat_check' && c.stat && c.operator && c.value !== undefined) {
       const statValue = state.stats[c.stat];
-      const match =
+      match =
         (c.operator === 'gt' && statValue > c.value) ||
         (c.operator === 'lt' && statValue < c.value) ||
         (c.operator === 'gte' && statValue >= c.value) ||
         (c.operator === 'lte' && statValue <= c.value);
-      if (match) {
-        return { ...event, title: variant.title, description: variant.description };
-      }
+    } else if (c.type === 'season' && c.season) {
+      match = state.spiritualSeason === c.season;
+    } else if (c.type === 'has_trait' && c.traitId) {
+      match = (state.traits ?? []).some((t) => t.id === c.traitId);
+    } else if (c.type === 'calling' && c.callingId) {
+      match = state.calling?.id === c.callingId;
+    }
+    if (match) {
+      return { ...event, title: variant.title, description: variant.description };
     }
   }
   return event;
@@ -552,8 +575,55 @@ const SEASON_SEQUENCE: SpiritualSeasonName[] = [
   'Grâce',        // 90-99 — grâce ultime
 ];
 
+/** @deprecated Trajectoire figée — conservé pour compat. Voir computeSeasonTransition. */
 export function getSeasonForAge(age: number): SpiritualSeasonName {
   return SEASON_SEQUENCE[Math.min(Math.floor(age / 10), 9)];
+}
+
+/* ─── SAISONS ÉMERGENTES ─── */
+
+const SEASON_NAMES: SpiritualSeasonName[] = ['Réveil', 'Désert', 'Persécution', 'Abondance', 'Grâce'];
+
+/** Tendance douce de saison par stade de vie (remplace la table 100% figée). */
+function seasonBaseWeights(age: number): Record<SpiritualSeasonName, number> {
+  if (age <= 12) return { 'Réveil': 2.0, 'Grâce': 1.2, 'Désert': 0.8, 'Abondance': 0.7, 'Persécution': 0.6 };
+  if (age <= 25) return { 'Désert': 1.6, 'Réveil': 1.4, 'Persécution': 1.1, 'Grâce': 1.0, 'Abondance': 0.8 };
+  if (age <= 45) return { 'Persécution': 1.5, 'Abondance': 1.2, 'Désert': 1.2, 'Réveil': 1.0, 'Grâce': 0.9 };
+  if (age <= 65) return { 'Abondance': 1.5, 'Grâce': 1.3, 'Désert': 1.1, 'Persécution': 1.0, 'Réveil': 0.9 };
+  return { 'Grâce': 1.8, 'Désert': 1.2, 'Abondance': 1.1, 'Réveil': 1.0, 'Persécution': 0.8 };
+}
+
+/**
+ * Détermine la prochaine saison spirituelle de façon ÉMERGENTE :
+ * tendance d'âge × état intérieur d'Élias × biais d'Appel × anti-répétition,
+ * tiré via un PRNG seedé (reproductible). Chaque run vit une trajectoire différente.
+ */
+export function computeSeasonTransition(
+  state: GameState,
+  newAge: number,
+  rng: Rng,
+): SpiritualSeasonName {
+  const w = seasonBaseWeights(newAge);
+  const { foi, paix, finances } = state.stats;
+
+  // L'état intérieur appelle certaines saisons.
+  if (foi < 40) w['Désert'] *= 1.6;
+  if (paix < 40) { w['Persécution'] *= 1.5; w['Désert'] *= 1.3; }
+  if (finances > 70) w['Abondance'] *= 1.6;
+  if (finances < 35) w['Abondance'] *= 0.5;
+  if (foi > 70 && paix > 60) { w['Grâce'] *= 1.6; w['Réveil'] *= 1.3; }
+  if ((state.consecutiveFails ?? 0) >= 2) w['Persécution'] *= 1.4;
+  if (state.reliefActive) w['Grâce'] *= 1.8; // après la traversée dure, la grâce vient
+
+  // Biais d'Appel / Destinée.
+  const cb = state.calling?.seasonBias;
+  if (cb) for (const s of SEASON_NAMES) if (cb[s] !== undefined) w[s] *= cb[s]!;
+
+  // Anti-répétition — éviter de revivre 2× d'affilée la même saison (sauf forte attraction).
+  const current = state.spiritualSeason;
+  if (current) w[current] *= 0.45;
+
+  return rngWeightedPick(rng, SEASON_NAMES, SEASON_NAMES.map((s) => w[s]));
 }
 
 function getSeasonMultipliers(season: SpiritualSeasonName): Partial<Record<AfflictionCategory, number>> {
@@ -587,6 +657,9 @@ function computeEventWeight(
   }
 
   weight *= (seasonMult[event.category] ?? 1.0);
+  // Biais d'Appel (destinée) + traits gagnés — façonnent le contenu propre à la run.
+  weight *= (state.calling?.categoryBias?.[event.category] ?? 1.0);
+  weight *= getTraitCategoryBias(state.traits, event.category);
   return Math.max(0.1, weight);
 }
 
@@ -810,6 +883,8 @@ export function validateChoice(
   const newStats = { ...state.stats };
   const newFlow = { ...state.flow };
   const newCodex = { ...state.codex };
+  // Signal pour le trait « L'Éprouvé » : victoire après ≥3 échecs consécutifs.
+  const brokeThenRose = correct && (state.consecutiveFails ?? 0) >= 3;
 
   if (correct) {
     // === SUCCÈS ===
@@ -1033,6 +1108,28 @@ const R = CONFIG.recentSlots;
   const successes = newState.journal.filter((j) => j.type === 'success').length;
   newState.successRate = Math.round((successes / newState.totalEvents) * 100);
 
+  // Traits gagnés en cours de vie — évalués sur l'état mis à jour.
+  const awards = evaluateTraitAwards(newState, { brokeThenRose });
+  if (awards.length > 0) {
+    newState.traits = [
+      ...(state.traits ?? []),
+      ...awards.map((t) => ({ id: t.id, earnedAtAge: state.age })),
+    ];
+    const traitStats = { ...newState.stats };
+    for (const t of awards) {
+      if (t.gainBonus) {
+        for (const [s, v] of Object.entries(t.gainBonus)) {
+          traitStats[s as StatName] = Math.min(MAX_STAT, (traitStats[s as StatName] || 0) + (v ?? 0));
+        }
+      }
+      newState.journal = [
+        ...newState.journal,
+        { age: state.age, text: `[TRAIT] Élias devient « ${t.name} » — ${t.description}`, type: 'milestone' as const },
+      ];
+    }
+    newState.stats = traitStats;
+  }
+
   return {
     correct,
     correctVerse: { reference: verse.reference, text: verse.text },
@@ -1223,19 +1320,27 @@ export function advanceAge(state: GameState): {
     newState.amiDecayStreak = 0;
   }
 
-  // Transition de saison spirituelle (Système 3)
-  const newSeason = getSeasonForAge(newAge);
-  if (newSeason !== (state.spiritualSeason ?? 'Réveil')) {
-    newState.spiritualSeason = newSeason;
-    const s = SPIRITUAL_SEASONS[newSeason];
-    newState.journal = [
-      ...(newState.journal ?? state.journal),
-      {
-        age: newAge,
-        text: `[SAISON] ${s.label} — ${s.description}`,
-        type: 'milestone' as const,
-      },
-    ];
+  // Transition de saison ÉMERGENTE (Système 3) — re-roll aux paliers de décennie,
+  // piloté par l'état d'Élias + l'Appel + le seed de run (trajectoire unique par partie).
+  if (newAge >= 10 && newAge % 10 === 0) {
+    const seasonRng = mulberry32(((state.seed ?? 0) ^ Math.imul(newAge, 0x9e3779b1)) >>> 0);
+    const newSeason = computeSeasonTransition(
+      { ...newState, stats: newStats },
+      newAge,
+      seasonRng,
+    );
+    if (newSeason !== (state.spiritualSeason ?? 'Réveil')) {
+      newState.spiritualSeason = newSeason;
+      const s = SPIRITUAL_SEASONS[newSeason];
+      newState.journal = [
+        ...(newState.journal ?? state.journal),
+        {
+          age: newAge,
+          text: `[SAISON] ${s.label} — ${s.description}`,
+          type: 'milestone' as const,
+        },
+      ];
+    }
   }
 
   // Flow décroît naturellement si inactif
