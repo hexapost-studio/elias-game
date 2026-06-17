@@ -22,7 +22,7 @@
 - [x] **T-3** `src/components/DailyVerse.tsx` — set-state-in-effect ×1 → 0 (dérivation rendu, helper pur) → itér. 24 / `f7421b2`
 - [x] **T-4** `src/components/DevPanel.tsx` — set-state-in-effect ×2 → 0 (init paresseuse + handler de seuil) → itér. 25 / `9070680`
 - [x] **T-5** `src/components/DebugView.tsx` — set-state-in-effect ×1 + exhaustive-deps ×2 → 0 (ordre seedé dérivé + état-marqueur + helper pur) → itér. 26 / `7ee47cf`
-- [ ] **T-6** `src/components/ActionPanel.tsx` — rules-of-hooks ×1
+- [x] **T-6** `src/components/ActionPanel.tsx` — rules-of-hooks ×1 → 0 (renommage useAction→runAction, faux positif) → itér. 27 / `4003612`
 - [ ] **T-7** `src/components/ShareCard.tsx` — purity ×1 + refs ×1 + exhaustive-deps ×1
 - [ ] **T-8** `src/components/VerseChoices.tsx` — purity ×1 + refs ×1 + rules-of-hooks ×1
 - [ ] **T-9** `src/App.tsx` — purity ×5 + exhaustive-deps ×2 + set-state-in-effect ×5 (**à découper en sous-commits**)

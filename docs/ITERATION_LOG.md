@@ -622,6 +622,18 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   désormais reproductible.
 - **Rollback** : `git revert <hash itér. 26>`.
 
+### Itération 27 — Phase 1 / T-6 : `ActionPanel.tsx` (rules-of-hooks ×1 → 0)
+- **Recherche** : `const useAction = useGameStore((s) => s.useAction)` — la méthode du
+  store, liée sous un nom préfixé `use…`, était prise pour un Hook React ; son appel dans
+  le `onClick` déclenchait `react-hooks/rules-of-hooks` (« Hook dans un callback »). Faux
+  positif dû au nom, pas un vrai Hook.
+- **Application** : pur renommage de la liaison locale `useAction` → `runAction` (et son
+  appel). Zéro changement de comportement, aucune logique extraite.
+- **Résultat** : `ActionPanel.tsx` **1 → 0** (errors 0, warnings 0). Porte QA verte
+  (tsc + vitest 186 + build + validate), zéro nouvelle dette. (Renommage trivial → pas de
+  nouveau test dédié.)
+- **Rollback** : `git revert <hash itér. 27>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

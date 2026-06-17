@@ -21,7 +21,9 @@ export function ActionPanel() {
   const actionPoints    = useGameStore((s) => s.actionPoints);
   const actionsThisYear = useGameStore((s) => s.actionsThisYear);
   const friendName      = useGameStore((s) => s.lifeContext.friendName);
-  const useAction       = useGameStore((s) => s.useAction);
+  // Lié sous un nom NON préfixé `use…` : c'est une action du store, pas un Hook React.
+  // (`useAction` déclenchait à tort react-hooks/rules-of-hooks dans le onClick.)
+  const runAction       = useGameStore((s) => s.useAction);
   const phase           = useGameStore((s) => s.phase);
   const amiRelationship = useGameStore((s) => s.amiRelationship);
   const friendIntroduced = useGameStore((s) => s.friendIntroduced);
@@ -84,7 +86,7 @@ export function ActionPanel() {
             <button
               key={action.id}
               disabled={disabled}
-              onClick={() => useAction(action.id)}
+              onClick={() => runAction(action.id)}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
