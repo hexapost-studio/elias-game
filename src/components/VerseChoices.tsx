@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
 import { Clock } from './IconSystem';
 import { AFFLICTION_ICONS, AFFLICTION_COLORS } from './iconMeta';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { textKey, isSeen, markSeen } from '../settings/seenText';
+import { shuffledChoiceIds } from '../engine/choiceOrder';
 
 const PALIER_TIMER: Record<number, number | null> = {
   1: null,   // Pas de timer
@@ -28,9 +29,24 @@ export function VerseChoices() {
 
   const maxTime = PALIER_TIMER[flowPalier] ?? 0;
   const [timeLeft, setTimeLeft] = useState(maxTime);
-  const [started, setStarted] = useState(false);
-  const [shuffledIds, setShuffledIds] = useState<string[]>([]);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const isActive = !!currentEvent && phase === 'event';
+  const hasAnswered = lastEventResult !== null;
+
+  // Ordre des propositions DÉRIVÉ au rendu (mélange seedé sur l'id de l'événement) :
+  // déterministe, sans Math.random ni state ni ref-au-rendu.
+  const shuffledIds = isActive
+    ? shuffledChoiceIds(currentEvent.id, currentEvent.correctVerseId, currentEvent.decoyVerseIds)
+    : [];
+
+  // Reset state-on-prop-change (pendant le rendu, pas dans un effet) : à chaque nouvel
+  // événement le chrono repart de maxTime.
+  const eventKey = isActive ? currentEvent.id : null;
+  const [prevEventKey, setPrevEventKey] = useState(eventKey);
+  if (prevEventKey !== eventKey) {
+    setPrevEventKey(eventKey);
+    setTimeLeft(maxTime);
+  }
 
   // Révélation « machine à écrire » de la scène (pacing littéraire).
   const description = currentEvent?.description ?? '';
@@ -46,44 +62,19 @@ export function VerseChoices() {
     if (descDone && sceneKey !== '' && !isSeen(sceneKey)) markSeen(sceneKey);
   }, [descDone, sceneKey]);
 
-  if (!currentEvent || phase !== 'event') return null;
-
-  if (!started) {
-    setStarted(true);
-    setTimeLeft(maxTime);
-    setShuffledIds(
-      [currentEvent.correctVerseId, ...currentEvent.decoyVerseIds].sort(
-        () => Math.random() - 0.5
-      )
-    );
-    if (maxTime > 0) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft((t) => {
-          if (t <= 0) {
-            if (timerRef.current) clearInterval(timerRef.current);
-            return 0;
-          }
-          return t - 0.1;
-        });
-      }, 100);
-    }
-  }
-
+  // L'effet ne pilote QUE le décompte (système externe). Son setState part du tick
+  // différé → pas de set-state-in-effect. Tous les Hooks sont appelés AVANT toute sortie
+  // anticipée (cf. plus bas), donc plus de rules-of-hooks.
+  const timerRunning = isActive && maxTime > 0 && !hasAnswered;
   useEffect(() => {
-    if (phase !== 'event' && timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-      setStarted(false);
-    }
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [phase]);
+    if (!timerRunning) return;
+    const id = setInterval(() => {
+      setTimeLeft((t) => (t <= 0 ? 0 : Math.round((t - 0.1) * 10) / 10));
+    }, 100);
+    return () => clearInterval(id);
+  }, [timerRunning, eventKey]);
 
-  const hasAnswered = lastEventResult !== null;
+  if (!isActive) return null;
   const timeSpent = maxTime - timeLeft;
   const CatIcon = AFFLICTION_ICONS[currentEvent.category] || Clock;
   const catColor = AFFLICTION_COLORS[currentEvent.category] || 'var(--text-muted)';
@@ -92,7 +83,7 @@ export function VerseChoices() {
 
   const handleChoose = (verseId: string) => {
     if (hasAnswered) return;
-    if (timerRef.current) clearInterval(timerRef.current);
+    // L'intervalle est arrêté par le cleanup de l'effet (hasAnswered→timerRunning false).
     const finalTime = Math.max(0.1, timeSpent);
     // Haptic feedback : vibration courte
     try { navigator.vibrate(5); } catch { /* vibrate non supporté */ }

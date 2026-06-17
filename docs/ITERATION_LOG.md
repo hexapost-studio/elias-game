@@ -652,6 +652,21 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   (tsc + vitest 190 + build + validate), zéro nouvelle dette.
 - **Rollback** : `git revert <hash itér. 28>`.
 
+### Itération 29 — Phase 1 / T-8 : `VerseChoices.tsx` (purity ×1 + refs ×1 + rules-of-hooks ×1 → 0)
+- **Recherche** : (1) l'ordre des propositions était posé en state via `setState` au rendu +
+  `Math.random` → `purity` ; (2) un `timerRef` lu au rendu → `refs` ; (3) des Hooks après un
+  `return null` conditionnel → `rules-of-hooks`.
+- **Application** : (1) ordre **dérivé au rendu** par un mélange seedé sur l'id de l'événement,
+  helper pur `src/engine/choiceOrder.ts` (`shuffledChoiceIds`) testé `tests/choiceOrder.test.ts` —
+  déterministe, sans `Math.random` ni state ; (2) le timer devient un `useEffect` à intervalle
+  local nettoyé par son `return` (plus de ref-au-rendu) ; (3) tous les Hooks remontés avant la
+  sortie anticipée `if (!isActive) return null`. **Finition** : la ligne morte
+  `if (timerRef.current) clearInterval(...)` de `handleChoose`, restée orpheline après la suppression
+  du ref, a été retirée (l'arrêt est assuré par le cleanup de l'effet).
+- **Résultat** : `VerseChoices.tsx` **3 → 0**. `tsc -b` inchangé (12, baseline préexistante), vitest
+  190, build + validate OK, zéro nouvelle dette.
+- **Rollback** : `git revert <hash itér. 29>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
