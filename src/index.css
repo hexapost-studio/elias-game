@@ -1122,6 +1122,20 @@ body {
   text-transform: uppercase;
 }
 
+.verse-fail-grace {
+  max-width: 320px;
+  margin: 16px auto 4px;
+  font-size: 12px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--accent-gold, #d8b46a);
+  text-align: center;
+  animation: subline-rise 0.4s ease both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .verse-fail-grace { animation: none; }
+}
+
 .tick-icon {
   height: 10px;
   image-rendering: pixelated;

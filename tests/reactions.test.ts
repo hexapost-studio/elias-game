@@ -3,7 +3,7 @@
  * @description Réactions de victoire contextuelles — bannière + sous-ligne.
  */
 import { describe, it, expect } from 'vitest';
-import { pickVictoryBanner, pickVictorySubline } from '../src/engine/reactions';
+import { pickVictoryBanner, pickVictorySubline, pickSetbackLabel, pickSetbackEncouragement } from '../src/engine/reactions';
 import { mulberry32 } from '../src/engine/rng';
 
 describe('pickVictoryBanner — selon le combo', () => {
@@ -49,5 +49,23 @@ describe('pickVictorySubline — saveur contextuelle', () => {
     const a = pickVictorySubline({ category: 'doute_incredulite', combo: 1, season: 'Désert' }, mulberry32(5));
     const b = pickVictorySubline({ category: 'doute_incredulite', combo: 1, season: 'Désert' }, mulberry32(5));
     expect(a).toBe(b);
+  });
+});
+
+describe('réactions de revers — grâce, jamais punitif', () => {
+  it('pickSetbackLabel : varié, non vide, déterministe par seed', () => {
+    expect(pickSetbackLabel(mulberry32(2))).toBe(pickSetbackLabel(mulberry32(2)));
+    const out = new Set<string>();
+    for (let s = 0; s < 30; s++) out.add(pickSetbackLabel(mulberry32(s)));
+    expect(out.size).toBeGreaterThan(1);
+    for (const l of out) expect(l.length).toBeGreaterThan(0);
+  });
+
+  it('pickSetbackEncouragement : toujours présent (relèvement) et déterministe', () => {
+    expect(pickSetbackEncouragement(mulberry32(7))).toBe(pickSetbackEncouragement(mulberry32(7)));
+    const out = new Set<string>();
+    for (let s = 0; s < 30; s++) out.add(pickSetbackEncouragement(mulberry32(s)));
+    expect(out.size).toBeGreaterThan(1);
+    for (const g of out) expect(g.length).toBeGreaterThan(0);
   });
 });

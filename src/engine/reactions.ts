@@ -50,6 +50,26 @@ const SEASON_FLAVOR: Partial<Record<SpiritualSeasonName, string[]>> = {
   'Réveil': ['L\'élan du réveil l\'emporte.'],
 };
 
+/**
+ * Libellé d'épreuve non surmontée — JAMAIS punitif (jeu évangéliste : l'échec ouvre
+ * sur la grâce et le relèvement, pas sur la condamnation).
+ */
+const SETBACK_LABELS = [
+  'Épreuve non surmontée',
+  'Pas cette fois',
+  'Un pas de trop',
+  'Le combat continue',
+];
+
+/** Encouragement de grâce affiché sous le verset enseigné après un échec. */
+const SETBACK_GRACE = [
+  'La grâce est nouvelle chaque matin. Relève-toi.',
+  'Tomber n\'est pas rester à terre. On apprend, on continue.',
+  'Garde ce verset : il sera ton appui la prochaine fois.',
+  'Christ relève ceux qui trébuchent. Reprends courage.',
+  'Même les justes tombent sept fois et se relèvent.',
+];
+
 export interface VictoryContext {
   category?: AfflictionCategory;
   combo: number;
@@ -79,4 +99,14 @@ export function pickVictorySubline(ctx: VictoryContext, rng: Rng = Math.random):
   if (season && rng() < 0.4) pool.push(...season);
   if (pool.length === 0) return '';
   return pickFrom(rng, pool);
+}
+
+/** Libellé varié d'épreuve non surmontée (jamais punitif). */
+export function pickSetbackLabel(rng: Rng = Math.random): string {
+  return pickFrom(rng, SETBACK_LABELS);
+}
+
+/** Encouragement de grâce après un échec — toujours présent (relèvement). */
+export function pickSetbackEncouragement(rng: Rng = Math.random): string {
+  return pickFrom(rng, SETBACK_GRACE);
 }

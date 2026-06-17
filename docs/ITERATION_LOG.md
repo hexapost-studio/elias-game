@@ -154,6 +154,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   le dupliquer.* Patron « pur + seedé par identité d'élément » validé pour les composants React.
 - **Rollback** : `git revert <hash itération 6>`.
 
+### Itération 7 — Réactions de revers (grâce) — symétrie du système de résultat
+- **Recherche** : un système de feedback de résultat n'est complet que s'il couvre les DEUX
+  issues. L'itér.4 a varié la victoire ; l'échec restait figé (« Épreuve non surmontée »).
+- **Analyse** : surmonter / ne pas surmonter sont les deux beats les plus répétés. Surtout, dans
+  un jeu ÉVANGÉLISTE, l'échec ne doit pas condamner : il ouvre sur la grâce et le relèvement.
+  Le libellé d'échec était à la fois figé ET légèrement punitif — contre-thème.
+- **Consensus** : ÉTENDRE `reactions.ts` (cohésion, pas de nouveau fichier) avec un libellé de
+  revers varié + un encouragement de grâce TOUJOURS présent, jamais punitif. Pur, seedé, calculé
+  dans l'effet (pas le rendu) → pas de clignotement, AAA-pur. Réversible.
+- **Application** : `pickSetbackLabel`, `pickSetbackEncouragement` dans `reactions.ts` ; state
+  `setback` dans `App.tsx` (posé dans la branche échec de l'effet de résultat), libellé + ligne
+  de grâce `.verse-fail-grace` dans l'overlay de confirmation ; tests étendus.
+- **Résultat** : l'échec affiche un libellé varié (« Le combat continue », « Pas cette fois ») +
+  « ✦ La grâce est nouvelle chaque matin. Relève-toi. ». 2 tests (103 verts), tsc + build OK.
+- **Rétro / process** : règle ajoutée — *un système de feedback se conçoit symétriquement
+  (succès ET échec) ; livrer une seule moitié laisse un trou ressenti.* Le ton (grâce, pas
+  punition) découle directement de l'identité évangéliste : un système juice doit servir le
+  THÈME, pas juste la dopamine. En lintant, la dette App.tsx pré-existante (Math.random L596,
+  ref L395, no-unused-expressions L779/1007) reste isolée — candidate forte pour l'itér. suivante.
+- **Rollback** : `git revert <hash itération 7>`.
+
 ### Réserve (analysée, non encore planifiée)
 - **Déterminisation complète de la naissance / graine partageable** (roguelite, partie 2) :
   faire passer `generateLifeContext`/`generateParentNames`/`generateBirthStats` par le `Rng`

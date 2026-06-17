@@ -37,7 +37,7 @@ import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAg
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
 import { deriveEchoes } from './engine/echoes';
-import { pickVictoryBanner, pickVictorySubline } from './engine/reactions';
+import { pickVictoryBanner, pickVictorySubline, pickSetbackLabel, pickSetbackEncouragement } from './engine/reactions';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
@@ -109,6 +109,7 @@ function App() {
 
   const [showResult, setShowResult] = useState(false);
   const [victory, setVictory] = useState<{ banner: string; subline: string }>({ banner: 'VICTOIRE', subline: '' });
+  const [setback, setSetback] = useState<{ label: string; grace: string }>({ label: 'Épreuve non surmontée', grace: '' });
   const [showVerseConfirm, setShowVerseConfirm] = useState(false);
   const [showCodex, setShowCodex] = useState(false);
   const [showLexicon, setShowLexicon] = useState(false);
@@ -236,7 +237,9 @@ function App() {
         }, 1500);
         return () => clearTimeout(timer);
       } else {
-        // Échec → confirmation manuelle, le joueur doit lire le verset
+        // Échec → confirmation manuelle, le joueur doit lire le verset.
+        // Réaction de revers contextuelle : libellé varié + grâce (jamais punitif).
+        setSetback({ label: pickSetbackLabel(), grace: pickSetbackEncouragement() });
         playFail();
         // Haptic feedback : échec
         try { navigator.vibrate(20); } catch {}
@@ -913,7 +916,7 @@ function App() {
             <div className="result-flash-icon" style={{ color: 'var(--danger)' }}>✕</div>
 
             <div className="verse-fail-label">
-              Épreuve non surmontée
+              {setback.label}
             </div>
 
             {/* Carte verset */}
@@ -931,6 +934,12 @@ function App() {
                 Catégorie : {currentEvent.category.replace(/_/g, ' ')}
               </div>
             </div>
+
+            {setback.grace && (
+              <div className="verse-fail-grace">
+                ✦ {setback.grace}
+              </div>
+            )}
 
             <button
               onClick={() => { setShowVerseConfirm(false); dismissResult(); }}
