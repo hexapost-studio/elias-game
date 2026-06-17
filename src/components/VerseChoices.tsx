@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
 import { AFFLICTION_ICONS, AFFLICTION_COLORS, Clock } from './IconSystem';
+import { useTypewriter } from '../hooks/useTypewriter';
 
 const PALIER_TIMER: Record<number, number | null> = {
   1: null,   // Pas de timer
@@ -28,6 +29,11 @@ export function VerseChoices() {
   const [started, setStarted] = useState(false);
   const [shuffledIds, setShuffledIds] = useState<string[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Révélation « machine à écrire » de la scène (pacing littéraire).
+  const description = currentEvent?.description ?? '';
+  const { shown: shownDescription, done: descDone, skip: skipDescription } =
+    useTypewriter(description);
 
   if (!currentEvent || phase !== 'event') return null;
 
@@ -117,8 +123,16 @@ export function VerseChoices() {
             {currentEvent.title}
           </div>
         </div>
-        <div className="event-description">{currentEvent.description}</div>
-        {currentEvent.thematicFlavor && (
+        <div
+          className="event-description"
+          onClick={!descDone ? skipDescription : undefined}
+          style={{ cursor: !descDone ? 'pointer' : 'default' }}
+          title={!descDone ? 'Toucher pour tout afficher' : undefined}
+        >
+          {shownDescription}
+          {!descDone && <span className="tw-caret" aria-hidden="true">▋</span>}
+        </div>
+        {currentEvent.thematicFlavor && descDone && (
           <div className="event-flavor">{currentEvent.thematicFlavor}</div>
         )}
       </div>

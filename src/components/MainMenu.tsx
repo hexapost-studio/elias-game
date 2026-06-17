@@ -19,6 +19,7 @@ import {
 } from './IconSystem';
 import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
 import { DailyVerse } from './DailyVerse';
+import { useReadingSpeed, cycleReadingSpeed, READING_LABELS } from '../settings/textSpeed';
 
 interface MainMenuProps {
   onClose: () => void;
@@ -58,6 +59,7 @@ export const MainMenu: FC<MainMenuProps> = ({
   onToggleSlowTimer,
 }) => {
   const [volume, setVolume] = useState(Math.round(getAmbientVolume() * 100));
+  const readingSpeed = useReadingSpeed();
 
   return (
     <div
@@ -208,6 +210,19 @@ export const MainMenu: FC<MainMenuProps> = ({
             color={slowTimer ? 'var(--accent-gold-light)' : 'var(--text-muted)'}
             onClick={onToggleSlowTimer}
             active={slowTimer}
+          />
+
+          <MenuButton
+            icon={
+              <span style={{ fontSize: 15, color: 'var(--accent-gold-light)' }}>
+                ⌨
+              </span>
+            }
+            label={`Vitesse de lecture : ${READING_LABELS[readingSpeed]}`}
+            sublabel="Rythme de révélation des scènes — toucher pour changer"
+            color="var(--accent-gold-light)"
+            onClick={cycleReadingSpeed}
+            active={readingSpeed !== 'instant'}
           />
 
           <MenuSection label="COMMUNAUTÉ" />
