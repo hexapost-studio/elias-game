@@ -346,7 +346,7 @@ function App() {
       .slice(-5)
       .map((e) => e.text.replace(/^\d+a\s+/, '').split('.')[0]);
 
-    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames, actionsThisYear)
+    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames, actionsThisYear, playerName)
       .then((text) => {
         setAiJournalEntries((prev) =>
           prev.map((e) =>
@@ -371,7 +371,7 @@ function App() {
     if (Math.random() > 0.33) return;
 
     setGeneratingAiEvent(true);
-    generateDynamicEvent(age, stats, lifeContext, parentNames)
+    generateDynamicEvent(age, stats, lifeContext, parentNames, playerName)
       .then((narrative) => {
         if (!narrative) { setGeneratingAiEvent(false); return; }
         const event: AfflictionEvent = {

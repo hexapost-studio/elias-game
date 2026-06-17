@@ -5,7 +5,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { resolvePlayerName, personalize, DEFAULT_NAME, MAX_NAME_LEN } from '../src/engine/identity';
-import { createInitialState } from '../src/engine/gameEngine';
+import { createInitialState, applyCrisisGrace, advanceAge } from '../src/engine/gameEngine';
 import { generateOpeningVignette } from '../src/engine/opening';
 import { mulberry32 } from '../src/engine/rng';
 import { CALLINGS } from '../src/data/callings';
@@ -54,6 +54,21 @@ describe('intégration createInitialState — nom', () => {
     expect(s.playerName).toBe('Noé');
     expect(s.journal[0].text).toContain('Noé');
     expect(s.journal[0].text).not.toContain('Élias');
+  });
+
+  it('le message de crise (en cours de partie) utilise le nom du joueur', () => {
+    const s = createInitialState(undefined, 1, 'Noé');
+    const { crisisMessage } = applyCrisisGrace(s, { ...s.stats, foi: 0 });
+    expect(crisisMessage).toContain('Noé');
+    expect(crisisMessage).not.toContain('Élias');
+  });
+
+  it('les jalons d\'âge (en cours de partie) utilisent le nom du joueur', () => {
+    const s = { ...createInitialState(undefined, 1, 'Noé'), age: 14 };
+    const { newState } = advanceAge(s);
+    const milestone = newState.journal.find((e) => e.text.includes('ADOLESCENCE'));
+    expect(milestone?.text).toContain('Noé');
+    expect(milestone?.text).not.toContain('Élias');
   });
 
   // NB : la ville/les parents viennent encore de Math.random (cf. proposition A — graines

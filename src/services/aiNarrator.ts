@@ -251,6 +251,7 @@ export async function generateJournalEntry(
   lifeContext?: AiLifeContext,
   parentNames?: AiParentNames,
   actionsThisYear?: string[],
+  playerName: string = 'Élias',
 ): Promise<string | null> {
   const stage  = lifeStage(age);
   const events = recentEventTitles.slice(-4).join(', ') || 'aucune épreuve notable';
@@ -261,10 +262,10 @@ export async function generateJournalEntry(
     call_friend: `appelé ${lifeContext?.friendName ?? 'son ami'}`, read_word: 'lu la Parole',
   };
   const actionsLine = actionsThisYear && actionsThisYear.length > 0
-    ? `Cette année, Élias a : ${actionsThisYear.map(a => ACTION_LABELS[a] ?? a).join(', ')}.`
+    ? `Cette année, ${playerName} a : ${actionsThisYear.map(a => ACTION_LABELS[a] ?? a).join(', ')}.`
     : '';
 
-  const prompt = `Tu es Élias, ${age} ans (stade : ${stage}).
+  const prompt = `Tu es ${playerName}, ${age} ans (stade : ${stage}).
 ${ctxLine}
 Stats intérieures : Foi ${stats.foi}/100 · Paix ${stats.paix}/100 · Corps ${stats.physique}/100 · Finances ${stats.finances}/100.
 Dernières épreuves : ${events}. Taux de victoire : ${successRate}%.
@@ -288,6 +289,7 @@ export async function generateDynamicEvent(
   stats: StatImpact,
   lifeContext?: AiLifeContext,
   parentNames?: AiParentNames,
+  playerName: string = 'Élias',
 ): Promise<AiEventNarrative | null> {
   const verse = pickVerseForAge(age, stats);
   if (!verse) return null;
@@ -296,7 +298,7 @@ export async function generateDynamicEvent(
   const ctxLine = buildLifeContextLine(lifeContext, parentNames);
 
   const prompt = `Jeu Élias — simulateur de vie EJP/ICC.
-Élias a ${age} ans (${stage}). ${ctxLine}
+${playerName} a ${age} ans (${stage}). ${ctxLine}
 Stats : Foi ${stats.foi} · Paix ${stats.paix} · Corps ${stats.physique} · Finances ${stats.finances}.
 Verset réponse : "${verse.text}" (${verse.reference}).
 

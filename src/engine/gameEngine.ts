@@ -26,7 +26,7 @@ import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, type Rng } from './rng';
 import { revealsAtAge } from './reveals';
 import { generateOpeningVignette } from './opening';
-import { resolvePlayerName } from './identity';
+import { resolvePlayerName, personalize } from './identity';
 import type { Calling, EarnedTrait } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
@@ -463,7 +463,7 @@ export function applyCrisisGrace(
       corrected[key as StatName] = 3;
       newCrises--;
       const label = STAT_LABELS[key] ?? key;
-      crisisMessage = `[CRISE] La jauge de ${label} a touché zéro. Une grâce divine a relevé Élias (${newCrises} grâce${newCrises !== 1 ? 's' : ''} restante${newCrises !== 1 ? 's' : ''}).`;
+      crisisMessage = `[CRISE] La jauge de ${label} a touché zéro. Une grâce divine a relevé ${state.playerName} (${newCrises} grâce${newCrises !== 1 ? 's' : ''} restante${newCrises !== 1 ? 's' : ''}).`;
     }
   }
 
@@ -1129,7 +1129,7 @@ const R = CONFIG.recentSlots;
       }
       newState.journal = [
         ...newState.journal,
-        { age: state.age, text: `[TRAIT] Élias devient « ${t.name} » — ${t.description}`, type: 'milestone' as const },
+        { age: state.age, text: `[TRAIT] ${state.playerName} devient « ${t.name} » — ${t.description}`, type: 'milestone' as const },
       ];
     }
     newState.stats = traitStats;
@@ -1260,7 +1260,7 @@ export function advanceAge(state: GameState): {
   if (reveals.length > 0) {
     newState.journal = [
       ...newState.journal,
-      ...reveals.map((r) => ({ age: newAge, text: r.text, type: 'milestone' as const })),
+      ...reveals.map((r) => ({ age: newAge, text: personalize(r.text, newState.playerName), type: 'milestone' as const })),
     ];
   }
 
@@ -1375,13 +1375,14 @@ export function advanceAge(state: GameState): {
 
   // Journal milestones
   const ageEvents: string[] = [];
-  if (newAge === 0)  ageEvents.push('[NAISSANCE] Élias vient de naître.');
-  if (newAge === 15) ageEvents.push('[ADOLESCENCE] Élias entre dans l\'adolescence. Les premiers choix commencent.');
-  if (newAge === 25) ageEvents.push('[JEUNE ADULTE] Élias prend sa vie en main. Le combat intérieur s\'intensifie.');
+  const name = newState.playerName;
+  if (newAge === 0)  ageEvents.push(`[NAISSANCE] ${name} vient de naître.`);
+  if (newAge === 15) ageEvents.push(`[ADOLESCENCE] ${name} entre dans l'adolescence. Les premiers choix commencent.`);
+  if (newAge === 25) ageEvents.push(`[JEUNE ADULTE] ${name} prend sa vie en main. Le combat intérieur s'intensifie.`);
   if (newAge === 30) ageEvents.push('[MATURITÉ] 30 ans. La vie forge ce que la foi doit porter. Les fondations se testent.');
   if (newAge === 40) ageEvents.push('[PIVOT] 40 ans. Le corps commence à parler. Ce qui était acquis doit être renouvelé.');
   if (newAge === 50) ageEvents.push('[PROFONDEUR] 50 ans. Ce qui comptait avant compte moins. Ce qui était flou devient clair.');
-  if (newAge === 60) ageEvents.push('[SAGESSE] 60 ans. Élias marche vers la sagesse. Les dernières grandes batailles approchent.');
+  if (newAge === 60) ageEvents.push(`[SAGESSE] 60 ans. ${name} marche vers la sagesse. Les dernières grandes batailles approchent.`);
   if (newAge === 80) ageEvents.push('[GLORIEUX] Les dernières forteresses tombent. Le Prodige achève sa course.');
 
   if (ageEvents.length > 0) {
