@@ -7,7 +7,6 @@ import { EliasPortrait } from './components/EliasPortrait';
 import { getVerseById } from './data/verses';
 import { computeFinalMetrics, determineTitle, SPIRITUAL_SEASONS } from './engine/gameEngine';
 import {
-  ENEMY_COMPONENTS,
   Crown,
   Church,
   BookOpen,
@@ -17,6 +16,7 @@ import {
   RotateCw,
   MessageSquare,
 } from './components/IconSystem';
+import { ENEMY_COMPONENTS } from './components/iconMeta';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
 import { Prologue } from './components/Prologue';

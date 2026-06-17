@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
-import { AFFLICTION_ICONS, AFFLICTION_COLORS, Clock } from './IconSystem';
+import { Clock } from './IconSystem';
+import { AFFLICTION_ICONS, AFFLICTION_COLORS } from './iconMeta';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { textKey, isSeen, markSeen } from '../settings/seenText';
 
