@@ -667,6 +667,23 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   190, build + validate OK, zéro nouvelle dette.
 - **Rollback** : `git revert <hash itér. 29>`.
 
+### Itération 30 — Correctif CRITIQUE : la porte QA ne typecheckait RIEN
+- **Recherche** : `npx tsc --noEmit` (étape 1 de `tools/qa-gate.sh` ET toutes les vérifs « tsc OK » de
+  la session) est un **NO-OP** : le `tsconfig.json` racine a `"files": []` + `references`, donc sans
+  `-p`/`-b` tsc ne vérifie aucun fichier (exit 0 systématique). Le vrai typecheck est
+  `tsc -p tsconfig.app.json --noEmit`, qui révèle **12 erreurs de type préexistantes** (masquées depuis
+  le début). Découvert en finissant T-8 : un `timerRef` non déclaré passait `tsc --noEmit` sans broncher.
+- **Mesure** : baseline `tsc -b` à `6d6c722` (début de session) = **26** erreurs ; à HEAD post-T-8 = **12**.
+  La session a donc **réduit** la dette de type (le nettoyage lint A/B/C a supprimé des `no-unused`
+  qui étaient aussi des erreurs TS). Les 12 restantes sont préexistantes (CodexMenu, Prologue, App,
+  events/verses/gameEngine casts, +1 dans loader introduit par le lot B — à traiter).
+- **Application** : `qa-gate.sh` étape 1 fait désormais un **vrai** typecheck (`tsc -p tsconfig.node.json`
+  + `tsc -p tsconfig.app.json`) avec **ratchet** vs `tools/tsc-baseline.txt` (=12) : interdit toute
+  régression, tolère la baseline connue (même philosophie que le lint « déjà rouge »).
+- **Résultat** : la porte attrape maintenant les régressions de type. Aucune correction des 12 erreurs
+  dans ce commit (tâche dédiée, cf. ROADMAP Phase 1bis).
+- **Rollback** : `git revert <hash itér. 30>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

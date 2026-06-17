@@ -14,8 +14,21 @@ cd "$(dirname "$0")/.." || exit 2
 fail() { echo "❌ PORTE QA ROUGE — $1"; exit 1; }
 step() { echo "── $1 ──"; }
 
-step "1/5 tsc --noEmit"
-npx tsc --noEmit || fail "tsc"
+step "1/5 typecheck réel (tsc -p, ratchet vs baseline)"
+# ⚠️ `tsc --noEmit` seul est un NO-OP ici : le tsconfig.json racine a `files:[]` + `references`,
+# donc sans `-p`/`-b` rien n'est vérifié. On checke les VRAIS projets. La base a des erreurs de
+# type préexistantes (cf. tools/tsc-baseline.txt) → on applique un « ratchet » : interdit toute
+# régression, tolère la baseline connue. Quand on en corrige, décrémenter le fichier baseline.
+TSC_BASELINE=$(tr -dc '0-9' < tools/tsc-baseline.txt)
+npx tsc -p tsconfig.node.json --noEmit || fail "tsc (projet node)"
+tsc_now=$(npx tsc -p tsconfig.app.json --noEmit 2>&1 | grep -c 'error TS')
+echo "  erreurs de type (app) : $tsc_now — baseline tolérée : ${TSC_BASELINE:-0}"
+if [ "$tsc_now" -gt "${TSC_BASELINE:-0}" ]; then
+  fail "régression de type ($tsc_now > ${TSC_BASELINE:-0}) — voir 'npx tsc -p tsconfig.app.json --noEmit'"
+fi
+if [ "$tsc_now" -lt "${TSC_BASELINE:-0}" ]; then
+  echo "  ↓ baseline améliorable : mets à jour tools/tsc-baseline.txt à $tsc_now"
+fi
 
 step "2/5 vitest run"
 npx vitest run || fail "vitest"

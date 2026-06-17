@@ -27,6 +27,15 @@
 - [x] **T-8** `src/components/VerseChoices.tsx` — purity ×1 + refs ×1 + rules-of-hooks ×1 → 0 (ordre seedé dérivé `choiceOrder.ts` + timer en effet + Hooks remontés) → itér. 29
 - [ ] **T-9** `src/App.tsx` — purity ×5 + exhaustive-deps ×2 + set-state-in-effect ×5 (**à découper en sous-commits**)
 
+### Phase 1bis — Dette de TYPE révélée (le `tsc --noEmit` était creux — cf. itér. 30)
+> Le vrai typecheck (`tsc -p tsconfig.app.json`) expose **12 erreurs préexistantes** masquées depuis
+> le début. Baseline tolérée : `tools/tsc-baseline.txt`. Décrémenter à chaque lot corrigé.
+- [ ] **T-T1** `game/data/loader.ts` (2 — cast `RawVerse`/module, dont +1 introduit au lot B)
+- [ ] **T-T2** `src/components/CodexMenu.tsx` (2 — `Record<AfflictionCategory,…>` incomplet)
+- [ ] **T-T3** `src/components/Prologue.tsx` (2 — `val` possibly undefined + `name` manquant)
+- [ ] **T-T4** `src/data/events.ts` + `src/data/verses.ts` (2 — casts JSON→type)
+- [ ] **T-T5** `src/engine/gameEngine.ts` (3) + `src/App.tsx` (1 — comparaison `'gameover'`)
+
 > ⏸ **PAUSE OBLIGATOIRE en fin de Phase 1** : rendre la main avant la Phase 2 (nature différente).
 
 ### Phase 2 — Contenu (GDD §11.1 C1)
