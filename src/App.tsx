@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
@@ -44,16 +44,18 @@ import type { AfflictionEvent } from './types/game';
 import './index.css';
 
 function BackgroundParticles() {
-  const particles = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => ({
+  // Particules décoratives tirées UNE fois via l'initialiseur paresseux de useState
+  // (autorisé à être impur, hors du chemin de rendu) → plus de Math.random au rendu.
+  const [particles] = useState(() =>
+    Array.from({ length: 12 }, (_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       size: `${1 + Math.random() * 2}px`,
       duration: `${8 + Math.random() * 12}s`,
       delay: `${Math.random() * 10}s`,
       opacity: `${0.2 + Math.random() * 0.3}`,
-    }));
-  }, []);
+    })),
+  );
 
   return (
     <div id="bg-particles">
