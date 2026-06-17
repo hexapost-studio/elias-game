@@ -501,6 +501,39 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   dette lint (StatBar 1→1, Onboarding 0→0).
 - **Rollback** : `git revert <hash itération 20>`.
 
+### Itération 21 — Assainissement lint (chantier dédié, par lots de risque croissant)
+- **Recherche** : la base ESLint était rouge (67 problèmes / 62 erreurs). Décision de l'attaquer en
+  lots **du plus sûr au plus risqué**, chaque lot = 1 commit revertable, les 4 portes vertes entre
+  chaque (invariant 5), zéro nouvelle dette par fichier (invariant 6).
+- **Lot A — 27 erreurs sûres** (`1bdc150`) : `no-unused-vars` (20) + `no-empty` (4, catch commentés)
+  + `prefer-const` (3). Imports/vars/consts morts retirés (App, MainMenu, DebugView, LexiconMenu +
+  CATEGORY_BG, gameEngine, test) ; destructuring `_` → trous ; `let`→`const`. Zéro changement de
+  comportement. Lint 67→40.
+- **Lot B — 8 `no-explicit-any` typés** (`356a6c8`) : `loader.ts` (RawVerse + RawLexiconEntry),
+  `persistence.ts` (`getItem<Partial<GameState> & {timestamp?}>`, `Inheritance` sur save/load),
+  `gameEngine.ts` (`(s as any).callFriendCount` → champ déjà typé), `analytics.ts` (window typé).
+  Lint 40→32.
+- **Lot C — fast-refresh `only-export-components` ×5** (`2d01cc4`) : `IconSystem.tsx` n'exporte plus
+  que des composants ; les 5 maps (AFFLICTION_ICONS/COLORS, STAT_ICONS/COLORS, ENEMY_COMPONENTS)
+  déménagent dans `src/components/iconMeta.tsx` (contenu identique) ; importeurs redirigés (VerseChoices,
+  App). Lint 32→27.
+- **Résultat (lots A-C)** : lint **67→27** problèmes. 157 tests verts (inchangés), tsc/build/validate
+  OK à chaque lot. **Reste 27 erreurs hooks** (set-state-in-effect 11, purity 7, exhaustive-deps 5,
+  rules-of-hooks 2, refs 2) = refactors de rendu risqués → pilotés ensuite par l'agent `release-lead`
+  (cf. `docs/ROADMAP.md`).
+- **Rollback** : `git revert` de chaque hash de lot indépendamment.
+
+### Itération 21bis — Orchestration : agent `release-lead` + porte QA sans navigateur
+- **Recherche** : pour finir le lint risqué puis le contenu sans gaspiller d'effort, mise en place
+  d'une file de tâches et d'un orchestrateur autonome, avec une QA déterministe **sans Playwright**.
+- **Application** : (1) `docs/ROADMAP.md` — file DONE/IN-PROGRESS/TODO (Phase 1 hooks par fichier,
+  Phase 2 contenu), source de vérité de la *file* (le LOG reste celle du *process*) ; (2)
+  `tools/qa-gate.sh` — porte unique `tsc + vitest + build + validate` + **diff lint par fichier**
+  vs HEAD (la base étant rouge, on compare au lieu d'exiger zéro) ; (3) `.claude/agents/release-lead.md`
+  — agent séquentiel autonome (1 tâche = 1 commit, fait respecter les 7 invariants, pause entre phases).
+- **Résultat** : socle d'exécution prêt. Aucun code applicatif touché.
+- **Rollback** : `git revert <hash itération 21bis>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

@@ -6,7 +6,7 @@ vers les docs détaillés plutôt que les recopier.
 ## Le projet
 
 Life-simulator chrétien façon BitLife (âge 0–100) où les épreuves se résolvent en choisissant le
-**bon verset biblique**. Public : communauté francophone EJP/ICC. Stack : **React 18 + TypeScript +
+**bon verset biblique**. Public : communauté francophone EJP/ICC. Stack : **React 19 + TypeScript +
 Vite + Zustand + localforage** (PWA).
 
 - Branche de travail : **`feat/exceptional-game`**.
@@ -64,7 +64,9 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 17 | Fix — un bonus de combo conserve son annonce de journal `[COMBO xN]` | `b05095d` |
 | 18 | Déparkage feedback Supabase (clé publishable + MCP + tests hermétiques) | `67e1495` |
 | 19 | Boucle feedback live — table Supabase créée, durcie (anti-spam), vérifiée bout-en-bout | `7135262` |
-| 20 | Correctifs playtest — « +1 » de jauge discret + verset révélé même en cas d'erreur (tuto) | (ce commit) |
+| 20 | Correctifs playtest — « +1 » de jauge discret + verset révélé même en cas d'erreur (tuto) | `9bb3ea9` |
+| 21 | Assainissement lint — lots A/B/C (sûr/typage/fast-refresh), lint 67→27 | `1bdc150`/`356a6c8`/`2d01cc4` |
+| 21bis | Orchestration — `docs/ROADMAP.md` + `tools/qa-gate.sh` + agent `release-lead` | (ce commit) |
 
 **Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
 
