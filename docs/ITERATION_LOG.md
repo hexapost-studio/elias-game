@@ -131,6 +131,29 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   l'attente qui est fausse, pas le code.*
 - **Rollback** : `git revert <hash itération 5>`.
 
+### Itération 6 — Codex vivant (variété + encouragement à la révision des versets)
+- **Recherche** : 80 Days (codex vivant) — un moment RÉPÉTÉ ne doit jamais sonner deux fois
+  pareil ; le texte « vit ».
+- **Analyse** : la révision flash-card du Grimoire est le cœur évangéliste (mémoriser la
+  Parole) et le moment le plus répété du méta-jeu, or il affichait des invites FIGÉES
+  (« Appuyer pour révéler », « Essaie de réciter… ») et aucune respiration spirituelle au
+  moment de la révélation.
+- **Consensus** : un module PUR seedé PAR CARTE (via `hashSeed(verseId)` → stable, ne clignote
+  pas au re-render, mais diffère d'une carte à l'autre) qui varie les invites et ajoute un court
+  encouragement selon la catégorie d'affliction. Display-only, zéro state, réversible.
+- **Application** : ajout du primitif réutilisable `hashSeed` (FNV-1a) dans `rng.ts` ;
+  `src/engine/reviewPrompts.ts` (`reviewPromptsFor`, pur) ; branché dans `FlashCardMode`
+  (`CodexMenu.tsx`) ; tests `tests/reviewPrompts.test.ts`.
+- **Résultat** : chaque verset révisé a sa propre invite + un encouragement sur-mesure
+  (« ✦ Cette parole chasse la crainte », « ✦ Ton épée pour le combat »…). 6 tests (101 verts),
+  tsc + lint + build OK.
+- **Rétro / process** : besoin d'un hasard STABLE indexé par string (l'id de verset) sans
+  Math.random → extrait en primitif partagé (`hashSeed`) plutôt qu'enfoui dans le module, pour
+  réutilisation future (toute UI voulant un « vivant non clignotant » par id). Règle de process
+  ajoutée : *quand un besoin de hasard se répète, le remonter en primitif de `rng.ts` plutôt que
+  le dupliquer.* Patron « pur + seedé par identité d'élément » validé pour les composants React.
+- **Rollback** : `git revert <hash itération 6>`.
+
 ### Réserve (analysée, non encore planifiée)
 - **Déterminisation complète de la naissance / graine partageable** (roguelite, partie 2) :
   faire passer `generateLifeContext`/`generateParentNames`/`generateBirthStats` par le `Rng`

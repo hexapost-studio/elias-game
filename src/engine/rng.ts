@@ -46,6 +46,20 @@ export function rngPick<T>(rng: Rng, arr: readonly T[]): T {
   return arr[Math.floor(rng() * arr.length)];
 }
 
+/**
+ * Hache une chaîne en seed 32 bits (FNV-1a). Pour seeder de façon STABLE un
+ * élément identifié par une string (ex. un verset par son id) : même id → même
+ * tirage, sans état ni Math.random — donc un texte « vivant » mais non clignotant.
+ */
+export function hashSeed(str: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
 /** Tirage pondéré : items[i] a un poids weights[i] (>= 0). */
 export function rngWeightedPick<T>(rng: Rng, items: readonly T[], weights: readonly number[]): T {
   const total = weights.reduce((s, w) => s + Math.max(0, w), 0);
