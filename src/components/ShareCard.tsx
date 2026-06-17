@@ -18,6 +18,7 @@ const BIBLE_QUOTES = [
 ];
 
 interface ShareCardProps {
+  playerName: string;
   age: number;
   successRate: number;
   maxCombo: number;
@@ -28,20 +29,20 @@ interface ShareCardProps {
 }
 
 export const ShareCard: FC<ShareCardProps> = ({
-  age, successRate, maxCombo, titleName, isVictory, completedArcsCount, onClose,
+  playerName, age, successRate, maxCombo, titleName, isVictory, completedArcsCount, onClose,
 }) => {
   const [copied, setCopied] = useState(false);
   const quoteRef = useRef(BIBLE_QUOTES[Math.floor(Math.random() * BIBLE_QUOTES.length)]);
 
   const parts = [
-    `✦ La vie d'Élias ✦`,
+    `✦ La vie de ${playerName} ✦`,
     `Âge : ${age} ans${isVictory ? ' · VICTOIRE' : ''}`,
   ];
   if (titleName) parts.push(`Titre : ${titleName}`);
   parts.push(`Réussite : ${successRate}% · Combo max : ×${maxCombo}`);
   if (completedArcsCount > 0) parts.push(`Arcs complétés : ${completedArcsCount}`);
   parts.push('', `${quoteRef.current}`);
-  parts.push('', `Joue Élias ➜ https://la-vie-d-elias.jouons.cc`);
+  parts.push('', `Joue ${playerName} ➜ https://la-vie-d-elias.jouons.cc`);
   const shareText = parts.join('\n');
 
   const handleCopy = async () => {

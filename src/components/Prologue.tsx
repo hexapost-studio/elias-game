@@ -6,11 +6,14 @@
  */
 import { useState } from 'react';
 import { ChevronRight, Star } from './IconSystem';
+import { resolvePlayerName, DEFAULT_NAME, MAX_NAME_LEN } from '../engine/identity';
 
 export interface PrologueResult {
   stats: { foi: number; paix: number; physique: number; finances: number };
   profileName: string;
   storyBits: string[];
+  /** Nom du personnage saisi à la création (défaut « Élias ») — itér. 9. */
+  name: string;
 }
 
 interface Choice {
@@ -86,12 +89,18 @@ interface PrologueProps {
 }
 
 export function Prologue({ onComplete }: PrologueProps) {
+  const [naming, setNaming] = useState(true);
+  const [name, setName] = useState('');
   const [step, setStep] = useState(0);
   const [accumulated, setAccumulated] = useState<PrologueResult>({
     stats: { foi: 30, paix: 30, physique: 30, finances: 30 },
     profileName: 'Façonné par ses choix',
     storyBits: [],
+    name: DEFAULT_NAME,
   });
+
+  /** Nom retenu pour cette partie — normalisé, fallback « Élias ». */
+  const resolvedName = resolvePlayerName(name);
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
@@ -121,6 +130,7 @@ export function Prologue({ onComplete }: PrologueProps) {
         stats: newStats,
         profileName: finalProfile,
         storyBits: newBits,
+        name: resolvedName,
       });
     } else {
       setAccumulated({ stats: newStats, profileName: accumulated.profileName, storyBits: newBits });
@@ -129,6 +139,88 @@ export function Prologue({ onComplete }: PrologueProps) {
   };
 
   const progress = ((step) / STEPS.length) * 100;
+
+  // Écran d'identité — saisie du nom avant les choix (itér. 9 / proposition D).
+  if (naming) {
+    return (
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 50,
+        background: 'radial-gradient(ellipse at center, #1c1409 0%, #0a0603 100%)',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '24px 24px', animation: 'fadeIn 0.5s ease', overflowY: 'auto',
+      }}>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          padding: '3px 10px', borderRadius: 20,
+          background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)',
+          alignSelf: 'center', marginBottom: 20,
+          fontSize: 10, fontWeight: 600, color: 'var(--accent-gold)', letterSpacing: 1,
+        }}>
+          <Star size={10} strokeWidth={1.5} />
+          NAISSANCE
+        </div>
+
+        <div style={{
+          fontSize: 18, fontWeight: 700, color: 'var(--accent-gold)',
+          marginBottom: 8, fontFamily: 'var(--font-display)',
+          textAlign: 'center', letterSpacing: 0.5,
+        }}>
+          Un enfant vient au monde.
+        </div>
+        <div style={{
+          fontSize: 13, lineHeight: 1.6, color: 'var(--text-primary)',
+          marginBottom: 24, textAlign: 'center', fontStyle: 'italic', opacity: 0.85,
+        }}>
+          Quel nom portera-t-il ?
+        </div>
+
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') setNaming(false); }}
+          maxLength={MAX_NAME_LEN}
+          placeholder={DEFAULT_NAME}
+          autoFocus
+          aria-label="Nom du personnage"
+          style={{
+            padding: '14px 16px', fontSize: 18, textAlign: 'center',
+            background: 'rgba(245,158,11,0.06)',
+            border: '1px solid rgba(245,158,11,0.25)', borderRadius: 12,
+            color: 'var(--text-primary)', fontFamily: 'var(--font-display)',
+            letterSpacing: 0.5, outline: 'none', marginBottom: 8,
+          }}
+        />
+        <div style={{
+          fontSize: 10, color: 'var(--text-muted)', textAlign: 'center',
+          marginBottom: 24, minHeight: 14,
+        }}>
+          {resolvePlayerName(name) === DEFAULT_NAME && name.trim() === ''
+            ? `Laissez vide pour « ${DEFAULT_NAME} »`
+            : `Le personnage s'appellera « ${resolvePlayerName(name)} »`}
+        </div>
+
+        <button
+          onClick={() => setNaming(false)}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            padding: '14px 16px',
+            background: 'linear-gradient(90deg, #d97706, #f59e0b)',
+            border: 'none', borderRadius: 12, cursor: 'pointer',
+            color: '#1c1409', fontSize: 14, fontWeight: 700,
+            fontFamily: 'var(--font-body)', width: '100%',
+          }}
+        >
+          Commencer l'histoire
+          <ChevronRight size={16} strokeWidth={2.5} />
+        </button>
+
+        <style>{`
+          @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -254,7 +346,8 @@ export function Prologue({ onComplete }: PrologueProps) {
         onClick={() => onComplete({
           stats: { foi: 50, paix: 50, physique: 50, finances: 50 },
           profileName: 'Équilibré',
-          storyBits: ['Élias a grandi simplement, sans histoire particulière.'],
+          storyBits: [`${resolvedName} a grandi simplement, sans histoire particulière.`],
+          name: resolvedName,
         })}
         style={{
           marginTop: 12, padding: '8px 0',

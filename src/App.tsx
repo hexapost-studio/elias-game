@@ -94,6 +94,7 @@ function App() {
     inheritance,
     codex,
     stats,
+    playerName,
     lifeContext,
     parentNames,
     actionsThisYear,
@@ -418,7 +419,7 @@ function App() {
 
     const handleExportJournal = async () => {
       const lines = [
-        `=== La vie d'Élias ===`,
+        `=== La vie de ${playerName} ===`,
         `Âge : ${age} ans · Réussite : ${successRate}% · Combo max : ×${state.maxCombo}`,
         ...(title ? [`Titre : ${title.name}`] : []),
         '',
@@ -428,7 +429,7 @@ function App() {
             : `${e.age}a ✦ ${e.text}`
         ),
         '',
-        `Joue Élias ➜ ${window.location.origin}`,
+        `Joue ${playerName} ➜ ${window.location.origin}`,
       ].join('\n');
       try {
         await navigator.clipboard.writeText(lines);
@@ -606,11 +607,11 @@ function App() {
               </div>
               <div style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 8 }}>
                 {(() => {
-                  if (stats.foi > 70) return "Élias a marché avec Dieu jusqu'au bout.";
-                  if (stats.paix > 70) return "La paix d'Élias a traversé les tempêtes.";
-                  if (stats.physique > 70) return 'Élias a combattu le bon combat jusqu\'à la fin.';
-                  if (stats.finances > 70) return 'Élias a été fidèle dans les petites et grandes choses.';
-                  return "Élias a terminé sa course. La grâce l'attendait au bout du chemin.";
+                  if (stats.foi > 70) return `${playerName} a marché avec Dieu jusqu'au bout.`;
+                  if (stats.paix > 70) return `La paix de ${playerName} a traversé les tempêtes.`;
+                  if (stats.physique > 70) return `${playerName} a combattu le bon combat jusqu'à la fin.`;
+                  if (stats.finances > 70) return `${playerName} a été fidèle dans les petites et grandes choses.`;
+                  return `${playerName} a terminé sa course. La grâce l'attendait au bout du chemin.`;
                 })()}
               </div>
             </div>
@@ -650,6 +651,7 @@ function App() {
         {/* Share card modal */}
         {showShareCard && (
           <ShareCard
+            playerName={playerName}
             age={age}
             successRate={successRate}
             maxCombo={state.maxCombo}
@@ -842,7 +844,7 @@ function App() {
         >
           {journal.length === 0 ? (
             <div className="journal-empty">
-              Le voyage d'Élias commence...
+              Le voyage de {playerName} commence...
             </div>
           ) : (
             (() => {
@@ -880,7 +882,7 @@ function App() {
                   <div key={`ai-${idx}`} className={`journal-ai-entry${entry.generating ? ' generating' : ''}`}>
                     {entry.generating ? (
                       <span className="entry-age-tag">
-                        <span>{entry.age}a</span> ✦ Élias écrit dans son journal...
+                        <span>{entry.age}a</span> ✦ {playerName} écrit dans son journal...
                       </span>
                     ) : (
                       <>

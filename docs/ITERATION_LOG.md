@@ -198,6 +198,33 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   AJOUTER de dette** (lint ciblé par itération) — la base rouge globale est un chantier à part.
 - **Rollback** : `git revert <hash itération 8>`.
 
+### Itération 9 — Identité du personnage (proposition `D`)
+- **Recherche** : retour joueur n°1 — « ça ne nous ressemble pas ». Racine identifiée au cadrage
+  (cf. `docs/DESIGN_PARTIE2.md` §3) : nom codé en dur « Élias », identité 100 % `Math.random`.
+  Décision figée du dossier Partie 2 : **`D` puis `A`**. Cette itération = `D`, bornée et réversible.
+- **Analyse** : le seul vrai input joueur était les 5 choix du Prologue. Aucune saisie d'identité.
+  « Élias » apparaît en dur dans la vignette (`opening.ts`), le journal de naissance (`gameStore`),
+  les libellés de game over, l'en-tête du journal, l'export et la carte de partage (`App`/`ShareCard`).
+- **Consensus** : ajouter un **module PUR** `engine/identity.ts` (`resolvePlayerName` → défaut « Élias »
+  = zéro régression ; `personalize` gère l'élision « d'Élias » → « de {nom} »), un champ
+  `playerName` à l'état (save-compatible via le merge `hydrateFromSave`), un écran de **saisie du nom**
+  en tête du Prologue, et **propager** le nom partout où « Élias » s'affichait. Token `{nom}` dans
+  la vignette seedée → reste pur et déterministe. `initGame` **préserve** le nom au redémarrage.
+- **Application** : `engine/identity.ts` (neuf) ; `playerName` dans `types/game.ts` ;
+  `createInitialState(inh, seed, playerName?)` + token `{nom}` dans `opening.ts` ; écran d'identité +
+  `PrologueResult.name` dans `Prologue.tsx` ; `startWithPrologue` pose+personnalise, `initGame`
+  préserve dans `gameStore.ts` ; surfaces visibles dans `App.tsx`/`ShareCard.tsx`/`Journal.tsx` ;
+  `tests/identity.test.ts` (neuf, 8 cas).
+- **Résultat** : le joueur saisit son nom à la naissance (vide → « Élias », **zéro régression**) ; il
+  le voit dès l'ouverture, dans tout le journal, au game over et au partage. `tsc` + **111 tests** +
+  build verts. Aucune dette lint ajoutée (les 3 hits `ShareCard` sont pré-existants, lignes non touchées).
+- **Rétro / process** : un test de déterminisme sur le **journal complet** de `createInitialState` a
+  échoué — rappel salutaire que **ville/parents viennent encore de `Math.random`** (c'est `A`, pas `D`).
+  Recentré l'assertion sur la part réellement seedée (vignette pure). Règle confirmée : *tester
+  exactement le périmètre seedé du cycle, ne pas anticiper la déterminisation que `A` apportera.*
+  `D` ouvre naturellement `A` : le nom saisi devient une **entrée de graine partageable**.
+- **Rollback** : `git revert <hash itération 9>`.
+
 ### Réserve (analysée, non encore planifiée)
 - **Déterminisation complète de la naissance / graine partageable** (roguelite, partie 2) :
   faire passer `generateLifeContext`/`generateParentNames`/`generateBirthStats` par le `Rng`

@@ -2,6 +2,7 @@ import { useGameStore } from '../stores/gameStore';
 
 export function Journal() {
   const journal = useGameStore((s) => s.journal);
+  const playerName = useGameStore((s) => s.playerName);
 
   if (journal.length === 0) {
     return (
@@ -14,7 +15,7 @@ export function Journal() {
         fontSize: 13,
         fontStyle: 'italic',
       }}>
-        Le voyage d'Élias commence...
+        Le voyage de {playerName} commence...
       </div>
     );
   }

@@ -10,6 +10,7 @@ import {
   determineTitle,
   applyPlayerAction,
 } from '../engine/gameEngine';
+import { personalize } from '../engine/identity';
 import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
 import { trackEvent } from '../services/analytics';
 
@@ -35,8 +36,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   initGame: () => {
     const inheritance = get().inheritance;
     const used = inheritance?.used;
+    // Préserve le nom du joueur au redémarrage (itér. 9) — pas de re-saisie au restart.
     const state = createInitialState(
-      used ? { title: null, bonus: {}, used: false } : inheritance
+      used ? { title: null, bonus: {}, used: false } : inheritance,
+      undefined,
+      get().playerName
     );
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
@@ -51,14 +55,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Override RNG stats with prologue choices
     state.stats = result.stats;
     state.profileName = result.profileName;
+    state.playerName = result.name;
     state.age = 14;
-    // Prologue journal entries
+    // Prologue journal entries — narration personnalisée au nom du joueur (itér. 9).
+    const name = result.name;
     const storyEntries = result.storyBits.map((text) => ({
-      age: 0, text: `✦ ${text}`, type: 'milestone' as const,
+      age: 0, text: `✦ ${personalize(text, name)}`, type: 'milestone' as const,
     }));
     const introEntry = {
       age: 0,
-      text: `[NAISSANCE] Élias est né à ${state.lifeContext.city}. Ses parents : ${state.parentNames.father} et ${state.parentNames.mother}. Profil: ${result.profileName}.`,
+      text: `[NAISSANCE] ${name} est né à ${state.lifeContext.city}. Ses parents : ${state.parentNames.father} et ${state.parentNames.mother}. Profil: ${result.profileName}.`,
       type: 'milestone' as const,
     };
     state.journal = [introEntry, ...storyEntries];

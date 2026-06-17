@@ -208,6 +208,8 @@ export type PlayerAction = 'pray' | 'fast' | 'serve' | 'call_friend' | 'read_wor
 export interface GameState {
   age: number;
   stats: Record<StatName, number>;
+  /** Nom du personnage — saisi à la création, défaut « Élias » (itér. 9 / proposition D). */
+  playerName: string;
   profileName: string;       // Profil de naissance
   parentNames: { father: string; mother: string };
   lifeContext: LifeContext;

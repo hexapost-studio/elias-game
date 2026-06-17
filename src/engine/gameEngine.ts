@@ -26,6 +26,7 @@ import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, type Rng } from './rng';
 import { revealsAtAge } from './reveals';
 import { generateOpeningVignette } from './opening';
+import { resolvePlayerName } from './identity';
 import type { Calling, EarnedTrait } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
@@ -295,10 +296,11 @@ export function recordVerseError(
 
 /* ─── ÉTAT INITIAL ─── */
 
-export function createInitialState(inheritance?: Inheritance, forcedSeed?: number): GameState {
+export function createInitialState(inheritance?: Inheritance, forcedSeed?: number, playerName?: string): GameState {
   // Seed de run + PRNG seedé pour la « colonne vertébrale » (Appel, saisons, traits).
   const seed = forcedSeed ?? makeSeed();
   const rng: Rng = mulberry32(seed);
+  const name = resolvePlayerName(playerName);
 
   const { stats, profileName } = generateBirthStats();
   const parentNames = generateParentNames();
@@ -319,6 +321,7 @@ export function createInitialState(inheritance?: Inheritance, forcedSeed?: numbe
 
   const state: GameState = {
     age: 0,
+    playerName: name,
     profileName,
     parentNames,
     lifeContext,
@@ -337,7 +340,7 @@ export function createInitialState(inheritance?: Inheritance, forcedSeed?: numbe
     journal: [
       {
         age: 0,
-        text: `${generateOpeningVignette({ city: lifeContext.city, calling }, rng)} Ses parents, ${parentNames.father} et ${parentNames.mother}, l'accueillent ; il grandira vers ${lifeContext.profession}.${
+        text: `${generateOpeningVignette({ city: lifeContext.city, calling, name }, rng)} Ses parents, ${parentNames.father} et ${parentNames.mother}, l'accueillent ; il grandira vers ${lifeContext.profession}.${
           inheritance?.title
             ? ` Héritage : « ${inheritance.title.name} » (bonus actif).`
             : ''

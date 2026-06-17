@@ -14,11 +14,11 @@ import type { Calling } from '../types/game';
 import type { Rng } from './rng';
 
 const ATMOSPHERE = [
-  'Le jour se lève sur {ville}. Un enfant y ouvre les yeux : Élias.',
-  'À {ville}, un nouveau souffle s\'élève — Élias vient au monde.',
-  'C\'est à {ville} que tout commence pour Élias.',
-  'Une lumière de plus s\'allume à {ville} : Élias est né.',
-  'Dans le matin calme de {ville}, le premier cri d\'Élias résonne.',
+  'Le jour se lève sur {ville}. Un enfant y ouvre les yeux : {nom}.',
+  'À {ville}, un nouveau souffle s\'élève — {nom} vient au monde.',
+  'C\'est à {ville} que tout commence pour {nom}.',
+  'Une lumière de plus s\'allume à {ville} : {nom} est né.',
+  'Dans le matin calme de {ville}, le premier cri de {nom} résonne.',
 ];
 
 const CALLING_HINT = [
@@ -40,14 +40,18 @@ function pick(rng: Rng, arr: readonly string[]): string {
 export interface OpeningContext {
   city: string;
   calling: Calling;
+  /** Nom du personnage — défaut « Élias » si non fourni (itér. 9). */
+  name?: string;
 }
 
 /**
  * Compose la vignette d'ouverture (1–2 phrases). Seedée → reproductible par run.
- * Ne remplit que {ville}/{of}/{tagline} ; les autres slots restent au narrateur.
+ * Ne remplit que {ville}/{nom}/{of}/{tagline} ; les autres slots restent au narrateur.
  */
 export function generateOpeningVignette(ctx: OpeningContext, rng: Rng): string {
-  const atmosphere = pick(rng, ATMOSPHERE).replace(/\{ville\}/g, ctx.city);
+  const atmosphere = pick(rng, ATMOSPHERE)
+    .replace(/\{ville\}/g, ctx.city)
+    .replace(/\{nom\}/g, ctx.name ?? 'Élias');
   const hint = pick(rng, CALLING_HINT)
     .replace(/\{of\}/g, aOf(ctx.calling))
     .replace(/\{tagline\}/g, ctx.calling.tagline.toLowerCase());
