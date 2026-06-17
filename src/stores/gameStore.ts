@@ -11,6 +11,7 @@ import {
   applyPlayerAction,
 } from '../engine/gameEngine';
 import { personalize } from '../engine/identity';
+import { revealsUpToAge } from '../engine/reveals';
 import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
 import { trackEvent } from '../services/analytics';
 
@@ -82,7 +83,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       text: `[NAISSANCE] ${name} est né à ${state.lifeContext.city}. Ses parents : ${state.parentNames.father} et ${state.parentNames.mother}. Profil: ${result.profileName}.`,
       type: 'milestone' as const,
     };
-    state.journal = [introEntry, ...storyEntries];
+    // Feedback précoce (itér. 15) : le Prologue démarre à 14 ans et sauterait les annonces
+    // de capacités déjà actives (ActionPanel dès 8, saisons dès 10). On les rattrape ici pour
+    // que le joueur connaisse le mode d'emploi des mécaniques disponibles dès la 1ʳᵉ année jouée.
+    const caughtUpReveals = revealsUpToAge(state.age).map((r) => ({
+      age: 0, text: personalize(r.text, name), type: 'milestone' as const,
+    }));
+    state.journal = [introEntry, ...storyEntries, ...caughtUpReveals];
     state.difficulty = 2 as const; // Skip easy mode — prologue already prepared them
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});

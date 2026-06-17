@@ -386,6 +386,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   vu + save) inchangés. Pas de régression.
 - **Rollback** : `git revert <hash itération 14>`.
 
+### Itération 15 — Feedback précoce (le Prologue rattrape les capacités déjà acquises)
+- **Recherche** : suite à l'itér. 14, la 1ʳᵉ vie passe par le Prologue, qui démarre à **14 ans**. Or
+  les révélations de capacités (`reveals.ts`, système « l'univers s'étend » façon *A Dark Room*) se
+  déclenchent à l'âge EXACT (`revealsAtAge`, `r.age === newAge`). Un joueur Prologue ne franchit donc
+  jamais 8 ni 10 → il rate **[ÉVEIL]** (l'`ActionPanel` prier/jeûner/servir/lire, pourtant affiché dès
+  `age >= 8`, donc présent à 14) et **[SAISONS]**. Il a l'outil d'agentivité central **sans mode
+  d'emploi** : c'est le « manque de feedback/récompense précoce » du feedback joueur.
+- **Analyse** : rattraper au handoff du Prologue les paliers déjà actifs (≤ âge de départ), en
+  réutilisant les textes + l'UI journal `milestone` existants. Pas de doublon (le joueur ne re-franchit
+  jamais 8/10) ; les paliers futurs (16/51/60) arrivent naturellement par `advanceAge`. Seul
+  `startWithPrologue` (âge 14) est concerné — les parties par graine/restart démarrent à 0 et franchissent
+  8/10 normalement.
+- **Application** : helper pur neuf `reveals.ts revealsUpToAge(age)` (paliers ≤ age). Dans
+  `gameStore.startWithPrologue`, on append `revealsUpToAge(state.age)` au journal de naissance,
+  personnalisé au nom du joueur. `tests/reveals.test.ts` : +4 cas (rattrape 8 & 10 à 14 ; jamais 16/51/60 ;
+  rien avant 8 ; borne ≤ inclusive à 8).
+- **Résultat** : dès la fin du Prologue, le joueur lit [ÉVEIL] (à quoi sert l'`ActionPanel`) et [SAISONS]
+  juste avant sa 1ʳᵉ année jouée. 149 tests verts (+4), tsc + build + `npm run validate` (186 events) OK,
+  **zéro** dette lint (`reveals.ts`/`gameStore.ts`/test à 0). Logique pure testée ; le store ne fait que mapper.
+- **Rollback** : `git revert <hash itération 15>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

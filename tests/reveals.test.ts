@@ -3,7 +3,7 @@
  * @description Révélations de capacités — table déclarative + intégration advanceAge.
  */
 import { describe, it, expect } from 'vitest';
-import { CAPABILITY_REVEALS, revealsAtAge } from '../src/engine/reveals';
+import { CAPABILITY_REVEALS, revealsAtAge, revealsUpToAge } from '../src/engine/reveals';
 import { createInitialState, advanceAge } from '../src/engine/gameEngine';
 
 describe('revealsAtAge — table déclarative', () => {
@@ -20,6 +20,28 @@ describe('revealsAtAge — table déclarative', () => {
 
   it('un âge sans palier ne révèle rien', () => {
     expect(revealsAtAge(33)).toHaveLength(0);
+  });
+});
+
+describe('revealsUpToAge — rattrapage du handoff Prologue (itér. 15)', () => {
+  it('à 14 ans (départ Prologue) rattrape les paliers déjà actifs : 8 et 10', () => {
+    const ups = revealsUpToAge(14);
+    expect(ups.map((r) => r.age).sort((a, b) => a - b)).toEqual([8, 10]);
+  });
+
+  it('n\'inclut jamais un palier futur (16/51/60) au départ', () => {
+    const ages = revealsUpToAge(14).map((r) => r.age);
+    expect(ages).not.toContain(16);
+    expect(ages).not.toContain(51);
+    expect(ages).not.toContain(60);
+  });
+
+  it('avant tout palier (âge 7) ne rattrape rien', () => {
+    expect(revealsUpToAge(7)).toHaveLength(0);
+  });
+
+  it('inclut le palier pile à son âge (borne ≤)', () => {
+    expect(revealsUpToAge(8).map((r) => r.age)).toEqual([8]);
   });
 });
 

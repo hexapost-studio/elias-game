@@ -51,3 +51,14 @@ export const CAPABILITY_REVEALS: Reveal[] = [
 export function revealsAtAge(age: number): Reveal[] {
   return CAPABILITY_REVEALS.filter((r) => r.age === age);
 }
+
+/**
+ * Révélations DÉJÀ actives à un âge donné (paliers ≤ age). Sert au handoff du Prologue
+ * (itér. 15) : il démarre la vie à 14 ans, sautant les paliers 8 ([ÉVEIL]/ActionPanel) et
+ * 10 ([SAISONS]) que `advanceAge` n'annonce qu'au franchissement exact. On rattrape ainsi
+ * le mode d'emploi des mécaniques déjà disponibles. Les paliers futurs (16/51/60) viendront
+ * naturellement en jouant — pas de doublon (le joueur ne re-franchit jamais 8/10).
+ */
+export function revealsUpToAge(age: number): Reveal[] {
+  return CAPABILITY_REVEALS.filter((r) => r.age <= age);
+}
