@@ -43,7 +43,7 @@ Référence visuelle de branchement (à garder en tête pour `B`) :
 |---|---|---|---|---|---|
 | **D** | **Identité du personnage** (saisir un nom, semer l'identité) | Moyen, borné | Faible | **Fort** (racine du retour « ça ne nous ressemble pas ») | ✅ **LIVRÉ** (itér. 9) |
 | **A** | **Graines partageables** (déterminiser toute la naissance) | Moyen, moteur | Moyen | Fort (rejouabilité, « rejoue ma vie ») | ✅ **LIVRÉ** (itér. 10) |
-| **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | **PROCHAIN** (smart skip ✅ itér. 11) |
+| **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | 🟡 **B-1 LIVRÉ** (itér. 12 : moteur flags + branchement + DFS + arc-louise) ; **B-2 visualizer = PROCHAIN** (itér. 13) |
 | **C** | **Assainissement lint global** (~60 `set-state-in-effect`) | Gros, fastidieux | Élevé | Nul côté joueur (qualité) | Chantier à part |
 
 > Pourquoi `D` puis `A` : `D` adresse le retour joueur n°1 et est borné/peu risqué ; `A` le
@@ -60,12 +60,12 @@ lieux honnête (à re-vérifier dans le code avant d'agir — cf. `[[feedback-co
 
 | Feature | Rôle narratif | Élias aujourd'hui | Action |
 |---|---|---|---|
-| **State tracking (variables silencieuses)** | Se « souvenir » d'un choix mineur pour altérer plus tard | ✅ Partiel : `traits`, `completedArcs`, `codex`, échos (itér. 2) | Étendre avec `B` (flags de conséquence) |
+| **State tracking (variables silencieuses)** | Se « souvenir » d'un choix mineur pour altérer plus tard | ✅ `traits`, `completedArcs`, `codex`, échos (itér. 2) **+ `state.flags` de conséquence (itér. 12)** | ✅ étendu par `B-1` |
 | **Log / Backlog** | Retrouver le contexte, anti-clic-trop-vite | ✅ Journal existant (scroll arrière) | Vérifier profondeur ; OK a priori |
 | **Smart Skip / Fast-forward** | S'arrête au texte **non lu** → rejouabilité | ✅ **LIVRÉ (itér. 11)** : système « texte déjà-lu → instantané, neuf → animé + ✦ nouveau » par empreinte de contenu (`settings/seenText.ts`) | — |
-| **Goulets d'étranglement** | Illusion de liberté sans explosion combinatoire | ❌ Pas de branches → non applicable tant que `B` n'est pas fait | Cœur de `B` |
+| **Goulets d'étranglement** | Illusion de liberté sans explosion combinatoire | ✅ **LIVRÉ (itér. 12)** : modèle « spine + variantes hors-spine », `eventIds[]` = goulets de convergence (arc-louise diverge séq 3, converge séq 4) | Cœur de `B-1` ✅ |
 | **Save-scumming (slots multiples)** | Oser les choix risqués | ⚠️ 1 sauvegarde auto (localforage) | À évaluer avec `B` (sinon peu utile en procédural) |
-| **Branching Visualizer** | Biais de complétion (voir les chemins grisés) | ❌ | Cible de `B` (forme = graphe *Academical*) |
+| **Branching Visualizer** | Biais de complétion (voir les chemins grisés) | ❌ | **Cible de `B-2` (itér. 13)** : `ArcTracker.tsx` piloté par `state.flags`+`answeredArcEventIds` (forme = graphe *Academical*) |
 | **Flavor text (« le mythe du choix »)** | Choix A et B → même résultat, mais phrase d'intro adaptée. Coût `if/else`, impact immersion massif | ✅ Très présent : réactions victoire/revers (itér. 4/7), codex vivant (itér. 6), vignette (itér. 5) | **C'est notre force actuelle — continuer** |
 | **Pacing par le clic** | Isoler une phrase/un mot sur écran vide = impact dramatique impossible en littérature | ✅ Amorcé par le typewriter (itér. 1) | Exploiter dans `B` pour les beats forts |
 
@@ -126,11 +126,23 @@ départ attendues pour un seed fixe). Garde anti-régression obligatoire.
 
 ---
 
-## 5. `B` — Conséquences ramifiées (reporté, mais cadré)
+## 5. `B` — Conséquences ramifiées (🟡 B-1 livré itér. 12 ; B-2 visualizer = itér. 13)
 
 Le plus « exceptionnel » : un choix narratif qui **altère durablement** la run. C'est ici
 qu'entrent le **graphe**, les **goulets d'étranglement** et la **visualisation** (réf.
 *Academical*/Twine au §0). C'est aussi là que les **algorithmes de graphe** servent vraiment.
+
+> **État (itér. 12) — `B-1` headless livré.** Implémentation **plus légère** que l'esquisse
+> `StoryNode`/`StoryEdge` ci-dessous : pas de nouveau type de graphe en données, on **greffe** le
+> branchement sur l'existant. (1) Flags de conséquence : `state.flags: Record<string,boolean>`,
+> posés par `setsFlagsOnSuccess?/OnFail?` dans `validateChoice`, lus par `EventRequirement` `kind:'flag'`.
+> (2) Modèle **« spine canonique + variantes hors-spine »** : `arc.eventIds[]` reste un id par position
+> (les goulets de convergence) ; les variantes partagent `storyArcId`+`arcSequence` mais sont hors
+> `eventIds` ; le helper pur `isArcStepUnlocked` déverrouille « une étape N-1 répondue » (robuste aux
+> variantes). (3) Validation = `engine/storyGraph.ts` `validateStoryGraph()` (DFS itératif LIFO, cf. §5.2),
+> en garde CI (`tests/storyGraph.test.ts`). Arc exemplaire **arc-louise** : réussir/échouer la séquence 2
+> aiguille deux variantes de séquence 3 (`arc-louise-3` apaisé / `arc-louise-3-hard` exigeant) qui
+> convergent sur `arc-louise-4`. **Reste B-2** : le visualizer (`ArcTracker.tsx`).
 
 ### 5.1 Modèle (léger, modulaire, sans casser le procédural)
 On **ne remplace pas** la simulation par un graphe global. On introduit des **arcs ramifiés

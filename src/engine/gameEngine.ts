@@ -356,6 +356,7 @@ export function createInitialState(inheritance?: Inheritance, forcedSeed?: numbe
     recentEventIds: [],
     recentVerseIds: [],
     answeredArcEventIds: [],
+    flags: {},
     consecutiveFails: 0,
     reliefActive: false,
     spiritualSeason: 'Réveil' as SpiritualSeasonName,
@@ -703,7 +704,7 @@ function filterEventsByStats(
  * Filtre les événements selon leurs prérequis (système d'arbre de déblocage).
  * Un event avec des prerequisites[] caché tant que toutes les conditions ne sont pas remplies.
  */
-function filterEventsByPrerequisites(
+export function filterEventsByPrerequisites(
   events: AfflictionEvent[],
   state: GameState
 ): AfflictionEvent[] {
@@ -738,10 +739,35 @@ function filterEventsByPrerequisites(
           return unlockedVerses.has(req.verseId);
         case 'arc_completed':
           return completedArcIds.has(req.arcId);
+        case 'flag':
+          // Branchement narratif (B) : le flag de conséquence doit valoir la valeur attendue.
+          return (state.flags?.[req.flagId] ?? false) === (req.value ?? true);
         default:
           return true;
       }
     });
+  });
+}
+
+/**
+ * Prédicat de déverrouillage d'une étape d'arc (Ajustement A — branchement B).
+ * Pur : ne dépend que de l'état. Une étape N>1 est ouverte si l'arc est en cours ET qu'UN
+ * event répondu de cet arc était à la séquence N-1 — robuste aux variantes hors-spine (même
+ * arcSequence, absentes de `eventIds`). Équivaut au déverrouillage par id positionnel pour les
+ * arcs linéaires (un event par séquence). Les events hors-arc retournent false ; l'exclusion des
+ * arcs déjà terminés reste à la charge de l'appelant.
+ */
+export function isArcStepUnlocked(state: GameState, e: AfflictionEvent): boolean {
+  if (!e.storyArcId || !e.arcSequence) return false;
+  // Séquence 1 : arc non encore commencé
+  if (e.arcSequence === 1) {
+    return !state.encounteredArcIds.includes(e.storyArcId);
+  }
+  // Séquence N > 1 : l'arc doit être en cours ET l'étape précédente avoir été répondue.
+  if (!state.encounteredArcIds.includes(e.storyArcId)) return false;
+  return (state.answeredArcEventIds ?? []).some((id) => {
+    const ev = getEventById(id);
+    return ev?.storyArcId === e.storyArcId && ev?.arcSequence === e.arcSequence! - 1;
   });
 }
 
@@ -791,16 +817,8 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     if (!e.storyArcId || !e.arcSequence) return false;
     // Ignorer les événements des arcs déjà terminés
     if (completedArcEventIds.includes(e.id)) return false;
-    // Séquence 1 : arc non encore commencé
-    if (e.arcSequence === 1) {
-      return !state.encounteredArcIds.includes(e.storyArcId);
-    }
-    // Séquence N > 1 : l'arc doit être en cours ET l'event précédent doit avoir été répondu
-    if (!state.encounteredArcIds.includes(e.storyArcId)) return false;
-    const arc = getArcById(e.storyArcId);
-    if (!arc) return false;
-    const prevEventId = arc.eventIds[e.arcSequence - 2];
-    return (state.answeredArcEventIds ?? []).includes(prevEventId);
+    // Déverrouillage séquentiel robuste aux variantes de branche (Ajustement A — voir helper).
+    return isArcStepUnlocked(state, e);
   });
 
   // SRS: priorité aux versets avec erreurs
@@ -961,6 +979,14 @@ export function validateChoice(
       },
     ];
 
+    // Flags de conséquence (B) : le succès pose les flags déclarés → branchement narratif.
+    if (event.setsFlagsOnSuccess?.length) {
+      newState.flags = {
+        ...(state.flags ?? {}),
+        ...Object.fromEntries(event.setsFlagsOnSuccess.map((f) => [f, true])),
+      };
+    }
+
     // Arc narratif: tracker complétion (la rencontre est tracée plus bas, hors du bloc correct)
     if (event.storyArcId && event.arcSequence) {
       const arc = getArcById(event.storyArcId);
@@ -1068,6 +1094,14 @@ export function validateChoice(
         verseRef: verse.reference,
       },
     ];
+
+    // Flags de conséquence (B) : l'échec peut ouvrir une autre branche (jamais un « mauvais » flag punitif).
+    if (event.setsFlagsOnFail?.length) {
+      newState.flags = {
+        ...(state.flags ?? {}),
+        ...Object.fromEntries(event.setsFlagsOnFail.map((f) => [f, true])),
+      };
+    }
   }
 
   // Burnout rate update

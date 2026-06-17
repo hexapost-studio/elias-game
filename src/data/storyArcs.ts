@@ -11,7 +11,7 @@ export const STORY_ARCS: StoryArc[] = [
     id: 'arc-louise',
     name: 'Le pardon de Louise',
     description: 'Une ancienne amie réapparaît et une blessure du passé doit être guérie.',
-    eventIds: ['arc-louise-1', 'arc-louise-2', 'arc-louise-3'],
+    eventIds: ['arc-louise-1', 'arc-louise-2', 'arc-louise-3', 'arc-louise-4'],
     rewardVerseId: 'v-amer-004',
     rewardTitle: 'Le Réconciliateur',
   },

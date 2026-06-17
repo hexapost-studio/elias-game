@@ -125,7 +125,8 @@ export type EventRequirement =
   | { kind: 'event_succeeded'; eventId: string }       // Event doit avoir été réussi
   | { kind: 'verse_unlocked'; verseId: string }         // Verset doit être débloqué dans le Codex
   | { kind: 'arc_completed'; arcId: string }            // Arc doit être terminé
-  | { kind: 'event_failed'; eventId: string };          // Event doit avoir échoué (rédemption)
+  | { kind: 'event_failed'; eventId: string }           // Event doit avoir échoué (rédemption)
+  | { kind: 'flag'; flagId: string; value?: boolean };  // Flag de conséquence posé/absent (défaut value=true)
 
 export interface AfflictionEvent {
   id: string;
@@ -155,6 +156,10 @@ export interface AfflictionEvent {
   maxStat?: Partial<Record<StatName, number>>;
   /** Liste de prérequis : tous doivent être remplis pour que l'event apparaisse */
   prerequisites?: EventRequirement[];
+  /** Flags de conséquence posés (→ true) si l'event est réussi — pour le branchement narratif (B). */
+  setsFlagsOnSuccess?: string[];
+  /** Flags de conséquence posés (→ true) si l'event est échoué. */
+  setsFlagsOnFail?: string[];
   /** Relation minimum avec {ami} pour que cet event apparaisse */
   minAmiRelationship?: number;
   /**
@@ -245,6 +250,8 @@ export interface GameState {
   recentVerseIds: string[];
   /** IDs des événements d'arc déjà répondus — permet d'enforcer l'ordre séquentiel des arcs */
   answeredArcEventIds: string[];
+  /** Flags de conséquence posés par les choix — moteur du branchement narratif (B / itér. 12). */
+  flags: Record<string, boolean>;
   /** Nombre de fails consécutifs — réinitialisé au premier succès */
   consecutiveFails: number;
   /** True quand le correcteur de frustration est actif — force un événement de grâce */

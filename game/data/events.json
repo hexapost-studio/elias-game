@@ -1337,6 +1337,9 @@
     "cascadeEventId": "arc-louise-2-c",
     "storyArcId": "arc-louise",
     "arcSequence": 2,
+    "setsFlagsOnSuccess": [
+      "louise_pardonnee"
+    ],
     "minStat": {
       "paix": 20
     },
@@ -1385,6 +1388,13 @@
     "thematicFlavor": "La paix retrouvée",
     "storyArcId": "arc-louise",
     "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "flag",
+        "flagId": "louise_pardonnee",
+        "value": true
+      }
+    ],
     "minStat": {
       "paix": 25
     },
@@ -1403,6 +1413,62 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
+    }
+  },
+  {
+    "id": "arc-louise-3-hard",
+    "title": "Le chemin plus long",
+    "description": "La rencontre n'a pas effacé la blessure d'un coup. Le silence est retombé, plus lourd. Mais tu refuses de laisser l'amertume reprendre racine en toi. Tu choisis, jour après jour, de bénir Louise dans la prière, même de loin. La guérison sera plus lente — la grâce, elle, ne t'a pas quitté.",
+    "ageRange": [
+      32,
+      47
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "thematicFlavor": "Persévérer dans la grâce",
+    "storyArcId": "arc-louise",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "flag",
+        "flagId": "louise_pardonnee",
+        "value": false
+      }
+    ],
+    "decoyVerseIds": [],
+    "statImpactOnSuccess": {
+      "paix": 2
+    }
+  },
+  {
+    "id": "arc-louise-4",
+    "title": "Des années plus tard",
+    "description": "Le temps a passé. Que la route ait été courte ou longue, le Seigneur a achevé son œuvre : la blessure s'est refermée, et là où il y avait une racine d'amertume pousse maintenant une amitié rendue. Tu racontes parfois cette histoire à ceux qui désespèrent de pardonner — comme un témoignage vivant de sa fidélité.",
+    "ageRange": [
+      33,
+      55
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-010",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "thematicFlavor": "Restauration et témoignage",
+    "storyArcId": "arc-louise",
+    "arcSequence": 4,
+    "decoyVerseIds": [],
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 2
     }
   },
   {

@@ -295,6 +295,45 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   un miroir en `state` (rappel du patron « dériver plutôt qu'ajouter du state »).
 - **Rollback** : `git revert <hash itération 11>`.
 
+### Itération 12 — Conséquences ramifiées `B-1` (moteur headless du branchement)
+- **Recherche** : `B` est le plus gros levier d'exception (cf. `DESIGN_PARTIE2.md` §5). Constat de
+  code : les 11 arcs (`storyArcs.ts`) sont **strictement linéaires** (`eventIds[]` + `arcSequence`) ;
+  l'unique canal de branchement-par-choix existant (`EventRequirement` `event_succeeded`/`event_failed`)
+  est **de fait cassé** — `filterEventsByPrerequisites` matche `journal.text.includes(id.substring(0,12))`,
+  or le journal n'embarque que le **titre**, jamais l'id → ne matche jamais de façon fiable. Manque aussi
+  toute **validation de cohérence** (contenu mort derrière un flag jamais posé).
+- **Analyse** : livrer le **système headless** d'abord (flags + branchement + validation DFS + 1 arc
+  exemplaire), visualizer reporté à l'itér. 13 (choix utilisateur, 2 options présentées). Garde le commit
+  en `.ts`/`.json`/tests → dette lint triviale (la base react-hooks vit dans les `.tsx`, non touchés).
+- **Décisions d'archi** : (1) divergence pilotée par le **CHOIX** (succès/échec), **jamais** par le RNG →
+  préserve le déterminisme des graines ; (2) **« spine canonique + variantes hors-spine »** —
+  `eventIds[]` reste un id par position (le **goulet** de convergence), les variantes partagent
+  `storyArcId`+`arcSequence` mais sont **hors** `eventIds` (précédent : les cascades `-c`) ; un seul
+  **Ajustement A** rend le déverrouillage robuste (« étape N-1 répondue » = un event répondu de l'arc
+  était à la séquence N-1, au lieu d'un id positionnel) ; (3) **flags > réparer le hack journal** :
+  `state.flags` posés déterministe­ment ; (4) **grâce, pas punition** : l'échec ne pose pas de « mauvais
+  flag », il n'ouvre que la variante plus exigeante (absence de flag = chemin plus humble, jamais avilissant).
+- **Application** : type `EventRequirement` + `flag` ; `setsFlagsOnSuccess?/OnFail?` + `GameState.flags` ;
+  `createInitialState.flags={}` + whitelist `saveGame` (sinon perdu) ; pose des flags dans `validateChoice`
+  (branches succès/échec, additif, gardes `?? {}`) ; lecture `case 'flag'` dans `filterEventsByPrerequisites`
+  (exporté pour test) ; **Ajustement A** extrait en helper pur **exporté** `isArcStepUnlocked` (dédupliqué
+  depuis `generateEvent`). Contenu exemplaire **arc-louise** (spine→4) : `arc-louise-2` succès pose
+  `louise_pardonnee` ; `arc-louise-3` (apaisé) gardé `flag:true` ; **neuf** `arc-louise-3-hard` (hors-spine,
+  `flag:false`, le chemin plus long) ; **neuf** `arc-louise-4` (séq 4 = goulet, épilogue partagé +
+  complétion). Module pur neuf `engine/storyGraph.ts` : `validateStoryGraph(arcs, events)` — **DFS
+  itératif (pile LIFO, jamais récursif)** validant atteignabilité / absence d'orphelin / cohérence des
+  flags (pas de contenu mort). `tests/storyGraph.test.ts` (neuf, 13 cas : garde CI sur données réelles +
+  cas synthétiques d'échec + pose/branchement/convergence/déterminisme/non-régression linéaire).
+- **Résultat** : un choix narratif (réussir vs échouer `arc-louise-2`) altère **durablement** la run et
+  aiguille deux variantes de séquence 3 qui **convergent** sur `arc-louise-4`. 139 tests verts (13 neufs),
+  tsc + build + `npm run validate` (186 events) OK, **zéro** dette lint ajoutée (les `.ts` touchés
+  restent 11→11 ; `storyGraph.ts` & tests = 0). Réversible : 1 commit.
+- **Rétro / process** : plutôt qu'exposer l'inline de `generateEvent` aux tests, le prédicat d'Ajustement A
+  a été **extrait** en helper pur exporté (`isArcStepUnlocked`) — testable **et** dédupliqué (« systèmes
+  pas features »). Le branchement se teste à deux niveaux purs : `filterEventsByPrerequisites` (aiguillage
+  par flag) + `isArcStepUnlocked` (convergence), sans dépendre du RNG de `generateEvent`.
+- **Rollback** : `git revert <hash itération 12>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

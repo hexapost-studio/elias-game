@@ -42,6 +42,7 @@ export async function saveGame(state: GameState): Promise<void> {
     completedArcs: state.completedArcs,
     encounteredArcIds: state.encounteredArcIds,
     answeredArcEventIds: state.answeredArcEventIds,
+    flags: state.flags,
     recentEventIds: state.recentEventIds,
     recentVerseIds: state.recentVerseIds,
     consecutiveFails: state.consecutiveFails,
