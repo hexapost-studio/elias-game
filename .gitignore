@@ -5,3 +5,7 @@ dist/
 .env
 .env.local
 .vercel
+
+# Agent skills installés localement (npx skills add) — ré-installables, hors app
+.agents/
+.claude/skills/
