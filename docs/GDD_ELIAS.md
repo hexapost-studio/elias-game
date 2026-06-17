@@ -603,10 +603,13 @@ create table public.feedback (
   contact text,
   diagnostics jsonb,
   app_version text,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  -- Anti-spam : borne la taille du message (l'endpoint REST est ouvert à anon,
+  -- donc un POST direct contourne le cap UI de 1000 car.). btrim rejette le blanc.
+  constraint feedback_message_len check (char_length(btrim(message)) between 1 and 4000)
 );
 alter table public.feedback enable row level security;
--- Insert anonyme autorisé (clé anon), aucune lecture publique :
+-- Insert anonyme autorisé (clé anon / publishable), aucune lecture publique :
 create policy "anon insert feedback" on public.feedback
   for insert to anon with check (true);
 ```

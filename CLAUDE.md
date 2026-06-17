@@ -62,7 +62,8 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 15 | Feedback précoce — le Prologue rattrape [ÉVEIL]/[SAISONS] (mode d'emploi ActionPanel) | `d59310a` |
 | 16 | Récompense de collection — chaque verset qui rejoint le Grimoire est célébré (`[GRIMOIRE]`) | `117ae97` |
 | 17 | Fix — un bonus de combo conserve son annonce de journal `[COMBO xN]` | `b05095d` |
-| 18 | Déparkage feedback Supabase (clé publishable + MCP + tests hermétiques) | (ce commit) |
+| 18 | Déparkage feedback Supabase (clé publishable + MCP + tests hermétiques) | `67e1495` |
+| 19 | Boucle feedback live — table Supabase créée, durcie (anti-spam), vérifiée bout-en-bout | (ce commit) |
 
 **Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
 
@@ -72,6 +73,5 @@ npm run validate      # validateur de données (118 versets, 186 events)
 - ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
   récompense précoce, micro-feedback dans les toutes premières années.
 - **Save-scumming / slots multiples** (à évaluer en contexte procédural).
-- ~~**Feedback/bug-report Supabase**~~ → **câblé itér. 18** (clé publishable dans `.env.local`, MCP
-  `supabase` ajouté). Reste hors-code : authentifier le MCP (`/mcp`) + créer la table `feedback`
-  (SQL dans `GDD_ELIAS.md`).
+- ~~**Feedback/bug-report Supabase**~~ → **livré itér. 18 + infra close** (clé publishable dans
+  `.env.local`, MCP `supabase` authentifié, table `feedback` créée — RLS activé, insert anonyme).

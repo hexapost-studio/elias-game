@@ -466,6 +466,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   la table `feedback` + policy `anon insert` (RLS) — SQL prêt dans le GDD.
 - **Rollback** : `git revert <hash itération 18>` (+ retirer le bloc Supabase de `.env.local`).
 
+### Itération 19 — Boucle feedback live (infra Supabase close)
+- **Recherche** : l'itér. 18 avait câblé le code mais laissé deux étapes hors-code à l'utilisateur :
+  authentifier le MCP `supabase` et créer la table `feedback`. Une fois le MCP authentifié, la boucle
+  pouvait enfin être fermée et vérifiée bout-en-bout (jusqu'ici le feedback retombait sur la file locale).
+- **Application** (DB via MCP — pas de code applicatif touché) : (1) table `public.feedback` créée,
+  schéma conforme à `toRow()` du service (`kind/message/contact/diagnostics/app_version/created_at`) ;
+  (2) RLS activé + policy `anon insert feedback` (insert anonyme, **aucune** lecture publique) ;
+  (3) contrainte anti-spam `feedback_message_len` (`char_length(btrim(message)) between 1 and 4000`) —
+  l'endpoint REST est ouvert à `anon`, donc un POST direct contourne le cap UI de 1000 car. ;
+  (4) docs : `GDD_ELIAS.md` (annexe SQL durcie) + `CLAUDE.md` (réserve close).
+- **Vérification bout-en-bout** : POST anonyme réel (clé publishable, chemin exact de `postToSupabase`)
+  → **HTTP 201** ; lecture de contrôle → ligne présente ; POST message blanc → **HTTP 400** (contrainte
+  OK) ; ligne de test supprimée → table à 0. Advisors sécurité : 1 WARN `rls_policy_always_true` attendu
+  et assumé (insert anon volontaire). Migrations enregistrées dans l'historique Supabase.
+- **Résultat** : le feedback in-game part **réellement** vers Supabase. Aucun code applicatif modifié →
+  157 tests inchangés, tsc/build/validate inchangés. Repli local intact si la config disparaît.
+- **Rollback** : `git revert <hash itération 19>` (docs) ; côté DB `drop table public.feedback;` ou
+  reset de migration `20260617173941` / `20260617130015`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
