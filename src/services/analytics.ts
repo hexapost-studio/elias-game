@@ -48,5 +48,5 @@ export function analyzeDeaths(): string {
 
 // Exposer dans la console pour debug
 if (typeof window !== 'undefined') {
-  import('./analytics').then(mod => { (window as any).__eliasAnalytics = mod; }).catch(() => {});
+  import('./analytics').then(mod => { (window as Window & { __eliasAnalytics?: unknown }).__eliasAnalytics = mod; }).catch(() => {});
 }

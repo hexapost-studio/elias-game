@@ -8,9 +8,21 @@ import balance from '../config/balance.json';
 
 import type { VerseEntry, AfflictionEvent, StoryArc } from '../types/game';
 
+/** Forme brute d'un verset dans verses.json (clés courtes), avant normalisation. */
+interface RawVerse {
+  id: string;
+  ref: string;
+  text: string;
+  cat: string;
+  tags?: string[];
+  impact?: Record<string, number>;
+  diff: number;
+  weight?: number;
+}
+
 /* ─── VERSETS ─── */
 
-export const VERSE_DATABASE: VerseEntry[] = verses.map((v: any) => ({
+export const VERSE_DATABASE: VerseEntry[] = (verses as RawVerse[]).map((v) => ({
   id: v.id,
   reference: v.ref,
   text: v.text,
@@ -68,11 +80,21 @@ export function getArcById(id: string): StoryArc | undefined {
 
 /* ─── LEXIQUE ─── */
 
-let _lexicon: any[] | null = null;
+/** Forme brute d'une entrée de lexicon.json. */
+export interface RawLexiconEntry {
+  term: string;
+  meaning: string;
+  commonMisinterpretation: string;
+  category: string;
+  usageInGame: string;
+  verseReference: string;
+}
 
-export async function loadLexicon(): Promise<any[]> {
+let _lexicon: RawLexiconEntry[] | null = null;
+
+export async function loadLexicon(): Promise<RawLexiconEntry[]> {
   if (_lexicon) return _lexicon;
   const mod = await import('./lexicon.json');
-  _lexicon = mod.default;
+  _lexicon = mod.default as RawLexiconEntry[];
   return _lexicon;
 }
