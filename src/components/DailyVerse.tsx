@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { verseOfDay } from '../engine/dailyVerse';
 
 const VERSE_OF_DAY_POOL = [
   { ref: '2 Timothée 1.7', text: "Car ce n'est pas un esprit de timidité que Dieu nous a donnés..." },
@@ -12,14 +12,9 @@ const VERSE_OF_DAY_POOL = [
 ];
 
 export function DailyVerse() {
-  const [verse, setVerse] = useState({ ref: '', text: '' });
-  
-  useEffect(() => {
-    const today = new Date();
-    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
-    const index = dayOfYear % VERSE_OF_DAY_POOL.length;
-    setVerse(VERSE_OF_DAY_POOL[index]);
-  }, []);
+  // Dérivé pendant le rendu : le verset du jour est entièrement fonction de la date,
+  // donc aucun state ni effet (invariant 3). Déterministe pour une journée donnée.
+  const verse = verseOfDay(new Date(), VERSE_OF_DAY_POOL);
 
   return (
     <div style={{

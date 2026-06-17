@@ -574,6 +574,20 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   validate), zéro nouvelle dette. Comportement visuel inchangé.
 - **Rollback** : `git revert <hash itér. 23>`.
 
+### Itération 24 — Phase 1 / T-3 : `DailyVerse.tsx` (set-state-in-effect ×1 → 0)
+- **Recherche** : le verset du jour était posé en state via un effet d'init `[]`
+  (`setVerse(...)`) → 1 `set-state-in-effect`, alors qu'il est **entièrement fonction de
+  la date** → dérivable au rendu (invariant 3).
+- **Application** : helper pur `src/engine/dailyVerse.ts` (`dayOfYear`, `verseOfDay`,
+  déterministe par date) ; `DailyVerse` calcule `verseOfDay(new Date(), POOL)` pendant le
+  rendu — plus de `useState`/`useEffect`. (`new Date()` au rendu ne déclenche pas
+  `react-hooks/purity` : la valeur est stable sur la passe de rendu.)
+- **Test** : `tests/dailyVerse.test.ts` (5 cas) — jour de l'année, cycle sur le pool,
+  stabilité intra-journée, appartenance au pool.
+- **Résultat** : `DailyVerse.tsx` **1 → 0**. Porte QA verte (tsc + vitest 176 + build +
+  validate), zéro nouvelle dette. Rendu identique.
+- **Rollback** : `git revert <hash itér. 24>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
