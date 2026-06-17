@@ -13,7 +13,6 @@ import {
   calculateBurnoutRate,
   createInitialCodex,
   getSrsPriorityVerses,
-  computeFinalMetrics,
   determineTitle,
   TITLES,
 } from '../src/engine/gameEngine';

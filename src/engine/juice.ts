@@ -3,7 +3,7 @@ import { CONFIG } from '../../game/data/loader';
 
 let audioCtx: AudioContext | null = null;
 let masterCompressor: DynamicsCompressorNode | null = null;
-let buffers: Record<string, AudioBuffer> = {};
+const buffers: Record<string, AudioBuffer> = {};
 let loaded = false;
 
 const SOUND_FILES = [

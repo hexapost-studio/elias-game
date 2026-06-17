@@ -94,7 +94,7 @@ export function VerseChoices() {
     if (timerRef.current) clearInterval(timerRef.current);
     const finalTime = Math.max(0.1, timeSpent);
     // Haptic feedback : vibration courte
-    try { navigator.vibrate(5); } catch {}
+    try { navigator.vibrate(5); } catch { /* vibrate non supporté */ }
     chooseVerse(verseId, Math.round(finalTime * 10) / 10);
   };
 

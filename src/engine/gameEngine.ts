@@ -5,7 +5,6 @@ import type {
   DifficultyLevel,
   JournalEntry,
   FlowPalier,
-  FlowState,
   CodexEntry,
   Title,
   Inheritance,
@@ -28,7 +27,7 @@ import { revealsAtAge } from './reveals';
 import { countUnlocked, collectionRewardText } from './collection';
 import { generateOpeningVignette } from './opening';
 import { resolvePlayerName, personalize } from './identity';
-import type { Calling, EarnedTrait } from '../types/game';
+import type { Calling } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
 const MIN_STAT = CONFIG.minStat;
@@ -37,11 +36,6 @@ const MAX_AGE = CONFIG.maxAge;
 /* ─── JAUGE DE FLOW ─── */
 
 const T = CONFIG.flow.thresholds;
-const FLOW_PALIER_THRESHOLDS: Record<FlowPalier, [number, number]> = {
-  1: [0, T.palier1],
-  2: [T.palier1 + 1, T.palier2],
-  3: [T.palier2 + 1, T.palier3],
-};
 
 const FLOW_GAIN_BASE = CONFIG.flow.baseGain;
 const FLOW_MAX_TIME = CONFIG.flow.maxTime;
@@ -714,8 +708,8 @@ export function filterEventsByPrerequisites(
   // Versets débloqués dans le codex
   const unlockedVerses = new Set(
     Object.entries(state.codex)
-      .filter(([_, e]) => e.unlocked)
-      .map(([id, _]) => id)
+      .filter(([, e]) => e.unlocked)
+      .map(([id]) => id)
   );
   // Arcs complétés
   const completedArcIds = new Set(state.completedArcs.map(a => a.arcId));
@@ -829,7 +823,7 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   );
 
   // Choix du pool: arcs non finis > SRS > tout
-  let pool = remainingArcEvents.length > 0
+  const pool = remainingArcEvents.length > 0
     ? remainingArcEvents
     : srsEvents.length > 0
     ? srsEvents
@@ -1083,7 +1077,7 @@ export function validateChoice(
     ];
 
     // Cascade: programmer l'événement dérivé
-    let newQueued = [...state.queuedCascadeEvents];
+    const newQueued = [...state.queuedCascadeEvents];
     if (event.cascadeEventId) {
       const cascadeEvent = getEventById(event.cascadeEventId);
       if (cascadeEvent) {

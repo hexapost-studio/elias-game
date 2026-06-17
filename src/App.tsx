@@ -14,8 +14,6 @@ import {
   Award,
   Star,
   Zap,
-  Music,
-  Moon,
   RotateCw,
   MessageSquare,
 } from './components/IconSystem';
@@ -32,8 +30,8 @@ const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ d
 const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
 import { flushLocalQueue } from './services/feedback';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate, playTheme, crossfadeTo, playSeasonTrack } from './engine/juice';
-import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
+import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo } from './engine/juice';
+import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
 import { deriveEchoes } from './engine/echoes';
@@ -81,7 +79,6 @@ function App() {
   const {
     age,
     phase,
-    difficulty,
     combo,
     totalEvents,
     successRate,
@@ -91,7 +88,6 @@ function App() {
     lastEventResult,
     gameOver,
     currentTitle,
-    inheritance,
     codex,
     stats,
     playerName,
@@ -160,7 +156,9 @@ function App() {
           setReducedSounds(prefs.reducedSounds ?? false);
           setSlowTimer(prefs.slowTimer ?? false);
         }
-      } catch {}
+      } catch {
+        /* prefs corrompues/absentes → valeurs par défaut */
+      }
       setLoading(false);
       // Renvoyer les feedbacks mis en file locale (best-effort, si Supabase configuré)
       flushLocalQueue().catch(() => {});
@@ -228,7 +226,7 @@ function App() {
           subline: pickVictorySubline({ category: currentEvent?.category, combo, season: spiritualSeason }),
         });
         // Haptic feedback : succès
-        try { navigator.vibrate([5, 50, 10]); } catch {}
+        try { navigator.vibrate([5, 50, 10]); } catch { /* vibrate non supporté */ }
         if (containerRef.current) {
           spawnParticles(containerRef.current, 'success', 10);
           glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
@@ -245,7 +243,7 @@ function App() {
         setSetback({ label: pickSetbackLabel(), grace: pickSetbackEncouragement() });
         playFail();
         // Haptic feedback : échec
-        try { navigator.vibrate(20); } catch {}
+        try { navigator.vibrate(20); } catch { /* vibrate non supporté */ }
         screenShake(6, 400);
         if (containerRef.current) {
           spawnParticles(containerRef.current, 'fail', 6);

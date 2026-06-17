@@ -20,16 +20,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   personnage: '#f87171',
 };
 
-const CATEGORY_BG: Record<string, string> = {
-  doctrine: 'rgba(167,139,250,0.12)',
-  pratique: 'rgba(52,211,153,0.12)',
-  sociolecte: 'rgba(251,191,36,0.12)',
-  personnage: 'rgba(248,113,113,0.12)',
-};
-
 function EntryCard({ entry, expanded, onClick }: { entry: LexiconEntry; expanded: boolean; onClick: () => void }) {
   const color = CATEGORY_COLORS[entry.category] || '#a78bfa';
-  const bg = CATEGORY_BG[entry.category] || 'rgba(167,139,250,0.12)';
 
   return (
     <div

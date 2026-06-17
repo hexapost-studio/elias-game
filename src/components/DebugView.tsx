@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
-import { AFFLICTION_ICONS, AFFLICTION_COLORS, Clock } from './IconSystem';
 import '../debug.css';
 
 const FLOW_MAX_TIME = 15;

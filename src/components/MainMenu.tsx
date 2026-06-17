@@ -15,7 +15,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import {
-  BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon, Volume2, MessageSquare,
+  BookOpen, ScrollText, Award, Star, XIcon, Volume2, MessageSquare,
 } from './IconSystem';
 import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
 import { DailyVerse } from './DailyVerse';
