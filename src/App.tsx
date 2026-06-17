@@ -192,12 +192,15 @@ function App() {
     }
   }, [slowTimer]);
 
-  // Appliquer reducedSounds
+  // Appliquer reducedSounds : couper l'état « musique on » au rendu (reset on prop change)
+  // quand le réglage s'active, et stopper l'audio (impératif) dans l'effet.
+  const [prevReduced, setPrevReduced] = useState(reducedSounds);
+  if (prevReduced !== reducedSounds) {
+    setPrevReduced(reducedSounds);
+    if (reducedSounds) setAmbientOn(false);
+  }
   useEffect(() => {
-    if (reducedSounds) {
-      stopAmbient();
-      setAmbientOn(false);
-    }
+    if (reducedSounds) stopAmbient();
   }, [reducedSounds]);
 
   const journal = state.journal;
