@@ -39,34 +39,47 @@ export function useTypewriter(
   const animated =
     (opts.enabled ?? true) && Number.isFinite(cps) && !prefersReducedMotion();
 
-  const [count, setCount] = useState(animated ? 0 : text.length);
+  // `revealed` ne pilote QUE la révélation animée (rAF) : il part de 0 au montage et au
+  // changement de `text` (l'effet redémarre, le 1er tick repose 0 — pas de setState
+  // synchrone). Hors animation, le compte est DÉRIVÉ pendant le rendu (= text.length),
+  // donc l'effet n'a alors aucun setState à faire → plus de set-state-in-effect.
+  const [revealed, setRevealed] = useState(0);
   const rafRef = useRef<number | null>(null);
 
+  // Reset state-on-prop-change (pattern React sanctionné, *pendant le rendu* — pas un
+  // effet, et via un state-marqueur plutôt qu'une écriture de ref) : quand `text`
+  // change, on repart de 0 immédiatement, sans flash de l'ancien compte sur le nouveau
+  // texte et sans set-state-in-effect.
+  const [prevText, setPrevText] = useState(text);
+  if (prevText !== text) {
+    setPrevText(text);
+    setRevealed(0);
+  }
+
   useEffect(() => {
-    if (!animated) {
-      setCount(text.length);
-      return;
-    }
-    setCount(0);
+    if (!animated) return; // rien à animer : le compte dérivé vaut déjà text.length
     const start = performance.now();
     const tick = (now: number) => {
       const shown = charsToShow(now - start, cps, text.length);
-      setCount(shown);
+      setRevealed(shown);
       if (shown < text.length) {
         rafRef.current = requestAnimationFrame(tick);
       }
     };
+    // 1er tick à elapsed≈0 : charsToShow → 0, repose le compte de départ sans setState sync.
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
   }, [text, cps, animated]);
 
+  // Compte effectif dérivé du rendu : tout révélé hors animation, sinon l'avancée rAF.
+  const count = animated ? revealed : text.length;
   const done = count >= text.length;
 
   const skip = () => {
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-    setCount(text.length);
+    setRevealed(text.length); // révèle tout ; un événement (clic) → setState hors effet, OK
   };
 
   return { shown: text.slice(0, count), done, skip };

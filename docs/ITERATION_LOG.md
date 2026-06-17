@@ -534,6 +534,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Résultat** : socle d'exécution prêt. Aucun code applicatif touché.
 - **Rollback** : `git revert <hash itération 21bis>`.
 
+### Itération 22 — Phase 1 / T-1 : `useTypewriter.ts` (set-state-in-effect ×1 → 0)
+- **Recherche** : le hook gardait `count` en state et le re-synchronisait dans l'effet
+  (`setCount(text.length)` hors animation, `setCount(0)` au démarrage) → 1
+  `react-hooks/set-state-in-effect`. La valeur hors animation est pourtant **dérivable**
+  du rendu (= `text.length`), et le reset au changement de texte relève du pattern React
+  « state-on-prop-change » (pendant le rendu, pas dans un effet).
+- **Application** (dérivation pendant le rendu, invariant 3) : `revealed` (state) ne pilote
+  plus que la révélation animée (rAF) ; `count = animated ? revealed : text.length` est
+  **dérivé** au rendu. L'effet ne fait plus aucun setState hors animation (early-return).
+  Reset au changement de `text` via un state-marqueur `prevText` comparé pendant le rendu
+  (`if (prevText !== text) { setPrevText(text); setRevealed(0); }`) — pas de ref-en-rendu
+  (évité pour ne pas déclencher `react-hooks/refs`), pas d'effet. `skip()` pose
+  `setRevealed(text.length)` depuis un handler (hors effet, autorisé).
+- **Test** : `tests/useTypewriter.test.ts` (jsdom, `@testing-library/react` `renderHook`,
+  rAF/`performance.now` stubés → déterministe) — 6 cas : révélation progressive, `done`,
+  `skip`, reset au changement de texte (pas de flash), cps ∞ et `enabled:false` dérivés.
+- **Résultat** : `useTypewriter.ts` **1 → 0** erreur hooks. Porte QA verte
+  (tsc + vitest 163 verts + build + validate), zéro nouvelle dette lint. Comportement
+  préservé (rendu identique à l'œil, plus performant car moins de setState).
+- **Rollback** : `git revert <hash itér. 22>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
