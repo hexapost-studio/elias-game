@@ -225,10 +225,52 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   `D` ouvre naturellement `A` : le nom saisi devient une **entrée de graine partageable**.
 - **Rollback** : `git revert <hash itération 9>`.
 
+#### Itération 9bis — Cohérence (revue) : nom dans les entrées de journal en cours de partie
+- **Déclencheur** : revue de cohérence demandée par l'utilisateur avant d'enchaîner sur `A`.
+  Constat : la propagation de l'itér. 9 couvrait la naissance/vignette/game over/partage, mais
+  PAS les textes **générés pendant la run** — un joueur « Marie » revoyait « Élias » dès 15 ans.
+- **Correctif** : nom propagé au message de crise, à l'entrée de trait, aux jalons d'âge (0/15/25/60),
+  aux révélations (via `personalize`), et aux prompts du narrateur IA (param `playerName`, défaut
+  « Élias »). Descriptions de saison laissées telles quelles (jamais affichées → vérifié). 2 tests
+  neufs verrouillent la propagation in-run. tsc + build OK, zéro dette lint.
+- **Rétro / process** : *une feature de « personnalisation » doit balayer TOUTES les sources de
+  texte joueur, y compris celles générées par le moteur en cours de partie — pas seulement les
+  écrans d'entrée/sortie.* Le grep initial doit couvrir `engine/` autant que `components/`.
+- **Rollback** : `git revert <hash 9bis>`.
+
+### Itération 10 — Graines partageables (proposition `A`)
+- **Recherche** : décision figée `D → A`. Constat révélé à l'itér. 5 : `createInitialState` n'était
+  PAS déterministe par graine — `generateBirthStats/ParentNames/LifeContext` tiraient sur `Math.random`,
+  donc ville/parents/profession/stats différaient à graine égale. Seule la « colonne vertébrale »
+  (Appel, saisons, vignette) était seedée.
+- **Analyse** : pour « même graine = même destinée », toute la naissance doit passer par le `Rng`
+  seedé déjà instancié dans `createInitialState` (`mulberry32(seed)`). Helpers `rngPick`/`rngWeightedPick`/
+  `rngInt` existaient déjà. Anti-régression clé : conserver la **distribution** (l'ancien `randomInRange`
+  était exclusif en haut `[min,max[` → garder cette formule, pas `rngInt` inclusif).
+- **Consensus** : (1) injecter `rng` dans les 3 fonctions de naissance ; (2) éviter la « graine morte »
+  (incohérence type 9bis) en la rendant **actionnable** : action store `initGameWithSeed`, bouton
+  « REJOUER CETTE GRAINE » au game over (rejoue son monde), champ graine optionnel au dialogue Nouvelle
+  Partie (rejouer une graine partagée, sans prologue) ; (3) afficher/copier la graine (game over + ShareCard
+  + export) ; (4) réactiver/ajouter les tests de déterminisme. Réversible (défaut = graine aléatoire).
+- **Application** : `generateBirthStats(rng)/ParentNames(rng)/LifeContext(rng)`, `pickBirthProfile` via
+  `rngWeightedPick`, `rngInRange` exclusif ; `createInitialState` fait circuler son `rng` unique ;
+  `initGameWithSeed` (store) ; bouton + champ graine (`App.tsx`) ; graine dans `ShareCard`/export ; maj des
+  2 appelants `generateBirthStats()` des tests ; `tests/seeds.test.ts` (neuf, 5 cas).
+- **Résultat** : même graine = même monde + stats de départ ; on peut rejouer sa vie et jouer une graine
+  partagée. 118 tests verts (5 neufs), tsc + build OK, zéro dette lint ajoutée (gameEngine 10→10, App 21→21).
+- **Rétro / process** : clarification de conception — **la graine seule** détermine le monde ; le nom est
+  cosmétique (indépendant du RNG de naissance), donc rejouer la graine d'un ami reproduit *son monde* sous
+  *son propre nom*. C'est plus simple et plus cohérent que le « nom+graine » évoqué au cadrage (§3/§4) — la
+  destinée n'a pas à dépendre du nom. Leçon 9bis appliquée d'emblée : la graine est livrée **actionnable**,
+  pas juste affichée.
+- **Rollback** : `git revert <hash itération 10>`.
+
 ### Réserve (analysée, non encore planifiée)
-- **Déterminisation complète de la naissance / graine partageable** (roguelite, partie 2) :
-  faire passer `generateLifeContext`/`generateParentNames`/`generateBirthStats` par le `Rng`
-  seedé → même graine = même destinée → graines de monde partageables (rejouer/défier un run).
+- ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
+- **Smart skip vers le non-lu** (débloqué par `A`) : rejouer une vie connue en accéléré jusqu'au
+  contenu non encore vu (cf. `docs/DESIGN_PARTIE2.md` §2).
+- **Conséquences ramifiées (`B`)** : arcs narratifs locaux (nœuds→arêtes) + flags de conséquence +
+  validation DFS d'atteignabilité + visualizer à la *Academical* (cf. `DESIGN_PARTIE2.md` §5). Gros cycle dédié.
 - **Assainissement lint global (chantier dédié)** : ~60 erreurs `react-hooks/set-state-in-effect`
   / `purity` / `refs` réparties dans le projet (base déjà rouge avant la boucle). À traiter
   fichier par fichier, hors boucle juice, avec garde anti-régression (gros scope, risqué).

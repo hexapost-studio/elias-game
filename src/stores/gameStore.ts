@@ -17,6 +17,7 @@ import { trackEvent } from '../services/analytics';
 interface GameStore extends GameState {
   gameOver: { isOver: boolean; reason?: string } | null;
   initGame: () => void;
+  initGameWithSeed: (seed: number, playerName?: string) => void;
   startWithPrologue: (result: PrologueResult) => void;
   ageUp: (aiEvent?: AfflictionEvent) => void;
   chooseVerse: (verseId: string, timeToAnswer?: number) => void;
@@ -41,6 +42,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       used ? { title: null, bonus: {}, used: false } : inheritance,
       undefined,
       get().playerName
+    );
+    set({ ...state, gameOver: null });
+    saveGame(state).catch(() => {});
+  },
+
+  initGameWithSeed: (seed: number, playerName?: string) => {
+    // Rejouer une graine partagée (itér. 10 / proposition A) : même graine = même
+    // monde + stats de départ. Sans prologue (la naissance est entièrement seedée).
+    const inheritance = get().inheritance;
+    const used = inheritance?.used;
+    const state = createInitialState(
+      used ? { title: null, bonus: {}, used: false } : inheritance,
+      seed,
+      playerName ?? get().playerName
     );
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});

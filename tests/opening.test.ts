@@ -35,9 +35,9 @@ describe('generateOpeningVignette', () => {
 });
 
 describe('intégration createInitialState', () => {
-  // NB : la vignette (gabarit + Appel) est seedée, mais ville/parents viennent encore
-  // de Math.random (« run spine » seedé, sélection fine non seedée — cf. réserve
-  // « déterminisation complète de la naissance / graine partageable »).
+  // NB : depuis l'itér. 10 (proposition A), TOUTE la naissance — vignette, ville, parents,
+  // profession, stats — passe par le même `Rng` seedé : même graine = même destinée
+  // (déterminisme couvert par tests/seeds.test.ts).
   it('le journal de naissance utilise la vignette et intègre ville + parents', () => {
     const s = createInitialState(undefined, 12345);
     const text = s.journal[0].text;

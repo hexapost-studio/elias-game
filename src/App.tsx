@@ -102,6 +102,7 @@ function App() {
     calling,
     traits,
     initGame,
+    initGameWithSeed,
     startWithPrologue,
     ageUp,
     dismissResult,
@@ -117,6 +118,7 @@ function App() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+  const [seedInput, setSeedInput] = useState('');
   const [showPrologue, setShowPrologue] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -429,6 +431,7 @@ function App() {
             : `${e.age}a ✦ ${e.text}`
         ),
         '',
+        `Graine : ${state.seed} (rejoue la même vie)`,
         `Joue ${playerName} ➜ ${window.location.origin}`,
       ].join('\n');
       try {
@@ -639,6 +642,15 @@ function App() {
             </button>
 
             <button
+              className="btn-share-alt"
+              style={{ marginTop: 8 }}
+              onClick={() => { playClick(); initGameWithSeed(state.seed, playerName); }}
+              title="Recommence une vie issue de la même graine (même monde, mêmes stats de départ)"
+            >
+              ↻ REJOUER CETTE GRAINE · {state.seed}
+            </button>
+
+            <button
               className="feedback-link"
               onClick={() => { playClick(); setShowFeedback(true); }}
             >
@@ -652,6 +664,7 @@ function App() {
         {showShareCard && (
           <ShareCard
             playerName={playerName}
+            seed={state.seed}
             age={age}
             successRate={successRate}
             maxCombo={state.maxCombo}
@@ -1057,18 +1070,44 @@ function App() {
                 </span></>
               )}
             </div>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={seedInput}
+              onChange={(e) => setSeedInput(e.target.value.replace(/[^0-9]/g, ''))}
+              placeholder="Graine partagée (optionnel)"
+              aria-label="Graine partagée optionnelle"
+              style={{
+                width: '100%', padding: '10px 12px', marginBottom: 12,
+                fontSize: 13, textAlign: 'center',
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.22)', borderRadius: 10,
+                color: 'var(--text-primary)', fontFamily: 'var(--font-body)',
+                outline: 'none',
+              }}
+            />
             <div className="btn-row">
               <button
-                onClick={() => setShowNewGameConfirm(false)}
+                onClick={() => { setSeedInput(''); setShowNewGameConfirm(false); }}
                 className="btn-cancel"
               >
                 ANNULER
               </button>
               <button
-                onClick={() => { setShowNewGameConfirm(false); setShowPrologue(true); }}
+                onClick={() => {
+                  setShowNewGameConfirm(false);
+                  const s = seedInput.trim();
+                  if (s !== '') {
+                    // Graine saisie → on rejoue ce monde exact, sans prologue.
+                    initGameWithSeed(Number(s));
+                    setSeedInput('');
+                  } else {
+                    setShowPrologue(true);
+                  }
+                }}
                 className="btn-danger"
               >
-                RECOMMENCER
+                {seedInput.trim() !== '' ? 'JOUER LA GRAINE' : 'RECOMMENCER'}
               </button>
             </div>
           </div>

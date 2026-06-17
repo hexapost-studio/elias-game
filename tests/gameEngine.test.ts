@@ -19,6 +19,7 @@ import {
 } from '../src/engine/gameEngine';
 import { getEventsForAge, getEventById, TOTAL_EVENTS, EVENT_DATABASE } from '../src/data/events';
 import { TOTAL_VERSES, VERSE_DATABASE } from '../src/data/verses';
+import { mulberry32 } from '../src/engine/rng';
 
 /* ═══════════════════
    T1 — Initialisation
@@ -36,7 +37,7 @@ describe('T1: Initialisation du jeu', () => {
   it('le RNG génère des stats de départ variées', () => {
     const profiles = new Set<string>();
     for (let i = 0; i < 20; i++) {
-      const { profileName } = generateBirthStats();
+      const { profileName } = generateBirthStats(mulberry32(i));
       profiles.add(profileName);
     }
     // Au moins 2 profils différents sur 20 runs
@@ -45,7 +46,7 @@ describe('T1: Initialisation du jeu', () => {
 
   it('toutes les jauges initiales sont entre 30 et 95', () => {
     for (let i = 0; i < 10; i++) {
-      const { stats } = generateBirthStats();
+      const { stats } = generateBirthStats(mulberry32(i));
       for (const value of Object.values(stats)) {
         expect(value).toBeGreaterThanOrEqual(30);
         expect(value).toBeLessThanOrEqual(95);

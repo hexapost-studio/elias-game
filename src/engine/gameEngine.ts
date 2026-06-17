@@ -23,7 +23,7 @@ import { getMicroEventForAge } from '../data/microEvents';
 import { CONFIG } from '../../game/data/loader';
 import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
-import { mulberry32, makeSeed, rngWeightedPick, type Rng } from './rng';
+import { mulberry32, makeSeed, rngWeightedPick, rngPick, type Rng } from './rng';
 import { revealsAtAge } from './reveals';
 import { generateOpeningVignette } from './opening';
 import { resolvePlayerName, personalize } from './identity';
@@ -87,10 +87,10 @@ const MOTHER_NAMES = [
   'Abigaïl', 'Ruth', 'Sophie', 'Grâce', 'Christiane', 'Joie', 'Joyeuse', 'Béatrice',
 ];
 
-function generateParentNames(): { father: string; mother: string } {
+function generateParentNames(rng: Rng): { father: string; mother: string } {
   return {
-    father: FATHER_NAMES[Math.floor(Math.random() * FATHER_NAMES.length)],
-    mother: MOTHER_NAMES[Math.floor(Math.random() * MOTHER_NAMES.length)],
+    father: rngPick(rng, FATHER_NAMES),
+    mother: rngPick(rng, MOTHER_NAMES),
   };
 }
 
@@ -124,17 +124,13 @@ const SPOUSE_NAMES = [
   'Gloria', 'Ruth', 'Marthe', 'Suzanne', 'Léa', 'Rébecca', 'Miriam', 'Joanna',
 ];
 
-function pickRandom<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function generateLifeContext(): LifeContext {
+function generateLifeContext(rng: Rng): LifeContext {
   return {
-    friendName: pickRandom(FRIEND_NAMES),
-    city:       pickRandom(CITIES),
-    profession: pickRandom(PROFESSIONS),
-    churchName: pickRandom(CHURCH_NAMES),
-    spouseName: pickRandom(SPOUSE_NAMES),
+    friendName: rngPick(rng, FRIEND_NAMES),
+    city:       rngPick(rng, CITIES),
+    profession: rngPick(rng, PROFESSIONS),
+    churchName: rngPick(rng, CHURCH_NAMES),
+    spouseName: rngPick(rng, SPOUSE_NAMES),
   };
 }
 
@@ -155,30 +151,25 @@ const BIRTH_PROFILES: BirthProfile[] = [
   { name: 'Prodige',        stats: { foi: [60, 80], paix: [60, 80], physique: [60, 80], finances: [60, 80] }, weight: 5 },
 ];
 
-function pickBirthProfile(): BirthProfile {
-  const totalWeight = BIRTH_PROFILES.reduce((s, p) => s + p.weight, 0);
-  let r = Math.random() * totalWeight;
-  for (const profile of BIRTH_PROFILES) {
-    r -= profile.weight;
-    if (r <= 0) return profile;
-  }
-  return BIRTH_PROFILES[0];
+function pickBirthProfile(rng: Rng): BirthProfile {
+  return rngWeightedPick(rng, BIRTH_PROFILES, BIRTH_PROFILES.map((p) => p.weight));
 }
 
-function randomInRange([min, max]: [number, number]): number {
-  return Math.floor(min + Math.random() * (max - min));
+/** Tirage entier dans [min, max[ (exclusif en haut) — préserve la distribution d'origine. */
+function rngInRange(rng: Rng, [min, max]: [number, number]): number {
+  return Math.floor(min + rng() * (max - min));
 }
 
-export function generateBirthStats(): {
+export function generateBirthStats(rng: Rng): {
   stats: Record<StatName, number>;
   profileName: string;
 } {
-  const profile = pickBirthProfile();
+  const profile = pickBirthProfile(rng);
   const stats: Record<StatName, number> = {
-    foi: randomInRange(profile.stats.foi),
-    paix: randomInRange(profile.stats.paix),
-    physique: randomInRange(profile.stats.physique),
-    finances: randomInRange(profile.stats.finances),
+    foi: rngInRange(rng, profile.stats.foi),
+    paix: rngInRange(rng, profile.stats.paix),
+    physique: rngInRange(rng, profile.stats.physique),
+    finances: rngInRange(rng, profile.stats.finances),
   };
   return { stats, profileName: profile.name };
 }
@@ -302,9 +293,11 @@ export function createInitialState(inheritance?: Inheritance, forcedSeed?: numbe
   const rng: Rng = mulberry32(seed);
   const name = resolvePlayerName(playerName);
 
-  const { stats, profileName } = generateBirthStats();
-  const parentNames = generateParentNames();
-  const lifeContext = generateLifeContext();
+  // Toute la naissance passe par le MÊME rng seedé → même graine = même destinée
+  // (itér. 10 / proposition A — graines partageables).
+  const { stats, profileName } = generateBirthStats(rng);
+  const parentNames = generateParentNames(rng);
+  const lifeContext = generateLifeContext(rng);
 
   // Appel / Destinée — tiré pondéré (Partie 2 : choisi par le joueur).
   const calling: Calling = pickCalling(rng);
