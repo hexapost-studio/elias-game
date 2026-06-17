@@ -25,6 +25,7 @@ import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, type Rng } from './rng';
 import { revealsAtAge } from './reveals';
+import { generateOpeningVignette } from './opening';
 import type { Calling, EarnedTrait } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
@@ -336,9 +337,9 @@ export function createInitialState(inheritance?: Inheritance, forcedSeed?: numbe
     journal: [
       {
         age: 0,
-        text: `Élias est né à ${lifeContext.city}. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}. Il deviendra ${lifeContext.profession}. Appel pressenti : ${calling.name} — ${calling.tagline}.${
+        text: `${generateOpeningVignette({ city: lifeContext.city, calling }, rng)} Ses parents, ${parentNames.father} et ${parentNames.mother}, l'accueillent ; il grandira vers ${lifeContext.profession}.${
           inheritance?.title
-            ? ` Héritage: "${inheritance.title.name}" (bonus actif).`
+            ? ` Héritage : « ${inheritance.title.name} » (bonus actif).`
             : ''
         }`,
         type: 'milestone',

@@ -110,7 +110,31 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   l'existant dans la même passe.
 - **Rollback** : `git revert <hash itération 4>`.
 
+### Itération 5 — Vignette d'ouverture (« à chaque lancement, une nouvelle aventure »)
+- **Recherche** : 80 Days — l'OUVERTURE donne le ton et diffère à chaque partie ; c'est
+  le premier levier de rejouabilité perçue.
+- **Analyse** : la naissance d'Élias affichait une ligne factuelle de structure identique
+  à chaque run. Le premier écran lu par le joueur était plat et répétitif.
+- **Consensus** : une vignette PURE et SEEDÉE (gabarit atmosphère + pressentiment d'Appel),
+  branchée dans le journal de naissance. Critère : variée, slots toujours résolus, intègre
+  ville + Appel, réversible (retour à une ligne factuelle = 1 edit dans `createInitialState`).
+- **Application** : `src/engine/opening.ts` (`generateOpeningVignette`, pure/seedée),
+  appel dans le journal de naissance de `createInitialState`, tests `tests/opening.test.ts`.
+- **Résultat** : chaque partie s'ouvre sur une amorce évocatrice variée (« Le jour se lève
+  sur Béthel… sa route penche vers celle du Berger »). 6 tests (95 verts), tsc + build OK.
+- **Rétro / process** : le test d'intégration « même seed → même ouverture » a échoué et
+  a RÉVÉLÉ un fait d'architecture : `generateLifeContext`/`generateParentNames`/`generateBirthStats`
+  utilisent encore `Math.random`, pas le seed → la naissance n'est PAS reproductible par graine.
+  Seul le « run spine » (Appel, saisons, vignette) est seedé. J'ai corrigé l'hypothèse du test
+  (au lieu de forcer le code) et mis le fait en réserve. Règle de process ajoutée : *un test qui
+  échoue peut révéler une vérité d'archi — vérifier la source AVANT de « réparer », parfois c'est
+  l'attente qui est fausse, pas le code.*
+- **Rollback** : `git revert <hash itération 5>`.
+
 ### Réserve (analysée, non encore planifiée)
+- **Déterminisation complète de la naissance / graine partageable** (roguelite, partie 2) :
+  faire passer `generateLifeContext`/`generateParentNames`/`generateBirthStats` par le `Rng`
+  seedé → même graine = même destinée → graines de monde partageables (rejouer/défier un run).
 - **Durcissement normes AAA** : nettoyer la dette eslint d'`App.tsx` (pureté du rendu).
 - **Codex vivant** (80 Days) : variété de texte à la révision des versets.
 - **Conséquences ramifiées** : choix narratif altérant durablement la run (gros scope).
