@@ -7,7 +7,8 @@
  *
  * Transport (même philosophie que aiNarrator.ts — tout est optionnel via VITE_*) :
  *  1. Supabase REST (primaire) → POST {VITE_SUPABASE_URL}/rest/v1/feedback
- *       headers : apikey + Authorization: Bearer <anon> + Prefer: return=minimal
+ *       clé : VITE_SUPABASE_PUBLISHABLE_KEY (repli VITE_SUPABASE_ANON_KEY)
+ *       headers : apikey + Authorization: Bearer <clé> + Prefer: return=minimal
  *  2. Notif Discord (optionnelle, best-effort) → VITE_FEEDBACK_DISCORD_WEBHOOK
  *  3. Fallback local (toujours) → file localforage 'elias-feedback-queue-v1'
  *       renvoyée au démarrage via flushLocalQueue() si Supabase est configuré.
@@ -84,7 +85,12 @@ export interface FeedbackPayload {
 
 function remoteConfig(): { url: string; key: string } | null {
   const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+  // Nouveau nommage Supabase : `sb_publishable_…` remplace la clé anon (JWT) côté client.
+  // On accepte les deux — publishable en priorité, repli sur anon. `||` (pas `??`) pour
+  // qu'une variable vide (""), pas seulement absente, bascule sur le repli.
+  const key =
+    (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ||
+    (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined);
   return url && key ? { url: url.replace(/\/$/, ''), key } : null;
 }
 

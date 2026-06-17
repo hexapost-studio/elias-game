@@ -28,7 +28,7 @@ Vite + Zustand + localforage** (PWA).
 
 ```bash
 npx tsc --noEmit      # types
-npx vitest run        # tests (actuellement 156 verts)
+npx vitest run        # tests (actuellement 157 verts)
 npx vite build        # bundle prod
 npm run validate      # validateur de données (118 versets, 186 events)
 # + diff lint par fichier touché vs HEAD : zéro nouvelle erreur
@@ -48,7 +48,7 @@ npm run validate      # validateur de données (118 versets, 186 events)
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (17 livrées)
+## État des itérations (18 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -61,7 +61,8 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 14 | Onboarding zéro-friction — tuto enchaîne sur le Prologue (1ʳᵉ vie nommée) | `d4518a6` |
 | 15 | Feedback précoce — le Prologue rattrape [ÉVEIL]/[SAISONS] (mode d'emploi ActionPanel) | `d59310a` |
 | 16 | Récompense de collection — chaque verset qui rejoint le Grimoire est célébré (`[GRIMOIRE]`) | `117ae97` |
-| 17 | Fix — un bonus de combo conserve son annonce de journal `[COMBO xN]` | (ce commit) |
+| 17 | Fix — un bonus de combo conserve son annonce de journal `[COMBO xN]` | `b05095d` |
+| 18 | Déparkage feedback Supabase (clé publishable + MCP + tests hermétiques) | (ce commit) |
 
 **Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
 
@@ -71,5 +72,6 @@ npm run validate      # validateur de données (118 versets, 186 events)
 - ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
   récompense précoce, micro-feedback dans les toutes premières années.
 - **Save-scumming / slots multiples** (à évaluer en contexte procédural).
-- **Feedback/bug-report Supabase** : partiellement câblé (`onOpenFeedback` dans `App.tsx`) — **PARKÉ**
-  en attente des `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`.
+- ~~**Feedback/bug-report Supabase**~~ → **câblé itér. 18** (clé publishable dans `.env.local`, MCP
+  `supabase` ajouté). Reste hors-code : authentifier le MCP (`/mcp`) + créer la table `feedback`
+  (SQL dans `GDD_ELIAS.md`).

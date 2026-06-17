@@ -62,6 +62,12 @@ import {
 
 beforeEach(() => {
   mem.clear();
+  // Hermétique : neutraliser toute config Supabase héritée de .env.local (chargée par
+  // Vitest), sinon les tests « sans Supabase » verraient une config réelle et tenteraient
+  // un vrai POST réseau. Chaque test qui en a besoin restube explicitement.
+  vi.stubEnv('VITE_SUPABASE_URL', '');
+  vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', '');
+  vi.stubEnv('VITE_SUPABASE_ANON_KEY', '');
 });
 
 afterEach(() => {
@@ -109,7 +115,7 @@ describe('D2: submitFeedback sans Supabase', () => {
    D3 — submitFeedback : Supabase OK
    ═══════════════════════════════ */
 describe('D3: submitFeedback avec Supabase', () => {
-  it('envoie un POST conforme au schéma et renvoie via=supabase', async () => {
+  it('envoie un POST conforme au schéma et renvoie via=supabase (repli clé anon)', async () => {
     vi.stubEnv('VITE_SUPABASE_URL', 'https://demo.supabase.co');
     vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'anon-key-123');
     const fetchMock = vi.fn(async () => ({ ok: true }) as Response);
@@ -130,6 +136,22 @@ describe('D3: submitFeedback avec Supabase', () => {
     expect(body.diagnostics).toBeTruthy();
     // rien n'est mis en file locale quand l'envoi distant réussit
     expect(await getLocalQueue()).toHaveLength(0);
+  });
+
+  it('priorise la clé publishable sur la clé anon (nouveau nommage Supabase)', async () => {
+    vi.stubEnv('VITE_SUPABASE_URL', 'https://demo.supabase.co');
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'sb_publishable_xyz');
+    vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'anon-key-123');
+    const fetchMock = vi.fn(async () => ({ ok: true }) as Response);
+    vi.stubGlobal('fetch', fetchMock);
+
+    const res = await submitFeedback(await buildPayload('bug', 'x', '', false));
+
+    expect(res.via).toBe('supabase');
+    const [, opts] = fetchMock.mock.calls[0] as [string, RequestInit];
+    const headers = opts.headers as Record<string, string>;
+    expect(headers.apikey).toBe('sb_publishable_xyz');
+    expect(headers.Authorization).toBe('Bearer sb_publishable_xyz');
   });
 
   it('retombe en local si le réseau échoue', async () => {

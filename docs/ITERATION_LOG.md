@@ -448,6 +448,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   coexistence des entrées.
 - **Rollback** : `git revert <hash itération 17>`.
 
+### Itération 18 — Déparkage du feedback Supabase (config fournie par l'utilisateur)
+- **Recherche** : le service `services/feedback.ts` (bug-report joueur) était complet mais PARKÉ faute
+  de config Supabase. L'utilisateur a fourni l'URL du projet + une clé `sb_publishable_…` (nouveau
+  nommage Supabase) ; or le code lisait `VITE_SUPABASE_ANON_KEY` (ancien JWT).
+- **Application** : (1) `remoteConfig()` lit désormais `VITE_SUPABASE_PUBLISHABLE_KEY` en priorité,
+  repli sur `VITE_SUPABASE_ANON_KEY` — via `||` (pas `??`) pour qu'une variable **vide** bascule aussi
+  sur le repli ; (2) `.env.local` renseigné (gitignore — non commité) ; (3) `.env.local.example` mis à
+  jour (les deux nommages) ; (4) serveur MCP `supabase` ajouté à `.mcp.json` (scope projet). Tests
+  `feedback.test.ts` rendus **hermétiques** : `beforeEach` neutralise toute config Supabase héritée de
+  `.env.local` (Vitest la charge — sinon les tests « sans Supabase » tentaient un vrai POST réseau) ;
+  +1 cas « publishable prioritaire sur anon ».
+- **Résultat** : le feedback in-game POST vers Supabase dès que la table `feedback` existe (SQL dans
+  `GDD_ELIAS.md` / `docs`). 157 tests verts (+1), tsc + build + `validate` OK, zéro dette lint. Sans
+  table/clé → repli local intact (aucun retour perdu).
+- **Reste à la charge de l'utilisateur** (hors code) : authentifier le MCP (`/mcp` → supabase) et créer
+  la table `feedback` + policy `anon insert` (RLS) — SQL prêt dans le GDD.
+- **Rollback** : `git revert <hash itération 18>` (+ retirer le bloc Supabase de `.env.local`).
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
