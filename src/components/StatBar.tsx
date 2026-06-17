@@ -89,18 +89,17 @@ export function StatBar() {
                   position: 'absolute',
                   right: 2,
                   top: -4,
-                  color: fi.delta > 0 ? '#4ade80' : '#f87171',
-                  fontSize: 11,
-                  fontWeight: 700,
+                  color: fi.delta > 0 ? '#6ee7b7' : '#fca5a5',
+                  fontSize: 9,
+                  fontWeight: 600,
+                  opacity: 0.7,
                   pointerEvents: 'none',
                   zIndex: 10,
                   animation: 'floatStat 0.75s ease-out forwards',
                   whiteSpace: 'nowrap',
-                  textShadow: fi.delta > 0
-                    ? '0 0 8px rgba(74,222,128,0.7)'
-                    : '0 0 8px rgba(248,113,113,0.7)',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.5)',
                   lineHeight: 1,
-                  letterSpacing: '0.5px',
+                  letterSpacing: '0.3px',
                 }}
               >
                 {fi.delta > 0 ? `+${fi.delta}` : fi.delta}

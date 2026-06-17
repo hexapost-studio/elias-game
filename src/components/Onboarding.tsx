@@ -288,9 +288,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               textAlign: 'center', animation: 'fadeIn 0.3s ease',
               lineHeight: 1.6,
             }}>
-              Le verset contre la peur est <strong>Psaume 27.1</strong>.<br />
+              ✦ Psaume 27.1 — "L'Éternel est ma lumière et mon salut"<br />
               <span style={{ fontSize: 11, color: '#c9a97e', opacity: 0.9 }}>
-                Tu l'apprendras en jouant — chaque erreur renforce la mémoire.
+                C'était le bon verset contre la peur. Tu l'apprendras en jouant — chaque erreur renforce la mémoire.
               </span>
             </div>
           )}

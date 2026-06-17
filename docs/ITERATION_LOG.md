@@ -485,6 +485,22 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Rollback** : `git revert <hash itération 19>` (docs) ; côté DB `drop table public.feedback;` ou
   reset de migration `20260617173941` / `20260617130015`.
 
+### Itération 20 — Deux correctifs de feedback playtest (retours joueur)
+- **Recherche** : deux remontées joueur. (1) Sur les jauges (`StatBar`), qui ont déjà icône PNG +
+  barre PNG + valeur chiffrée, l'indicateur flottant `+N/-N` faisait doublon visuel trop voyant
+  (halo lumineux, gras, 11px). (2) Dans le **tuto d'intro** (`Onboarding`), une réponse *fausse* ne
+  révélait que la **référence** (« Psaume 27.1 »), jamais le **texte** du verset — donc « on connaît
+  pas le verset » alors que le but du jeu est de le mémoriser. La réponse *juste* l'affichait déjà.
+- **Application** (présentation pure, `.tsx`) : (1) `StatBar` — le flottant devient discret (9px,
+  poids 600, `opacity 0.7`, halo remplacé par une ombre portée légère, teintes adoucies). Aucun
+  effet ajouté → la baseline lint du fichier (1 `set-state-in-effect` préexistant) est inchangée.
+  (2) `Onboarding` — le bloc « faux » affiche désormais le verset complet
+  (`✦ Psaume 27.1 — "L'Éternel est ma lumière et mon salut"`), à parité avec le bloc « juste ».
+- **Résultat** : feedback visuel des stats moins criard ; le verset cible est appris quel que soit le
+  résultat dès le tuto. 157 tests verts (inchangés), tsc + build + `validate` OK, **zéro** nouvelle
+  dette lint (StatBar 1→1, Onboarding 0→0).
+- **Rollback** : `git revert <hash itération 20>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

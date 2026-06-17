@@ -63,7 +63,8 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 16 | Récompense de collection — chaque verset qui rejoint le Grimoire est célébré (`[GRIMOIRE]`) | `117ae97` |
 | 17 | Fix — un bonus de combo conserve son annonce de journal `[COMBO xN]` | `b05095d` |
 | 18 | Déparkage feedback Supabase (clé publishable + MCP + tests hermétiques) | `67e1495` |
-| 19 | Boucle feedback live — table Supabase créée, durcie (anti-spam), vérifiée bout-en-bout | (ce commit) |
+| 19 | Boucle feedback live — table Supabase créée, durcie (anti-spam), vérifiée bout-en-bout | `7135262` |
+| 20 | Correctifs playtest — « +1 » de jauge discret + verset révélé même en cas d'erreur (tuto) | (ce commit) |
 
 **Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
 
