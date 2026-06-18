@@ -82,8 +82,8 @@
       conditionnés, `applyNarrativeVariant` (déjà câblé) exploitée pleinement. → itér. 40
 
 ### Tier 2 — Rythme & direction
-- [ ] **T-24** **Chapitres de vie** : carte d'intro de décennie (thème/saison) + **cliffhanger** de fin de décennie
-      (épreuve-capstone). Branché sur `computeSeasonTransition` (transitions déjà aux bornes de décennie).
+- [x] **T-24** **Chapitres de vie** : carte d'intro de décennie (thème/saison) + **cliffhanger** de fin de décennie.
+      Module pur `lifeChapters.ts` + 35 tests, branché dans `advanceAge`, CSS distinct `[CHAPITRE]`/`[CLIFFHANGER]`. → itér. 41
 - [ ] **T-25** **Ambition de run** : objectif multi-étapes donné par l'Appel, suivi à l'écran (callings + arcs + prerequisites).
 
 ### Tier 3 — Reskin « conversation » complet (UX)

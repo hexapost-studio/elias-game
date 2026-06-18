@@ -24,6 +24,7 @@ import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, rngPick, type Rng } from './rng';
 import { buildEchoLinkEntry } from './echoLink';
+import { getChapterIntro, getDecadeCliffhanger, isDecadeStart, isDecadeEnd } from './lifeChapters';
 import { revealsAtAge } from './reveals';
 import { countUnlocked, collectionRewardText } from './collection';
 import { generateOpeningVignette } from './opening';
@@ -1396,6 +1397,27 @@ export function advanceAge(state: GameState): {
           text: `[SAISON] ${s.label} — ${s.description}`,
           type: 'milestone' as const,
         },
+      ];
+    }
+  }
+
+  // Chapitres de vie (T-24) — carte d'intro de décennie (bornes 10, 20, …, 90 ans)
+  if (isDecadeStart(newAge)) {
+    const currentSeason = newState.spiritualSeason ?? state.spiritualSeason ?? 'Réveil';
+    const chapterIntro = getChapterIntro(newAge, currentSeason, state.calling?.id);
+    newState.journal = [
+      ...(newState.journal ?? state.journal),
+      chapterIntro,
+    ];
+  }
+
+  // Cliffhanger de fin de décennie (âges 9, 19, 29, …, 89)
+  if (isDecadeEnd(newAge)) {
+    const cliffhanger = getDecadeCliffhanger(newAge, newState.playerName);
+    if (cliffhanger) {
+      newState.journal = [
+        ...(newState.journal ?? state.journal),
+        cliffhanger,
       ];
     }
   }

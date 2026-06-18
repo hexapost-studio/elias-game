@@ -55,9 +55,21 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
 
   // Milestone pur (saison, naissance, réveil) → bande pleine largeur centrée
   if (entry.type === 'milestone') {
+    const isChapter = entry.text.startsWith('[CHAPITRE]');
+    const isCliffhanger = entry.text.startsWith('[CLIFFHANGER]');
+    const extraClass = isChapter
+      ? ' jb-milestone--chapter'
+      : isCliffhanger
+      ? ' jb-milestone--cliffhanger'
+      : '';
     return (
-      <div className="jb-milestone" style={{ '--jb-color': sender.color } as React.CSSProperties}>
-        <span className="jb-milestone-icon">{avatarLetter(sender.iconKey)}</span>
+      <div
+        className={`jb-milestone${extraClass}`}
+        style={{ '--jb-color': sender.color } as React.CSSProperties}
+      >
+        {(isChapter || isCliffhanger) ? null : (
+          <span className="jb-milestone-icon">{avatarLetter(sender.iconKey)}</span>
+        )}
         <span className="jb-milestone-text">{entry.text}</span>
       </div>
     );

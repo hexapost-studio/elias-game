@@ -925,6 +925,44 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert` du commit `feat(itér.40)`.
 
+### Itération 41 — T-24 Chapitres de vie — carte de décennie + cliffhanger
+
+- **Recherche** : `advanceAge` dans `gameEngine.ts` (lignes 1380-1401) gère déjà les transitions
+  de saison aux bornes de décennie (`newAge % 10 === 0`). `JournalBubble.tsx` rend les milestones
+  comme bandes pleine-largeur (`.jb-milestone`). La `JournalEntry` supporte `type: 'milestone'`.
+  Le moteur n'avait pas de notion de « chapitre de vie » — chaque décennie était anonyme.
+
+- **Analyse** : scope exact = 10 décennies nommées (L'Éveil … L'Accomplissement) + 9 cliffhangers
+  (âges 9, 19, …, 89). Module pur `lifeChapters.ts` pour respecter l'invariant 2. Branchement
+  dans `advanceAge` après la transition de saison (saison déjà calculée = disponible). Style CSS
+  distinct pour les cartes de chapitre (violet / plus grand) vs milestones ordinaires (doré / petit).
+
+- **Application** :
+  - `src/engine/lifeChapters.ts` (nouveau module pur) :
+    - `CHAPTERS[10]` : données des 10 décennies (titre, thème, texte cliffhanger).
+    - `getChapterIntro(age, season, callingId?)` → `JournalEntry` `[CHAPITRE]` type milestone.
+    - `getDecadeCliffhanger(age, playerName)` → `JournalEntry` `[CLIFFHANGER]` type milestone, ou
+      `null` si âge non-X9 ou age ≥ 90.
+    - `isDecadeStart(age)` / `isDecadeEnd(age)` — prédicats purs consommés par gameEngine.
+    - `seasonLabel()` : mappe `Persécution` → `Épreuve` (lisible).
+  - `src/engine/gameEngine.ts` : import + injection dans `advanceAge` après le bloc de transition
+    de saison — `isDecadeStart(newAge)` → carte d'intro (saison déjà calculée) ;
+    `isDecadeEnd(newAge)` → cliffhanger.
+  - `src/components/JournalBubble.tsx` : détection de `[CHAPITRE]` / `[CLIFFHANGER]` en tête
+    de texte → classe CSS supplémentaire (`jb-milestone--chapter` / `jb-milestone--cliffhanger`) ;
+    l'icône ronde est masquée pour ces types (texte seul, centré).
+  - `src/index.css` : 3 blocs ajoutés — `.jb-milestone--chapter` (violet `#c084fc`, padding 10px,
+    bordure 2px, texte 13px non-italique 600), `.jb-milestone--cliffhanger` (or, bordure pointillée,
+    texte 12px italique), `prefers-reduced-motion` étendu aux deux classes.
+  - `tests/lifeChapters.test.ts` : 35 tests — `isDecadeStart` (5), `isDecadeEnd` (5),
+    `getChapterIntro` (15), `getDecadeCliffhanger` (10).
+
+- **Résultat** : porte QA verte — typecheck 0 erreur (baseline 0), **287 tests passés** (24 fichiers,
+  +35 nouveaux), build OK, validate 118v/186e, lint-diff 0→0 sur les 4 fichiers touchés
+  (`JournalBubble.tsx`, `gameEngine.ts`, `lifeChapters.ts`, `lifeChapters.test.ts`).
+
+- **Rollback** : `git revert` du commit `feat(itér.41)`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
