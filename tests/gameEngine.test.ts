@@ -114,12 +114,12 @@ describe('T3: Système de Burnout', () => {
     expect(calculateBurnoutRate(1)).toBe(0);
   });
 
-  it('Palier 2 : -1 physique par tour', () => {
-    expect(calculateBurnoutRate(2)).toBe(1);
+  it('Palier 2 : pas de burn-out (itér. 35 — anti-inversion)', () => {
+    expect(calculateBurnoutRate(2)).toBe(0);
   });
 
-  it('Palier 3 : -3 physique par tour', () => {
-    expect(calculateBurnoutRate(3)).toBe(3);
+  it('Palier 3 : -1 physique par tour (itér. 35 — burnout adouci)', () => {
+    expect(calculateBurnoutRate(3)).toBe(1);
   });
 });
 

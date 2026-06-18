@@ -20,19 +20,19 @@
 
   "burnout": {
     "palier1": 0,
-    "palier2": 1,
-    "palier3": 3
+    "palier2": 0,
+    "palier3": 1
   },
 
   "aging": {
     "physiqueDeclineStart": 41,
     "physiqueDeclineRate": 1,
-    "physiqueDeclineRateOld": 2,
+    "physiqueDeclineRateOld": 1,
     "paixDeclineStart": 61,
     "paixDeclineRate": 1,
     "financeCost": {
       "youngAdult": { "minAge": 18, "maxAge": 25, "cost": 2 },
-      "adult":      { "minAge": 26, "maxAge": 45, "cost": 3 },
+      "adult":      { "minAge": 26, "maxAge": 45, "cost": 2 },
       "midlife":    { "minAge": 46, "maxAge": 65, "cost": 1 }
     }
   },
@@ -51,11 +51,11 @@
 
   "combo": {
     "thresholds": {
-      "5":  { "foi": 3, "paix": 2 },
-      "10": { "foi": 5, "paix": 5, "physique": 3 },
-      "20": { "foi": 8, "paix": 8, "physique": 5, "finances": 5 }
+      "5":  { "foi": 2, "paix": 2, "physique": 4 },
+      "10": { "foi": 4, "paix": 4, "physique": 8 },
+      "20": { "foi": 6, "paix": 6, "physique": 12, "finances": 5 }
     },
-    "repeatBonus": { "foi": 3 },
+    "repeatBonus": { "foi": 2, "physique": 4 },
     "repeatEvery": 5
   },
 

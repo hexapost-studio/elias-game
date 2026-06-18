@@ -708,6 +708,39 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   revertable, smoke navigateur vert (journal se peuple, jeu progresse, 0 erreur console).
 - **Rollback** : `git revert` de chaque sous-commit (T-9a…T-9e) indépendamment.
 
+### Itération 35 — Piste B : rééquilibrage de la courbe de survie (mesuré avant/après)
+- **Recherche** : le harnais (itér. 34) a prouvé 3 pathologies : (1) **inversion de difficulté**
+  (mieux répondre = mourir plus tôt), (2) **physique = compte à rebours sans récupération** →
+  victoire (100) inatteignable, (3) finances tuent les joueurs imprécis tôt. Cause de l'inversion :
+  **burnout appliqué PAR épreuve** (palier3 −3 physique) → la précision pousse au palier 3 et se punit.
+- **Application** (pur `game/config/balance.json`, zéro code gameplay — réversible) :
+  - burnout palier3 3→**1**, palier2 1→**0** (tue l'inversion).
+  - vieillissement senior physique : `physiqueDeclineRateOld` 2→**1** (61+ : −2/an au lieu de −3).
+  - finances `adult` (26-45) 3→**2** (adoucit la mort-finances du début/milieu).
+  - **combos = voie de récupération du PHYSIQUE** (clé) : `physique` ajouté/renforcé aux paliers
+    x5/x10/x20 (+4/+8/+12) et au `repeatBonus` (+4). La compétence (séries) restaure le corps →
+    récompense le skill ET ouvre la fin de vie aux experts. Thème : la vigueur divine (`lourdeur_fatigue`).
+  - test `calculateBurnoutRate` mis à jour au nouveau contrat (palier2=0, palier3=1).
+- **Mesure (N=1000, scénario « avec actions », médiane d'âge / ≥80 ans / =100 ans)** :
+
+  | précision | AVANT (itér.34) | APRÈS (itér.35) |
+  |---|---|---|
+  | 50 % | **62** / 0 % / 0 % (inversion) | **71** / 11 % / 0 % |
+  | 65 % | 49 / 0 % / 0 % | 71 / 12 % / 0 % |
+  | 75 % | 44 / 0 % / 0 % | 71 / 13 % / 1 % |
+  | 85 % | **42** / 0 % / 0 % | **75** / 34 % / 6 % |
+
+  → **inversion supprimée** (courbe monotone : mieux jouer = vivre plus longtemps), ≥60 ans passe de
+  ~3-17 % à ~94-97 %, et la **victoire (100) devient atteignable** pour l'excellence (6 % à 85 %).
+  Gradient de maîtrise net (≥80 ans : 11 %→34 % selon la précision). La fin de vie reste un vrai
+  défi (physique), pas un mur.
+- **Vérif** : `bash tools/qa-gate.sh` vert (vitest 190 avec tests burnout mis à jour, build, validate),
+  smoke `run-elias` vert (0 erreur console), avant/après chiffré par `tools/survival-sim.ts`.
+- **Limite connue / pont vers la suite** : la médiane reste plafonnée par le physique (~71) ; aller
+  plus loin demanderait une voie de récupération du physique hors-combo (action « repos » / design),
+  à étudier avec la Piste C (contenu) et l'axe game-design « différenciation / rejouabilité ».
+- **Rollback** : `git revert` du commit (config + 1 test).
+
 ### Itération 34 — Piste M : harnais de simulation de survie (mesure avant tuning)
 - **Recherche** : audit du jeu (2 agents Explore + chiffres). Verdict : **tous les systèmes du GDD
   sont implémentés et câblés** (Flow/Combo/Cascade/SRS/Codex/Titres+héritage/saisons émergentes/
