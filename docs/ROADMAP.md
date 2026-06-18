@@ -73,7 +73,7 @@
 ### Tier 1 — Différenciation (impact max, réutilise l'existant) ← **tête de file**
 - [x] **T-20** `src/engine/messageSender.ts` (module **pur** + tests) — dérive `{ sender, displayName, color,
       iconKey, assetId }` d'un event/entrée de journal (Ciel / Adversaire / Entourage / Conscience). **Fondation
-      + porte d'entrée asset-ready.** → itér. 37 / (hash après commit)
+      + porte d'entrée asset-ready.** → itér. 37 / `bb3d09e`
 - [ ] **T-21** **Journal = fil de bulles attribuées** (le `.tsx` mappe T-20) : nom + couleur + icône d'émetteur,
       bulles gauche/droite, `assetId`→placeholder. Réutilise `AFFLICTION_COLORS`/`ENEMY_COMPONENTS`/`lifeContext`.
 - [ ] **T-22** **Conséquences visibles (echoes amplifiés)** — quand un flag/choix passé conditionne le présent,
