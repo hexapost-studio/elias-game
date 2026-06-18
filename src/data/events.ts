@@ -7,7 +7,7 @@ import type { AfflictionEvent, LifeStage } from '../types/game';
 import { VERSE_DATABASE } from './verses';
 import RAW_EVENTS from '../../game/data/events.json';
 
-export const EVENT_DATABASE: AfflictionEvent[] = RAW_EVENTS as AfflictionEvent[];
+export const EVENT_DATABASE: AfflictionEvent[] = RAW_EVENTS as unknown as AfflictionEvent[];
 export const TOTAL_EVENTS = EVENT_DATABASE.length;
 
 export function pickDecoys(
