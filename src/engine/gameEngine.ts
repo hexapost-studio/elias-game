@@ -23,6 +23,7 @@ import { CONFIG } from '../../game/data/loader';
 import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, rngPick, type Rng } from './rng';
+import { buildEchoLinkEntry } from './echoLink';
 import { revealsAtAge } from './reveals';
 import { countUnlocked, collectionRewardText } from './collection';
 import { generateOpeningVignette } from './opening';
@@ -1451,6 +1452,12 @@ export function advanceAge(state: GameState): {
   if (shouldGenerate) {
     const event = generateEvent(newState);
     if (event) {
+      // Bulle de rappel causale (T-22) : si cet event est conditionné par un choix passé,
+      // injecter une entrée de journal AVANT l'épreuve pour rendre le lien visible.
+      const echoEntry = buildEchoLinkEntry(event, newState);
+      if (echoEntry) {
+        newState.journal = [...newState.journal, echoEntry];
+      }
       newState.currentEvent = event;
       newState.phase = 'event';
       eventGenerated = true;

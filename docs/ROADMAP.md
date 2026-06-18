@@ -76,8 +76,8 @@
       + porte d'entrée asset-ready.** → itér. 37 / `bb3d09e`
 - [x] **T-21** **Journal = fil de bulles attribuées** (le `.tsx` mappe T-20) : nom + couleur + icône d'émetteur,
       bulles gauche/droite, `assetId`→placeholder. `JournalBubble.tsx` + CSS pur. → itér. 38
-- [ ] **T-22** **Conséquences visibles (echoes amplifiés)** — quand un flag/choix passé conditionne le présent,
-      une bulle de rappel le DIT (« Parce qu'à 22 ans tu as pardonné à Louise… »). Réutilise le système `echoes`.
+- [x] **T-22** **Conséquences visibles (echoes amplifiés)** — bulle de rappel `[ECHO_LINK]` injectée avant chaque épreuve
+      conditionée (prerequisites actifs) : libellé sobre + âge source si disponible. Module pur `echoLink.ts` + 23 tests. → itér. 39
 - [ ] **T-23** **Variantes narratives 6.5 %→≥20 %** — texte d'event conditionné Appel/saison/trait via
       `applyNarrativeVariant` (déjà câblé). Le tueur-de-routine le moins cher.
 

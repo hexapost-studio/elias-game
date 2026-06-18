@@ -274,7 +274,7 @@ export function deriveSenderFromJournalEntry(entry: JournalEntry): MessageSender
 
   if (type === 'milestone') {
     // Marqueurs célestes (saisons, naissances, révélations d'Appel)
-    const heavenMarkers = ['[SAISON]', '[NAISSANCE]', '[ÉVEIL]', '[SAISONS]', '[RÉVÉL', '[ARC COMPLÉTÉ]', '[GRIMOIRE]', '[TRAIT]', '[COMBO'];
+    const heavenMarkers = ['[SAISON]', '[NAISSANCE]', '[ÉVEIL]', '[SAISONS]', '[RÉVÉL', '[ARC COMPLÉTÉ]', '[GRIMOIRE]', '[TRAIT]', '[COMBO', '[ECHO_LINK]'];
     for (const marker of heavenMarkers) {
       if (text.includes(marker)) {
         return buildHeavenSender('heaven_milestone');

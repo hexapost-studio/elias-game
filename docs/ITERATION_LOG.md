@@ -862,6 +862,39 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   validate 118v/186e, lint-diff 0→0 sur les 2 fichiers touchés (`App.tsx`, `JournalBubble.tsx`).
 - **Rollback** : `git revert` du commit `feat(itér.38)`.
 
+### Itération 39 — T-22 : Conséquences visibles — bulles de rappel quand prerequisites actifs
+
+- **Recherche** : T-22 amplifie le système `echoes.ts` existant pour rendre VISIBLE la causalité
+  narrative. Quand un event avec `prerequisites` est déclenché, une bulle de rappel sobre dit
+  explicitement le lien : « Il y a 13 ans (à 32 ans), tu as choisi le pardon face à Louise.
+  Ce chemin-là ouvre maintenant cette porte. » Sources lues : `src/engine/echoes.ts`,
+  `src/engine/messageSender.ts`, `src/types/game.ts` (structures `EventRequirement`, `AfflictionEvent`,
+  `JournalEntry`), `src/engine/gameEngine.ts` (boucle `advanceAge` + `filterEventsByPrerequisites`),
+  `src/App.tsx` (rendu journal, injection `JournalBubble`). 39 events avec prerequisites dans la base.
+  2 events flag-based (`louise_pardonnee`) + 36 event_completed + 1 verse_unlocked.
+
+- **Application** :
+  - Nouveau module pur `src/engine/echoLink.ts` — `buildEchoLinkEntry(event, state)` :
+    - `prereqLabel(req)` : dérive un libellé court (« tu as surmonté … », « tu as pardonné à Louise »)
+      pour chaque type de `EventRequirement` (flag / event_completed / event_succeeded / event_failed /
+      arc_completed / verse_unlocked). Flags connus enregistrés dans `FLAG_LABELS`.
+    - `prereqAge(req, state)` : retrouve l'âge de la source dans le journal, les arcs complétés, ou
+      le codex. Retourne `null` si inconnu — la bulle s'affiche quand même sans âge.
+    - `formatRecallText(label, age, currentAge)` : formule le texte sobre (avec durée écoulée si ≥2 ans).
+    - `hasEchoLink(event)` : prédicat léger (pour éviter l'appel inutile).
+    - Marqueur `[ECHO_LINK]` dans le texte → capté par `deriveSenderFromJournalEntry` → sender `heaven`.
+  - `src/engine/messageSender.ts` : ajout de `'[ECHO_LINK]'` dans `heavenMarkers` du milestone handler.
+  - `src/engine/gameEngine.ts` : import de `buildEchoLinkEntry` + injection dans `advanceAge` juste
+    avant `newState.currentEvent = event` (la bulle précède l'épreuve dans le journal).
+  - Tests : `tests/echoLink.test.ts` — 23 tests couvrant : `hasEchoLink`, sans prerequisites,
+    flag connu (louise_pardonnee avec âge + texte), flag inconnu → null, event_completed connu/inconnu,
+    event_succeeded / event_failed, verse_unlocked, format de la JournalEntry, multiple prerequisites.
+
+- **Résultat** : porte QA verte — typecheck 0 erreur (baseline 0), 252 tests passés (23 fichiers),
+  build OK, validate 118v/186e, lint-diff 0→0 sur les 4 fichiers touchés.
+
+- **Rollback** : `git revert` du commit `feat(itér.39)`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
