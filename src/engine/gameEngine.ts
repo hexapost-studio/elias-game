@@ -973,7 +973,7 @@ export function validateChoice(
       ...newState.journal,
       {
         age: state.age,
-        text: `[VICTOIRE] ${event.title} surmonté par ${verse.reference} (COMBO:${newState.combo})`,
+        text: `[VICTOIRE] "${event.title}" surmonté par ${verse.reference}: "${verse.text}" (COMBO:${newState.combo})`,
         type: 'success',
         verseRef: verse.reference,
       },
