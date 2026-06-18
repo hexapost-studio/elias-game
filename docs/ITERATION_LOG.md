@@ -817,6 +817,26 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   changement runtime : smoke `run-elias` vert (jeu monté, 20 entrées de journal, 1 épreuve, 0 erreur console).
 - **Rollback** : `git revert` de chaque commit T-T1…T-T5 indépendamment.
 
+### Itération 37 — T-20 : `messageSender.ts` — dérivation d'émetteur (module pur + tests)
+- **Recherche** : Phase 3 / fil polyphonique (T-20..T-32). La vision : la vie d'Élias = un fil de
+  messages de 4 émetteurs (Ciel / Adversaire / Entourage / Conscience). T-20 = fondation pure :
+  un module qui dérive l'identité de l'émetteur depuis les données déjà présentes (`category` +
+  `storyArcId`) — zéro migration, zéro refactor existant. Sources lues : `types/game.ts`
+  (`AfflictionEvent`, `JournalEntry`, `AfflictionCategory`), `data/storyArcs.ts` (11 arcs),
+  `components/iconMeta.tsx` (`AFFLICTION_COLORS`, `ENEMY_COMPONENTS`).
+- **Application** : `src/engine/messageSender.ts` (module pur, 0 import React, 0 state).
+  - Type exporté `MessageSender` : `{ sender, displayName, color, iconKey, assetId }`.
+  - Type exporté `SenderKind` : `'heaven' | 'adversary' | 'entourage' | 'conscience'`.
+  - `deriveMessageSender(event)` : règle de priorité — arc-entourage prime > catégorie-ciel > catégorie-affliction > conscience.
+  - `deriveSenderFromJournalEntry(entry)` : dérive depuis le `type` et les marqueurs textuels.
+  - **Principe asset-ready** : `assetId` = `elias__<sender>__<iconKey>` — TOUJOURS rempli, stable,
+    pointera vers de l'art (T-31) sans refactor.
+  - Tests : `tests/messageSender.test.ts` — 39 tests couvrant les 4 émetteurs + invariants asset-ready
+    + edge case catégorie inconnue + priorité arc-entourage sur category.
+- **Résultat** : porte QA verte — typecheck 0 erreur, 229 tests passés (22 fichiers), build OK,
+  validate 118v/186e, lint-diff 0→0 sur les 2 fichiers touchés.
+- **Rollback** : `git revert` du commit `feat(itér.37)`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
