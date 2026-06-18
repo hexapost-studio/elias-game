@@ -1246,9 +1246,10 @@ export function applyPlayerAction(
   }
 
   for (const [stat, val] of Object.entries(statDelta)) {
-    newStats[stat as string] = Math.min(
+    const k = stat as keyof typeof newStats;
+    newStats[k] = Math.min(
       MAX_STAT,
-      Math.max(MIN_STAT, (newStats[stat as string] || 0) + Math.round((val ?? 0) * fidelityMultiplier))
+      Math.max(MIN_STAT, (newStats[k] || 0) + Math.round((val ?? 0) * fidelityMultiplier))
     );
   }
 
@@ -1398,8 +1399,8 @@ export function advanceAge(state: GameState): {
     }
   }
 
-  // Flow décroît naturellement si inactif
-  if (newState.flow.value > 0 && newState.phase !== 'event') {
+  // Flow décroît naturellement si inactif (phase = 'idle' à ce stade — cf. plus haut)
+  if (newState.flow.value > 0) {
     newState.flow = {
       ...newState.flow,
       value: Math.max(0, newState.flow.value - 2),

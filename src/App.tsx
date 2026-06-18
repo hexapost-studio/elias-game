@@ -330,7 +330,7 @@ function App() {
 
   // ── Journal vivant : narrateur offline (immédiat) + IA en bonus ──────────
   useEffect(() => {
-    if (age === 0 || phase === 'gameover') return;
+    if (age === 0 || gameOver?.isOver) return;
     const s = useGameStore.getState();
 
     // Résultats récents (succès/échec) et traits gagnés cette année — contexte narratif.
