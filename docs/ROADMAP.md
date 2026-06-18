@@ -50,9 +50,58 @@
 - [x] **T-13** Events arc **église** — spine 4/4 → PR #12 / vérifié itér. 32
 - [x] **T-14** Events arc **ville** — spine 3/3 → PR #12 / vérifié itér. 32
 - [x] **T-15** Events âges **90-100** — chaque âge 90→100 couvert par 7 à 15 events → PR #12 / vérifié itér. 32
-- [ ] **T-16** Rééquilibrage **courbe difficulté senior** (« le joueur meurt avant 60 ans » — à RE-VÉRIFIER : la
-      mort = stat ≤ 0 ; le diagnostic d'origine est antérieur à la PR #12, simuler avant de tuner) ← **tête de file**
-- [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats)
+- [x] **T-16** Rééquilibrage **courbe difficulté senior** — outillé par `tools/survival-sim.ts` (itér. 34) puis
+      tuné/mesuré (itér. 35, Piste B) : inversion supprimée, victoire(100) atteignable, ≥60 ans ~3-17 %→94-97 %.
+- [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats) — reporté (Tier 4, voir Phase 3)
+
+## Phase 3 — Fluidité & rejouabilité : le « fil polyphonique » (inspiré 7 Days / chat-narratif)
+
+> **But** : casser le décrochage post-18-25 ans (« trop routinier, sans différenciation »). Verdict d'audit
+> (itér. 32-34) : **tous les systèmes existent** ; le manque est la *mise en scène* et la *visibilité*.
+> Vision (validée avec le porteur) : la vie d'Élias = un **fil de messages** de 4 émetteurs — **le Ciel/l'Esprit**,
+> **l'adversaire** (une voix par affliction), **l'entourage** (amis/famille/collègues/église), **la conscience** —
+> auxquels Élias **répond par un verset**. L'émetteur se **dérive** de `category` + `storyArcId` (zéro migration).
+>
+> **🎨 Principe transverse « ASSET-READY » (NON négociable sur cette phase)** : tout émetteur / event / **lieu**
+> (ville, église) / **objet** expose un *slot d'illustration* (`assetId`) qui résout aujourd'hui en placeholder
+> dérivé (couleur + icône `AFFLICTION_COLORS`/`ENEMY_COMPONENTS`) et **pointera plus tard vers de l'art**
+> (avatars, illustrations de lieux/objets) **sans refactor**. Les visuels arriveront au fil du temps ; le code
+> doit déjà avoir le trou prévu. Cf. T-31/T-32.
+>
+> 1 tâche = 1 commit revert-able + porte QA verte. Priorité = impact sur la différenciation.
+
+### Tier 1 — Différenciation (impact max, réutilise l'existant) ← **tête de file**
+- [ ] **T-20** `src/engine/messageSender.ts` (module **pur** + tests) — dérive `{ sender, displayName, color,
+      iconKey, assetId }` d'un event/entrée de journal (Ciel / Adversaire / Entourage / Conscience). **Fondation
+      + porte d'entrée asset-ready.**
+- [ ] **T-21** **Journal = fil de bulles attribuées** (le `.tsx` mappe T-20) : nom + couleur + icône d'émetteur,
+      bulles gauche/droite, `assetId`→placeholder. Réutilise `AFFLICTION_COLORS`/`ENEMY_COMPONENTS`/`lifeContext`.
+- [ ] **T-22** **Conséquences visibles (echoes amplifiés)** — quand un flag/choix passé conditionne le présent,
+      une bulle de rappel le DIT (« Parce qu'à 22 ans tu as pardonné à Louise… »). Réutilise le système `echoes`.
+- [ ] **T-23** **Variantes narratives 6.5 %→≥20 %** — texte d'event conditionné Appel/saison/trait via
+      `applyNarrativeVariant` (déjà câblé). Le tueur-de-routine le moins cher.
+
+### Tier 2 — Rythme & direction
+- [ ] **T-24** **Chapitres de vie** : carte d'intro de décennie (thème/saison) + **cliffhanger** de fin de décennie
+      (épreuve-capstone). Branché sur `computeSeasonTransition` (transitions déjà aux bornes de décennie).
+- [ ] **T-25** **Ambition de run** : objectif multi-étapes donné par l'Appel, suivi à l'écran (callings + arcs + prerequisites).
+
+### Tier 3 — Reskin « conversation » complet (UX)
+- [ ] **T-26** Épreuve = **bulle entrante** + indicateur « … en train d'écrire » (`useTypewriter`, `prefers-reduced-motion`).
+- [ ] **T-27** Versets = **chips de réponse** → bulle envoyée (réponse d'Élias) → réponse de la voix.
+- [ ] **T-28** **Voix de l'adversaire nommées/typées** (La Peur, Le Doute, l'Amertume…) via couleurs + SVG existants.
+
+### Tier 4 — Agence, profondeur & contenu
+- [ ] **T-29** **Choix moraux** (sous-type d'event : 2-3 *actes* qui posent des flags, au-delà du verset) — schéma + `validate`.
+- [ ] **T-30** **Contenu C1** : 8 catégories à 2 events → ≥5 ; +12-15 events seniors 75-100 (le pool, après la mise en scène).
+- [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats).
+
+### Transverse — Intégration graphique (continu, au fil de l'arrivée des assets)
+- [ ] **T-31** **Registre d'assets** (`src/assets/illustrationRegistry.ts`) : map `assetId`→illustration pour
+      émetteurs (avatars entourage/adversaire), **lieux** (ville/église), **objets** ; résout en placeholder tant
+      que l'art manque. Consommé par T-20/T-21 **dès le départ** (asset-ready) ; rempli progressivement.
+- [ ] **T-32** **Expressions d'avatar** (3-4 par émetteur, façon 7 Days) pilotées par ton/résultat — activées dès
+      que les assets existent (zéro refactor grâce à T-31).
 
 ## 🎯 Definition of a new version (v0.1.0)
 Atteinte quand :
