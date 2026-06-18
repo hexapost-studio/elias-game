@@ -22,6 +22,7 @@ import { Onboarding } from './components/Onboarding';
 import { Prologue } from './components/Prologue';
 import type { PrologueResult } from './components/Prologue';
 import { ArcTracker } from './components/ArcTracker';
+import { AmbitionTracker } from './components/AmbitionTracker';
 import { DailyVerse } from './components/DailyVerse';
 import { MainMenu } from './components/MainMenu';
 
@@ -766,20 +767,8 @@ function App() {
           )}
         </span>
         <span className="info-bar-item">
-          {/* Badge Appel / Destinée de la run */}
-          {calling && (
-            <span
-              title={`Appel : ${calling.name} — ${calling.description}`}
-              className="badge-season"
-              style={{
-                border: `1px solid ${calling.color}55`,
-                background: `${calling.color}18`,
-                color: calling.color,
-              }}
-            >
-              {calling.icon} {calling.name}
-            </span>
-          )}
+          {/* Ambition de run (T-25) — Appel + progression des arcs */}
+          <AmbitionTracker />
           {/* Badge saison spirituelle */}
           {(() => {
             const s = SPIRITUAL_SEASONS[spiritualSeason ?? 'Réveil'];
