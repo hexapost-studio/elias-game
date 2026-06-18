@@ -19,20 +19,26 @@ Vite + Zustand + localforage** (PWA).
 2. **Modulaire** : « systèmes, pas features ». Logique en **module pur** (testable), le `.tsx` ne fait que mapper.
 3. **Dériver plutôt qu'ajouter du state** : reconstruire l'affichage depuis l'état présent (ex. `engine/arcProgress.ts`).
 4. **Normes AAA** : rendu **pur** (jamais de `setState`-in-effect), `prefers-reduced-motion` respecté, pas de gore.
-5. **Vérifié AVANT commit** : `tsc` + `vitest` + `build` + `validate` verts (voir ci-dessous).
-6. **JAMAIS de dette lint ajoutée** : comparer le lint **par fichier touché** vs `HEAD`. La base est déjà
-   rouge (~60 `react-hooks/set-state-in-effect` dans les `.tsx`) — ne pas l'aggraver, ne pas la « réparer » au passage.
+   (1 exception assumée + justifiée : génération du journal vivant dans `App.tsx` — voir itér. 31.)
+5. **Vérifié AVANT commit** : `bash tools/qa-gate.sh` vert (typecheck réel + `vitest` + `build` + `validate` + lint-diff).
+6. **JAMAIS de dette ajoutée** : comparer **par fichier touché** vs `HEAD`. Le lint `react-hooks/*` est
+   désormais à **0** (assaini itér. 21–31). Reste une dette de **TYPE** préexistante (baseline
+   `tools/tsc-baseline.txt`, actuellement 12) — ne pas l'aggraver ; la décrémenter quand on en corrige.
 7. **Ton évangéliste, grâce > punition** : l'échec ouvre un chemin plus humble, jamais avilissant.
 
 ## Vérification (tout vert avant de committer)
 
 ```bash
-npx tsc --noEmit      # types
-npx vitest run        # tests (actuellement 157 verts)
-npx vite build        # bundle prod
-npm run validate      # validateur de données (118 versets, 186 events)
-# + diff lint par fichier touché vs HEAD : zéro nouvelle erreur
+bash tools/qa-gate.sh   # PORTE UNIQUE : typecheck réel + vitest (190) + build + validate (118 v / 186 e) + lint-diff
 ```
+
+⚠️ **`npx tsc --noEmit` seul est un NO-OP** ici : le `tsconfig.json` racine a `files:[]` + `references`,
+donc rien n'est vérifié. Le vrai typecheck est `npx tsc -p tsconfig.app.json --noEmit` (ou `tsc -b`) —
+c'est ce que fait la porte, avec un **ratchet** vs `tools/tsc-baseline.txt`. Détail des étapes
+individuelles : `npx vitest run`, `npx vite build`, `npm run validate`.
+
+Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA auto) : skill `run-elias`
+(`scripts/smoke.mjs` = boot + parcours + 0 erreur console ; `drive.mjs` = captures). Pilotage Playwright.
 
 ## Patrons & conventions
 
@@ -48,7 +54,7 @@ npm run validate      # validateur de données (118 versets, 186 events)
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (18 livrées)
+## État des itérations (31 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -66,15 +72,22 @@ npm run validate      # validateur de données (118 versets, 186 events)
 | 19 | Boucle feedback live — table Supabase créée, durcie (anti-spam), vérifiée bout-en-bout | `7135262` |
 | 20 | Correctifs playtest — « +1 » de jauge discret + verset révélé même en cas d'erreur (tuto) | `9bb3ea9` |
 | 21 | Assainissement lint — lots A/B/C (sûr/typage/fast-refresh), lint 67→27 | `1bdc150`/`356a6c8`/`2d01cc4` |
-| 21bis | Orchestration — `docs/ROADMAP.md` + `tools/qa-gate.sh` + agent `release-lead` | (ce commit) |
+| 21bis | Orchestration — `docs/ROADMAP.md` + `tools/qa-gate.sh` + agent `release-lead` | `d15aea6` |
+| 22–29 | **Phase 1 lint hooks** (T-1..T-8) : useTypewriter, StatBar, DailyVerse, DevPanel, DebugView, ActionPanel, ShareCard, VerseChoices → 0 | `e970477`…`e7510ee` |
+| 30 | **Fix CRITIQUE** : la porte QA ne typecheckait rien (`tsc --noEmit` no-op) → `tsc -p` + ratchet baseline | `7d801ca` |
+| 31 | **Phase 1 / T-9** : `App.tsx` 12 erreurs hooks → 0 (5 sous-commits, vérif navigateur). **`react-hooks/* = 0` projet.** | `283d1c9`…`88568b7` |
 
-**Propositions D, A, B : COMPLÈTES.** Pas de prochain cycle figé — à choisir avec l'utilisateur.
+**Propositions D, A, B : COMPLÈTES.** **Phase 1 (assainissement hooks) : COMPLÈTE.**
+File de tâches : `docs/ROADMAP.md` (Phase 1bis = 12 erreurs de TYPE préexistantes ; Phase 2 = contenu).
 
 ## Réserve (analysée, non planifiée)
 
-- **Assainissement lint global** (~60 `set-state-in-effect`, base déjà rouge) — chantier dédié, risqué.
+- ~~**Assainissement lint hooks**~~ → **livré itér. 21–31** (`react-hooks/* = 0`). Suite tracée en
+  `docs/ROADMAP.md` : **Phase 1bis** (12 erreurs de type préexistantes, enfin visibles depuis itér. 30).
 - ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
   récompense précoce, micro-feedback dans les toutes premières années.
+- **Contenu (Phase 2)** : ~30 events manquants des 5 arcs (ami/métier/parents/église/ville), events
+  âges 90-100, courbe difficulté senior, mode découverte (cf. `GDD_ELIAS.md` §11).
 - **Save-scumming / slots multiples** (à évaluer en contexte procédural).
-- ~~**Feedback/bug-report Supabase**~~ → **livré itér. 18 + infra close** (clé publishable dans
+- ~~**Feedback/bug-report Supabase**~~ → **livré itér. 18–19 + infra close** (clé publishable dans
   `.env.local`, MCP `supabase` authentifié, table `feedback` créée — RLS activé, insert anonyme).

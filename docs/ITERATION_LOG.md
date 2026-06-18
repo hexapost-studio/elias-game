@@ -713,9 +713,10 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
 - **Conséquences ramifiées (`B`)** : arcs narratifs locaux (nœuds→arêtes) + flags de conséquence +
   validation DFS d'atteignabilité + visualizer à la *Academical* (cf. `DESIGN_PARTIE2.md` §5). Gros cycle dédié.
-- **Assainissement lint global (chantier dédié)** : ~60 erreurs `react-hooks/set-state-in-effect`
-  / `purity` / `refs` réparties dans le projet (base déjà rouge avant la boucle). À traiter
-  fichier par fichier, hors boucle juice, avec garde anti-régression (gros scope, risqué).
+- ✅ ~~**Assainissement lint hooks (chantier dédié)**~~ → **livré itér. 21–31** : `react-hooks/* = 0`
+  sur tout le projet (67→0), fichier par fichier avec porte QA + vérif navigateur. Reste tracé en
+  `docs/ROADMAP.md` : **Phase 1bis** = 12 erreurs de TYPE préexistantes (révélées par la porte
+  réparée à l'itér. 30) ; **Phase 2** = contenu.
 - **Codex vivant** (80 Days) : variété de texte à la révision des versets.
 - **Conséquences ramifiées** : choix narratif altérant durablement la run (gros scope).
 - **Onboarding zéro-friction** : soigner les premières minutes (Prologue/Onboarding existants).

@@ -44,7 +44,7 @@ Référence visuelle de branchement (à garder en tête pour `B`) :
 | **D** | **Identité du personnage** (saisir un nom, semer l'identité) | Moyen, borné | Faible | **Fort** (racine du retour « ça ne nous ressemble pas ») | ✅ **LIVRÉ** (itér. 9) |
 | **A** | **Graines partageables** (déterminiser toute la naissance) | Moyen, moteur | Moyen | Fort (rejouabilité, « rejoue ma vie ») | ✅ **LIVRÉ** (itér. 10) |
 | **B** | **Conséquences ramifiées** (vrai branchement narratif) | Gros | Élevé | Très fort | ✅ **LIVRÉ** — B-1 moteur (itér. 12 : flags + branchement + DFS + arc-louise) **+ B-2 visualizer** (itér. 13 : bandeau de pas `●─●─◆─○` + variante grisée) |
-| **C** | **Assainissement lint global** (~60 `set-state-in-effect`) | Gros, fastidieux | Élevé | Nul côté joueur (qualité) | Chantier à part |
+| **C** | **Assainissement lint global** (~60 `set-state-in-effect`) | Gros, fastidieux | Élevé | Nul côté joueur (qualité) | ✅ **LIVRÉ** — Phase 1 hooks `react-hooks/* = 0` (itér. 21–31). Reste dette de TYPE (ROADMAP Phase 1bis) |
 
 > Pourquoi `D` puis `A` : `D` adresse le retour joueur n°1 et est borné/peu risqué ; `A` le
 > complète naturellement (l'identité saisie devient une **graine de destinée partageable**).
