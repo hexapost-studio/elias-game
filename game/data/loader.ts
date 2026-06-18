@@ -6,7 +6,7 @@
 import verses from './verses.json';
 import balance from '../config/balance.json';
 
-import type { VerseEntry, AfflictionEvent, StoryArc } from '../types/game';
+import type { VerseEntry, AfflictionEvent, StoryArc, AfflictionCategory } from '../../src/types/game';
 
 /** Forme brute d'un verset dans verses.json (clés courtes), avant normalisation. */
 interface RawVerse {
@@ -15,8 +15,8 @@ interface RawVerse {
   text: string;
   cat: string;
   tags?: string[];
-  impact?: Record<string, number>;
-  diff: number;
+  impact?: { foi?: number; paix?: number; physique?: number; finances?: number };
+  diff: 1 | 2 | 3;
   weight?: number;
 }
 
@@ -26,7 +26,7 @@ export const VERSE_DATABASE: VerseEntry[] = (verses as RawVerse[]).map((v) => ({
   id: v.id,
   reference: v.ref,
   text: v.text,
-  category: v.cat,
+  category: v.cat as AfflictionCategory,
   tags: v.tags || [],
   statImpact: v.impact || {},
   difficulty: v.diff,
@@ -55,7 +55,7 @@ let _events: AfflictionEvent[] | null = null;
 export async function loadEvents(): Promise<AfflictionEvent[]> {
   if (_events) return _events;
   const mod = await import('./events.json');
-  _events = mod.default as AfflictionEvent[];
+  _events = mod.default as unknown as AfflictionEvent[];
   return _events;
 }
 
