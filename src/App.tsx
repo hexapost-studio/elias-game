@@ -41,6 +41,8 @@ import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
 import { ActionPanel } from './components/ActionPanel';
+import { JournalBubble } from './components/JournalBubble';
+import { deriveSenderFromJournalEntry } from './engine/messageSender';
 import type { AfflictionEvent } from './types/game';
 import './index.css';
 
@@ -883,11 +885,11 @@ function App() {
             (() => {
               // Fusionner entrées normales + entrées IA, triées par âge
               type MixedEntry =
-                | { kind: 'normal'; i: number; age: number; type: string; text: string }
+                | { kind: 'normal'; i: number; age: number; type: string; text: string; verseRef?: string }
                 | { kind: 'ai'; age: number; text: string; generating: boolean };
 
               const normal: MixedEntry[] = journal.map((e, i) => ({
-                kind: 'normal', i, age: e.age ?? 0, type: e.type, text: e.text,
+                kind: 'normal', i, age: e.age ?? 0, type: e.type, text: e.text, verseRef: e.verseRef,
               }));
               const ai: MixedEntry[] = aiJournalEntries.map((e) => ({
                 kind: 'ai', age: e.age, text: e.text, generating: e.generating,
@@ -896,21 +898,18 @@ function App() {
 
               return all.map((entry, idx) => {
                 if (entry.kind === 'normal') {
+                  // Dériver l'émetteur depuis l'entrée de journal (T-21)
+                  const journalEntry = { age: entry.age, text: entry.text, type: entry.type as 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro', verseRef: entry.verseRef };
+                  const msgSender = deriveSenderFromJournalEntry(journalEntry);
                   return (
-                    <div key={`n-${entry.i}`} className={`journal-entry entry-${entry.type}`}>
-                      {entry.type === 'milestone' ? (
-                        <span>{entry.text}</span>
-                      ) : entry.type === 'micro' ? (
-                        <><span className="entry-age-before">{entry.age}a</span>{' '}
-                        <span className="entry-separator">·</span>
-                        {entry.text}</>
-                      ) : (
-                        <><span className="entry-age-before">{entry.age}a</span> {entry.text}</>
-                      )}
-                    </div>
+                    <JournalBubble
+                      key={`n-${entry.i}`}
+                      entry={journalEntry}
+                      sender={msgSender}
+                    />
                   );
                 }
-                // Entrée IA
+                // Entrée IA — rendu textuel préservé (pas de sender dérivé pour l'IA)
                 return (
                   <div key={`ai-${idx}`} className={`journal-ai-entry${entry.generating ? ' generating' : ''}`}>
                     {entry.generating ? (

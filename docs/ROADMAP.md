@@ -74,8 +74,8 @@
 - [x] **T-20** `src/engine/messageSender.ts` (module **pur** + tests) — dérive `{ sender, displayName, color,
       iconKey, assetId }` d'un event/entrée de journal (Ciel / Adversaire / Entourage / Conscience). **Fondation
       + porte d'entrée asset-ready.** → itér. 37 / `bb3d09e`
-- [ ] **T-21** **Journal = fil de bulles attribuées** (le `.tsx` mappe T-20) : nom + couleur + icône d'émetteur,
-      bulles gauche/droite, `assetId`→placeholder. Réutilise `AFFLICTION_COLORS`/`ENEMY_COMPONENTS`/`lifeContext`.
+- [x] **T-21** **Journal = fil de bulles attribuées** (le `.tsx` mappe T-20) : nom + couleur + icône d'émetteur,
+      bulles gauche/droite, `assetId`→placeholder. `JournalBubble.tsx` + CSS pur. → itér. 38
 - [ ] **T-22** **Conséquences visibles (echoes amplifiés)** — quand un flag/choix passé conditionne le présent,
       une bulle de rappel le DIT (« Parce qu'à 22 ans tu as pardonné à Louise… »). Réutilise le système `echoes`.
 - [ ] **T-23** **Variantes narratives 6.5 %→≥20 %** — texte d'event conditionné Appel/saison/trait via

@@ -837,6 +837,31 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   validate 118v/186e, lint-diff 0→0 sur les 2 fichiers touchés.
 - **Rollback** : `git revert` du commit `feat(itér.37)`.
 
+### Itération 38 — T-21 : Journal = fil de bulles attribuées (émetteur + couleur + icône)
+- **Recherche** : T-21 mappe T-20 (`messageSender.ts`) sur l'UI. Le journal existant dans
+  `App.tsx` rendait les entrées comme liste de texte plat avec classes CSS (`entry-success`,
+  `entry-fail`, etc.). L'objectif : transformer ce fil en bulles de chat attribuées, avec
+  positionnement gauche/droite selon l'émetteur (heaven/adversary/entourage = gauche ;
+  conscience + réponses d'Élias = droite). Sources lues : `src/App.tsx` (rendu journal lignes
+  878–932), `src/engine/messageSender.ts` (T-20), `src/types/game.ts` (`JournalEntry`,
+  `AfflictionCategory`), `src/index.css` (classes journal existantes).
+- **Application** :
+  - Nouveau composant `src/components/JournalBubble.tsx` — rendu pur (0 state, 0 effect) :
+    - `isSelfEntry()` — détermine la position droite (`success`, `fail`, `conscience`).
+    - `avatarLetter()` — dérive la lettre d'avatar de l'`iconKey` (asset-ready pour T-31).
+    - Milestones = bande pleine largeur centrée (`.jb-milestone`).
+    - Bulles standard : avatar + nom émetteur au-dessus + bulle colorée gauche ou droite.
+    - `assetId` exposé via `--jb-color` CSS var + lettre de l'`iconKey` — slot pour T-31.
+  - Nouvelles classes CSS dans `src/index.css` : `.jb-row`, `.jb-avatar`, `.jb-bubble-col`,
+    `.jb-sender-name`, `.jb-age-tag`, `.jb-bubble`, `.jb-bubble--*`, `.jb-milestone`,
+    `.jb-milestone-icon`, `.jb-milestone-text` ; `prefers-reduced-motion` respecté.
+  - `App.tsx` : import de `JournalBubble` + `deriveSenderFromJournalEntry` ; rendu journal
+    principal remplacé par `<JournalBubble entry={…} sender={msgSender} />` ; entrées IA
+    conservent leur rendu textuel.
+- **Résultat** : porte QA verte — typecheck 0/0, 229 tests passés (22 fichiers), build OK,
+  validate 118v/186e, lint-diff 0→0 sur les 2 fichiers touchés (`App.tsx`, `JournalBubble.tsx`).
+- **Rollback** : `git revert` du commit `feat(itér.38)`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
