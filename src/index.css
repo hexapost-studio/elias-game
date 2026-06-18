@@ -1575,6 +1575,15 @@ body {
   font-weight: 400;
 }
 
+/* T-28 : sous-titre voix de l'adversaire */
+.jb-sender-subtitle {
+  font-size: 9px;
+  font-weight: 400;
+  opacity: 0.55;
+  font-style: italic;
+  letter-spacing: 0.2px;
+}
+
 /* Bulle de chat */
 .jb-bubble {
   padding: 7px 10px;

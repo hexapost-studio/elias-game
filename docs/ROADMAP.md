@@ -89,7 +89,7 @@
 ### Tier 3 — Reskin « conversation » complet (UX)
 - [x] **T-26** Épreuve = **bulle entrante** + indicateur « … en train d'écrire » (`TypingIndicator.tsx`, `prefers-reduced-motion`, CSS `ti-bounce`). → itér. 44
 - [x] **T-27** Versets = **chips de réponse** → bulle envoyée (réponse d'Élias) → réponse de la voix. → itér. 45
-- [ ] **T-28** **Voix de l'adversaire nommées/typées** (La Peur, Le Doute, l'Amertume…) via couleurs + SVG existants.
+- [x] **T-28** **Voix de l'adversaire nommées/typées** (La Peur, Le Doute, l'Amertume…) via couleurs + SVG existants. → itér. 46
 
 ### Tier 4 — Agence, profondeur & contenu
 - [ ] **T-29** **Choix moraux** (sous-type d'event : 2-3 *actes* qui posent des flags, au-delà du verset) — schéma + `validate`.

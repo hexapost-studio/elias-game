@@ -20,6 +20,9 @@
 
 import type { AfflictionCategory } from '../types/game';
 import type { AfflictionEvent, JournalEntry } from '../types/game';
+// T-28 : couleurs propres par affliction — module pur (zéro React) extrait pour éviter
+// une dépendance de ce module engine sur JSX (principe invariant 2 : modulaire).
+import { AFFLICTION_COLORS } from './afflictionColors';
 
 /* ─── Types exportés ──────────────────────────────────────────────────────── */
 
@@ -157,10 +160,13 @@ function buildHeavenSender(iconKey: string): MessageSender {
 
 function buildAdversarySender(category: AfflictionCategory): MessageSender {
   const iconKey = `adversary_${category}`;
+  // T-28 : couleur propre à chaque affliction (depuis AFFLICTION_COLORS),
+  // sinon couleur générique adversaire comme fallback.
+  const color = AFFLICTION_COLORS[category] ?? SENDER_COLORS.adversary;
   return {
     sender:      'adversary',
     displayName: ADVERSARY_NAMES[category] ?? "L'Adversaire",
-    color:       SENDER_COLORS.adversary,
+    color,
     iconKey,
     assetId:     buildAssetId('adversary', iconKey),
   };

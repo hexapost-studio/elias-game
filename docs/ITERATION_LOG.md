@@ -1113,6 +1113,44 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert <hash itér. 45>`.
 
+### Itération 46 — T-28 Voix de l'adversaire nommées — couleur + icône par affliction
+
+- **Recherche** : dans les jeux d'horreur narrative (Hades, Disco Elysium, Slay the Princess),
+  chaque voix ennemie a une identité visuelle propre — couleur, icône, sous-titre. T-28 applique
+  ce principe aux 14 afflictions d'Élias : chaque voix (La Peur, Le Doute, L'Orgueil…) obtient
+  sa propre couleur HUD dérivée de `AFFLICTION_COLORS` et son SVG ennemi depuis `ENEMY_COMPONENTS`
+  (8 silhouettes déjà disponibles). Un sous-titre « voix de l'adversaire » renforce l'identité.
+
+- **Analyse** : `buildAdversarySender()` dans `messageSender.ts` utilisait `SENDER_COLORS.adversary`
+  (rouge générique #ef4444) pour tous les adversaires. `AFFLICTION_COLORS` et `ENEMY_COMPONENTS`
+  existaient déjà dans `iconMeta.tsx`. Problème architectural : `messageSender.ts` est un module pur
+  (zéro React) qui ne peut pas importer du JSX — or `iconMeta.tsx` contient des composants inline.
+  Solution : extraire la map de couleurs dans `src/engine/afflictionColors.ts` (module pur `.ts`),
+  et dans `iconMeta.tsx` importer et ré-exporter via assignation (`const X = _x`) pour rétrocompatibilité.
+  Le re-export direct `export { X } from '...'` déclenchait 4 erreurs `react-refresh/only-export-components`
+  là où l'assignation `export const X = _x` (identique au comportement HEAD) n'en déclenche aucune.
+
+- **Application** :
+  - `src/engine/afflictionColors.ts` (nouveau) — module pur : `AFFLICTION_COLORS` (23 catégories,
+    palette distincte rouge/violet/orange/gris/bleu par affliction). Source de vérité pour le moteur.
+  - `src/engine/messageSender.ts` — `buildAdversarySender()` : `color = AFFLICTION_COLORS[category] ?? SENDER_COLORS.adversary` ;
+    import depuis le module pur (pas de JSX).
+  - `src/components/iconMeta.tsx` — importe `afflictionColors.ts` et ré-exporte via `export const AFFLICTION_COLORS = _af`
+    (rétrocompatibilité pour `VerseChoices.tsx`) ; commentaire mis à jour.
+  - `src/components/JournalBubble.tsx` — helper `extractEnemyCategory()` : extrait la catégorie depuis
+    l'`iconKey` adversaire et vérifie la présence dans `ENEMY_COMPONENTS`. Avatar gauche : affiche
+    `<EnemySvg size={28} />` si SVG disponible, sinon lettre initiale. Sous-titre `jb-sender-subtitle`
+    pour tous les émetteurs adversaires.
+  - `src/index.css` — `.jb-sender-subtitle` (9px, italic, opacity 0.55).
+
+- **Résultat** : porte QA verte — typecheck 0 erreur, 299 tests passés, build OK, validate 118v/186e,
+  lint-diff 0→0 sur les 4 fichiers touchés. Chaque voix adversaire a désormais sa couleur distinctive
+  (La Peur = violet #8b5cf6, Le Doute = bleu-gris #94a3b8, L'Orgueil = rouge #dc2626, etc.) et
+  son icône SVG si disponible (8 afflictions sur 14 couvertes). Le sous-titre « voix de l'adversaire »
+  renforce l'identité narrative sans alourdir la lecture.
+
+- **Rollback** : `git revert <hash itér. 46>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

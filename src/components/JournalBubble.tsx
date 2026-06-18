@@ -16,6 +16,7 @@
 
 import type { JournalEntry } from '../types/game';
 import type { MessageSender } from '../engine/messageSender';
+import { ENEMY_COMPONENTS } from './iconMeta';
 
 /* ─── Helpers ──────────────────────────────────────────────────────────────── */
 
@@ -41,6 +42,21 @@ function avatarLetter(iconKey: string): string {
   // Ignorer le préfixe émetteur (premier segment), prendre la 2e partie
   const meaningful = parts[1] ?? parts[0] ?? '?';
   return meaningful[0]?.toUpperCase() ?? '?';
+}
+
+/**
+ * T-28 : pour un émetteur adversaire, extrait la clé de catégorie depuis l'iconKey.
+ * `adversary_peur_angoisse` → `peur_angoisse`
+ * `adversary_generic`       → `generic` (pas de SVG ennemi, retourne null)
+ */
+function extractEnemyCategory(sender: MessageSender): string | null {
+  if (sender.sender !== 'adversary') return null;
+  // iconKey = `adversary_<category>` où category peut contenir des underscores
+  const prefix = 'adversary_';
+  if (!sender.iconKey.startsWith(prefix)) return null;
+  const category = sender.iconKey.slice(prefix.length);
+  // Vérifier qu'un composant SVG existe pour cette catégorie
+  return category in ENEMY_COMPONENTS ? category : null;
 }
 
 /* ─── Composant ────────────────────────────────────────────────────────────── */
@@ -75,6 +91,10 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
     );
   }
 
+  // T-28 : composant SVG ennemi si disponible pour cet adversaire
+  const enemyCategory = extractEnemyCategory(sender);
+  const EnemySvg = enemyCategory !== null ? ENEMY_COMPONENTS[enemyCategory] : null;
+
   return (
     <div className={`jb-row ${isRight ? 'jb-row--right' : 'jb-row--left'}`}>
       {/* Avatar — gauche uniquement (à droite = implicite : c'est Élias) */}
@@ -84,7 +104,8 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
           style={{ '--jb-color': sender.color } as React.CSSProperties}
           aria-hidden="true"
         >
-          {avatarLetter(sender.iconKey)}
+          {/* T-28 : icône SVG ennemi si disponible, sinon lettre initiale */}
+          {EnemySvg !== null ? <EnemySvg size={28} /> : avatarLetter(sender.iconKey)}
         </div>
       )}
 
@@ -93,6 +114,10 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
         {!isRight ? (
           <div className="jb-sender-name" style={{ color: sender.color }}>
             {sender.displayName}
+            {/* T-28 : sous-titre « voix de l'adversaire » pour les bulles ennemies */}
+            {sender.sender === 'adversary' && (
+              <span className="jb-sender-subtitle"> — voix de l'adversaire</span>
+            )}
             {entry.age > 0 && <span className="jb-age-tag"> · {entry.age}a</span>}
           </div>
         ) : (
