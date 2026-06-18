@@ -231,7 +231,7 @@ export function deriveMessageSender(event: AfflictionEvent): MessageSender {
  * - type `fail`      → adversary (chute)
  * - type `cascade`   → adversary (conséquence négative)
  * - type `milestone` contenant `[ARC` et arc entourage → entourage
- * - type `milestone` contenant `[SAISON]`/`[NAISSANCE]`/`[RÉVEIL]` → heaven
+ * - type `milestone` contenant `[SAISON]`/`[NAISSANCE]`/`[ÉVEIL]` → heaven
  * - type `micro`     → entourage (vie quotidienne / famille / contexte)
  * - type `event`     → conscience (question ouverte)
  * - par défaut       → conscience
@@ -274,7 +274,7 @@ export function deriveSenderFromJournalEntry(entry: JournalEntry): MessageSender
 
   if (type === 'milestone') {
     // Marqueurs célestes (saisons, naissances, révélations d'Appel)
-    const heavenMarkers = ['[SAISON]', '[NAISSANCE]', '[ÉVEIL]', '[SAISONS]', '[RÉVÉL', '[ARC COMPLÉTÉ]', '[GRIMOIRE]', '[TRAIT]', '[COMBO', '[ECHO_LINK]'];
+    const heavenMarkers = ['[SAISON]', '[NAISSANCE]', '[ÉVEIL]', '[SAISONS]', '[RÉVÉL', '[ARC_COMPLET]', '[GRIMOIRE]', '[TRAIT]', '[COMBO', '[ECHO_LINK]', '[CHAPITRE]', '[CLIFFHANGER]', '[JALON]'];
     for (const marker of heavenMarkers) {
       if (text.includes(marker)) {
         return buildHeavenSender('heaven_milestone');

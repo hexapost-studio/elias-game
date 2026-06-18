@@ -266,10 +266,10 @@ describe('deriveSenderFromJournalEntry — type milestone', () => {
     assertSenderInvariants(sender, 'heaven');
   });
 
-  it('[ARC COMPLÉTÉ] → heaven (célébration)', () => {
+  it('[ARC_COMPLET] → heaven (célébration)', () => {
     const entry = makeJournalEntry({
       type: 'milestone',
-      text: '[ARC COMPLÉTÉ] Une amitié pour la vie — "La loyauté forgée dans l\'épreuve"',
+      text: '[ARC_COMPLET] Une amitié pour la vie — "La loyauté forgée dans l\'épreuve"',
     });
     const sender = deriveSenderFromJournalEntry(entry);
     assertSenderInvariants(sender, 'heaven');
@@ -281,8 +281,8 @@ describe('deriveSenderFromJournalEntry — type milestone', () => {
     assertSenderInvariants(sender, 'entourage');
   });
 
-  it('jalon de vie sans marqueur spécifique → heaven', () => {
-    const entry = makeJournalEntry({ type: 'milestone', text: '[JEUNE ADULTE] 25 ans. Les fondations.' });
+  it('[JALON] de vie → heaven', () => {
+    const entry = makeJournalEntry({ type: 'milestone', text: '[JALON] 25 ans. Les fondations.' });
     const sender = deriveSenderFromJournalEntry(entry);
     assertSenderInvariants(sender, 'heaven');
   });

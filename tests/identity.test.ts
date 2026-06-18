@@ -66,7 +66,7 @@ describe('intégration createInitialState — nom', () => {
   it('les jalons d\'âge (en cours de partie) utilisent le nom du joueur', () => {
     const s = { ...createInitialState(undefined, 1, 'Noé'), age: 14 };
     const { newState } = advanceAge(s);
-    const milestone = newState.journal.find((e) => e.text.includes('ADOLESCENCE'));
+    const milestone = newState.journal.find((e) => e.text.includes('[JALON]'));
     expect(milestone?.text).toContain('Noé');
     expect(milestone?.text).not.toContain('Élias');
   });

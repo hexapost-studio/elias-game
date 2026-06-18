@@ -1015,7 +1015,7 @@ export function validateChoice(
           ...newState.journal,
           {
             age: state.age,
-            text: `[ARC COMPLÉTÉ] ${arc.name} — "${arc.description}"`,
+            text: `[ARC_COMPLET] ${arc.name} — "${arc.description}"`,
             type: 'milestone',
           },
         ];
@@ -1442,13 +1442,13 @@ export function advanceAge(state: GameState): {
   const ageEvents: string[] = [];
   const name = newState.playerName;
   if (newAge === 0)  ageEvents.push(`[NAISSANCE] ${name} vient de naître.`);
-  if (newAge === 15) ageEvents.push(`[ADOLESCENCE] ${name} entre dans l'adolescence. Les premiers choix commencent.`);
-  if (newAge === 25) ageEvents.push(`[JEUNE ADULTE] ${name} prend sa vie en main. Le combat intérieur s'intensifie.`);
-  if (newAge === 30) ageEvents.push('[MATURITÉ] 30 ans. La vie forge ce que la foi doit porter. Les fondations se testent.');
-  if (newAge === 40) ageEvents.push('[PIVOT] 40 ans. Le corps commence à parler. Ce qui était acquis doit être renouvelé.');
-  if (newAge === 50) ageEvents.push('[PROFONDEUR] 50 ans. Ce qui comptait avant compte moins. Ce qui était flou devient clair.');
-  if (newAge === 60) ageEvents.push(`[SAGESSE] 60 ans. ${name} marche vers la sagesse. Les dernières grandes batailles approchent.`);
-  if (newAge === 80) ageEvents.push('[GLORIEUX] Les dernières forteresses tombent. Le Prodige achève sa course.');
+  if (newAge === 15) ageEvents.push(`[JALON] ${name} entre dans l'adolescence. Les premiers choix commencent.`);
+  if (newAge === 25) ageEvents.push(`[JALON] ${name} prend sa vie en main. Le combat intérieur s'intensifie.`);
+  if (newAge === 30) ageEvents.push('[JALON] 30 ans. La vie forge ce que la foi doit porter. Les fondations se testent.');
+  if (newAge === 40) ageEvents.push('[JALON] 40 ans. Le corps commence à parler. Ce qui était acquis doit être renouvelé.');
+  if (newAge === 50) ageEvents.push('[JALON] 50 ans. Ce qui comptait avant compte moins. Ce qui était flou devient clair.');
+  if (newAge === 60) ageEvents.push(`[JALON] 60 ans. ${name} marche vers la sagesse. Les dernières grandes batailles approchent.`);
+  if (newAge === 80) ageEvents.push('[JALON] Les dernières forteresses tombent. Le Prodige achève sa course.');
 
   if (ageEvents.length > 0) {
     newState.journal = [

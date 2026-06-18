@@ -1003,6 +1003,43 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert 3613095`.
 
+### Itération 43 — Audit de cohérence + renommages avant Tier 3
+
+- **Recherche** : inspection complète des marqueurs de journal, noms d'émetteurs, composants et
+  classes CSS produits par T-20..T-25 (itér. 37-42). Vérification de la cohérence style/casse/convention
+  sur tout le corpus source + tests.
+
+- **Analyse** : incohérences identifiées :
+  1. **`[ARC COMPLÉTÉ]` avec espace et accent** — incohérent avec `[ECHO_LINK]`, `[CHAPITRE]`,
+     `[CLIFFHANGER]` qui utilisent des underscores et pas d'accents.
+  2. **7 marqueurs de jalons d'âge disparates** — `[ADOLESCENCE]`, `[JEUNE ADULTE]`, `[MATURITÉ]`,
+     `[PIVOT]`, `[PROFONDEUR]`, `[SAGESSE]`, `[GLORIEUX]` représentent tous la même chose (milestone
+     d'âge) mais ont des noms différents. Avec le système T-24 (`[CHAPITRE]`) qui couvre déjà le
+     contenu de chaque décennie, ces marqueurs doivent être unifiés sous un nom fonctionnel unique.
+  3. **Commentaire erroné dans `messageSender.ts`** — ligne 234 cite `[RÉVEIL]` mais le marqueur
+     réel dans `reveals.ts` est `[ÉVEIL]`.
+  4. **`heavenMarkers` incomplet** — `[CHAPITRE]`, `[CLIFFHANGER]`, `[JALON]` absents de la liste
+     de reconnaissance de l'émetteur `heaven` dans `deriveSenderFromJournalEntry`.
+
+- **Application** :
+  - `src/engine/gameEngine.ts` :
+    - `[ARC COMPLÉTÉ]` → `[ARC_COMPLET]` (underscores, sans accent, cohérent avec la convention Phase 3).
+    - `[ADOLESCENCE]`, `[JEUNE ADULTE]`, `[MATURITÉ]`, `[PIVOT]`, `[PROFONDEUR]`, `[SAGESSE]`,
+      `[GLORIEUX]` → tous unifiés en `[JALON]` (marqueur fonctionnel unique pour les bornes d'âge).
+  - `src/engine/messageSender.ts` :
+    - Commentaire : `[RÉVEIL]` corrigé en `[ÉVEIL]`.
+    - `heavenMarkers` : `[ARC COMPLÉTÉ]` remplacé par `[ARC_COMPLET]` ; `[CHAPITRE]`, `[CLIFFHANGER]`,
+      `[JALON]` ajoutés (assure la bonne attribution de l'émetteur pour tous les nouveaux types).
+  - `tests/identity.test.ts` : recherche `'ADOLESCENCE'` → `'[JALON]'`.
+  - `tests/messageSender.test.ts` : `[ARC COMPLÉTÉ]` → `[ARC_COMPLET]` (× 2) ; `[JEUNE ADULTE]`
+    → `[JALON]` dans le test de jalons de vie.
+
+- **Résultat** : porte QA verte — typecheck 0 erreur, **299 tests passés**, build OK, validate
+  118v/186e, lint-diff 0→0 sur les 4 fichiers touchés. Aucune fonctionnalité ne change —
+  les marqueurs sont uniquement de la donnée texte lue en dérivation.
+
+- **Rollback** : `git revert <hash itér. 43>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
