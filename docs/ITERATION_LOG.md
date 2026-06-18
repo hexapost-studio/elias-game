@@ -895,6 +895,36 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert` du commit `feat(itér.39)`.
 
+### Itération 40 — T-23 Variantes narratives 6.5 % → 22 % (tueur de routine)
+
+- **Recherche** : `applyNarrativeVariant()` est déjà câblée dans `generateEvent` (gameEngine.ts
+  lignes 779, 795, 853). Elle cherche `event.narrativeVariants[]` et applique la première variante
+  dont la condition (`season` / `calling` / `stat_check` / `has_trait` / `birth_profile`) correspond
+  à l'état courant. Seuls 12 events sur 186 (6.5 %) l'exploitaient — pourtant c'est le mécanisme
+  le moins coûteux pour briser la routine.
+
+- **Analyse** : 45 events prioritaires identifiés (âge 15-45, catégories
+  `combat_spirituel`, `identite_appel`, `amertume_rejet`, `peur_angoisse`, `doute_incredulite`,
+  `tristesse_joie`, `decouragement`, `finances_paresse`, hors cascades). Objectif : enrichir 28-30
+  de ces events pour dépasser 38/186 (20 %).
+
+- **Application** :
+  - Enrichissement de `game/data/events.json` : 29 events enrichis (blocs thématiques) :
+    - Bloc jeunesse (âge 8-25) : `e-fond-001`, `e-choix-001..006` (6 events)
+    - Bloc vie productive (âge 26-50) : `e-prod-003`, `e-prod-006`, `e-prod-008`,
+      `e-decour-001/002`, `e-joie-001/002`, `e-ami-002`, `e-fin-001/002` (10 events)
+    - Arcs narratifs : `arc-louise-2`, `arc-mathias-2/3`, `arc-tentation-4`, `arc-guerison-1`,
+      `arc-parents-1/2/3`, `arc-eglise-1/2`, `arc-ville-1/2`, `arc-conjoint-3` (13 events)
+  - Chaque event reçoit 2 variantes : une sur `season` + une sur `calling`, toutes dans le
+    ton évangéliste (grâce > punition, l'épreuve ouvre un chemin plus humble).
+  - Résultat : 41/186 events avec variantes = **22.0 %** (vs 6.5 % avant).
+  - Aucun fichier TypeScript modifié — enrichissement de données pur, zéro refactor.
+
+- **Résultat** : porte QA verte — typecheck 0 erreur (baseline 0), 252 tests passés (23 fichiers),
+  build OK, validate 118v/186e, lint-diff (aucun .ts/.tsx touché). Seuil ≥20 % atteint : 22.0 %.
+
+- **Rollback** : `git revert` du commit `feat(itér.40)`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

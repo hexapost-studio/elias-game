@@ -158,7 +158,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Seul face aux moqueries",
+        "description": "En plein désert intérieur, les rires de tes camarades résonnent plus fort. Tu t'isoles pour ne plus souffrir. Mais le silence aussi fait mal."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "La première ligne de front",
+        "description": "Le Combattant apprend tôt que la foi se paie comptant. Ces moqueries sont ta première bataille. Tiens-tu bon ou courbes-tu l'échine ?"
+      }
+    ]
   },
   {
     "id": "e-fond-001-c",
@@ -369,7 +387,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Les examens, au fond du puits",
+        "description": "La charge des études tombe en pleine saison sèche. Pas d'élan, pas d'encouragement — juste les révisions et la peur de ne pas être à la hauteur."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "L'étude comme vocation",
+        "description": "Tu ressens que l'école est un terrain de formation, pas seulement un tremplin. Mais l'angoisse des examens te rappelle que grandir coûte quelque chose."
+      }
+    ]
   },
   {
     "id": "e-choix-001-c",
@@ -455,7 +491,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "finances": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "L'argent facile en temps de prospérité",
+        "description": "En pleine saison favorable, cette promesse d'enrichissement rapide brille encore plus fort. Est-ce la bénédiction… ou le piège qui teste la fidélité ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le raccourci du bâtisseur",
+        "description": "Tu veux construire quelque chose de grand — et ce plan semble couper les années d'attente. Mais une fondation volée peut-elle tenir ?"
+      }
+    ]
   },
   {
     "id": "e-choix-003-c",
@@ -497,7 +551,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "L'appel qui bouleverse l'orientation",
+        "description": "En plein réveil spirituel, la question de l'orientation prend une autre dimension. Tes parents veulent médecine. Mais quelque chose en toi brûle d'une autre flamme."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Médecin ou messager ?",
+        "description": "Tes parents ont tracé une route. Toi, tu entends un autre appel. L'Évangéliste naît dans ce genre de choix cornélien — là où la logique humaine cède la place à la foi."
+      }
+    ]
   },
   {
     "id": "e-choix-005",
@@ -519,7 +591,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "La relation toxique en temps d'épreuve",
+        "description": "En saison d'épreuve, cette dépendance affective ressemble à un refuge. Mais ce qui protège maintenant peut enchaîner pour longtemps."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "La brebis blessée",
+        "description": "Le Berger sait reconnaître une relation malsaine — mais pas toujours quand c'est lui-même qui s'y trouve. Parfois, c'est toi la brebis qui a besoin de secours."
+      }
+    ]
   },
   {
     "id": "e-choix-005-c",
@@ -567,7 +657,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "Le feu du réveil face aux moqueries",
+        "description": "Un réveil traverse ta ville, et quelque chose s'embrase en toi. Mais les regards de tes amis te refroidissent. Assumeras-tu ce feu au grand jour ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "La soif cachée de l'intercesseur",
+        "description": "Tu pries en secret depuis des années. Ce réveil spirituel t'appelle à sortir de l'ombre. Mais le coût de la visibilité te fait hésiter."
+      }
+    ]
   },
   {
     "id": "e-prod-001",
@@ -711,7 +819,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "L'injustice en saison d'épreuve",
+        "description": "En pleine saison d'épreuve publique, la promotion accordée à un autre te brûle doublement. Comment garder le cœur pur quand le système semble se liguer contre toi ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le chantier ignoré",
+        "description": "Tu bâtissais — et c'est un autre qui récolte. Le Bâtisseur sait que la construction prend du temps. Mais quand le fruit est volé, l'amertume menace les fondations."
+      }
+    ]
   },
   {
     "id": "e-prod-003-c",
@@ -876,7 +1002,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Les chaînes de famille, en plein désert",
+        "description": "Les mêmes schémas réapparaissent — divorce, pauvreté, silence — et tu es en pleine saison aride. Pas de force supplémentaire pour résister à l'héritage. Ou bien si ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "Briser la malédiction de lignée",
+        "description": "Le Combattant est souvent celui qui brise la première generation. Les schémas s'accumulent depuis longtemps — mais quelqu'un doit être le premier à dire non."
+      }
+    ]
   },
   {
     "id": "e-prod-006-c",
@@ -958,7 +1102,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "finances": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "La paresse au cœur du festin",
+        "description": "La saison d'abondance a anesthésié le moteur. Tout va bien — alors pourquoi se battre ? Mais les plus jeunes avancent et le confort devient un tombeau."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le bâtisseur au repos",
+        "description": "Toi qui étais en chantier permanent, tu t'es arrêté. La paresse s'est glissée derrière la fatigue légitime. Qui garde le feu quand les mains se posent ?"
+      }
+    ]
   },
   {
     "id": "e-prod-008-c",
@@ -1346,7 +1508,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Les retrouvailles sous la grâce",
+        "description": "Louise est en face de toi, les yeux brillants. La saison de grâce adoucit le poids de 15 ans de silence. La réconciliation est possible — si tu ouvres la main."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger et la blessée",
+        "description": "Louise a souffert. Toi aussi. Le Berger reconnaît en elle une âme qui cherche à rentrer au bercail. L'atmosphère est lourde, mais tu sais que la grâce peut tout transformer."
+      }
+    ]
   },
   {
     "id": "arc-louise-2-c",
@@ -1554,7 +1734,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "Transmettre ce qu'on a reçu",
+        "description": "Mathias attend avec son carnet. Toi, tu te souviens du temps où tu étais à sa place. Le Disciple sait que la vraie transmission commence par la vulnérabilité."
+      },
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "Enseigner en saison de fruit",
+        "description": "Mathias est assis en face de toi, prêt à apprendre. La saison d'abondance est propice à la transmission. Ce que tu as semé commence à porter des fruits inattendus."
+      }
+    ]
   },
   {
     "id": "arc-mathias-2-c",
@@ -1608,7 +1806,25 @@
     ],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Le disciple douteux, dans ton propre désert",
+        "description": "Mathias remet tout en question — et toi, en pleine saison de désert, tu n'as pas les réponses faciles. Peut-être que la bonne réponse est justement : moi non plus."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger face au doute de son disciple",
+        "description": "Mathias traverse une crise de foi. \"Si Dieu est bon, pourquoi ?\" Le Berger ne fuit pas les questions difficiles — il reste présent quand tout vacille."
+      }
+    ]
   },
   {
     "id": "arc-mathias-3-c",
@@ -1973,7 +2189,25 @@
     ],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "Démissionner sous les épreuves",
+        "description": "Tu démissionnes en pleine saison d'épreuve — ce que tes collègues lisent comme une fuite est en réalité une obéissance. Le combat spirituel a ce visage paradoxal."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "La retraite du combattant",
+        "description": "Démissionner n'est pas fuir — c'est choisir son prochain terrain de combat. Mais le Combattant ressent chaque abandon comme une défaite potentielle. L'obéissance coûte ici."
+      }
+    ]
   },
   {
     "id": "arc-tentation-5",
@@ -2025,7 +2259,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Le diagnostic en plein désert",
+        "description": "Le médecin parle, et ses mots tombent dans le silence du désert intérieur. Pas d'euphorie spirituelle pour amortir le choc — juste la réalité brute et la foi nue."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "L'intercesseur qui reçoit le diagnostic",
+        "description": "Tu portais les maladies des autres devant Dieu — et maintenant c'est toi le malade. Le médecin repose son stylo. Ton Appel ne t'immunise pas contre la douleur."
+      }
+    ]
   },
   {
     "id": "arc-guerison-1-c",
@@ -2529,7 +2781,25 @@
       "foi": 5,
       "paix": 4
     },
-    "thematicFlavor": "Le découragement est le plus grand ennemi de la persévérance."
+    "thematicFlavor": "Le découragement est le plus grand ennemi de la persévérance.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Prier dans le vide, en plein désert",
+        "description": "Tu pries, tu jeûnes, tu crois — et le ciel semble muet. Le désert intérieur amplifie le silence de Dieu. La tentation de tout lâcher s'installe."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "L'intercesseur épuisé",
+        "description": "Tu portes les prières de tous — mais les tiennes semblent tomber dans le vide. Celui qui plaide pour les autres peine à se porter lui-même devant l'Éternel."
+      }
+    ]
   },
   {
     "id": "e-decour-002",
@@ -2555,7 +2825,25 @@
     "minStat": {
       "foi": 30
     },
-    "thematicFlavor": "La flamme peut renaître — mais il faut oser souffler sur les braises."
+    "thematicFlavor": "La flamme peut renaître — mais il faut oser souffler sur les braises.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "La routine en saison sèche",
+        "description": "En saison de désert, la routine de foi prend une saveur amère. Les gestes sont là, les mots aussi — mais le cœur est absent. Comment revenir à la première flamme ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "L'évangéliste à cours de feu",
+        "description": "Toi qui embrasais les autres, te voilà à bout de souffle. L'enthousiasme d'annoncer s'est éteint dans les habitudes. Un messager sans flamme peut-il encore porter le feu ?"
+      }
+    ]
   },
   {
     "id": "e-lourd-001",
@@ -2769,7 +3057,25 @@
       "foi": 4,
       "paix": 5
     },
-    "thematicFlavor": "La joie de Dieu n'est pas l'absence de tristesse — elle est sa présence au milieu."
+    "thematicFlavor": "La joie de Dieu n'est pas l'absence de tristesse — elle est sa présence au milieu.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Le deuil sous la grâce",
+        "description": "La perte est réelle et douloureuse — mais la saison de grâce pose une douceur étrange par-dessus la tristesse. Le cantique monte malgré les larmes."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger qui perd une brebis",
+        "description": "Toi qui accompagnes les autres dans l'épreuve, voilà que c'est toi qui es frappé. La douleur est vraie. Et pourtant, la même foi que tu prêchais t'attend au tournant."
+      }
+    ]
   },
   {
     "id": "e-joie-002",
@@ -2792,7 +3098,25 @@
       "foi": 4,
       "paix": 5
     },
-    "thematicFlavor": "La joie du retour dépasse l'amertume du passé."
+    "thematicFlavor": "La joie du retour dépasse l'amertume du passé.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Le prodigue revient en saison de grâce",
+        "description": "Un ami perdu refait surface — et la saison de grâce ouvre le cœur à recevoir ce retour sans conditions. La réconciliation se fait plus légère que prévu."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger et le prodigue",
+        "description": "Ton ami prodigue est de retour. Le Berger en toi le reconnaît avant même qu'il parle. Mais certains à l'église résistent. Comment porter à la fois la grâce et la vérité ?"
+      }
+    ]
   },
   {
     "id": "e-echec-001",
@@ -2956,7 +3280,25 @@
     "statImpactOnSuccess": {
       "foi": 3,
       "paix": 4
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "La dispute en saison d'épreuve",
+        "description": "Les tensions d'une saison difficile ont nourri cette explosion. Les mots lancés en période de stress font plus de dégâts. Réparer demande d'admettre que la pression a parlé."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger et l'ami blessé",
+        "description": "Toi qui réconcilies les autres, te voilà en conflit avec ton propre ami. La dispute est réelle. Le Berger doit apprendre à se faire berger à son tour."
+      }
+    ]
   },
   {
     "id": "e-ami-003",
@@ -3021,7 +3363,25 @@
     },
     "statImpactOnSuccess": {
       "finances": 15
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "L'investissement en saison favorable",
+        "description": "L'occasion arrive en pleine saison d'abondance — tout semble aligné. Est-ce un signe ou simplement la tentation habillée en bénédiction ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "L'investissement du bâtisseur",
+        "description": "Ce projet résonne avec ta vision de construire quelque chose de durable. Mais bâtir sur une fondation risquée peut tout faire s'effondrer. La prudence est aussi une forme de sagesse."
+      }
+    ]
   },
   {
     "id": "e-fin-002",
@@ -3044,7 +3404,25 @@
       "foi": 2,
       "paix": 2,
       "finances": 2
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "La crise professionnelle en plein désert",
+        "description": "Les mots « plan social » tombent en saison aride. Pas de réserve intérieure pour absorber le choc. Mais les déserts ont toujours précédé les promesses."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le chantier menacé",
+        "description": "Tu avais construit quelque chose — et voilà qu'on te dit qu'il n'y a peut-être plus de place pour toi. Le Bâtisseur doit parfois reposer ses outils et faire confiance à l'Architecte."
+      }
+    ]
   },
   {
     "id": "e-fin-003",
@@ -3766,7 +4144,25 @@
     "thematicFlavor": "Notre image de Dieu se forme souvent dans le regard de nos parents.",
     "cascadeEventId": "arc-parents-1-c",
     "storyArcId": "arc-parents",
-    "arcSequence": 1
+    "arcSequence": 1,
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "L'ombre du père, en saison sèche",
+        "description": "Tu grandis en comprenant que ton père n'est pas le héros que tu imaginais — et cette saison de désert intérieur amplifie la blessure. L'enfance abîmée laisse des traces profondes."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "La blessure du fils du combattant",
+        "description": "Parfois, le plus grand combat est de pardonner à celui qui t'a blessé le premier. L'ombre de ton père pèse lourd sur l'identité qui se forme."
+      }
+    ]
   },
   {
     "id": "arc-parents-1-c",
@@ -3821,6 +4217,24 @@
       {
         "kind": "event_completed",
         "eventId": "arc-parents-1"
+      }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "La révolte adolescente en saison d'épreuve",
+        "description": "Chaque règle devient une provocation quand le monde extérieur te met déjà sous pression. La maison ressemble à un second front. La paix semble inaccessible."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "L'apprenti qui se rebelle",
+        "description": "Le Disciple apprend en questionnant — mais à l'adolescence, le questionnement peut virer à la rébellion. La tension avec tes parents cache une vraie question sur l'autorité et la foi."
       }
     ]
   },
@@ -3877,6 +4291,24 @@
       {
         "kind": "event_completed",
         "eventId": "arc-parents-2"
+      }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Le pardon en saison de grâce",
+        "description": "Les années ont passé. La saison de grâce ouvre un espace pour voir tes parents différemment — des humains avec leurs limites. Le pont se reconstruit dans la douceur."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "Comprendre ses maîtres imparfaits",
+        "description": "Le Disciple apprend que ses premiers enseignants — ses parents — n'étaient pas parfaits. Cette réalisation est douloureuse mais libératrice. La transmission imparfaite reste une transmission."
       }
     ]
   },
@@ -4073,7 +4505,25 @@
     "thematicFlavor": "L'Église commence là où deux ou trois sont rassemblés en Son nom.",
     "cascadeEventId": "arc-eglise-1-c",
     "storyArcId": "arc-eglise",
-    "arcSequence": 1
+    "arcSequence": 1,
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "Le premier service en saison de réveil",
+        "description": "Tu entres dans l'Église en plein réveil spirituel. L'atmosphère est électrique. Quelque chose se pose sur toi comme une main invisible — et tu n'es plus tout à fait le même."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Le premier service de l'évangéliste",
+        "description": "Tu as 15 ans, tu entres dans {église} — et tu sais déjà que ce lieu va te marquer. L'Évangéliste en formation reconnaît un terrain. La question est : oses-tu t'engager ?"
+      }
+    ]
   },
   {
     "id": "arc-eglise-1-c",
@@ -4128,6 +4578,24 @@
       {
         "kind": "event_completed",
         "eventId": "arc-eglise-1"
+      }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "Le leadership en saison d'épreuve",
+        "description": "Les anciens te proposent une responsabilité — en pleine saison d'épreuve. C'est le mauvais moment… ou exactement le bon. Le combat forge les leaders."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger appelé à berger",
+        "description": "La responsabilité que {église} te propose résonne avec tout ce que tu es. Mais le Berger sait que mener coûte cher. Tu te sens petit — c'est peut-être la bonne posture."
       }
     ]
   },
@@ -4268,7 +4736,25 @@
     "thematicFlavor": "Quitter son lieu d'origine est un exil qui forge l'identité.",
     "cascadeEventId": "arc-ville-1-c",
     "storyArcId": "arc-ville",
-    "arcSequence": 1
+    "arcSequence": 1,
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "Partir en saison de réveil",
+        "description": "Tu quittes {ville} alors que quelque chose s'éveille en toi. Valises bouclées, chambre vide — et un appel qui grandit à mesure que tu t'éloignes. Peut-être que l'envoi commence ainsi."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Le départ de l'évangéliste",
+        "description": "Tu quittes {ville} avec une mission dans le cœur. {mère} pleure sur le pas de la porte. L'Évangéliste sait que partir n'est pas abandonner — c'est obéir."
+      }
+    ]
   },
   {
     "id": "arc-ville-1-c",
@@ -4324,6 +4810,24 @@
       {
         "kind": "event_completed",
         "eventId": "arc-ville-1"
+      }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Étranger dans la ville, en plein désert",
+        "description": "Dans cette nouvelle ville, les coutumes sont incompréhensibles et le désert intérieur amplifie la solitude. Tu cherches une {église} — une ancre dans l'inconnu."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Construire en terre étrangère",
+        "description": "Le Bâtisseur sait que les meilleures structures se bâtissent là où les besoins sont criants. Cette nouvelle ville est un chantier à découvrir — si tu dépasses la désorientation du début."
       }
     ]
   },
@@ -4520,6 +5024,24 @@
       {
         "kind": "event_completed",
         "eventId": "arc-conjoint-2"
+      }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "La tempête en plein désert",
+        "description": "Le couple traverse une crise — et la saison de désert amplifie tout. Les mots blessent, les silences tuent, et le ciel semble muet. C'est le moment le plus dur, et peut-être le plus formateur."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Berger de sa propre maison",
+        "description": "{conjoint} et toi, vous vous êtes perdus dans la tempête. Le Berger qui guide les autres doit apprendre à soigner son propre foyer. Commencer ici."
       }
     ]
   },

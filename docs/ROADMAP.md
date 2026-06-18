@@ -78,8 +78,8 @@
       bulles gauche/droite, `assetId`→placeholder. `JournalBubble.tsx` + CSS pur. → itér. 38
 - [x] **T-22** **Conséquences visibles (echoes amplifiés)** — bulle de rappel `[ECHO_LINK]` injectée avant chaque épreuve
       conditionée (prerequisites actifs) : libellé sobre + âge source si disponible. Module pur `echoLink.ts` + 23 tests. → itér. 39
-- [ ] **T-23** **Variantes narratives 6.5 %→≥20 %** — texte d'event conditionné Appel/saison/trait via
-      `applyNarrativeVariant` (déjà câblé). Le tueur-de-routine le moins cher.
+- [x] **T-23** **Variantes narratives 6.5 %→22 %** — 29 events enrichis (Appel/saison), 41/186 events
+      conditionnés, `applyNarrativeVariant` (déjà câblé) exploitée pleinement. → itér. 40
 
 ### Tier 2 — Rythme & direction
 - [ ] **T-24** **Chapitres de vie** : carte d'intro de décennie (thème/saison) + **cliffhanger** de fin de décennie
