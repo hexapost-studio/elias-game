@@ -708,6 +708,32 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   revertable, smoke navigateur vert (journal se peuple, jeu progresse, 0 erreur console).
 - **Rollback** : `git revert` de chaque sous-commit (T-9a…T-9e) indépendamment.
 
+### Itération 34 — Piste M : harnais de simulation de survie (mesure avant tuning)
+- **Recherche** : audit du jeu (2 agents Explore + chiffres). Verdict : **tous les systèmes du GDD
+  sont implémentés et câblés** (Flow/Combo/Cascade/SRS/Codex/Titres+héritage/saisons émergentes/
+  4 leviers de rejouabilité/IA fallback). Déficit réel = **contenu** (13/23 catégories ≤5 events,
+  variantes narratives 6.5 %) et **équilibrage senior non mesuré**. La ROADMAP (T-16) exige
+  « re-simuler avant de tuner » — or aucun harnais n'existait.
+- **Application** : `tools/survival-sim.ts` (headless, `npx tsx`, **hors bundle + hors porte QA** :
+  `tools/` n'est dans aucun `include` tsconfig, le fichier ne matche pas `*.test.`). Rejoue N=1000
+  vies 0→100 en pilotant l'engine réel (`createInitialState`→`advanceAge`→`validateChoice`→
+  `checkGameOver`), à précision p ∈ {50,65,75,85}%, 2 scénarios (réponses seules / avec actions).
+- **Résultat MESURÉ (N=1000)** — contredit les estimations « à la main » du GDD et de l'audit :
+  - **Personne n'atteint 100 (victoire) ; quasi personne n'atteint 80.** Même à 85 % de précision,
+    âge médian ≈ 37 (réponses seules) / 42 (avec actions).
+  - **Inversion de difficulté** : *mieux* répondre fait mourir *plus tôt* (50 % → médian 62 ;
+    85 % → 42, avec actions). Cause : haute précision ⇒ Flow élevé ⇒ palier 3 ⇒ **burnout −3
+    physique/an**, et **aucune action ne restaure le physique** (jeûner en coûte). La mort passe
+    de *finances* (faible précision) à *physique* (haute précision, 88-98 %).
+  - **events distincts/vie : 22-44** → routine intra-run faible confirmée ; le problème de routine
+    est inter-runs (pool + variantes), pas intra-run.
+- **Conséquence (n'a RIEN tuné — c'est l'objet de la Piste B)** : cibles claires pour le rééquilibrage —
+  (1) rendre la victoire (100) atteignable ; (2) ouvrir une voie de récupération du **physique** et
+  adoucir le burnout senior ; (3) lisser la pression *finances* début/milieu. À chiffrer avec ce
+  harnais avant/après.
+- **Vérif** : porte QA verte (lint du nouveau fichier 0→0, le reste inchangé). `npx tsx tools/survival-sim.ts`.
+- **Rollback** : `git revert` du commit (suppression d'un pur outil, zéro impact gameplay).
+
 ### Itération 32 — Phase 1bis : dette de TYPE (12 erreurs → 0, en 5 commits T-T1…T-T5)
 - **Recherche** : depuis la porte réparée (itér. 30), le vrai typecheck `tsc -p tsconfig.app.json`
   exposait **12 erreurs de type préexistantes**, tolérées via le ratchet `tools/tsc-baseline.txt` (=12).
