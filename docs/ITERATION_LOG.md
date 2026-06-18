@@ -708,6 +708,30 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   revertable, smoke navigateur vert (journal se peuple, jeu progresse, 0 erreur console).
 - **Rollback** : `git revert` de chaque sous-commit (T-9a…T-9e) indépendamment.
 
+### Itération 32 — Phase 1bis : dette de TYPE (12 erreurs → 0, en 5 commits T-T1…T-T5)
+- **Recherche** : depuis la porte réparée (itér. 30), le vrai typecheck `tsc -p tsconfig.app.json`
+  exposait **12 erreurs de type préexistantes**, tolérées via le ratchet `tools/tsc-baseline.txt` (=12).
+  Objectif : les corriger une à une et ramener la baseline à 0, sans dette ni changement de comportement.
+- **Commits** (1 lot de fichiers = 1 commit, porte QA verte + baseline décrémentée à chaque) :
+  - **T-T1** `game/data/loader.ts` (12→10) : l'import cassé (`'../types/game'`) rendait les types `any`
+    et **masquait** les casts en aval. Réparé (`'../../src/types/game'`), `RawVerse.impact/diff` aligné sur
+    la forme JSON réelle (calque `src/data/verses.ts`), `category→AfflictionCategory`, events via `unknown`.
+  - **T-T2** `src/components/CodexMenu.tsx` (10→8) : `CAT_LABELS`/`CAT_COLORS` ne couvrent que les 8
+    catégories d'origine → type honnête `Partial<Record<AfflictionCategory,string>>` (usages déjà tolérants).
+  - **T-T3** `src/components/Prologue.tsx` (8→6) : `val` possibly undefined → `(val ?? 0)` ; `setAccumulated`
+    complète le champ requis `name`.
+  - **T-T4** `src/data/events.ts` + `src/data/verses.ts` (6→4) : casts JSON→type (`as unknown as
+    AfflictionEvent[]` car `ageRange` JSON s'infère `number[]` ≠ tuple ; `category→AfflictionCategory`).
+  - **T-T5** `src/engine/gameEngine.ts` (3) + `src/App.tsx` (1) (4→0) : index `newStats` par `keyof` ;
+    retrait du membre mort `&& newState.phase !== 'event'` (phase toujours `'idle'` à ce stade) ;
+    **App.tsx** `phase === 'gameover'` (jamais vrai) → vrai signal `gameOver?.isOver`. Ce dernier est la
+    **seule correction touchant le runtime** (l'effet « journal vivant » court-circuite désormais en fin
+    de partie — intention manifeste du garde mort, couvert par l'exception exhaustive-deps assumée).
+- **Résultat** : `npx tsc -p tsconfig.app.json --noEmit` → **0 erreur** (baseline 12→0). Porte QA verte à
+  chaque commit (vitest 190, build, validate 118v/186e, lint-diff 0 régression). Vérif comportementale du
+  changement runtime : smoke `run-elias` vert (jeu monté, 20 entrées de journal, 1 épreuve, 0 erreur console).
+- **Rollback** : `git revert` de chaque commit T-T1…T-T5 indépendamment.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

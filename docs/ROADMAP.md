@@ -28,16 +28,17 @@
 - [x] **T-9** `src/App.tsx` — purity ×5 + exhaustive-deps ×2 + set-state-in-effect ×5 → 0 (5 sous-commits T-9a..e, vérif navigateur) → itér. 31 / `283d1c9`→`88568b7`
       ↳ **Phase 1 TERMINÉE : `react-hooks/* = 0` sur tout le projet.** (1 exception assumée+justifiée : génération du journal vivant.)
 
-### Phase 1bis — Dette de TYPE révélée (le `tsc --noEmit` était creux — cf. itér. 30)
-> Le vrai typecheck (`tsc -p tsconfig.app.json`) expose **12 erreurs préexistantes** masquées depuis
-> le début. Baseline tolérée : `tools/tsc-baseline.txt`. Décrémenter à chaque lot corrigé.
-- [ ] **T-T1** `game/data/loader.ts` (2 — cast `RawVerse`/module, dont +1 introduit au lot B)
-- [ ] **T-T2** `src/components/CodexMenu.tsx` (2 — `Record<AfflictionCategory,…>` incomplet)
-- [ ] **T-T3** `src/components/Prologue.tsx` (2 — `val` possibly undefined + `name` manquant)
-- [ ] **T-T4** `src/data/events.ts` + `src/data/verses.ts` (2 — casts JSON→type)
-- [ ] **T-T5** `src/engine/gameEngine.ts` (3) + `src/App.tsx` (1 — comparaison `'gameover'`)
+### Phase 1bis — Dette de TYPE révélée (le `tsc --noEmit` était creux — cf. itér. 30) — ✅ TERMINÉE (itér. 32)
+> Le vrai typecheck (`tsc -p tsconfig.app.json`) exposait **12 erreurs préexistantes** masquées depuis
+> le début. Baseline `tools/tsc-baseline.txt` ramenée **12 → 0**.
+- [x] **T-T1** `game/data/loader.ts` (2→0 — import réparé + casts JSON→type alignés sur src/data) → itér. 32
+- [x] **T-T2** `src/components/CodexMenu.tsx` (2→0 — `Partial<Record<AfflictionCategory,…>>`) → itér. 32
+- [x] **T-T3** `src/components/Prologue.tsx` (2→0 — `val ?? 0` + champ `name` complété) → itér. 32
+- [x] **T-T4** `src/data/events.ts` + `src/data/verses.ts` (2→0 — casts JSON→type) → itér. 32
+- [x] **T-T5** `src/engine/gameEngine.ts` (3) + `src/App.tsx` (1 — `gameOver?.isOver`) → itér. 32
+      ↳ **Phase 1bis TERMINÉE : dette de TYPE = 0.** (`npx tsc -p tsconfig.app.json --noEmit` → 0 erreur.)
 
-> ⏸ **PAUSE OBLIGATOIRE en fin de Phase 1** : rendre la main avant la Phase 2 (nature différente).
+> ⏸ **PAUSE OBLIGATOIRE en fin de Phase 1/1bis** : rendre la main avant la Phase 2 (nature différente).
 
 ### Phase 2 — Contenu (GDD §11.1 C1)
 - [ ] **T-10** Events arc **ami** (~6) — respecter `src/data/event-schema.ts` + `npm run validate`

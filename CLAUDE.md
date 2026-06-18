@@ -22,8 +22,8 @@ Vite + Zustand + localforage** (PWA).
    (1 exception assumée + justifiée : génération du journal vivant dans `App.tsx` — voir itér. 31.)
 5. **Vérifié AVANT commit** : `bash tools/qa-gate.sh` vert (typecheck réel + `vitest` + `build` + `validate` + lint-diff).
 6. **JAMAIS de dette ajoutée** : comparer **par fichier touché** vs `HEAD`. Le lint `react-hooks/*` est
-   désormais à **0** (assaini itér. 21–31). Reste une dette de **TYPE** préexistante (baseline
-   `tools/tsc-baseline.txt`, actuellement 12) — ne pas l'aggraver ; la décrémenter quand on en corrige.
+   à **0** (assaini itér. 21–31) **et** la dette de **TYPE** est à **0** (baseline `tools/tsc-baseline.txt`
+   = 0, assainie itér. 32). Garder ces deux compteurs à zéro : ne jamais committer une régression.
 7. **Ton évangéliste, grâce > punition** : l'échec ouvre un chemin plus humble, jamais avilissant.
 
 ## Vérification (tout vert avant de committer)
@@ -54,7 +54,7 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (31 livrées)
+## État des itérations (32 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -76,14 +76,16 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 22–29 | **Phase 1 lint hooks** (T-1..T-8) : useTypewriter, StatBar, DailyVerse, DevPanel, DebugView, ActionPanel, ShareCard, VerseChoices → 0 | `e970477`…`e7510ee` |
 | 30 | **Fix CRITIQUE** : la porte QA ne typecheckait rien (`tsc --noEmit` no-op) → `tsc -p` + ratchet baseline | `7d801ca` |
 | 31 | **Phase 1 / T-9** : `App.tsx` 12 erreurs hooks → 0 (5 sous-commits, vérif navigateur). **`react-hooks/* = 0` projet.** | `283d1c9`…`88568b7` |
+| 32 | **Phase 1bis / T-T1..T-T5** : 12 erreurs de TYPE → 0 (baseline 12→0, smoke vert). **Dette de type = 0.** | `ce9b604`…`7197c64` |
 
-**Propositions D, A, B : COMPLÈTES.** **Phase 1 (assainissement hooks) : COMPLÈTE.**
-File de tâches : `docs/ROADMAP.md` (Phase 1bis = 12 erreurs de TYPE préexistantes ; Phase 2 = contenu).
+**Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
+File de tâches : `docs/ROADMAP.md` (Phase 2 = contenu).
 
 ## Réserve (analysée, non planifiée)
 
-- ~~**Assainissement lint hooks**~~ → **livré itér. 21–31** (`react-hooks/* = 0`). Suite tracée en
-  `docs/ROADMAP.md` : **Phase 1bis** (12 erreurs de type préexistantes, enfin visibles depuis itér. 30).
+- ~~**Assainissement lint hooks**~~ → **livré itér. 21–31** (`react-hooks/* = 0`).
+- ~~**Phase 1bis — dette de TYPE**~~ → **livré itér. 32** (12 erreurs → 0, baseline `tools/tsc-baseline.txt` = 0).
+  Prochaine file tracée en `docs/ROADMAP.md` : **Phase 2** (contenu).
 - ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
   récompense précoce, micro-feedback dans les toutes premières années.
 - **Contenu (Phase 2)** : ~30 events manquants des 5 arcs (ami/métier/parents/église/ville), events
