@@ -14,7 +14,7 @@ const BOOK_TEXT  = '#3a1f10';
 const BOOK_MUTED = '#8b5a38';
 const BOOK_ACCENT = '#6b2020';
 
-const CAT_LABELS: Record<AfflictionCategory, string> = {
+const CAT_LABELS: Partial<Record<AfflictionCategory, string>> = {
   peur_angoisse:        'Peur & Angoisse',
   impudicite_addiction: 'Impudicité',
   finances_paresse:     'Finances',
@@ -25,7 +25,7 @@ const CAT_LABELS: Record<AfflictionCategory, string> = {
   orgueil_independance: 'Orgueil',
 };
 
-const CAT_COLORS: Record<AfflictionCategory, string> = {
+const CAT_COLORS: Partial<Record<AfflictionCategory, string>> = {
   peur_angoisse:        '#8b5cf6',
   impudicite_addiction: '#ef4444',
   finances_paresse:     '#f59e0b',
