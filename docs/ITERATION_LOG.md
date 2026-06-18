@@ -1074,6 +1074,45 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert <hash itér. 44>`.
 
+### Itération 45 — T-27 Versets = chips de réponse → bulle envoyée
+
+- **Recherche** : iMessage et WhatsApp transforment les suggestions rapides en bulles envoyées
+  au tap — animation scale+glissement vers la droite, puis la bulle apparait côté envoyeur.
+  Appliqué aux choix de versets d'Élias : la réponse d'Élias devient visible avant que le
+  store ne traite le résultat, ce qui renforce l'immersion « conversation » amorcée par T-26.
+
+- **Analyse** : `VerseChoices.tsx` gère déjà le flux tap → `chooseVerse()`. Le delta minimal :
+  (1) remplacer les `.btn-choice` rectangulaires par des `.verse-chip` pills colorés selon
+  l'émetteur (via `--vc-color: eventSender.color`), (2) introduire un state `sendingChipId`
+  (string|null) déclenché dans le handler (hors render — conforme react-hooks), (3) afficher
+  une `.verse-bubble-sent` droite indigo pendant le délai 400ms, (4) appeler `chooseVerse()`
+  dans le callback différé du `setTimeout` en vérifiant via `currentEventKeyRef` que l'event
+  n'a pas changé. `prefers-reduced-motion` : `chipSendDelay()` retourne 0 → chemin direct.
+  Contrainte ESLint résolue : accès à `sendTimerRef.current` dans le reset-on-prop-change du
+  rendu était interdit (`react-hooks/refs`). Solution : `currentEventKeyRef` sert de token de
+  validation côté callback, sans accès à la ref depuis le rendu.
+
+- **Application** :
+  - `src/components/VerseChoices.tsx` — ajout de `chipSendDelay()` (helper pur), `sendingChipId`
+    (state, reset dans le bloc prevEventKey), `currentEventKeyRef` (ref consultée uniquement dans
+    le handler), `handleChoose` modifié (délai 400ms → `setSendingChipId` → bulle → `chooseVerse`),
+    rendu des chips refactorisé : `verse-chip` pills au lieu de `btn-choice` rectangulaires,
+    badge lettre teinté de la couleur de l'émetteur, `verse-bubble-sent-row` insérée au-dessus
+    des chips pendant l'animation. Import `CSSProperties` pour typer les custom properties CSS.
+  - `src/index.css` — `.verse-chip` (pill, `--vc-color`, fond translucide teinté), `.verse-chip:hover`,
+    `.verse-chip:active`, `.verse-chip--sending` (`@keyframes chip-send` scale+translateX+opacity),
+    `@media prefers-reduced-motion` (animation: none, opacity: 0), `.verse-bubble-sent-row`
+    (justify-content: flex-end + fadeIn), `.verse-bubble-sent` (fond indigo #4f46e5, coin
+    bas-droit aplati, ombre colorée).
+
+- **Résultat** : porte QA verte — typecheck 0 erreur, 299 tests passés, build OK, validate
+  118v/186e, lint-diff 0→0 sur les 2 fichiers touchés. Les versets deviennent des chips pills
+  tintées par la couleur de l'émetteur ; le tap déclenche une bulle indigo droite (réponse
+  d'Élias) pendant 400ms avant que l'app ne traite le résultat. `prefers-reduced-motion` :
+  transition immédiate sans animation.
+
+- **Rollback** : `git revert <hash itér. 45>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

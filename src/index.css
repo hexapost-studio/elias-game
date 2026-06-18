@@ -1776,6 +1776,90 @@ body {
   }
 }
 
+/* ─── VERSE CHIPS (T-27 — chips de réponse → bulle envoyée) ─── */
+
+/* Chip de verset — pill neutre, bord teinté par l'émetteur via --vc-color */
+.verse-chip {
+  width: 100%;
+  padding: 11px 14px;
+  margin-bottom: 7px;
+  text-align: left;
+  background: color-mix(in srgb, var(--vc-color, #f59e0b) 6%, #1e1508);
+  border: 1.5px solid color-mix(in srgb, var(--vc-color, #f59e0b) 35%, transparent);
+  border-radius: 20px; /* pill */
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.15s, transform 0.1s, opacity 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+
+.verse-chip:hover {
+  background: color-mix(in srgb, var(--vc-color, #f59e0b) 12%, #2a1d0a);
+  border-color: color-mix(in srgb, var(--vc-color, #f59e0b) 60%, transparent);
+}
+
+.verse-chip:active {
+  transform: scale(0.97);
+}
+
+.verse-chip:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+/* Animation d'envoi : la chip sélectionnée se « déplace » vers la droite */
+@keyframes chip-send {
+  0%   { transform: scale(1)    translateX(0);   opacity: 1; }
+  30%  { transform: scale(1.03) translateX(4px);  opacity: 1; }
+  60%  { transform: scale(0.97) translateX(12px); opacity: 0.7; }
+  100% { transform: scale(1)    translateX(0);   opacity: 0; }
+}
+
+.verse-chip--sending {
+  animation: chip-send 0.38s ease forwards;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verse-chip--sending {
+    animation: none;
+    opacity: 0;
+    transition: opacity 0s;
+  }
+}
+
+/* Bulle envoyée — réponse d'Élias (côté droit, fond indigo) */
+.verse-bubble-sent-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 4px 0 10px;
+  animation: fadeIn 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verse-bubble-sent-row { animation: none; }
+}
+
+.verse-bubble-sent {
+  max-width: 82%;
+  padding: 9px 13px;
+  border-radius: 16px 16px 4px 16px; /* coin bas-droit aplati = bulle envoyée */
+  background: #4f46e5; /* indigo-700 — couleur Élias */
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.5;
+  font-family: var(--font-body);
+  word-break: break-word;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+}
+
 /* ─── RESULT FLASH ICON ─── */
 .result-flash-icon {
   font-size: 48px;
