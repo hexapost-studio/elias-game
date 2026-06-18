@@ -108,7 +108,7 @@ export function Prologue({ onComplete }: PrologueProps) {
   const handleChoice = (choice: Choice) => {
     const newStats = { ...accumulated.stats };
     for (const [stat, val] of Object.entries(choice.impact)) {
-      newStats[stat as keyof typeof newStats] = Math.min(85, (newStats[stat as keyof typeof newStats] || 0) + val);
+      newStats[stat as keyof typeof newStats] = Math.min(85, (newStats[stat as keyof typeof newStats] || 0) + (val ?? 0));
     }
 
     const newBits = [...accumulated.storyBits, choice.story];
@@ -133,7 +133,7 @@ export function Prologue({ onComplete }: PrologueProps) {
         name: resolvedName,
       });
     } else {
-      setAccumulated({ stats: newStats, profileName: accumulated.profileName, storyBits: newBits });
+      setAccumulated({ stats: newStats, profileName: accumulated.profileName, storyBits: newBits, name: accumulated.name });
       setStep(step + 1);
     }
   };
