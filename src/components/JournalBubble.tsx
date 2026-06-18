@@ -28,7 +28,7 @@ import { ENEMY_COMPONENTS } from './iconMeta';
  * Les `conscience` sender restent à droite.
  */
 function isSelfEntry(entry: JournalEntry, sender: MessageSender): boolean {
-  if (entry.type === 'success' || entry.type === 'fail') return true;
+  if (entry.type === 'success' || entry.type === 'fail' || entry.type === 'moral') return true;
   if (sender.sender === 'conscience') return true;
   return false;
 }

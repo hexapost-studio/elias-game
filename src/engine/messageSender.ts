@@ -274,6 +274,11 @@ export function deriveSenderFromJournalEntry(entry: JournalEntry): MessageSender
     };
   }
 
+  if (type === 'moral') {
+    // Choix moral d'Élias → conscience (son intérieur, sa volonté)
+    return buildConscienceSender();
+  }
+
   if (type === 'micro') {
     return buildEntourageSender('arc-ami'); // Les micro-events sont contexte de vie / entourage
   }

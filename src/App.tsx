@@ -3,6 +3,8 @@ import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
 import { VerseChoices } from './components/VerseChoices';
+import { MoralChoicePanel } from './components/MoralChoicePanel';
+import { isMoralEvent } from './engine/moralChoice';
 import { EliasPortrait } from './components/EliasPortrait';
 import { getVerseById } from './data/verses';
 import { computeFinalMetrics, determineTitle, SPIRITUAL_SEASONS } from './engine/gameEngine';
@@ -888,7 +890,7 @@ function App() {
               return all.map((entry, idx) => {
                 if (entry.kind === 'normal') {
                   // Dériver l'émetteur depuis l'entrée de journal (T-21)
-                  const journalEntry = { age: entry.age, text: entry.text, type: entry.type as 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro', verseRef: entry.verseRef };
+                  const journalEntry = { age: entry.age, text: entry.text, type: entry.type as 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro' | 'moral', verseRef: entry.verseRef };
                   const msgSender = deriveSenderFromJournalEntry(journalEntry);
                   return (
                     <JournalBubble
@@ -923,7 +925,10 @@ function App() {
         {/* Choices overlay pendant un événement */}
         {phase === 'event' && (
           <div id="choices-area">
-            <VerseChoices />
+            {currentEvent && isMoralEvent(currentEvent)
+              ? <MoralChoicePanel />
+              : <VerseChoices />
+            }
           </div>
         )}
       </div>

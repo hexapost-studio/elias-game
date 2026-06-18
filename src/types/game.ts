@@ -67,6 +67,20 @@ export type EventTone =
 
 export type StatName = 'foi' | 'paix' | 'physique' | 'finances';
 
+/**
+ * Un acte concret d'un dilemme moral — choix d'action, pas de verset.
+ * Le joueur choisit COMMENT agir ; cela pose des flags et façonne le personnage.
+ */
+export interface MoralChoice {
+  id: string;
+  label: string;
+  description: string;
+  /** Flags posés à true quand ce choix est fait. */
+  flagsSet: string[];
+  /** Deltas de stats appliqués immédiatement (peuvent être négatifs). */
+  statDeltas?: Partial<Record<StatName, number>>;
+}
+
 export interface StatImpact {
   foi: number;
   paix: number;
@@ -162,6 +176,12 @@ export interface AfflictionEvent {
   setsFlagsOnFail?: string[];
   /** Relation minimum avec {ami} pour que cet event apparaisse */
   minAmiRelationship?: number;
+  /**
+   * Dilemme moral — quand présent, cet event ne présente PAS de verset à choisir
+   * mais 2-3 actes concrets. Le correctVerseId reste vide ("") pour les events moraux.
+   * Le joueur agit ; les flags posent les conséquences narratives (branchement B).
+   */
+  moralChoices?: MoralChoice[];
   /**
    * Surcharges par stade de vie (enfant 0-11, ado 12-17, adulte 18-59, senior 60+).
    * Quand un stade est absent, l'événement utilise ses champs racine.
@@ -372,7 +392,7 @@ export interface RunMetrics {
 export interface JournalEntry {
   age: number;
   text: string;
-  type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro';
+  type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro' | 'moral';
   verseRef?: string;
 }
 

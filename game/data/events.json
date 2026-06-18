@@ -5351,5 +5351,100 @@
       "finances": 3
     },
     "thematicFlavor": "Dieu écrit souvent notre histoire avec des lettres que nous n'attendions pas."
+  },
+  {
+    "id": "e-moral-001",
+    "title": "La trahison de l'ami",
+    "description": "{ami} t'a confié un secret douloureux. Quelques jours plus tard, un collègue te demande directement si tu sais quelque chose à ce sujet. Répondre la vérité protégerait peut-être quelqu'un, mais briserait la confiance d'une amitié. Le mensonge épargnerait {ami}, mais pèserait sur ta conscience. Et le silence ? Il a ses propres conséquences.",
+    "ageRange": [18, 32],
+    "category": "amertume_rejet",
+    "correctVerseId": "",
+    "decoyVerseIds": [],
+    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "thematicFlavor": "L'intégrité se mesure quand personne ne regarde.",
+    "moralChoices": [
+      {
+        "id": "mc-001-verite",
+        "label": "Dire la vérité",
+        "description": "Tu révèles ce que tu sais. Douloureux pour {ami}, mais la vérité reste debout.",
+        "flagsSet": ["ami_001_truth_told"],
+        "statDeltas": { "foi": 3, "paix": -2 }
+      },
+      {
+        "id": "mc-001-mensonge",
+        "label": "Mentir pour protéger",
+        "description": "Tu nies savoir quoi que ce soit. L'amitié est sauvée, mais quelque chose se ferme en toi.",
+        "flagsSet": ["ami_001_lie_told"],
+        "statDeltas": { "paix": -3, "foi": -1 }
+      },
+      {
+        "id": "mc-001-silence",
+        "label": "Garder le silence",
+        "description": "Tu ne dis rien. Ni mensonge ni vérité. Le chemin étroit entre les deux.",
+        "flagsSet": ["ami_001_silence_kept"],
+        "statDeltas": { "paix": 1 }
+      }
+    ]
+  },
+  {
+    "id": "e-moral-002",
+    "title": "Le mensonge au travail",
+    "description": "Ton supérieur te demande si tu as terminé un rapport. Il ne l'est pas — et il en a besoin pour une réunion importante dans une heure. Dire la vérité pourrait compromettre ta réputation. Mentir gagnerait du temps, mais l'erreur finira par remonter. Tu pourrais aussi avouer et proposer une solution immédiate.",
+    "ageRange": [22, 40],
+    "category": "orgueil_independance",
+    "correctVerseId": "",
+    "decoyVerseIds": [],
+    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "thematicFlavor": "L'humilité n'est pas une faiblesse — c'est une force tranquille.",
+    "moralChoices": [
+      {
+        "id": "mc-002-avouer",
+        "label": "Avouer et proposer une solution",
+        "description": "Tu dis la vérité, tu présentes ce que tu as fait et tu t'engages à finir en urgence.",
+        "flagsSet": ["travail_002_honest"],
+        "statDeltas": { "foi": 4, "paix": 2, "finances": -1 }
+      },
+      {
+        "id": "mc-002-mentir",
+        "label": "Prétendre que c'est presque fini",
+        "description": "Tu gagnes du temps avec un demi-mensonge. La pression s'accumule en silence.",
+        "flagsSet": ["travail_002_deceived"],
+        "statDeltas": { "paix": -4, "foi": -2 }
+      }
+    ]
+  },
+  {
+    "id": "e-moral-003",
+    "title": "Le pardon difficile",
+    "description": "Quelqu'un t'a blessé profondément — une parole publique, une trahison que tu n'as pas demandée. Cette personne revient vers toi, tête baissée, et te demande pardon. Une partie de toi veut pardonner. Une autre veut qu'elle comprenne l'étendue du mal. Et une autre encore voudrait simplement disparaître pour ne plus souffrir.",
+    "ageRange": [20, 55],
+    "category": "amertume_rejet",
+    "correctVerseId": "",
+    "decoyVerseIds": [],
+    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "thematicFlavor": "Pardonner, ce n'est pas effacer — c'est choisir de ne plus porter.",
+    "moralChoices": [
+      {
+        "id": "mc-003-pardonner",
+        "label": "Pardonner sincèrement",
+        "description": "Tu choisis de pardonner — pas parce que c'est facile, mais parce que tu refuses que cette blessure devienne ton maître.",
+        "flagsSet": ["pardon_003_given"],
+        "statDeltas": { "paix": 5, "foi": 3 }
+      },
+      {
+        "id": "mc-003-refuser",
+        "label": "Refuser pour l'instant",
+        "description": "Tu ne te sens pas prêt. Tu lui dis que tu as besoin de temps. L'honnêteté avant la performance.",
+        "flagsSet": ["pardon_003_deferred"],
+        "statDeltas": { "paix": -2, "foi": 1 }
+      },
+      {
+        "id": "mc-003-confronter",
+        "label": "Parler d'abord de la blessure",
+        "description": "Tu lui dis ce qu'il t'a fait ressentir, en détail, avant de donner une réponse. La vérité avant la réconciliation.",
+        "flagsSet": ["pardon_003_truth_first"],
+        "statDeltas": { "paix": 1, "foi": 2 }
+      }
+    ]
   }
 ]

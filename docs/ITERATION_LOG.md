@@ -1151,6 +1151,48 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert <hash itér. 46>`.
 
+### Itération 47 — T-29 Choix moraux — dilemmes d'acte (schéma + moteur + UI + 3 events)
+
+- **Recherche** : *Disco Elysium* et *80 Days* opposent deux modes de résolution distincts : le
+  choix de *savoir* (le bon verset, la bonne réponse) et le choix d'*agir* (quelle attitude, quel
+  acte concret). T-29 introduit cette deuxième couche : des dilemmes moraux où Élias choisit un
+  acte (« Dire la vérité » / « Mentir pour protéger » / « Garder le silence »), pas un verset.
+  Les flags posés par ces choix alimentent le branchement narratif (système B déjà en place).
+
+- **Analyse** : le schéma `AfflictionEvent` (game.ts) ne permettait que des events à verset.
+  Un nouveau champ optionnel `moralChoices?: MoralChoice[]` suffit pour le discriminer — si présent
+  et non vide, c'est un dilemme moral. Le moteur (`gameEngine.ts`) court-circuite les leurres de
+  verset pour ces events. L'UI (`App.tsx`) route vers `MoralChoicePanel` au lieu de `VerseChoices`.
+  Le journal reçoit un type `'moral'` afficher à droite (voix d'Élias, côté conscience).
+
+- **Application** :
+  - `src/types/game.ts` — `MoralChoice` interface + `moralChoices?` sur `AfflictionEvent` +
+    type `'moral'` dans `JournalEntry.type`.
+  - `src/engine/moralChoice.ts` (nouveau) — module pur : `isMoralEvent(event): boolean` +
+    `applyMoralChoice(state, choice): GameState` (flags, deltas, journal, phase→result).
+  - `src/components/MoralChoicePanel.tsx` (nouveau) — composant léger : 2-3 boutons d'acte,
+    style grave (fond sombre, violet doux), bulle de confirmation post-choix, reset-on-prop-change,
+    prefers-reduced-motion respecté.
+  - `src/stores/gameStore.ts` — nouvelle action `chooseMoral(choice)` + import `applyMoralChoice`.
+  - `src/App.tsx` — import + branchement `isMoralEvent` : si moral → `<MoralChoicePanel />`,
+    sinon → `<VerseChoices />` (invariant : 0 cas spécial dans le moteur).
+  - `src/components/JournalBubble.tsx` — `isSelfEntry` étend à `'moral'` (côté Élias).
+  - `src/engine/messageSender.ts` — `deriveSenderFromJournalEntry` : cas `'moral'` → conscience.
+  - `src/engine/gameEngine.ts` — `generateEvent` : si l'event sélectionné est moral, skip les leurres.
+  - `src/index.css` — styles `.moral-panel`, `.moral-choice-btn`, `.moral-chosen-bubble`,
+    `.jb-bubble--moral` + media query `prefers-reduced-motion`.
+  - `game/data/events.json` — 3 events moraux ajoutés (e-moral-001..003) : trahison d'ami /
+    mensonge au travail / pardon difficile (âges 18-55, catégories `amertume_rejet`/`orgueil_independance`).
+  - `tools/validate-data.cjs` — validation adaptée : events moraux exemptés de `correctVerseId`,
+    leurs `MoralChoice[]` validés à la place (id, label, flagsSet non vide).
+  - `tests/moralChoice.test.ts` (nouveau) — 18 tests : isMoralEvent (4) + applyMoralChoice (14).
+
+- **Résultat** : porte QA verte — typecheck 0 erreur (baseline 0), 317 tests passés (26 fichiers,
+  +18 moraux), build OK, validate 118v/189e (dont 3 moraux) ZERO erreur, lint-diff 0→0 sur les
+  9 fichiers touchés.
+
+- **Rollback** : `git revert <hash itér. 47>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

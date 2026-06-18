@@ -842,12 +842,19 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   const seasonMult = getSeasonMultipliers(state.spiritualSeason ?? 'Réveil');
   const weights = poolFinal.map((e) => computeEventWeight(e, state, seasonMult));
   const event = weightedPick(poolFinal, weights);
-  // Leurres frais — exclure les versets récents pour éviter les répétitions de faux choix
-  const freshDecoys = pickDecoys(event.correctVerseId, event.category, 3, state.recentVerseIds ?? []);
-  const fullEvent = {
-    ...event,
-    decoyVerseIds: freshDecoys.length >= 3 ? freshDecoys : event.decoyVerseIds,
-  };
+
+  // Dilemmes moraux (T-29) : pas de leurres de verset — résolution par acte, pas par verset.
+  const isMoral = Array.isArray(event.moralChoices) && event.moralChoices.length > 0;
+  const fullEvent = isMoral
+    ? event
+    : (() => {
+        // Leurres frais — exclure les versets récents pour éviter les répétitions de faux choix
+        const freshDecoys = pickDecoys(event.correctVerseId, event.category, 3, state.recentVerseIds ?? []);
+        return {
+          ...event,
+          decoyVerseIds: freshDecoys.length >= 3 ? freshDecoys : event.decoyVerseIds,
+        };
+      })();
 
   // Appliquer la variante d'âge, puis la variante narrative
   const ageResolved = resolveEventForAge(fullEvent, state.age);

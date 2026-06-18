@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GameState, AfflictionEvent, PlayerAction } from '../types/game';
+import type { GameState, AfflictionEvent, PlayerAction, MoralChoice } from '../types/game';
 import type { PrologueResult } from '../components/Prologue';
 import {
   createInitialState,
@@ -11,6 +11,7 @@ import {
   applyPlayerAction,
 } from '../engine/gameEngine';
 import { personalize } from '../engine/identity';
+import { applyMoralChoice } from '../engine/moralChoice';
 import { revealsUpToAge } from '../engine/reveals';
 import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
 import { trackEvent } from '../services/analytics';
@@ -22,6 +23,7 @@ interface GameStore extends GameState {
   startWithPrologue: (result: PrologueResult) => void;
   ageUp: (aiEvent?: AfflictionEvent) => void;
   chooseVerse: (verseId: string, timeToAnswer?: number) => void;
+  chooseMoral: (choice: MoralChoice) => void;
   dismissResult: () => void;
   hydrateFromSave: (data: Partial<GameState>) => void;
   useAction: (action: PlayerAction) => boolean;
@@ -179,6 +181,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set(resultState);
     saveGame(resultState).catch(() => {});
+  },
+
+  chooseMoral: (choice: MoralChoice) => {
+    const state = get();
+    if (!state.currentEvent || state.phase !== 'event') return;
+    const newState = applyMoralChoice(state, choice);
+    const over = checkGameOver(newState);
+    set({
+      ...newState,
+      phase: 'result' as const,
+      gameOver: over.isOver ? over : null,
+    });
+    saveGame(newState).catch(() => {});
   },
 
   dismissResult: () => {

@@ -92,7 +92,7 @@
 - [x] **T-28** **Voix de l'adversaire nommées/typées** (La Peur, Le Doute, l'Amertume…) via couleurs + SVG existants. → itér. 46
 
 ### Tier 4 — Agence, profondeur & contenu
-- [ ] **T-29** **Choix moraux** (sous-type d'event : 2-3 *actes* qui posent des flags, au-delà du verset) — schéma + `validate`.
+- [x] **T-29** **Choix moraux** (sous-type d'event : 2-3 *actes* qui posent des flags, au-delà du verset) — schéma + `validate`. → itér. 47
 - [ ] **T-30** **Contenu C1** : 8 catégories à 2 events → ≥5 ; +12-15 events seniors 75-100 (le pool, après la mise en scène).
 - [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats).
 
