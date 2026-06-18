@@ -87,7 +87,7 @@
 - [x] **T-25** **Ambition de run** : module pur `runAmbition.ts` (deriveRunAmbition + getCallingProgress) + composant `AmbitionTracker.tsx` (bouton « MON APPEL » + panneau coulissant, prefers-reduced-motion, 15 tests) → itér. 42 / `3613095`
 
 ### Tier 3 — Reskin « conversation » complet (UX)
-- [ ] **T-26** Épreuve = **bulle entrante** + indicateur « … en train d'écrire » (`useTypewriter`, `prefers-reduced-motion`).
+- [x] **T-26** Épreuve = **bulle entrante** + indicateur « … en train d'écrire » (`TypingIndicator.tsx`, `prefers-reduced-motion`, CSS `ti-bounce`). → itér. 44
 - [ ] **T-27** Versets = **chips de réponse** → bulle envoyée (réponse d'Élias) → réponse de la voix.
 - [ ] **T-28** **Voix de l'adversaire nommées/typées** (La Peur, Le Doute, l'Amertume…) via couleurs + SVG existants.
 

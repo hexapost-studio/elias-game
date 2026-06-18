@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { getVerseById } from '../data/verses';
 import { Clock } from './IconSystem';
@@ -6,12 +6,23 @@ import { AFFLICTION_ICONS, AFFLICTION_COLORS } from './iconMeta';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { textKey, isSeen, markSeen } from '../settings/seenText';
 import { shuffledChoiceIds } from '../engine/choiceOrder';
+import { deriveMessageSender } from '../engine/messageSender';
+import { TypingIndicator } from './TypingIndicator';
 
 const PALIER_TIMER: Record<number, number | null> = {
   1: null,   // Pas de timer
   2: 30,     // 30s
   3: 15,     // 15s
 };
+
+/** Durée de l'indicateur de frappe en ms (0 si prefers-reduced-motion). */
+function typingDuration(): number {
+  try {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1200;
+  } catch {
+    return 1200;
+  }
+}
 
 export function VerseChoices() {
   const currentEvent = useGameStore((s) => s.currentEvent);
@@ -30,6 +41,14 @@ export function VerseChoices() {
   const maxTime = PALIER_TIMER[flowPalier] ?? 0;
   const [timeLeft, setTimeLeft] = useState(maxTime);
 
+  // ── Indicateur de frappe (T-26) ──────────────────────────────────────────
+  // `isTyping` démarre à true quand un nouvel événement arrive et repasse à
+  // false après typingDuration() ms via un setTimeout dans l'effet.
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Reset state-on-prop-change : à chaque nouvel événement, démarrer le typing.
+  // Fait pendant le rendu pour éviter un cycle état→effet→état.
   const isActive = !!currentEvent && phase === 'event';
   const hasAnswered = lastEventResult !== null;
 
@@ -40,13 +59,32 @@ export function VerseChoices() {
     : [];
 
   // Reset state-on-prop-change (pendant le rendu, pas dans un effet) : à chaque nouvel
-  // événement le chrono repart de maxTime.
+  // événement le chrono repart de maxTime ET le typing redémarre.
+  // `prefers-reduced-motion` : on ne déclenche pas le typing du tout (durée = 0).
   const eventKey = isActive ? currentEvent.id : null;
   const [prevEventKey, setPrevEventKey] = useState(eventKey);
   if (prevEventKey !== eventKey) {
     setPrevEventKey(eventKey);
     setTimeLeft(maxTime);
+    // Démarrer le typing seulement si la durée > 0 (respecte prefers-reduced-motion).
+    // Si durée = 0, isTyping reste false → bulle apparaît immédiatement.
+    setIsTyping(eventKey !== null && typingDuration() > 0);
   }
+
+  // Effet de fin du typing : bascule isTyping→false après le délai via setTimeout.
+  // Le setState est dans le callback du timer (différé, pas synchrone dans l'effet)
+  // → conforme à la règle react-hooks/set-state-in-effect qui autorise les callbacks
+  // différés (abonnements, timers). Le prefers-reduced-motion est géré en amont
+  // (reset-on-prop-change : isTyping reste false, l'effet ne s'exécute pas).
+  useEffect(() => {
+    if (!isTyping) return;
+    typingTimerRef.current = setTimeout(() => {
+      setIsTyping(false);
+    }, typingDuration());
+    return () => {
+      if (typingTimerRef.current !== null) clearTimeout(typingTimerRef.current);
+    };
+  }, [isTyping]);
 
   // Révélation « machine à écrire » de la scène (pacing littéraire).
   const description = currentEvent?.description ?? '';
@@ -75,6 +113,11 @@ export function VerseChoices() {
   }, [timerRunning, eventKey]);
 
   if (!isActive) return null;
+
+  // Dériver l'émetteur pour la couleur + le nom de l'indicateur de frappe (T-26).
+  // Dérivé au rendu depuis l'état présent (invariant 3 — pas de state supplémentaire).
+  const eventSender = deriveMessageSender(currentEvent);
+
   const timeSpent = maxTime - timeLeft;
   const CatIcon = AFFLICTION_ICONS[currentEvent.category] || Clock;
   const catColor = AFFLICTION_COLORS[currentEvent.category] || 'var(--text-muted)';
@@ -95,6 +138,12 @@ export function VerseChoices() {
 
   return (
     <div>
+      {/* Indicateur « en train d'écrire » — apparaît ~1.2s avant la bulle de l'épreuve (T-26) */}
+      <TypingIndicator sender={eventSender} isTyping={isTyping} />
+
+      {/* Contenu de l'épreuve — masqué pendant le typing pour laisser la place à l'indicateur */}
+      {!isTyping && <>
+
       {/* Timer — caché en palier 1 (pas de pression) */}
       {!noTimer && (
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -232,6 +281,8 @@ export function VerseChoices() {
           </button>
         );
       })}
+
+      </>}
     </div>
   );
 }

@@ -1040,6 +1040,40 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert <hash itér. 43>`.
 
+### Itération 44 — T-26 Bulle entrante + indicateur « ... en train d'écrire »
+
+- **Recherche** : les meilleures messageries (iMessage, WhatsApp, 7 Days) montrent l'émetteur
+  « en train d'écrire » (3 points animés) avant d'afficher le message. Appliqué aux épreuves
+  d'Élias : quand un nouvel event arrive, simuler l'arrivée d'un message de chat — pause de
+  1.2s avec l'indicateur, puis bulle + `useTypewriter` habituel.
+
+- **Analyse** : `VerseChoices.tsx` est le point d'entrée naturel — il connaît `currentEvent`
+  et gère déjà le reset-on-prop-change du timer. L'émetteur est dérivé de `deriveMessageSender`
+  (T-20, pur, zéro state). Le pattern correct pour le délai : état `isTyping` déclenché dans
+  le reset-on-prop-change (pendant le rendu) + `setTimeout` dans un `useEffect` pour le basculer
+  à `false` après 1200ms. Cas `prefers-reduced-motion` : `typingDuration()` retourne 0 →
+  `isTyping` ne passe jamais à `true` (géré au reset, aucun setState synchrone dans l'effet).
+
+- **Application** :
+  - `src/components/TypingIndicator.tsx` — composant pur : 3 points animés CSS
+    (`@keyframes ti-bounce` avec délai échelonné 0/0.2s/0.4s), `jb-avatar` (réutilise la
+    même classe que `JournalBubble`), `isTyping: boolean` pour afficher/cacher (return null).
+    `role="status"` + `aria-label` pour l'accessibilité.
+  - `src/components/VerseChoices.tsx` — ajout de `isTyping` (state), `typingTimerRef` (ref),
+    `typingDuration()` (helper pur), import `TypingIndicator` + `deriveMessageSender`. Reset
+    dans le bloc `prevEventKey` existant. Effet timer minimal (1 seul `useState` dans le
+    callback différé). Contenu de l'épreuve masqué avec `{!isTyping && <> ... </>}`.
+  - `src/index.css` — classes `.typing-indicator-row`, `.typing-indicator-bubble`,
+    `.typing-indicator-name`, `.typing-indicator-dots`, `.typing-indicator-dot{--1/2/3}`,
+    `@keyframes ti-bounce`. `prefers-reduced-motion` : animation none, points statiques visibles.
+
+- **Résultat** : porte QA verte — typecheck 0 erreur, 299 tests passés, build OK, validate
+  118v/186e, lint-diff 0→0 sur les 2 fichiers touchés. Bulle entrante animée avec indicateur
+  de frappe 1.2s avant chaque nouvelle épreuve ; accessibilité `prefers-reduced-motion`
+  respectée (pas de typing du tout — épreuve apparaît immédiatement).
+
+- **Rollback** : `git revert <hash itér. 44>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
