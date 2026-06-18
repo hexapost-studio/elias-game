@@ -1191,6 +1191,41 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   +18 moraux), build OK, validate 118v/189e (dont 3 moraux) ZERO erreur, lint-diff 0→0 sur les
   9 fichiers touchés.
 
+### Itération 48 — T-30 Contenu C1 — catégories enrichies + 13 events seniors 75-100
+
+- **Recherche** : audit de `game/data/events.json` (189 events à l'entrée). Distribution par
+  catégorie : 8 catégories à exactement 2 events — `saint_esprit`, `parole_de_dieu`, `priere`,
+  `soif_de_dieu`, `obeissance`, `lourdeur_fatigue`, `maladie_guerison`, `sterilite`. Pool seniors
+  (minAge ≥ 75) : seulement 7 events (e-bilan-010, e-senior-003..008). Toutes les catégories
+  concernées ont des versets disponibles (3-4 chacune).
+
+- **Analyse** : les catégories pauvres coupent des arcs thématiques importants de la vie spirituelle
+  (prière, obéissance, Saint-Esprit, soif de Dieu, guérison) en ne proposant qu'un seul event de
+  chaque type en jeu réel. Pour les seniors 75-100, seuls 7 events couvrent 25 ans de vie — les
+  thèmes transmission, fragilité du corps, réconciliations tardives, proximité de la mort et héritage
+  spirituel étaient totalement absents.
+
+- **Application** : enrichissement JSON pur de `game/data/events.json` — aucun TypeScript modifié.
+  - 24 nouveaux events pour les 8 catégories pauvres (3 events par catégorie), versets existants,
+    âges variés (16-85), ton évangéliste sobre (grâce > punition dans chaque description et flavor).
+  - 13 nouveaux events seniors (e-senior-009..021, minAge entre 75 et 93) :
+    - Transmission de foi (e-senior-009 : petit-fils, e-senior-013 : lettres testament spirituel)
+    - Bilan de vie et grâce (e-senior-010 : nuit d'insomnie à 78 ans)
+    - Fragilité du corps (e-senior-011 : dépendance acceptée)
+    - Paix intérieure (e-senior-012 : paix qui dépasse)
+    - Réconciliations tardives (e-senior-014 : message après 15 ans)
+    - Proximité de la mort (e-senior-015 : mort d'un ami proche, e-senior-020 : sanctification tardive)
+    - Don de sagesse (e-senior-016 : mentorat)
+    - Intercession du vieil âge (e-senior-017)
+    - Gratitude de soir (e-senior-018), abandon de la maison (e-senior-019)
+    - Joie à contre-courant (e-senior-021)
+
+- **Résultat** : `npm run validate` vert : 118 versets / 226 events (dont 3 moraux) — ZERO erreur.
+  Porte QA verte (typecheck 0, 317 tests passés, build OK, validate OK, lint-diff : aucun .ts/.tsx
+  touché). Pool 75-100 : 7 → 20 events (minAge ≥ 75). Total 189 → 226 events (+37).
+  Catégories pauvres : toutes les 8 portées de 2 → 5 events.
+  Commit `6dd95e8`.
+
 - **Rollback** : `git revert <hash itér. 47>`.
 
 ### Réserve (analysée, non encore planifiée)
