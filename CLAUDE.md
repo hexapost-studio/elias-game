@@ -88,8 +88,9 @@ File de tâches : `docs/ROADMAP.md` (Phase 2 = contenu).
   Prochaine file tracée en `docs/ROADMAP.md` : **Phase 2** (contenu).
 - ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
   récompense précoce, micro-feedback dans les toutes premières années.
-- **Contenu (Phase 2)** : ~30 events manquants des 5 arcs (ami/métier/parents/église/ville), events
-  âges 90-100, courbe difficulté senior, mode découverte (cf. `GDD_ELIAS.md` §11).
+- ~~**Contenu (Phase 2) — arcs + senior**~~ → **déjà livré par la PR #12** (`50c3c8a`), vérifié itér. 32 :
+  les 5 arcs (ami/métier/parents/église/ville) + events 90-100 sont présents (186 events, validate vert).
+  Reste ouvert en Phase 2 : **T-16** rééquilibrage difficulté senior (à re-simuler), **T-17** mode découverte.
 - **Save-scumming / slots multiples** (à évaluer en contexte procédural).
 - ~~**Feedback/bug-report Supabase**~~ → **livré itér. 18–19 + infra close** (clé publishable dans
   `.env.local`, MCP `supabase` authentifié, table `feedback` créée — RLS activé, insert anonyme).

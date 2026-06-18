@@ -41,13 +41,17 @@
 > ⏸ **PAUSE OBLIGATOIRE en fin de Phase 1/1bis** : rendre la main avant la Phase 2 (nature différente).
 
 ### Phase 2 — Contenu (GDD §11.1 C1)
-- [ ] **T-10** Events arc **ami** (~6) — respecter `src/data/event-schema.ts` + `npm run validate`
-- [ ] **T-11** Events arc **métier** (~6)
-- [ ] **T-12** Events arc **parents** (~6)
-- [ ] **T-13** Events arc **église** (~6)
-- [ ] **T-14** Events arc **ville** (~6)
-- [ ] **T-15** Events âges **90-100** (paliers de fin de vie quasi vides)
-- [ ] **T-16** Rééquilibrage **courbe difficulté senior** (le joueur meurt avant 60 ans)
+> ⚠️ **Réconciliation itér. 32** : T-10…T-15 étaient déjà livrés par la PR #12 (`50c3c8a`
+> « 6 arcs manquants + events senior ») **avant** la rédaction de ces lignes — vérifié sur HEAD
+> (`npm run validate` vert, 186 events, tous les spines d'arc présents). Cochés a posteriori.
+- [x] **T-10** Events arc **ami** — 8 events de spine + 8 cascades d'échec (âges 8–78) → PR #12 / vérifié itér. 32
+- [x] **T-11** Events arc **métier** — spine 5/5 → PR #12 / vérifié itér. 32
+- [x] **T-12** Events arc **parents** — spine 6/6 → PR #12 / vérifié itér. 32
+- [x] **T-13** Events arc **église** — spine 4/4 → PR #12 / vérifié itér. 32
+- [x] **T-14** Events arc **ville** — spine 3/3 → PR #12 / vérifié itér. 32
+- [x] **T-15** Events âges **90-100** — chaque âge 90→100 couvert par 7 à 15 events → PR #12 / vérifié itér. 32
+- [ ] **T-16** Rééquilibrage **courbe difficulté senior** (« le joueur meurt avant 60 ans » — à RE-VÉRIFIER : la
+      mort = stat ≤ 0 ; le diagnostic d'origine est antérieur à la PR #12, simuler avant de tuner) ← **tête de file**
 - [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats)
 
 ## 🎯 Definition of a new version (v0.1.0)
