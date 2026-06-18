@@ -5,6 +5,17 @@
 **Genre :** Life simulator / Bible memorization / Narrative  
 **Public :** Chrétiens évangéliques francophones (18-45 ans, France + Afrique)
 
+> ⚠️ **MISE À JOUR 2026-06-18 (audit itér. 32-36)** — ce GDD (v1.0) est partiellement périmé ; lire avec ces correctifs :
+> - **Tous les systèmes décrits sont implémentés et câblés** (audit itér. 32-34). Les **11 arcs** (dont ami/métier/
+>   parents/église/ville/conjoint, jadis « non implémentés » en §7/§11) **existent** dans `events.json` (186 events,
+>   `npm run validate` vert).
+> - **Équilibrage MESURÉ** par `tools/survival-sim.ts` (itér. 34), pas estimé à la main : les chiffres §6 (« meurt
+>   30-50 ans ») sont obsolètes. Après tuning (itér. 35) : courbe monotone, ≥60 ans ~94 %, victoire(100) atteignable.
+> - **Direction active = Phase 3 « fil polyphonique »** (anti-routine / rejouabilité, inspiré *7 Days*) : la vie = un fil
+>   de messages (Ciel / Adversaire / Entourage / Conscience), Élias répond par un verset. Voir `docs/ROADMAP.md`
+>   (T-20..T-32) — inclut le **principe asset-ready** pour brancher les futures illustrations (avatars, lieux, objets).
+> - Source de vérité du *processus* : `docs/ITERATION_LOG.md`. Source de vérité de la *file* : `docs/ROADMAP.md`.
+
 ---
 
 ## 1. CONCEPT

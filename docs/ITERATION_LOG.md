@@ -708,6 +708,23 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   revertable, smoke navigateur vert (journal se peuple, jeu progresse, 0 erreur console).
 - **Rollback** : `git revert` de chaque sous-commit (T-9a…T-9e) indépendamment.
 
+### Itération 36 — Phase 3 préparée : backlog « fil polyphonique » + principe asset-ready
+- **Recherche** : étude game-design avec le porteur autour de *7 Days* (Buff Studio) / chat-narratif.
+  Diagnostic : on décroche après l'âge 18-25 (« trop routinier, sans différenciation »). Les 5 piliers de
+  7 Days (chat immédiat, poids réel des choix, rythme snackable, portraits expressifs, dilemmes moraux)
+  tombent sur des systèmes **déjà présents** d'Élias — le manque est la *mise en scène* + la *visibilité*.
+- **Vision (validée)** : la vie d'Élias = un **fil de messages** de 4 émetteurs — **Ciel/Esprit**,
+  **Adversaire** (1 voix par affliction), **Entourage** (amis/famille/collègues/église), **Conscience** —
+  auxquels Élias **répond par un verset**. L'émetteur se **dérive** de `category`+`storyArcId` (zéro migration ;
+  le champ `tone` du type n'est rempli sur aucun des 186 events → non utilisé).
+- **Application** : file complète **T-20..T-32** ajoutée en `docs/ROADMAP.md` (Phase 3), priorisée par impact
+  en 4 tiers + transverse, miroir dans la task-list. **Principe transverse ASSET-READY** (non négociable) :
+  tout émetteur/event/**lieu**/**objet** expose un slot `assetId` résolu en placeholder (couleur+icône) tant que
+  l'art manque, et pointera vers de l'illustration **sans refactor** (T-31 registre, T-32 expressions).
+- **Résultat** : backlog prêt ; tête de file **T-20** `src/engine/messageSender.ts` (module pur dérivant
+  l'identité d'émetteur + `assetId`), puis T-21 (bulles attribuées) + T-22 (echoes visibles) pour la différenciation.
+- **Vérif** : porte QA verte (doc-only). **Rollback** : `git revert` du commit `docs(itér.36)`.
+
 ### Itération 35 — Piste B : rééquilibrage de la courbe de survie (mesuré avant/après)
 - **Recherche** : le harnais (itér. 34) a prouvé 3 pathologies : (1) **inversion de difficulté**
   (mieux répondre = mourir plus tôt), (2) **physique = compte à rebours sans récupération** →
@@ -766,6 +783,15 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   harnais avant/après.
 - **Vérif** : porte QA verte (lint du nouveau fichier 0→0, le reste inchangé). `npx tsx tools/survival-sim.ts`.
 - **Rollback** : `git revert` du commit (suppression d'un pur outil, zéro impact gameplay).
+
+### Itération 33 — Fix : le verset s'affiche EN ENTIER dans le journal (succès comme échec)
+- **Recherche** : bug rapporté — après avoir répondu à une épreuve, qu'on ait raison ou tort, le verset doit
+  s'afficher en entier dans le chat (journal). Or l'entrée `[VICTOIRE]` ne portait que la **référence**, alors
+  que `[ECHEC]` affichait déjà le **texte complet** : asymétrie.
+- **Application** : `src/engine/gameEngine.ts` — l'entrée de succès inclut désormais `: "{texte}"` comme l'échec
+  (1 ligne ; rendu du chat identique pour les deux types d'entrée).
+- **Vérif** : porte QA verte ; **pilotage navigateur réel** (`run-elias`) — succès *et* échec affichent le verset
+  complet dans le chat, 0 erreur console. **Rollback** : `git revert` du commit `fix(itér.33)`.
 
 ### Itération 32 — Phase 1bis : dette de TYPE (12 erreurs → 0, en 5 commits T-T1…T-T5)
 - **Recherche** : depuis la porte réparée (itér. 30), le vrai typecheck `tsc -p tsconfig.app.json`

@@ -54,7 +54,7 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (32 livrées)
+## État des itérations (36 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -77,9 +77,15 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 30 | **Fix CRITIQUE** : la porte QA ne typecheckait rien (`tsc --noEmit` no-op) → `tsc -p` + ratchet baseline | `7d801ca` |
 | 31 | **Phase 1 / T-9** : `App.tsx` 12 erreurs hooks → 0 (5 sous-commits, vérif navigateur). **`react-hooks/* = 0` projet.** | `283d1c9`…`88568b7` |
 | 32 | **Phase 1bis / T-T1..T-T5** : 12 erreurs de TYPE → 0 (baseline 12→0, smoke vert). **Dette de type = 0.** | `ce9b604`…`7197c64` |
+| 33 | **Fix** : le verset s'affiche EN ENTIER dans le journal, succès comme échec (asymétrie corrigée) | `cef5b66` |
+| 34 | **Piste M** : harnais `tools/survival-sim.ts` (headless, hors porte) — mesure l'âge médian de mort / routine | `6c46312` |
+| 35 | **Piste B** : rééquilibrage senior MESURÉ (inversion supprimée, victoire(100) atteignable, ≥60 ans 3-17 %→94-97 %) | `fc027bf` |
+| 36 | **Phase 3 backlog** : fil polyphonique 7 Days-like (T-20..T-32) + principe **asset-ready** | `8c004b2` |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
-File de tâches : `docs/ROADMAP.md` (Phase 2 = contenu).
+**Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).
+**Phase 3 EN COURS** = *fil polyphonique* (anti-routine / rejouabilité, inspiré 7 Days) — file `docs/ROADMAP.md`,
+tête de file **T-20** (`messageSender.ts`). Outil de mesure : `tools/survival-sim.ts` (filet anti-régression d'équilibrage).
 
 ## Réserve (analysée, non planifiée)
 
@@ -88,9 +94,12 @@ File de tâches : `docs/ROADMAP.md` (Phase 2 = contenu).
   Prochaine file tracée en `docs/ROADMAP.md` : **Phase 2** (contenu).
 - ~~**Onboarding zéro-friction**~~ → **livré itér. 14** (tuto → Prologue). Reste à creuser : première
   récompense précoce, micro-feedback dans les toutes premières années.
-- ~~**Contenu (Phase 2) — arcs + senior**~~ → **déjà livré par la PR #12** (`50c3c8a`), vérifié itér. 32 :
-  les 5 arcs (ami/métier/parents/église/ville) + events 90-100 sont présents (186 events, validate vert).
-  Reste ouvert en Phase 2 : **T-16** rééquilibrage difficulté senior (à re-simuler), **T-17** mode découverte.
+- ~~**Contenu (Phase 2) — arcs + senior**~~ → **livré PR #12** (vérifié itér. 32) ; ~~**équilibrage senior (T-16)**~~
+  → **mesuré + tuné itér. 34-35** (Piste M/B, harnais `tools/survival-sim.ts`). Reste **T-17** mode découverte (Tier 4 Phase 3).
+- **Phase 3 — fil polyphonique (anti-routine / rejouabilité)** : direction active, inspirée *7 Days* / chat-narratif.
+  La vie = un fil de messages de 4 émetteurs (Ciel / Adversaire / Entourage / Conscience), Élias répond par un verset ;
+  émetteur **dérivé** de `category`+`storyArcId`. **Principe asset-ready** : slots `assetId` pour brancher l'art
+  (avatars, lieux, objets) sans refactor. File complète T-20..T-32 dans `docs/ROADMAP.md`.
 - **Save-scumming / slots multiples** (à évaluer en contexte procédural).
 - ~~**Feedback/bug-report Supabase**~~ → **livré itér. 18–19 + infra close** (clé publishable dans
   `.env.local`, MCP `supabase` authentifié, table `feedback` créée — RLS activé, insert anonyme).
