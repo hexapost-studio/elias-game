@@ -84,7 +84,7 @@
 ### Tier 2 — Rythme & direction
 - [x] **T-24** **Chapitres de vie** : carte d'intro de décennie (thème/saison) + **cliffhanger** de fin de décennie.
       Module pur `lifeChapters.ts` + 35 tests, branché dans `advanceAge`, CSS distinct `[CHAPITRE]`/`[CLIFFHANGER]`. → itér. 41
-- [ ] **T-25** **Ambition de run** : objectif multi-étapes donné par l'Appel, suivi à l'écran (callings + arcs + prerequisites).
+- [x] **T-25** **Ambition de run** : module pur `runAmbition.ts` (deriveRunAmbition + getCallingProgress) + composant `AmbitionTracker.tsx` (bouton « MON APPEL » + panneau coulissant, prefers-reduced-motion, 15 tests) → itér. 42 / `3613095`
 
 ### Tier 3 — Reskin « conversation » complet (UX)
 - [ ] **T-26** Épreuve = **bulle entrante** + indicateur « … en train d'écrire » (`useTypewriter`, `prefers-reduced-motion`).

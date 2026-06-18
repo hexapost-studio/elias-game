@@ -963,6 +963,46 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert` du commit `feat(itér.41)`.
 
+### Itération 42 — T-25 Ambition de run — progression de l'Appel visible
+
+- **Recherche** : `GameState` contient déjà `completedArcs`, `encounteredArcIds`,
+  `answeredArcEventIds` — toute la progression peut être dérivée sans nouveau champ.
+  `STORY_ARCS` (11 arcs) n'a pas de `callingId` — les arcs sont universels ; le `Calling`
+  apporte le titre, l'icône et la couleur de l'ambition. Pattern de référence :
+  `arcProgress.ts` (dérivation pure) + `ArcTracker.tsx` (composant zéro-state).
+
+- **Analyse** : scope = (a) module pur `runAmbition.ts` avec deux fonctions : `deriveRunAmbition`
+  (liste triée active→done→locked avec stepsCompleted/stepsTotal) et `getCallingProgress`
+  (percent/completed/active/total) ; (b) composant `AmbitionTracker.tsx` zéro-state-métier —
+  bouton discret « MON APPEL » qui ouvre un panneau coulissant en bas d'écran ; (c) branchement
+  minimal dans `App.tsx` — le badge Appel statique est remplacé par `AmbitionTracker`.
+  Résolution des templates `{ville}/{ami}/…` dans le composant (côté présentation, pas dans
+  le module pur). `prefers-reduced-motion` respecté : transition de barre désactivée via CSS.
+
+- **Application** :
+  - `src/engine/runAmbition.ts` (nouveau module pur) :
+    - `deriveRunAmbition(state)` → `AmbitionStep[]` triée (active/done/locked),
+      `stepsCompleted` = count des eventIds de l'arc présents dans `answeredArcEventIds`
+      (sauf si terminé → stepsTotal).
+    - `getCallingProgress(state)` → `{ completed, active, total, percent }`.
+    - Exports : types `AmbitionStepStatus`, `AmbitionStep`, `CallingProgress`.
+  - `tests/runAmbition.test.ts` : 15 tests — statuts (locked/active/done), tri,
+    stepsCompleted, percent, edge cases (tous terminés, aucun rencontré).
+  - `src/components/AmbitionTracker.tsx` (nouveau composant) :
+    - Sélecteurs atomiques Zustand (4 champs) — pas de sélection du state entier.
+    - Panneau en `role="dialog"`, Escape pour fermer, overlay clic extérieur.
+    - Barre `role="progressbar"` accessible + étapes par arc avec mini-barres de sous-étapes.
+    - `StepRow` isolée — reçoit les données résolues (templates) par props.
+    - `@media (prefers-reduced-motion: reduce)` : transition de barre = none.
+  - `src/App.tsx` : import + remplacement du badge Appel statique par `<AmbitionTracker />`.
+
+- **Résultat** : porte QA verte — typecheck 0 erreur (baseline 0), **299 tests passés** (25 fichiers,
+  +15 nouveaux dans `runAmbition.test.ts`), build OK, validate 118v/186e, lint-diff 0→0 sur les
+  4 fichiers touchés (`App.tsx`, `AmbitionTracker.tsx`, `runAmbition.ts`, `runAmbition.test.ts`).
+  Commit : `3613095`.
+
+- **Rollback** : `git revert 3613095`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
