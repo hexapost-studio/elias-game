@@ -97,9 +97,10 @@
 - [x] **T-17** **Mode découverte** (entraînement sans conséquence de stats) → itér. 49
 
 ### Transverse — Intégration graphique (continu, au fil de l'arrivée des assets)
-- [ ] **T-31** **Registre d'assets** (`src/assets/illustrationRegistry.ts`) : map `assetId`→illustration pour
+- [x] **T-31** **Registre d'assets** (`src/assets/illustrationRegistry.ts`) : map `assetId`→illustration pour
       émetteurs (avatars entourage/adversaire), **lieux** (ville/église), **objets** ; résout en placeholder tant
       que l'art manque. Consommé par T-20/T-21 **dès le départ** (asset-ready) ; rempli progressivement.
+      → itér. 50 / 36 assetId couverts, `JournalBubble` branché sur `resolveAsset()`, 52 tests.
 - [ ] **T-32** **Expressions d'avatar** (3-4 par émetteur, façon 7 Days) pilotées par ton/résultat — activées dès
       que les assets existent (zéro refactor grâce à T-31).
 

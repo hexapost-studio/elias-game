@@ -6,17 +6,19 @@
  *   - Bulle GAUCHE  : heaven / adversary / entourage (l'événement qui arrive)
  *   - Bulle DROITE  : conscience + entrées-réponse d'Élias (success / fail + verset)
  *   - Couleur de la bulle dérivée de `MessageSender.color`
- *   - Avatar = cercle coloré + première lettre du `iconKey` (asset-ready pour T-31)
+ *   - Avatar = cercle coloré + première lettre du `label` issu du registre d'assets (T-31)
  *   - prefers-reduced-motion : animation désactivée automatiquement
  *
- *   @see src/engine/messageSender.ts  — dérivation de l'émetteur (T-20)
- *   @see docs/ROADMAP.md T-21
- *   @since itér. 38
+ *   @see src/engine/messageSender.ts       — dérivation de l'émetteur (T-20)
+ *   @see src/assets/illustrationRegistry.ts — résolution du label/couleur (T-31)
+ *   @see docs/ROADMAP.md T-21 / T-31
+ *   @since itér. 38 / T-31 itér. 50
  */
 
 import type { JournalEntry } from '../types/game';
 import type { MessageSender } from '../engine/messageSender';
 import { ENEMY_COMPONENTS } from './iconMeta';
+import { resolveAsset } from '../assets/illustrationRegistry';
 
 /* ─── Helpers ──────────────────────────────────────────────────────────────── */
 
@@ -34,14 +36,15 @@ function isSelfEntry(entry: JournalEntry, sender: MessageSender): boolean {
 }
 
 /**
- * Dérive la première lettre lisible de l'iconKey pour l'avatar placeholder.
- * ex. `heaven_esprit` → `E`, `adversary_peur_angoisse` → `P`
+ * Dérive la lettre d'avatar depuis le registre d'assets (T-31).
+ * Retourne la première lettre du `label` de l'entrée correspondant à l'`assetId`.
+ * Ex. assetId `elias__adversary__adversary_peur_angoisse` → label 'La Peur' → 'L'
+ *
+ * Garantie : ne retourne jamais une chaîne vide (fallback '?').
  */
-function avatarLetter(iconKey: string): string {
-  const parts = iconKey.split('_');
-  // Ignorer le préfixe émetteur (premier segment), prendre la 2e partie
-  const meaningful = parts[1] ?? parts[0] ?? '?';
-  return meaningful[0]?.toUpperCase() ?? '?';
+function avatarLetterFromRegistry(assetId: string): string {
+  const entry = resolveAsset(assetId);
+  return entry.label[0]?.toUpperCase() ?? '?';
 }
 
 /**
@@ -84,7 +87,7 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
         style={{ '--jb-color': sender.color } as React.CSSProperties}
       >
         {(isChapter || isCliffhanger) ? null : (
-          <span className="jb-milestone-icon">{avatarLetter(sender.iconKey)}</span>
+          <span className="jb-milestone-icon">{avatarLetterFromRegistry(sender.assetId)}</span>
         )}
         <span className="jb-milestone-text">{entry.text}</span>
       </div>
@@ -105,7 +108,7 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
           aria-hidden="true"
         >
           {/* T-28 : icône SVG ennemi si disponible, sinon lettre initiale */}
-          {EnemySvg !== null ? <EnemySvg size={28} /> : avatarLetter(sender.iconKey)}
+          {EnemySvg !== null ? <EnemySvg size={28} /> : avatarLetterFromRegistry(sender.assetId)}
         </div>
       )}
 

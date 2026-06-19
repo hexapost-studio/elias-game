@@ -708,6 +708,29 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   revertable, smoke navigateur vert (journal se peuple, jeu progresse, 0 erreur console).
 - **Rollback** : `git revert` de chaque sous-commit (T-9a…T-9e) indépendamment.
 
+### Itération 50 — T-31 : registre d'assets `illustrationRegistry.ts` + branchement `JournalBubble`
+- **Recherche** : le principe ASSET-READY (T-20) exige un slot `assetId` résolu en placeholder
+  aujourd'hui, pointant vers de l'art réel demain **sans refactor**. `messageSender.ts` génère
+  les assetId (`elias__<sender>__<iconKey>`) pour tous les events ; `JournalBubble.tsx` les
+  utilisait déjà pour les avatars via une lettre initiale dérivée inline (`avatarLetter`).
+  Manquait : le registre centralisé qui fait le lien et que les futurs assets viendront remplir.
+- **Application** :
+  - **`src/assets/illustrationRegistry.ts`** (module pur, zéro React) — type `IllustrationEntry
+    { type, value, label }` ; map `ILLUSTRATION_REGISTRY` couvrant les 36 assetId générés par
+    `messageSender.ts` (11 heaven + 16 adversary + 9 entourage + 1 conscience) ; fonction
+    `resolveAsset(assetId)` avec fallbacks par préfixe de sender (garantie : jamais undefined).
+    Couleurs re-déclarées localement (source de vérité visuelle autonome, non consommatrice du moteur).
+  - **`src/components/JournalBubble.tsx`** — refactor avatar minimal : suppression de `avatarLetter`
+    (dérivation inline sur iconKey), remplacement par `avatarLetterFromRegistry(sender.assetId)`
+    qui passe par `resolveAsset()` pour le label. Import `resolveAsset` ajouté.
+  - **`tests/illustrationRegistry.test.ts`** — 52 tests : structure générale, couverture par
+    émetteur (heaven/adversary/entourage/conscience), résolution directe, fallbacks (5 cas),
+    invariant asset-ready, sémantique des labels.
+- **Résultat** : porte QA verte — 0 erreur type, 400 tests (28 fichiers), build OK, validate 226
+  events, lint-diff 0 → 0 sur les fichiers touchés. Le registre est prêt à recevoir de l'art réel :
+  seul `type` et `value` d'une entrée changeront, aucun consommateur ne sera refactoré.
+- **Rollback** : `git revert <hash>` — revert de l'import dans JournalBubble + suppression du module.
+
 ### Itération 36 — Phase 3 préparée : backlog « fil polyphonique » + principe asset-ready
 - **Recherche** : étude game-design avec le porteur autour de *7 Days* (Buff Studio) / chat-narratif.
   Diagnostic : on décroche après l'âge 18-25 (« trop routinier, sans différenciation »). Les 5 piliers de
