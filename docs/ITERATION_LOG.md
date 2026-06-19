@@ -1281,6 +1281,47 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert <hash itér. 49>`.
 
+### Itération 51 — T-32 Expressions d'avatar — ton/résultat pilotent l'état de la bulle
+
+- **Recherche** : les jeux type « 7 Days to Die » ou les VN enrichis attribuent des expressions
+  émotionnelles distinctes à chaque personnage selon le contexte : l'adversaire provoque AVANT la
+  réponse, triomphe si Élias échoue, est brisé s'il réussit. Cette différenciation visuelle/sémantique
+  renforce la lecture émotionnelle de chaque moment. Élias avait déjà un registre d'assets asset-ready
+  (T-31) et un émetteur dérivé (T-20) — il manquait la couche d'expression.
+
+- **Analyse** : `JournalEntry.type` porte déjà toute l'information nécessaire : `'event'` = avant
+  réponse, `'success'` / `'fail'` = résultats. Combiné à `SenderKind`, on peut dériver 6 expressions
+  sans aucun nouveau state. `resolveAsset` a déjà un fallback automatique pour les assetId inconnus
+  → les variantes d'expression non enregistrées dégradent gracieusement vers le placeholder de base.
+
+- **Application** :
+  - `src/engine/avatarExpression.ts` (nouveau module pur) :
+    - Type `AvatarExpression = 'neutral' | 'challenge' | 'victory' | 'defeat' | 'warning' | 'joy'`
+    - `deriveExpression(entry, sender)` : 7 types d'entrée × 4 senders → expression déterministe
+      (ex. `event+adversary → challenge`, `fail+adversary → victory`, `success+adversary → defeat`,
+      `event+heaven → joy`, `milestone+* → neutral`)
+    - `expressionToAssetSuffix(expr)` : `neutral → ''`, autres → `__<expr>`
+    - `buildExpressionAssetId(baseId, expr)` : compose l'assetId enrichi
+  - `src/assets/illustrationRegistry.ts` — 75 variantes d'expression ajoutées :
+    - Heaven : joy/victory/warning pour `heaven_victory`, `heaven_milestone`, catégories fréquentes
+    - Adversary : challenge/victory/defeat pour generic/cascade + 5 afflictions nommées (peur,
+      doute, amertume, combat spirituel, orgueil, découragement)
+    - Entourage : challenge/joy/warning pour 7-8 arcs (ami/parents/église/métier/conjoint/mathias/louise)
+    - Conscience : victory/warning/joy
+  - `src/components/JournalBubble.tsx` — `resolveExpressionAssetId(entry, sender)` calculé au rendu
+    (pur, zéro state, zéro effet) ; passe l'assetId enrichi à `avatarLetterFromRegistry()`.
+    Milestone = neutre (suffixe vide = assetId de base). SVG ennemi T-28 prioritaire sur la lettre.
+  - `tests/avatarExpression.test.ts` (nouveau) : 46 tests couvrant toutes les combinaisons
+    (type×sender), les suffixes, la composition d'assetId et l'intégration avec `resolveAsset`.
+  - `tests/illustrationRegistry.test.ts` — 2 assertions de comptage mises à jour (16 base / 9 base
+    sans les variantes T-32 ; assertions supplémentaires vérifiant que le total dépasse la base).
+
+- **Résultat** : porte QA verte — typecheck 0 erreur (baseline 0), 447 tests passés (29 fichiers,
+  +46 avatarExpression), build OK, validate 118v/226e, lint-diff 0 sur les 5 fichiers touchés.
+  Commit `c27fc19`.
+
+- **Rollback** : `git revert c27fc19`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

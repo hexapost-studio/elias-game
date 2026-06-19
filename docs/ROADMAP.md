@@ -101,8 +101,8 @@
       émetteurs (avatars entourage/adversaire), **lieux** (ville/église), **objets** ; résout en placeholder tant
       que l'art manque. Consommé par T-20/T-21 **dès le départ** (asset-ready) ; rempli progressivement.
       → itér. 50 / 36 assetId couverts, `JournalBubble` branché sur `resolveAsset()`, 52 tests.
-- [ ] **T-32** **Expressions d'avatar** (3-4 par émetteur, façon 7 Days) pilotées par ton/résultat — activées dès
-      que les assets existent (zéro refactor grâce à T-31).
+- [x] **T-32** **Expressions d'avatar** (6 expressions × 4 émetteurs) pilotées par ton/résultat — module pur
+      `avatarExpression.ts` + ~75 variantes dans `illustrationRegistry.ts` + branché `JournalBubble`. → itér. 51 / `c27fc19`
 
 ## 🎯 Definition of a new version (v0.1.0)
 Atteinte quand :
