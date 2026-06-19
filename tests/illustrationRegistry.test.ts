@@ -129,9 +129,19 @@ describe('ILLUSTRATION_REGISTRY — émetteur adversary', () => {
     });
   }
 
-  it('16 entrées adversary au total', () => {
-    const count = Object.keys(ILLUSTRATION_REGISTRY).filter(k => k.includes('__adversary__')).length;
+  it('16 entrées adversary de base (sans variantes d\'expression T-32)', () => {
+    // Les entrées de base n'ont pas de suffixe __<expression> (challenge/victory/defeat/warning/joy)
+    const EXPRESSION_SUFFIXES = ['__challenge', '__victory', '__defeat', '__warning', '__joy'];
+    const count = Object.keys(ILLUSTRATION_REGISTRY).filter(k =>
+      k.includes('__adversary__') &&
+      !EXPRESSION_SUFFIXES.some(suffix => k.endsWith(suffix))
+    ).length;
     expect(count).toBe(16);
+  });
+
+  it('entrées adversary totales (base + variantes T-32) : supérieur à 16', () => {
+    const total = Object.keys(ILLUSTRATION_REGISTRY).filter(k => k.includes('__adversary__')).length;
+    expect(total).toBeGreaterThan(16);
   });
 });
 
@@ -158,8 +168,12 @@ describe('ILLUSTRATION_REGISTRY — émetteur entourage', () => {
     });
   }
 
-  it('9 entrées entourage (un arc par entrée)', () => {
-    const count = Object.keys(ILLUSTRATION_REGISTRY).filter(k => k.includes('__entourage__')).length;
+  it('9 entrées entourage de base (un arc par entrée, sans variantes T-32)', () => {
+    const EXPRESSION_SUFFIXES = ['__challenge', '__victory', '__defeat', '__warning', '__joy'];
+    const count = Object.keys(ILLUSTRATION_REGISTRY).filter(k =>
+      k.includes('__entourage__') &&
+      !EXPRESSION_SUFFIXES.some(suffix => k.endsWith(suffix))
+    ).length;
     expect(count).toBe(9);
   });
 

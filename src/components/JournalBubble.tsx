@@ -7,18 +7,21 @@
  *   - Bulle DROITE  : conscience + entrées-réponse d'Élias (success / fail + verset)
  *   - Couleur de la bulle dérivée de `MessageSender.color`
  *   - Avatar = cercle coloré + première lettre du `label` issu du registre d'assets (T-31)
+ *   - Expression d'avatar : ton + résultat pilotent le label de l'avatar (T-32)
  *   - prefers-reduced-motion : animation désactivée automatiquement
  *
- *   @see src/engine/messageSender.ts       — dérivation de l'émetteur (T-20)
- *   @see src/assets/illustrationRegistry.ts — résolution du label/couleur (T-31)
- *   @see docs/ROADMAP.md T-21 / T-31
- *   @since itér. 38 / T-31 itér. 50
+ *   @see src/engine/messageSender.ts        — dérivation de l'émetteur (T-20)
+ *   @see src/engine/avatarExpression.ts     — dérivation de l'expression (T-32)
+ *   @see src/assets/illustrationRegistry.ts — résolution du label/couleur (T-31 / T-32)
+ *   @see docs/ROADMAP.md T-21 / T-31 / T-32
+ *   @since itér. 38 / T-31 itér. 50 / T-32 itér. 51
  */
 
 import type { JournalEntry } from '../types/game';
 import type { MessageSender } from '../engine/messageSender';
 import { ENEMY_COMPONENTS } from './iconMeta';
 import { resolveAsset } from '../assets/illustrationRegistry';
+import { deriveExpression, buildExpressionAssetId } from '../engine/avatarExpression';
 
 /* ─── Helpers ──────────────────────────────────────────────────────────────── */
 
@@ -36,15 +39,25 @@ function isSelfEntry(entry: JournalEntry, sender: MessageSender): boolean {
 }
 
 /**
- * Dérive la lettre d'avatar depuis le registre d'assets (T-31).
+ * Dérive la lettre d'avatar depuis le registre d'assets (T-31 / T-32).
  * Retourne la première lettre du `label` de l'entrée correspondant à l'`assetId`.
- * Ex. assetId `elias__adversary__adversary_peur_angoisse` → label 'La Peur' → 'L'
+ * Ex. assetId `elias__adversary__adversary_peur_angoisse__challenge` → label 'La Peur — menaçante' → 'L'
  *
  * Garantie : ne retourne jamais une chaîne vide (fallback '?').
  */
 function avatarLetterFromRegistry(assetId: string): string {
   const entry = resolveAsset(assetId);
   return entry.label[0]?.toUpperCase() ?? '?';
+}
+
+/**
+ * Dérive l'`assetId` enrichi de l'expression pour un émetteur et une entrée donnés (T-32).
+ * Compose l'assetId de base avec le suffixe d'expression calculé par avatarExpression.ts.
+ * Le registre sert de fallback automatique si la variante n'est pas encore enregistrée.
+ */
+function resolveExpressionAssetId(entry: JournalEntry, sender: MessageSender): string {
+  const expr = deriveExpression(entry, sender.sender);
+  return buildExpressionAssetId(sender.assetId, expr);
 }
 
 /**
@@ -72,6 +85,10 @@ interface JournalBubbleProps {
 export function JournalBubble({ entry, sender }: JournalBubbleProps) {
   const isRight = isSelfEntry(entry, sender);
 
+  // T-32 : assetId enrichi de l'expression (dérivé du ton de l'entry + de l'émetteur)
+  // resolveAsset utilisera ce suffixe pour trouver la variante ou retombera sur la base.
+  const expressionAssetId = resolveExpressionAssetId(entry, sender);
+
   // Milestone pur (saison, naissance, réveil) → bande pleine largeur centrée
   if (entry.type === 'milestone') {
     const isChapter = entry.text.startsWith('[CHAPITRE]');
@@ -87,7 +104,8 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
         style={{ '--jb-color': sender.color } as React.CSSProperties}
       >
         {(isChapter || isCliffhanger) ? null : (
-          <span className="jb-milestone-icon">{avatarLetterFromRegistry(sender.assetId)}</span>
+          // T-32 : milestone = neutre, expressionAssetId == assetId de base (suffixe vide)
+          <span className="jb-milestone-icon">{avatarLetterFromRegistry(expressionAssetId)}</span>
         )}
         <span className="jb-milestone-text">{entry.text}</span>
       </div>
@@ -107,8 +125,8 @@ export function JournalBubble({ entry, sender }: JournalBubbleProps) {
           style={{ '--jb-color': sender.color } as React.CSSProperties}
           aria-hidden="true"
         >
-          {/* T-28 : icône SVG ennemi si disponible, sinon lettre initiale */}
-          {EnemySvg !== null ? <EnemySvg size={28} /> : avatarLetterFromRegistry(sender.assetId)}
+          {/* T-28 : icône SVG ennemi si disponible ; sinon T-32 : lettre d'expression */}
+          {EnemySvg !== null ? <EnemySvg size={28} /> : avatarLetterFromRegistry(expressionAssetId)}
         </div>
       )}
 
