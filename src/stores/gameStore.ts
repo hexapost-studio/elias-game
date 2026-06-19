@@ -27,6 +27,8 @@ interface GameStore extends GameState {
   dismissResult: () => void;
   hydrateFromSave: (data: Partial<GameState>) => void;
   useAction: (action: PlayerAction) => boolean;
+  /** Bascule le mode découverte (T-17) — entraînement sans conséquence de stats. */
+  toggleDiscoveryMode: () => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -207,5 +209,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set(result.newState);
     saveGame(result.newState).catch(() => {});
     return true;
+  },
+
+  toggleDiscoveryMode: () => {
+    const state = get();
+    const newState = { ...state, discoveryMode: !state.discoveryMode };
+    set(newState);
+    saveGame(newState).catch(() => {});
   },
 }));

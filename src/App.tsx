@@ -105,6 +105,7 @@ function App() {
     spiritualSeason,
     calling,
     traits,
+    discoveryMode,
     initGame,
     initGameWithSeed,
     startWithPrologue,
@@ -788,6 +789,28 @@ function App() {
               </span>
             );
           })()}
+          {/* Badge mode découverte (T-17) — indicateur visuel discret en haut */}
+          {discoveryMode && (
+            <span
+              title="Mode entraînement actif — les stats ne sont pas affectées"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '3px 10px',
+                borderRadius: 12,
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                background: 'rgba(59,130,246,0.18)',
+                border: '1px solid rgba(59,130,246,0.5)',
+                color: '#93c5fd',
+              }}
+            >
+              <BookOpen size={10} strokeWidth={2} className="inline-icon-no-mr" />
+              DECOUVERTE
+            </span>
+          )}
           {combo > 2 && (() => {
             const nextMilestone = combo < 5 ? 5 : combo < 10 ? 10 : combo < 20 ? 20 : null;
             const tierColor = combo >= 20 ? '#a78bfa' : combo >= 10 ? '#fb923c' : combo >= 5 ? '#fbbf24' : '#f59e0b';

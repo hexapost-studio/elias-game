@@ -1226,7 +1226,37 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   Catégories pauvres : toutes les 8 portées de 2 → 5 events.
   Commit `6dd95e8`.
 
-- **Rollback** : `git revert <hash itér. 47>`.
+- **Rollback** : `git revert 6dd95e8`.
+
+### Itération 49 — T-17 Mode découverte — entraînement sans conséquence de stats
+
+- **Recherche** : les jeux de mémorisation (Duolingo, Anki) montrent qu'un mode sans enjeu
+  réduit le stress d'apprentissage et augmente la rétention. Pour Élias, le frein à l'exploration
+  des arcs est la peur de perdre des stats sur un verset mal mémorisé. Un mode d'entraînement
+  pur préserve l'enjeu du mode normal tout en offrant un filet pédagogique.
+
+- **Analyse** : `validateChoice` dans `gameEngine.ts` est le point unique d'application des deltas.
+  Court-circuiter proprement ce point (module pur `applyDiscoveryChoice`) satisfait l'invariant 2
+  (modulaire). Le flag `discoveryMode: boolean` dans `GameState` est un dérivé d'état propre —
+  il suit le cycle save/load via la whitelist de `persistence.ts`.
+
+- **Application** :
+  - `src/types/game.ts` : champ `discoveryMode: boolean` (défaut `false`, JSDoc clair).
+  - `src/engine/gameEngine.ts` : fonction pure `applyDiscoveryChoice` (bypass stats, révèle verset,
+    marque codex, injecte `[DÉCOUVERTE]` dans le journal) + délégation dans `validateChoice` quand
+    `state.discoveryMode === true`. Initialisation à `false` dans `createInitialState`.
+  - `src/stores/gameStore.ts` : action `toggleDiscoveryMode()` (bascule + saveGame).
+  - `src/data/persistence.ts` : `discoveryMode` ajouté à la whitelist de `saveGame`.
+  - `src/components/DevPanel.tsx` : toggle `useGameStore` dans le panneau dev (bouton bleu distinctif).
+  - `src/App.tsx` : badge visuel `DECOUVERTE` dans l'`info-bar` (bleu, discret, conditionnel sur `discoveryMode`).
+  - `tests/discoveryMode.test.ts` : 10 tests de la logique pure (`applyDiscoveryChoice` + délégation).
+
+- **Résultat** : porte QA verte — typecheck 0, 400 tests passés (+10), build OK,
+  validate 118v/226e, lint-diff 0 sur tous les fichiers touchés. Mode découverte accessible via
+  le DevPanel (7 taps coin bas-droite ou `?dev` dans l'URL), badge bleu discret dans le HUD
+  quand actif. Pas de conséquence de stats, verset toujours révélé, codex toujours mis à jour.
+
+- **Rollback** : `git revert <hash itér. 49>`.
 
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.

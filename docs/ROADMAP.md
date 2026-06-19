@@ -52,7 +52,7 @@
 - [x] **T-15** Events âges **90-100** — chaque âge 90→100 couvert par 7 à 15 events → PR #12 / vérifié itér. 32
 - [x] **T-16** Rééquilibrage **courbe difficulté senior** — outillé par `tools/survival-sim.ts` (itér. 34) puis
       tuné/mesuré (itér. 35, Piste B) : inversion supprimée, victoire(100) atteignable, ≥60 ans ~3-17 %→94-97 %.
-- [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats) — reporté (Tier 4, voir Phase 3)
+- [x] **T-17** **Mode découverte** (entraînement sans conséquence de stats) — reporté (Tier 4, voir Phase 3) → itér. 49
 
 ## Phase 3 — Fluidité & rejouabilité : le « fil polyphonique » (inspiré 7 Days / chat-narratif)
 
@@ -94,7 +94,7 @@
 ### Tier 4 — Agence, profondeur & contenu
 - [x] **T-29** **Choix moraux** (sous-type d'event : 2-3 *actes* qui posent des flags, au-delà du verset) — schéma + `validate`. → itér. 47
 - [x] **T-30** **Contenu C1** : 8 catégories à 2 events → ≥5 ; +13 events seniors 75-100. Total 189→226 events. → itér. 48 / `6dd95e8`
-- [ ] **T-17** **Mode découverte** (entraînement sans conséquence de stats).
+- [x] **T-17** **Mode découverte** (entraînement sans conséquence de stats) → itér. 49
 
 ### Transverse — Intégration graphique (continu, au fil de l'arrivée des assets)
 - [ ] **T-31** **Registre d'assets** (`src/assets/illustrationRegistry.ts`) : map `assetId`→illustration pour

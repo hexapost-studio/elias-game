@@ -53,6 +53,7 @@ export async function saveGame(state: GameState): Promise<void> {
     friendIntroduced: state.friendIntroduced,
     metrics: state.metrics,
     phase: state.phase === 'event' || state.phase === 'result' ? 'idle' : state.phase,
+    discoveryMode: state.discoveryMode,
     timestamp: Date.now(),
   };
   await localforage.setItem(SAVE_KEY, toSave);

@@ -295,6 +295,13 @@ export interface GameState {
   /** Seed de la run (PRNG seedé) — reproductibilité + diagnostic + partage futur. */
   seed: number;
   metrics: RunMetrics;
+  /**
+   * Mode découverte (T-17) — entraînement sans conséquence de stats.
+   * Quand true : le choix de verset révèle texte + explication et marque le verset dans le
+   * codex, mais n'applique AUCUN delta de stat (ni gain ni malus). Le journal affiche
+   * « [DÉCOUVERTE] Mode entraînement — sans conséquence ».
+   */
+  discoveryMode: boolean;
 }
 
 /* ─── APPEL / DESTINÉE ─────────────────────────────────────────────────────── */

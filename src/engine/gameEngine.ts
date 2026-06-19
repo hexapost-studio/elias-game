@@ -360,6 +360,7 @@ export function createInitialState(inheritance?: Inheritance, forcedSeed?: numbe
     amiDecayStreak: 0,
     callFriendCount: 0,
     friendIntroduced: false,
+    discoveryMode: false,
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -883,6 +884,71 @@ function applyLifeContextToEvent(event: AfflictionEvent, state: GameState): Affl
   };
 }
 
+/* ─── MODE DÉCOUVERTE ─── */
+
+/**
+ * Logique pure du mode découverte (T-17).
+ * Révèle le verset et l'enregistre dans le codex, mais N'APPLIQUE AUCUN delta de stat.
+ * Retourne le nouvel état et un marqueur `correct = true` (pour afficher le bon verset).
+ */
+export function applyDiscoveryChoice(
+  state: GameState,
+  chosenVerseId: string,
+): {
+  correct: boolean;
+  correctVerse: { reference: string; text: string };
+  newState: GameState;
+} {
+  const event = state.currentEvent;
+  if (!event) throw new Error('Aucun événement actif en mode découverte');
+
+  const verse = getVerseById(event.correctVerseId)!;
+  const correct = chosenVerseId === event.correctVerseId;
+  const newState = { ...state };
+  const newCodex = { ...state.codex };
+
+  // Marquer le verset comme vu (apprentissage) — toujours le bon verset, quelle que soit la réponse.
+  newCodex[verse.id] = {
+    ...(newCodex[verse.id] || { verseId: verse.id, unlocked: false, timesUsed: 0, errorCount: 0 }),
+    unlocked: true,
+    unlockedAtAge: newCodex[verse.id]?.unlockedAtAge ?? state.age,
+    timesUsed: (newCodex[verse.id]?.timesUsed ?? 0) + 1,
+  };
+
+  newState.codex = newCodex;
+  newState.lastEventResult = 'success'; // affiche le verset dans l'UI résultat
+
+  // Journal : entrée distinctive sans conséquence de stats
+  const choiceLabel = correct
+    ? `Bonne réponse : ${verse.reference}`
+    : `Réponse incorrecte — le verset était ${verse.reference}`;
+
+  newState.journal = [
+    ...state.journal,
+    {
+      age: state.age,
+      text: `[DÉCOUVERTE] Mode entraînement — sans conséquence. ${choiceLabel}: "${verse.text}"`,
+      type: 'milestone' as const,
+      verseRef: verse.reference,
+    },
+  ];
+
+  // Fenêtre glissante : mise à jour pour éviter la répétition immédiate
+  const R = CONFIG.recentSlots;
+  newState.recentEventIds = [event.id, ...state.recentEventIds.slice(0, R - 1)];
+  const allVerseIds = [verse.id, ...event.decoyVerseIds];
+  newState.recentVerseIds = [
+    ...allVerseIds,
+    ...(state.recentVerseIds ?? []).slice(0, R - allVerseIds.length),
+  ];
+
+  return {
+    correct: true, // toujours afficher comme "succès" pour révéler le verset
+    correctVerse: { reference: verse.reference, text: verse.text },
+    newState,
+  };
+}
+
 /* ─── VALIDATION ─── */
 
 export function validateChoice(
@@ -894,6 +960,11 @@ export function validateChoice(
   correctVerse: { reference: string; text: string };
   newState: GameState;
 } {
+  // Mode découverte (T-17) : entraînement sans conséquence de stats.
+  if (state.discoveryMode) {
+    return applyDiscoveryChoice(state, chosenVerseId);
+  }
+
   const event = state.currentEvent;
   if (!event) throw new Error('Aucun événement actif');
 

@@ -2,6 +2,7 @@
  * Panneau développeur caché — accessible via ?dev dans l'URL.
  * Permet d'activer/désactiver l'IA OpenRouter à la volée (clé en localStorage).
  * Invisible pour les joueurs normaux.
+ * Contient aussi le toggle du mode découverte (T-17).
  */
 import { useState, useEffect } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   activateAiRuntime,
   deactivateAiRuntime,
 } from '../services/aiNarrator';
+import { useGameStore } from '../stores/gameStore';
 
 const FREE_MODELS = [
   'mistralai/mistral-7b-instruct:free',
@@ -36,6 +38,10 @@ export default function DevPanel() {
   const [inputKey, setInputKey] = useState('');
   const [selectedModel, setSelectedModel] = useState(FREE_MODELS[0]);
   const [tapCount, setTapCount] = useState(0);
+
+  // Mode découverte — lu depuis le store (T-17)
+  const discoveryMode = useGameStore((s) => s.discoveryMode);
+  const toggleDiscoveryMode = useGameStore((s) => s.toggleDiscoveryMode);
 
   // Le franchissement du seuil (7 taps) est traité DANS le handler (cf. handleTap) — pas
   // dans un effet. Cet effet ne fait QUE débouncer le compteur : son seul setState part
@@ -142,6 +148,30 @@ export default function DevPanel() {
           </button>
         </>
       )}
+
+      <div style={{ marginTop: 10, borderTop: '1px solid #1e293b', paddingTop: 10 }}>
+        <div style={{ marginBottom: 6, color: '#f1f5f9', fontWeight: 700 }}>
+          Mode Découverte (T-17)
+        </div>
+        <div style={{ marginBottom: 6, color: '#64748b', fontSize: 10 }}>
+          Entraînement sans conséquence de stats. Le verset est révélé, le codex mis à jour,
+          mais aucune jauge n'est modifiée.
+        </div>
+        <button
+          onClick={toggleDiscoveryMode}
+          style={{
+            width: '100%', padding: '6px 0',
+            background: discoveryMode ? '#1d4ed8' : '#1e293b',
+            border: `1px solid ${discoveryMode ? '#3b82f6' : '#334155'}`,
+            borderRadius: 4,
+            color: discoveryMode ? '#bfdbfe' : '#94a3b8',
+            cursor: 'pointer',
+            fontWeight: discoveryMode ? 700 : 400,
+          }}
+        >
+          {discoveryMode ? '● DÉCOUVERTE ACTIVÉE' : '○ Mode Découverte'}
+        </button>
+      </div>
 
       <div style={{ marginTop: 8, color: '#475569', fontSize: 10 }}>
         La clé est stockée localement (localStorage).<br />
