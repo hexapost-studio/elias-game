@@ -160,7 +160,7 @@ export function AmbitionTracker() {
   const steps    = deriveRunAmbition(stateSlice);
   const progress = getCallingProgress(stateSlice);
 
-  // Fermeture via Escape
+  // Fermeture via Escape + scroll-lock body quand ouvert
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') setOpen(false);
   }, []);
@@ -168,8 +168,12 @@ export function AmbitionTracker() {
   useEffect(() => {
     if (open) {
       document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
     }
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
   }, [open, handleKeyDown]);
 
   // Aucun calling défini → ne rien afficher (rétro-compat saves anciennes)
@@ -223,7 +227,8 @@ export function AmbitionTracker() {
           id="ambition-panel"
           role="dialog"
           aria-label={`Ambition de run — Appel : ${calling.name}`}
-          aria-modal="false"
+          aria-modal="true"
+          onClick={(e) => e.stopPropagation()}
           style={{
             position: 'fixed',
             bottom: 0,
@@ -238,7 +243,7 @@ export function AmbitionTracker() {
             borderBottom: 'none',
             borderRadius: '16px 16px 0 0',
             zIndex: 900,
-            /* prefers-reduced-motion : pas d'animation sur le panneau */
+            overscrollBehavior: 'contain',
           }}
         >
           {/* En-tête */}
@@ -375,12 +380,14 @@ export function AmbitionTracker() {
       {open && (
         <div
           onClick={() => setOpen(false)}
+          onTouchStart={(e) => { e.stopPropagation(); }}
           aria-hidden="true"
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 899,
             background: 'rgba(0,0,0,0.3)',
+            touchAction: 'none',
           }}
         />
       )}

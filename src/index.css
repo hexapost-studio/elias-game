@@ -1319,7 +1319,8 @@ body {
 
 /* ─── INFO BAR BUTTONS ─── */
 .btn-codex {
-  padding: 2px 9px;
+  padding: 6px 9px;
+  min-height: 36px;
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   font-size: 10px;
@@ -1333,7 +1334,8 @@ body {
 }
 
 .btn-music {
-  padding: 3px 8px;
+  padding: 6px 10px;
+  min-height: 36px;
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   cursor: pointer;
@@ -1933,10 +1935,14 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 10px 10px;
+  min-height: 44px;
+  min-width: 44px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 3px;
   opacity: 0.85;
   transition: opacity 0.2s ease;
