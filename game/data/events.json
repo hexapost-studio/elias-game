@@ -7371,5 +7371,74 @@
       "paix": 6
     },
     "thematicFlavor": "Dieu ne juge pas une vie à son bruit — il la juge à sa fidélité."
+  },
+  {
+    "id": "e-priere-006",
+    "title": "La prière de l'enfant",
+    "description": "Tu as entendu {père} prier à voix haute ce matin. Ses mots étaient simples mais quelque chose t'a traversé. Tu veux apprendre à faire pareil, mais tu ne sais pas comment commencer.",
+    "ageRange": [
+      6,
+      13
+    ],
+    "category": "priere",
+    "correctVerseId": "v-priere-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
+    "thematicFlavor": "La prière la plus courte dite avec un cœur sincère vaut plus qu'un long discours."
+  },
+  {
+    "id": "e-priere-007",
+    "title": "Prier ensemble quand tout va mal",
+    "description": "{conjoint} et toi n'avez plus prié ensemble depuis longtemps. La distance s'est installée. Ce soir, l'un de vous propose de prier. L'autre hésite.",
+    "ageRange": [
+      28,
+      65
+    ],
+    "category": "priere",
+    "correctVerseId": "v-priere-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "La prière à deux est l'une des armes les plus puissantes d'un foyer."
+  },
+  {
+    "id": "e-decour-003",
+    "title": "Le premier désert de la foi",
+    "description": "Tu as commencé fort — l'église, la prière, les études bibliques. Et puis rien. Le feu s'est éteint sans que tu saches pourquoi. Tu te demandes si tu t'es trompé sur tout.",
+    "ageRange": [
+      16,
+      28
+    ],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
+    "thematicFlavor": "Tous les grands hommes de foi ont connu ce désert — tu n'es pas le premier."
   }
 ]
