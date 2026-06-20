@@ -6750,5 +6750,626 @@
       "paix": 5
     },
     "thematicFlavor": "Tout ce que tu tiens appartient à Celui qui t'a tout donné."
+  },
+  {
+    "id": "e-esprit-006",
+    "title": "Quelque chose de nouveau",
+    "description": "Pendant l'office à {église}, quelque chose de chaud traverse ta poitrine. Tu ne sais pas comment l'expliquer. Tu as peur que les autres te croient fou.",
+    "ageRange": [
+      8,
+      15
+    ],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4
+    },
+    "thematicFlavor": "L'Esprit n'attend pas que tu sois grand pour te toucher."
+  },
+  {
+    "id": "e-esprit-007",
+    "title": "La prière des mains posées",
+    "description": "On te demande de prier pour quelqu'un de malade à {église}. Tu n'as jamais fait ça. Tes mains tremblent. Tu te demandes si tu as encore l'autorité pour le faire.",
+    "ageRange": [
+      55,
+      90
+    ],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
+    "thematicFlavor": "L'Esprit ne prend pas sa retraite avec toi."
+  },
+  {
+    "id": "e-esprit-008",
+    "title": "Le baptême contesté",
+    "description": "Quelqu'un de {église} remet en question l'expérience spirituelle que tu as vécue. Il cite des textes. Tu doutes de ce que tu as pourtant clairement ressenti.",
+    "ageRange": [
+      18,
+      35
+    ],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
+    "thematicFlavor": "Ce que Dieu a fait en toi ne dépend pas de l'approbation des hommes."
+  },
+  {
+    "id": "e-parole-006",
+    "title": "La première page",
+    "description": "Un adulte de {église} t'a offert une Bible. Tu ne sais pas bien lire encore, mais tu l'ouvres chaque soir. Les mots te semblent vivants.",
+    "ageRange": [
+      6,
+      12
+    ],
+    "category": "parole_de_dieu",
+    "correctVerseId": "v-parole-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
+    "thematicFlavor": "Une graine plantée à cet âge porte du fruit pendant des décennies."
+  },
+  {
+    "id": "e-parole-007",
+    "title": "La mémoire qui s'efface",
+    "description": "Tes yeux ne lisent plus aussi vite. Les versets que tu connaissais par cœur s'effilochent. Tu te demandes si la Parole est encore là pour toi.",
+    "ageRange": [
+      70,
+      95
+    ],
+    "category": "parole_de_dieu",
+    "correctVerseId": "v-parole-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "La Parole de Dieu ne dépend pas de ta mémoire pour rester vivante."
+  },
+  {
+    "id": "e-parole-008",
+    "title": "Le verset qui accuse",
+    "description": "En lisant, tu tombes sur un texte qui semble écrire ta vie — tes erreurs, tes silences, tes fuites. Tu as envie de refermer la Bible.",
+    "ageRange": [
+      22,
+      50
+    ],
+    "category": "parole_de_dieu",
+    "correctVerseId": "v-parole-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "La Parole éclaire pour libérer, pas pour condamner."
+  },
+  {
+    "id": "e-direct-003",
+    "title": "Le carrefour des études",
+    "description": "L'orientation scolaire approche. Tes parents ont un avis arrêté. Dieu semble silencieux. Tu dois choisir avant la semaine prochaine.",
+    "ageRange": [
+      14,
+      20
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4
+    },
+    "thematicFlavor": "La direction divine n'est pas toujours une voix — parfois c'est une porte qui s'ouvre."
+  },
+  {
+    "id": "e-direct-004",
+    "title": "Tout quitter pour recommencer",
+    "description": "Une opportunité inattendue te demande de quitter ton travail de {métier} pour une autre voie. Tout le monde te dit que tu es fou. Quelque chose en toi tire fort dans l'autre sens.",
+    "ageRange": [
+      28,
+      50
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": 0,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
+    "thematicFlavor": "Dieu n'est pas limité par ton plan de carrière."
+  },
+  {
+    "id": "e-direct-005",
+    "title": "À qui transmettre ?",
+    "description": "Tu sens qu'il est temps de passer la main dans ton rôle à {église}. Plusieurs noms te viennent. Mais le meilleur candidat, selon toi, ne semble pas prêt.",
+    "ageRange": [
+      55,
+      85
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Dieu n'a pas besoin que tu trouves ton successeur — il l'a déjà préparé."
+  },
+  {
+    "id": "e-soif-006",
+    "title": "Les questions qui ne s'arrêtent pas",
+    "description": "Tu poses des questions sur Dieu depuis que tu sais parler. Les adultes de {église} sourient, mais tes questions sont vraies. Tu veux plus que des réponses — tu veux Le rencontrer.",
+    "ageRange": [
+      8,
+      14
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
+    "thematicFlavor": "La soif de Dieu chez un enfant est un don rare à ne pas éteindre."
+  },
+  {
+    "id": "e-soif-007",
+    "title": "La sécheresse de la vieillesse",
+    "description": "Après des décennies de foi, tu traverses une période où Dieu semble absent. Tes prières ricochent sur le plafond. Tu n'oses pas en parler à {église}.",
+    "ageRange": [
+      60,
+      95
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "Même les plus grands ont traversé la sécheresse — ce n'est pas la fin."
+  },
+  {
+    "id": "e-soif-008",
+    "title": "La retraite qui change tout",
+    "description": "Tu pars en retraite de prière avec {église}. Les premières heures de silence te pèsent. Puis quelque chose se délie en toi que tu ne savais pas fermé.",
+    "ageRange": [
+      18,
+      45
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "Le silence n'est pas l'absence de Dieu — c'est son vestibule."
+  },
+  {
+    "id": "e-obeis-006",
+    "title": "Obéir à maman",
+    "description": "{mère} t'a demandé de faire quelque chose que tu trouves injuste. Tes amis t'ont dit de refuser. Quelque chose dans ta conscience dit autre chose.",
+    "ageRange": [
+      8,
+      14
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    },
+    "thematicFlavor": "L'obéissance apprend à confier ce qu'on ne comprend pas encore."
+  },
+  {
+    "id": "e-obeis-007",
+    "title": "L'appel de minuit",
+    "description": "Dieu te demande de te lever la nuit pour prier pour quelqu'un. Tu as 70 ans et le dos fragile. Cela semble ridicule. Et pourtant tu entends clairement.",
+    "ageRange": [
+      55,
+      85
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "L'obéissance au-delà du raisonnable est souvent celle qui change tout."
+  },
+  {
+    "id": "e-obeis-008",
+    "title": "Pardonner publiquement",
+    "description": "Le pasteur de {église} t'a demandé de prendre la parole pour pardonner publiquement quelqu'un qui t'a blessé. Ta chair crie non. Mais tu sais ce que Dieu attend.",
+    "ageRange": [
+      22,
+      60
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "L'obéissance qui coûte le plus est celle qui libère le plus."
+  },
+  {
+    "id": "e-lourd-006",
+    "title": "Le poids avant l'heure",
+    "description": "Tu n'as pas encore 20 ans et tu te sens épuisé de l'intérieur. Tes amis courent, toi tu traînes. Tu n'oses pas dire à {père} que tout te pèse.",
+    "ageRange": [
+      14,
+      22
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4
+    },
+    "thematicFlavor": "La fatigue spirituelle n'est pas une faiblesse de caractère — c'est un appel à se reposer en Dieu."
+  },
+  {
+    "id": "e-lourd-007",
+    "title": "Trop vieux pour continuer",
+    "description": "Ton corps de {age} ans te rappelle chaque matin qu'il n'est plus celui d'avant. Le service à {église} te coûte maintenant. Tu te demandes si tu dois abandonner.",
+    "ageRange": [
+      70,
+      95
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -3,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Dieu ne mesure pas ta valeur à ta productivité."
+  },
+  {
+    "id": "e-lourd-008",
+    "title": "Brûlé de l'intérieur",
+    "description": "Tu as tout donné à {métier} depuis des années. Ce matin, tu n'arrives plus à sortir du lit. Ton médecin parle de burnout. Tu refuses de le croire.",
+    "ageRange": [
+      30,
+      60
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -6,
+      "physique": -4,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Reconnaître ses limites n'est pas de la faiblesse — c'est de la sagesse."
+  },
+  {
+    "id": "e-gueris-006",
+    "title": "L'enfant à l'hôpital",
+    "description": "Tu passes tes nuits à {ville} dans un couloir d'hôpital. L'un de tes proches est entre la vie et la mort. Tes prières semblent rebondir sur les murs blancs.",
+    "ageRange": [
+      18,
+      55
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "Prier sans voir de réponse, c'est encore prier."
+  },
+  {
+    "id": "e-gueris-007",
+    "title": "Le diagnostic de longue durée",
+    "description": "Le médecin a prononcé un mot que tu ne veux pas retenir. La maladie sera là pour longtemps. Tu dois choisir comment vivre avec elle.",
+    "ageRange": [
+      40,
+      85
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -4,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Certaines guérisons ressemblent à une paix qui dépasse la compréhension."
+  },
+  {
+    "id": "e-gueris-008",
+    "title": "Le miracle que tu n'attendais plus",
+    "description": "Tu as prié pour cette personne depuis des années. Soudain, les médecins de {ville} ne savent plus comment expliquer les résultats. Mais tu ne sais pas si tu peux encore croire.",
+    "ageRange": [
+      25,
+      75
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 5
+    },
+    "thematicFlavor": "Le doute n'empêche pas le miracle — il rend l'émerveillement plus grand."
+  },
+  {
+    "id": "e-steril-006",
+    "title": "La paix après l'épreuve",
+    "description": "Tu avais lutté contre cette douleur pendant des années. Aujourd'hui quelque chose s'est apaisé en toi. Ce n'est pas la résignation — c'est autre chose.",
+    "ageRange": [
+      40,
+      65
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "La paix que Dieu donne ne ressemble pas à celle du monde."
+  },
+  {
+    "id": "e-steril-007",
+    "title": "La peur avant même de commencer",
+    "description": "Tu n'es pas encore marié(e) mais la peur de ne jamais pouvoir avoir d'enfant t'habite déjà. {ami} te dit que tu anticipes trop. Mais la peur est réelle.",
+    "ageRange": [
+      18,
+      30
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Porter une peur avant l'épreuve est aussi une épreuve — Dieu y est déjà."
+  },
+  {
+    "id": "e-steril-008",
+    "title": "Aimer l'enfant de quelqu'un d'autre",
+    "description": "Tu t'es impliqué(e) dans la vie d'un enfant de {ville} qui n'est pas le tien. Certains à {église} ne comprennent pas ce choix. Toi, tu sens que c'est juste.",
+    "ageRange": [
+      30,
+      70
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "La parentalité spirituelle n'a pas besoin de sang pour être réelle."
+  },
+  {
+    "id": "e-echec-003",
+    "title": "Le bulletin qui fait mal",
+    "description": "Tu as échoué. {père} regarde le bulletin sans rien dire. C'est pire que la colère. Tu te jures que ça ne se reproduira plus — mais la honte reste.",
+    "ageRange": [
+      8,
+      18
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    },
+    "thematicFlavor": "L'échec scolaire n'est pas le dernier mot sur ton avenir."
+  },
+  {
+    "id": "e-echec-004",
+    "title": "Le concours raté",
+    "description": "Tu avais tout préparé. La date, les révisions, les prières. Et pourtant le résultat est là : refusé. Tout le monde à {ville} semble avoir réussi sauf toi.",
+    "ageRange": [
+      18,
+      28
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4
+    },
+    "thematicFlavor": "Un refus n'est pas toujours un non — c'est parfois un « pas encore »."
+  },
+  {
+    "id": "e-echec-005",
+    "title": "Une vie ordinaire",
+    "description": "Tu regardes en arrière et tu vois une vie sans grand exploit. Pas de record, pas de gloire. Les autres à {église} semblent avoir accompli davantage. Est-ce que ça suffisait ?",
+    "ageRange": [
+      60,
+      90
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "Dieu ne juge pas une vie à son bruit — il la juge à sa fidélité."
   }
 ]

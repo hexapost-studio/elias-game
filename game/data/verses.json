@@ -2305,5 +2305,243 @@
       "paix": 3
     },
     "diff": 2
+  },
+  {
+    "id": "v-lourd-003",
+    "ref": "2 Corinthiens 12.9",
+    "text": "Ma grâce te suffit, car ma puissance s'accomplit dans la faiblesse.",
+    "cat": "lourdeur_fatigue",
+    "tags": [
+      "grâce",
+      "faiblesse",
+      "puissance",
+      "suffisant"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 5
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-lourd-005",
+    "ref": "Psaume 23.4",
+    "text": "Quand je marche dans la vallée de l'ombre de la mort, je ne crains aucun mal, car tu es avec moi.",
+    "cat": "lourdeur_fatigue",
+    "tags": [
+      "ombre",
+      "mort",
+      "crainte",
+      "présence"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 5
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-soif-004",
+    "ref": "Jean 7.37",
+    "text": "Si quelqu'un a soif, qu'il vienne à moi, et qu'il boive.",
+    "cat": "soif_de_dieu",
+    "tags": [
+      "soif",
+      "venir",
+      "boire",
+      "Jésus"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-soif-005",
+    "ref": "Apocalypse 21.6",
+    "text": "À celui qui a soif, je donnerai gratuitement de la source de l'eau de la vie.",
+    "cat": "soif_de_dieu",
+    "tags": [
+      "soif",
+      "eau",
+      "vie",
+      "gratuitement"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 5
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-obeis-004",
+    "ref": "Actes 5.29",
+    "text": "Il faut obéir à Dieu plutôt qu'aux hommes.",
+    "cat": "obeissance",
+    "tags": [
+      "obéissance",
+      "Dieu",
+      "hommes",
+      "autorité"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 3
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-obeis-005",
+    "ref": "Luc 11.28",
+    "text": "Heureux plutôt ceux qui écoutent la parole de Dieu et qui la gardent !",
+    "cat": "obeissance",
+    "tags": [
+      "parole",
+      "écouter",
+      "garder",
+      "heureux"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-gueris-004",
+    "ref": "Psaume 103.3",
+    "text": "C'est lui qui pardonne toutes tes iniquités, qui guérit toutes tes maladies.",
+    "cat": "maladie_guerison",
+    "tags": [
+      "pardon",
+      "guérison",
+      "maladies",
+      "iniquités"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 5
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-gueris-005",
+    "ref": "2 Corinthiens 4.17",
+    "text": "Nos légères afflictions du moment présent produisent pour nous, au-delà de toute mesure, un poids éternel de gloire.",
+    "cat": "maladie_guerison",
+    "tags": [
+      "affliction",
+      "gloire",
+      "éternel",
+      "moment"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-steril-004",
+    "ref": "Luc 1.37",
+    "text": "Rien n'est impossible à Dieu.",
+    "cat": "sterilite",
+    "tags": [
+      "impossible",
+      "Dieu",
+      "miracle",
+      "foi"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-steril-005",
+    "ref": "Romains 4.20-21",
+    "text": "Il ne chancela pas dans l'incrédulité en ce qui concerne la promesse de Dieu, mais il fut fortifié par la foi.",
+    "cat": "sterilite",
+    "tags": [
+      "foi",
+      "promesse",
+      "incrédulité",
+      "Abraham"
+    ],
+    "impact": {
+      "foi": 5,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-echec-004",
+    "ref": "Proverbes 24.16",
+    "text": "Car le juste tombe sept fois et se relève, mais les méchants sont précipités dans le malheur.",
+    "cat": "echec_reussite",
+    "tags": [
+      "chute",
+      "relèvement",
+      "juste",
+      "persévérance"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 4
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-echec-005",
+    "ref": "Jacques 1.2-4",
+    "text": "Regardez comme un sujet de joie complète les diverses épreuves auxquelles vous pouvez vous trouver exposés, sachant que l'épreuve de votre foi produit la persévérance.",
+    "cat": "echec_reussite",
+    "tags": [
+      "épreuves",
+      "joie",
+      "foi",
+      "persévérance"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 3
+    },
+    "diff": 2
+  },
+  {
+    "id": "v-priere-004",
+    "ref": "Philippiens 4.6",
+    "text": "Ne vous inquiétez de rien, mais en toute chose faites connaître vos besoins à Dieu par des prières et des supplications avec des actions de grâces.",
+    "cat": "priere",
+    "tags": [
+      "inquiétude",
+      "prière",
+      "besoins",
+      "action de grâces"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 5
+    },
+    "diff": 1
+  },
+  {
+    "id": "v-priere-005",
+    "ref": "1 Jean 5.14",
+    "text": "Si nous demandons quelque chose selon sa volonté, il nous écoute.",
+    "cat": "priere",
+    "tags": [
+      "demande",
+      "volonté",
+      "écouter",
+      "confiance"
+    ],
+    "impact": {
+      "foi": 4,
+      "paix": 4
+    },
+    "diff": 2
   }
 ]
