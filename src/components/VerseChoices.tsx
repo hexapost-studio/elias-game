@@ -8,6 +8,7 @@ import { textKey, isSeen, markSeen } from '../settings/seenText';
 import { shuffledChoiceIds } from '../engine/choiceOrder';
 import { deriveMessageSender } from '../engine/messageSender';
 import { TypingIndicator } from './TypingIndicator';
+import { buildWordBankChallenge } from '../engine/wordBank';
 
 const PALIER_TIMER: Record<number, number | null> = {
   1: null,   // Pas de timer
@@ -260,11 +261,95 @@ export function VerseChoices() {
         );
       })()}
 
-      {/* Choices — chips de réponse (T-27) */}
+      {/* ── Word Bank (T-42) ── */}
+      {/* Quand questionType === 'wordBank' : afficher le verset avec ____ + chips de mots. */}
+      {!hasAnswered && currentEvent.questionType === 'wordBank' && currentEvent.wordBank && (() => {
+        const correctVerse = getVerseById(currentEvent.correctVerseId);
+        if (!correctVerse) return null;
+        const challenge = buildWordBankChallenge(
+          correctVerse.text,
+          currentEvent.wordBank.hiddenWord,
+          currentEvent.wordBank.decoys,
+          currentEvent.id,
+        );
+        const handleWordClick = (word: string) => {
+          if (sendingChipId !== null) return;
+          const isCorrect = word === challenge.correctChip;
+          const verseIdToPass = isCorrect
+            ? currentEvent.correctVerseId
+            : (currentEvent.decoyVerseIds[0] ?? currentEvent.correctVerseId);
+          const finalTime = Math.max(0.1, maxTime - timeLeft);
+          try { navigator.vibrate(5); } catch { /* non supporté */ }
+          chooseVerse(verseIdToPass, Math.round(finalTime * 10) / 10);
+        };
+        return (
+          <div style={{ marginTop: 8 }}>
+            {/* Verset avec trou */}
+            <div style={{
+              padding: '10px 14px',
+              borderRadius: 10,
+              background: 'rgba(245,158,11,0.06)',
+              border: '1px solid rgba(245,158,11,0.18)',
+              fontSize: 13,
+              lineHeight: 1.7,
+              color: 'var(--text-primary)',
+              marginBottom: 14,
+              fontStyle: 'italic',
+            }}>
+              {challenge.displayText.split('____').map((part, i, arr) => (
+                <span key={i}>
+                  {part}
+                  {i < arr.length - 1 && (
+                    <span style={{
+                      display: 'inline-block',
+                      minWidth: 80,
+                      borderBottom: `2px solid ${eventSender.color}`,
+                      marginInline: 4,
+                      verticalAlign: 'bottom',
+                    }} aria-label="mot à trouver">{'  '}</span>
+                  )}
+                </span>
+              ))}
+            </div>
+            {/* Chips de mots */}
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 8,
+              justifyContent: 'center',
+            }}>
+              {challenge.chips.map((word) => (
+                <button
+                  key={word}
+                  onClick={() => handleWordClick(word)}
+                  style={{
+                    padding: '10px 18px',
+                    minHeight: 44,
+                    borderRadius: 10,
+                    border: `1.5px solid rgba(245,158,11,0.3)`,
+                    background: 'var(--bg-card)',
+                    color: 'var(--text-primary)',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    transition: 'background 0.12s, border-color 0.12s',
+                  }}
+                  aria-label={`Choisir le mot : ${word}`}
+                >
+                  {word}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── Choices classiques — chips de versets (T-27) ── */}
       {/* Pendant l'animation d'envoi (sendingChipId !== null) : seule la chip
           sélectionnée est visible avec la classe --sending ; les autres sont masquées.
           Après réponse (hasAnswered) : plus de chips visibles (la bulle les remplace). */}
-      {!hasAnswered && shuffledIds.map((verseId, i) => {
+      {!hasAnswered && currentEvent.questionType !== 'wordBank' && shuffledIds.map((verseId, i) => {
         const verse = getVerseById(verseId);
         if (!verse) return null;
 

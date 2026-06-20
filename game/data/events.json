@@ -89,6 +89,16 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
+    },
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "timidité",
+      "decoys": [
+        "peur",
+        "faiblesse",
+        "doute",
+        "honte"
+      ]
     }
   },
   {
@@ -2500,7 +2510,17 @@
       "foi": 5,
       "paix": 5
     },
-    "thematicFlavor": "L'amour de Dieu ne dépend pas de ta performance."
+    "thematicFlavor": "L'amour de Dieu ne dépend pas de ta performance.",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "unique",
+      "decoys": [
+        "parfait",
+        "saint",
+        "fidèle",
+        "précieux"
+      ]
+    }
   },
   {
     "id": "e-amour-002",
@@ -2547,7 +2567,17 @@
       "paix": 3,
       "finances": 3
     },
-    "thematicFlavor": "La direction de Dieu passe-t-elle toujours par ce qui semble le meilleur ?"
+    "thematicFlavor": "La direction de Dieu passe-t-elle toujours par ce qui semble le meilleur ?",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "cœur",
+      "decoys": [
+        "esprit",
+        "âme",
+        "force",
+        "entendement"
+      ]
+    }
   },
   {
     "id": "e-direct-002",
@@ -2735,7 +2765,17 @@
       "foi": 5,
       "paix": 5
     },
-    "thematicFlavor": "La culpabilité est un fardeau que Dieu n'a pas conçu pour toi."
+    "thematicFlavor": "La culpabilité est un fardeau que Dieu n'a pas conçu pour toi.",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "confessons",
+      "decoys": [
+        "cachons",
+        "avouons",
+        "oublions",
+        "pardonnons"
+      ]
+    }
   },
   {
     "id": "e-culpa-002",
@@ -2867,7 +2907,17 @@
       "paix": 4,
       "physique": 3
     },
-    "thematicFlavor": "Dieu n'a pas besoin de ton épuisement pour accomplir ses desseins."
+    "thematicFlavor": "Dieu n'a pas besoin de ton épuisement pour accomplir ses desseins.",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "repos",
+      "decoys": [
+        "paix",
+        "salut",
+        "joie",
+        "force"
+      ]
+    }
   },
   {
     "id": "e-lourd-002",
@@ -5821,7 +5871,17 @@
       "paix": 3
     },
     "thematicFlavor": "L'obéissance sans compréhension est la forme la plus pure de la confiance.",
-    "decoyVerseIds": []
+    "decoyVerseIds": [],
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "commandements",
+      "decoys": [
+        "lois",
+        "paroles",
+        "ordres",
+        "enseignements"
+      ]
+    }
   },
   {
     "id": "e-obeis-004",
@@ -6795,7 +6855,17 @@
       "foi": 5,
       "paix": 4
     },
-    "thematicFlavor": "L'Esprit ne prend pas sa retraite avec toi."
+    "thematicFlavor": "L'Esprit ne prend pas sa retraite avec toi.",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "puissance",
+      "decoys": [
+        "force",
+        "grâce",
+        "amour",
+        "sagesse"
+      ]
+    }
   },
   {
     "id": "e-esprit-008",
@@ -6841,7 +6911,17 @@
       "foi": 4,
       "paix": 3
     },
-    "thematicFlavor": "Une graine plantée à cet âge porte du fruit pendant des décennies."
+    "thematicFlavor": "Une graine plantée à cet âge porte du fruit pendant des décennies.",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "lampe",
+      "decoys": [
+        "lumière",
+        "guide",
+        "chemin",
+        "flamme"
+      ]
+    }
   },
   {
     "id": "e-parole-007",
@@ -7002,7 +7082,17 @@
       "foi": 5,
       "paix": 5
     },
-    "thematicFlavor": "Même les plus grands ont traversé la sécheresse — ce n'est pas la fin."
+    "thematicFlavor": "Même les plus grands ont traversé la sécheresse — ce n'est pas la fin.",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "soif",
+      "decoys": [
+        "désir",
+        "faim",
+        "manque",
+        "attente"
+      ]
+    }
   },
   {
     "id": "e-soif-008",
@@ -7347,7 +7437,17 @@
       "foi": 4,
       "paix": 4
     },
-    "thematicFlavor": "Un refus n'est pas toujours un non — c'est parfois un « pas encore »."
+    "thematicFlavor": "Un refus n'est pas toujours un non — c'est parfois un « pas encore ».",
+    "questionType": "wordBank",
+    "wordBank": {
+      "hiddenWord": "juste",
+      "decoys": [
+        "sage",
+        "fort",
+        "courageux",
+        "patient"
+      ]
+    }
   },
   {
     "id": "e-echec-005",

@@ -142,6 +142,14 @@ export type EventRequirement =
   | { kind: 'event_failed'; eventId: string }           // Event doit avoir échoué (rédemption)
   | { kind: 'flag'; flagId: string; value?: boolean };  // Flag de conséquence posé/absent (défaut value=true)
 
+/** Données de la mécanique « mot caché » (style Duolingo word-bank). */
+export interface WordBankData {
+  /** Mot-clé du verset à deviner (masqué par ____). */
+  hiddenWord: string;
+  /** 3-4 leurres : synonymes ou mots faux thématiquement proches. */
+  decoys: string[];
+}
+
 export interface AfflictionEvent {
   id: string;
   title: string;
@@ -150,6 +158,10 @@ export interface AfflictionEvent {
   category: AfflictionCategory;
   correctVerseId: string;
   decoyVerseIds: string[];
+  /** 'choice' (défaut) = 4 chips de versets entiers. 'wordBank' = mot caché à retrouver. */
+  questionType?: 'choice' | 'wordBank';
+  /** Présent uniquement si questionType === 'wordBank'. */
+  wordBank?: WordBankData;
   statImpactOnFail: StatImpact;
   /** Boosts de stats appliqués en cas de bonne réponse (événements bénédiction) */
   statImpactOnSuccess?: Partial<StatImpact>;

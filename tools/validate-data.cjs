@@ -86,6 +86,13 @@ if (events.length > 0) {
       }
     } else {
       check(ids.has(e.correctVerseId), `Verset correct existe: ${e.id} → ${e.correctVerseId}`);
+      // Word bank (T-42) : vérifier la structure si questionType === 'wordBank'
+      if (e.questionType === 'wordBank') {
+        check(e.wordBank && typeof e.wordBank.hiddenWord === 'string' && e.wordBank.hiddenWord.length > 0,
+          `wordBank.hiddenWord présent: ${e.id}`);
+        check(e.wordBank && Array.isArray(e.wordBank.decoys) && e.wordBank.decoys.length >= 2,
+          `wordBank.decoys ≥ 2: ${e.id}`);
+      }
     }
 
     // Tranche d'âge
