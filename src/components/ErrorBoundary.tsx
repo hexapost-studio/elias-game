@@ -1,16 +1,28 @@
 import { Component, type ReactNode } from 'react';
+import { buildPayload, submitFeedback } from '../services/feedback';
 
 interface Props { children: ReactNode; }
-interface State { hasError: boolean; message: string; }
+interface State { hasError: boolean; message: string; reported: boolean; }
 
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, message: '' };
+    this.state = { hasError: false, message: '', reported: false };
   }
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { hasError: true, message: error.message };
+  }
+
+  componentDidCatch(error: Error, info: { componentStack: string }): void {
+    // Envoi automatique silencieux du rapport de crash React.
+    buildPayload({
+      kind: 'bug',
+      message: `[AUTO] Crash React : ${error.message}\n${info.componentStack.slice(0, 600)}`,
+      contact: null,
+      includeDiagnostics: true,
+    }).then((payload) => submitFeedback(payload)).catch(() => {});
+    this.setState({ reported: true });
   }
 
   render() {
@@ -34,6 +46,11 @@ export class ErrorBoundary extends Component<Props, State> {
         <div style={{ fontSize: 13, color: '#c9a97e', maxWidth: 320 }}>
           {this.state.message || 'Erreur inattendue dans le moteur du jeu.'}
         </div>
+        {this.state.reported && (
+          <div style={{ fontSize: 11, color: '#6b7280', maxWidth: 280 }}>
+            Un rapport a été envoyé automatiquement. Merci !
+          </div>
+        )}
         <button
           onClick={() => window.location.reload()}
           style={{

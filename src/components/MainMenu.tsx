@@ -38,6 +38,7 @@ interface MainMenuProps {
   onToggleDyslexic: () => void;
   onToggleReducedSounds: () => void;
   onToggleSlowTimer: () => void;
+  onOpenTutorial: () => void;
 }
 
 export const MainMenu: FC<MainMenuProps> = ({
@@ -57,6 +58,7 @@ export const MainMenu: FC<MainMenuProps> = ({
   onToggleDyslexic,
   onToggleReducedSounds,
   onToggleSlowTimer,
+  onOpenTutorial,
 }) => {
   const [volume, setVolume] = useState(Math.round(getAmbientVolume() * 100));
   const readingSpeed = useReadingSpeed();
@@ -223,6 +225,14 @@ export const MainMenu: FC<MainMenuProps> = ({
             color="var(--accent-gold-light)"
             onClick={cycleReadingSpeed}
             active={readingSpeed !== 'instant'}
+          />
+
+          <MenuButton
+            icon={<span style={{ fontSize: 15 }}>🗺</span>}
+            label="Revoir le tutorial"
+            sublabel="Revisite les éléments de l'interface"
+            color="var(--text-muted)"
+            onClick={() => { onClose(); onOpenTutorial(); }}
           />
 
           <MenuSection label="COMMUNAUTÉ" />

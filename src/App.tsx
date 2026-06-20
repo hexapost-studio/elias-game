@@ -21,6 +21,8 @@ import {
 import { ENEMY_COMPONENTS } from './components/iconMeta';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
+import { TutorialOverlay } from './components/TutorialOverlay';
+import { isTutorialDone } from './settings/tutorialSeen';
 import { Prologue } from './components/Prologue';
 import type { PrologueResult } from './components/Prologue';
 import { ArcTracker } from './components/ArcTracker';
@@ -139,6 +141,7 @@ function App() {
   const [seedInput, setSeedInput] = useState('');
   const [showPrologue, setShowPrologue] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ambientOn, setAmbientOn] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
@@ -1088,6 +1091,10 @@ function App() {
             setSlowTimer((prev) => !prev);
             playClick();
           }}
+          onOpenTutorial={() => {
+            setShowMainMenu(false);
+            setShowTutorial(true);
+          }}
         />
       )}
 
@@ -1158,8 +1165,15 @@ function App() {
           onComplete={(result: PrologueResult) => {
             setShowPrologue(false);
             startWithPrologue(result);
+            // Tutorial au premier jeu — déclenché après le prologue si pas encore vu.
+            if (!isTutorialDone()) setShowTutorial(true);
           }}
         />
+      )}
+
+      {/* Tutorial interactif (T-43) */}
+      {showTutorial && (
+        <TutorialOverlay onDone={() => setShowTutorial(false)} />
       )}
 
       {/* Onboarding */}
