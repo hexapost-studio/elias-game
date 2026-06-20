@@ -86,6 +86,12 @@ if (events.length > 0) {
       }
     } else {
       check(ids.has(e.correctVerseId), `Verset correct existe: ${e.id} → ${e.correctVerseId}`);
+      // Cohérence thématique : catégorie du verset correct doit correspondre à celle de l'event.
+      // Un écart est acceptable (recoupement théologique) mais doit être signalé pour revue.
+      const correctVerse = verses.find(v => v.id === e.correctVerseId);
+      if (correctVerse && correctVerse.cat !== e.category) {
+        warn(`Catégorie discordante: ${e.id} (${e.category}) → ${e.correctVerseId} (${correctVerse.cat}) — vérifier la pertinence théologique`);
+      }
       // Word bank (T-42) : vérifier la structure si questionType === 'wordBank'
       if (e.questionType === 'wordBank') {
         check(e.wordBank && typeof e.wordBank.hiddenWord === 'string' && e.wordBank.hiddenWord.length > 0,
