@@ -420,6 +420,6 @@ export function playAgeAdvance()   { play('sfx-age-advance', 0.55); }
 - [ ] `public/sounds/sfx-crisis-grace.ogg`
 - [ ] `public/sounds/sfx-gameover.ogg`
 - [ ] `public/sounds/sfx-title-unlock.ogg`
-- [ ] Câblage `SEASON_TRACKS` dans `juice.ts`
-- [ ] Export des nouvelles fonctions `playVerseCorrect()` etc. dans `juice.ts`
-- [ ] Appel crossfade sur transition de saison dans `App.tsx`
+- [x] Câblage `SEASON_TRACKS` dans `juice.ts`
+- [x] Export de `playSeasonTrack()` et `crossfadeTo()` dans `juice.ts`
+- [x] Appel crossfade sur transition de saison dans `App.tsx`

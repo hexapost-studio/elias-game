@@ -67,6 +67,20 @@ export type EventTone =
 
 export type StatName = 'foi' | 'paix' | 'physique' | 'finances';
 
+/**
+ * Un acte concret d'un dilemme moral — choix d'action, pas de verset.
+ * Le joueur choisit COMMENT agir ; cela pose des flags et façonne le personnage.
+ */
+export interface MoralChoice {
+  id: string;
+  label: string;
+  description: string;
+  /** Flags posés à true quand ce choix est fait. */
+  flagsSet: string[];
+  /** Deltas de stats appliqués immédiatement (peuvent être négatifs). */
+  statDeltas?: Partial<Record<StatName, number>>;
+}
+
 export interface StatImpact {
   foi: number;
   paix: number;
@@ -125,7 +139,8 @@ export type EventRequirement =
   | { kind: 'event_succeeded'; eventId: string }       // Event doit avoir été réussi
   | { kind: 'verse_unlocked'; verseId: string }         // Verset doit être débloqué dans le Codex
   | { kind: 'arc_completed'; arcId: string }            // Arc doit être terminé
-  | { kind: 'event_failed'; eventId: string };          // Event doit avoir échoué (rédemption)
+  | { kind: 'event_failed'; eventId: string }           // Event doit avoir échoué (rédemption)
+  | { kind: 'flag'; flagId: string; value?: boolean };  // Flag de conséquence posé/absent (défaut value=true)
 
 export interface AfflictionEvent {
   id: string;
@@ -155,8 +170,18 @@ export interface AfflictionEvent {
   maxStat?: Partial<Record<StatName, number>>;
   /** Liste de prérequis : tous doivent être remplis pour que l'event apparaisse */
   prerequisites?: EventRequirement[];
+  /** Flags de conséquence posés (→ true) si l'event est réussi — pour le branchement narratif (B). */
+  setsFlagsOnSuccess?: string[];
+  /** Flags de conséquence posés (→ true) si l'event est échoué. */
+  setsFlagsOnFail?: string[];
   /** Relation minimum avec {ami} pour que cet event apparaisse */
   minAmiRelationship?: number;
+  /**
+   * Dilemme moral — quand présent, cet event ne présente PAS de verset à choisir
+   * mais 2-3 actes concrets. Le correctVerseId reste vide ("") pour les events moraux.
+   * Le joueur agit ; les flags posent les conséquences narratives (branchement B).
+   */
+  moralChoices?: MoralChoice[];
   /**
    * Surcharges par stade de vie (enfant 0-11, ado 12-17, adulte 18-59, senior 60+).
    * Quand un stade est absent, l'événement utilise ses champs racine.
@@ -171,11 +196,14 @@ export interface NarrativeVariant {
 }
 
 export interface StatCondition {
-  type: 'birth_profile' | 'stat_check';
-  profileName?: string;     // ex: 'Équilibré', 'Foi de fer'
-  stat?: StatName;
+  type: 'birth_profile' | 'stat_check' | 'season' | 'has_trait' | 'calling';
+  profileName?: string;     // ex: 'Équilibré', 'Foi de fer'  (type birth_profile)
+  stat?: StatName;          // (type stat_check)
   operator?: 'lt' | 'gt' | 'lte' | 'gte';
   value?: number;
+  season?: SpiritualSeasonName; // (type season)
+  traitId?: string;             // (type has_trait)
+  callingId?: string;           // (type calling)
 }
 
 export interface StoryArc {
@@ -205,6 +233,8 @@ export type PlayerAction = 'pray' | 'fast' | 'serve' | 'call_friend' | 'read_wor
 export interface GameState {
   age: number;
   stats: Record<StatName, number>;
+  /** Nom du personnage — saisi à la création, défaut « Élias » (itér. 9 / proposition D). */
+  playerName: string;
   profileName: string;       // Profil de naissance
   parentNames: { father: string; mother: string };
   lifeContext: LifeContext;
@@ -236,8 +266,12 @@ export interface GameState {
   encounteredArcIds: string[];
   /** Fenêtre glissante des 5 derniers événements vus — empêche les répétitions */
   recentEventIds: string[];
+  /** Fenêtre glissante des 20 derniers IDs de versets vus (correct + leurres) — évite les répétitions */
+  recentVerseIds: string[];
   /** IDs des événements d'arc déjà répondus — permet d'enforcer l'ordre séquentiel des arcs */
   answeredArcEventIds: string[];
+  /** Flags de conséquence posés par les choix — moteur du branchement narratif (B / itér. 12). */
+  flags: Record<string, boolean>;
   /** Nombre de fails consécutifs — réinitialisé au premier succès */
   consecutiveFails: number;
   /** True quand le correcteur de frustration est actif — force un événement de grâce */
@@ -248,7 +282,77 @@ export interface GameState {
   amiDecayStreak: number;
   /** Nombre total d'appels à call_friend (lifetime) — débloque des paliers de bonus */
   callFriendCount: number;
+  /** True quand l'ami d'enfance {friendName} a été rencontré narrativement dans cette session */
+  friendIntroduced: boolean;
+  /**
+   * Appel / Destinée de cette run — tiré à la naissance (pondéré).
+   * Recadre toute la partie : biais de saisons, poids des catégories, titre de fin.
+   * Optionnel pour rétro-compat des saves antérieures.
+   */
+  calling?: Calling;
+  /** Traits gagnés en cours de vie (Wildermyth-like) — façonnent contenu + narration. */
+  traits: EarnedTrait[];
+  /** Seed de la run (PRNG seedé) — reproductibilité + diagnostic + partage futur. */
+  seed: number;
   metrics: RunMetrics;
+  /**
+   * Mode découverte (T-17) — entraînement sans conséquence de stats.
+   * Quand true : le choix de verset révèle texte + explication et marque le verset dans le
+   * codex, mais n'applique AUCUN delta de stat (ni gain ni malus). Le journal affiche
+   * « [DÉCOUVERTE] Mode entraînement — sans conséquence ».
+   */
+  discoveryMode: boolean;
+}
+
+/* ─── APPEL / DESTINÉE ─────────────────────────────────────────────────────── */
+
+/**
+ * Un « Appel » tiré à la naissance qui recadre toute la run.
+ * Inspiré des classes/backgrounds (Citizen Sleeper) et des destinées (CK).
+ */
+export interface Calling {
+  id: string;
+  name: string;
+  /** Sous-titre court affiché sous le nom. */
+  tagline: string;
+  description: string;
+  icon: string;   // glyphe (cohérent avec les saisons : ✦ ◈ ⚔ …)
+  color: string;  // hex
+  /** Figure biblique de référence (flavor). */
+  figure?: string;
+  /** Probabilité relative de tirage à la naissance. */
+  weight: number;
+  /** Bonus de stats appliqués à la naissance. */
+  startBonus?: Partial<StatImpact>;
+  /** Multiplicateurs sur la probabilité de chaque saison spirituelle. */
+  seasonBias?: Partial<Record<SpiritualSeasonName, number>>;
+  /** Multiplicateurs sur le poids de sélection des catégories d'événements. */
+  categoryBias?: Partial<Record<AfflictionCategory, number>>;
+  /** Saveur du titre de fin lié à l'Appel. */
+  titleFlavor?: string;
+}
+
+/* ─── TRAITS ──────────────────────────────────────────────────────────────── */
+
+/** Définition d'un trait acquérable. */
+export interface Trait {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  /** Multiplicateurs sur le poids de sélection des catégories (façonne le contenu suivant). */
+  categoryBias?: Partial<Record<AfflictionCategory, number>>;
+  /** Bonus de stats one-shot au moment de l'acquisition. */
+  gainBonus?: Partial<StatImpact>;
+  /** Fragment de narration injectable par le narrateur offline. */
+  narrationHook?: string;
+}
+
+/** Instance d'un trait gagné par Élias. */
+export interface EarnedTrait {
+  id: string;
+  earnedAtAge: number;
 }
 
 export interface CodexEntry {
@@ -295,7 +399,7 @@ export interface RunMetrics {
 export interface JournalEntry {
   age: number;
   text: string;
-  type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro';
+  type: 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro' | 'moral';
   verseRef?: string;
 }
 

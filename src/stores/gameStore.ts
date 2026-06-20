@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GameState, AfflictionEvent, PlayerAction } from '../types/game';
+import type { GameState, AfflictionEvent, PlayerAction, MoralChoice } from '../types/game';
 import type { PrologueResult } from '../components/Prologue';
 import {
   createInitialState,
@@ -10,18 +10,25 @@ import {
   determineTitle,
   applyPlayerAction,
 } from '../engine/gameEngine';
+import { personalize } from '../engine/identity';
+import { applyMoralChoice } from '../engine/moralChoice';
+import { revealsUpToAge } from '../engine/reveals';
 import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
 import { trackEvent } from '../services/analytics';
 
 interface GameStore extends GameState {
   gameOver: { isOver: boolean; reason?: string } | null;
   initGame: () => void;
+  initGameWithSeed: (seed: number, playerName?: string) => void;
   startWithPrologue: (result: PrologueResult) => void;
   ageUp: (aiEvent?: AfflictionEvent) => void;
   chooseVerse: (verseId: string, timeToAnswer?: number) => void;
+  chooseMoral: (choice: MoralChoice) => void;
   dismissResult: () => void;
   hydrateFromSave: (data: Partial<GameState>) => void;
   useAction: (action: PlayerAction) => boolean;
+  /** Bascule le mode découverte (T-17) — entraînement sans conséquence de stats. */
+  toggleDiscoveryMode: () => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -35,8 +42,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
   initGame: () => {
     const inheritance = get().inheritance;
     const used = inheritance?.used;
+    // Préserve le nom du joueur au redémarrage (itér. 9) — pas de re-saisie au restart.
     const state = createInitialState(
-      used ? { title: null, bonus: {}, used: false } : inheritance
+      used ? { title: null, bonus: {}, used: false } : inheritance,
+      undefined,
+      get().playerName
+    );
+    set({ ...state, gameOver: null });
+    saveGame(state).catch(() => {});
+  },
+
+  initGameWithSeed: (seed: number, playerName?: string) => {
+    // Rejouer une graine partagée (itér. 10 / proposition A) : même graine = même
+    // monde + stats de départ. Sans prologue (la naissance est entièrement seedée).
+    const inheritance = get().inheritance;
+    const used = inheritance?.used;
+    const state = createInitialState(
+      used ? { title: null, bonus: {}, used: false } : inheritance,
+      seed,
+      playerName ?? get().playerName
     );
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
@@ -51,17 +75,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Override RNG stats with prologue choices
     state.stats = result.stats;
     state.profileName = result.profileName;
+    state.playerName = result.name;
     state.age = 14;
-    // Prologue journal entries
+    // Prologue journal entries — narration personnalisée au nom du joueur (itér. 9).
+    const name = result.name;
     const storyEntries = result.storyBits.map((text) => ({
-      age: 0, text: `✦ ${text}`, type: 'milestone' as const,
+      age: 0, text: `✦ ${personalize(text, name)}`, type: 'milestone' as const,
     }));
     const introEntry = {
       age: 0,
-      text: `[NAISSANCE] Élias est né à ${state.lifeContext.city}. Ses parents : ${state.parentNames.father} et ${state.parentNames.mother}. Profil: ${result.profileName}.`,
+      text: `[NAISSANCE] ${name} est né à ${state.lifeContext.city}. Ses parents : ${state.parentNames.father} et ${state.parentNames.mother}. Profil: ${result.profileName}.`,
       type: 'milestone' as const,
     };
-    state.journal = [introEntry, ...storyEntries];
+    // Feedback précoce (itér. 15) : le Prologue démarre à 14 ans et sauterait les annonces
+    // de capacités déjà actives (ActionPanel dès 8, saisons dès 10). On les rattrape ici pour
+    // que le joueur connaisse le mode d'emploi des mécaniques disponibles dès la 1ʳᵉ année jouée.
+    const caughtUpReveals = revealsUpToAge(state.age).map((r) => ({
+      age: 0, text: personalize(r.text, name), type: 'milestone' as const,
+    }));
+    state.journal = [introEntry, ...storyEntries, ...caughtUpReveals];
     state.difficulty = 2 as const; // Skip easy mode — prologue already prepared them
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
@@ -153,6 +185,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
     saveGame(resultState).catch(() => {});
   },
 
+  chooseMoral: (choice: MoralChoice) => {
+    const state = get();
+    if (!state.currentEvent || state.phase !== 'event') return;
+    const newState = applyMoralChoice(state, choice);
+    const over = checkGameOver(newState);
+    set({
+      ...newState,
+      phase: 'result' as const,
+      gameOver: over.isOver ? over : null,
+    });
+    saveGame(newState).catch(() => {});
+  },
+
   dismissResult: () => {
     set({ phase: 'idle', lastEventResult: null });
   },
@@ -164,5 +209,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set(result.newState);
     saveGame(result.newState).catch(() => {});
     return true;
+  },
+
+  toggleDiscoveryMode: () => {
+    const state = get();
+    const newState = { ...state, discoveryMode: !state.discoveryMode };
+    set(newState);
+    saveGame(newState).catch(() => {});
   },
 }));

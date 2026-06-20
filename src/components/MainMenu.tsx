@@ -15,15 +15,17 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import {
-  BookOpen, ScrollText, Music, Moon, Award, Star, RefreshCw, XIcon, Volume2,
+  BookOpen, ScrollText, Award, Star, XIcon, Volume2, MessageSquare,
 } from './IconSystem';
 import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
 import { DailyVerse } from './DailyVerse';
+import { useReadingSpeed, cycleReadingSpeed, READING_LABELS } from '../settings/textSpeed';
 
 interface MainMenuProps {
   onClose: () => void;
   onOpenCodex: () => void;
   onOpenLexicon: () => void;
+  onOpenFeedback: () => void;
   onNewGame: () => void;
   ambientOn: boolean;
   onToggleAmbient: () => void;
@@ -42,6 +44,7 @@ export const MainMenu: FC<MainMenuProps> = ({
   onClose,
   onOpenCodex,
   onOpenLexicon,
+  onOpenFeedback,
   onNewGame,
   ambientOn,
   onToggleAmbient,
@@ -56,6 +59,7 @@ export const MainMenu: FC<MainMenuProps> = ({
   onToggleSlowTimer,
 }) => {
   const [volume, setVolume] = useState(Math.round(getAmbientVolume() * 100));
+  const readingSpeed = useReadingSpeed();
 
   return (
     <div
@@ -206,6 +210,29 @@ export const MainMenu: FC<MainMenuProps> = ({
             color={slowTimer ? 'var(--accent-gold-light)' : 'var(--text-muted)'}
             onClick={onToggleSlowTimer}
             active={slowTimer}
+          />
+
+          <MenuButton
+            icon={
+              <span style={{ fontSize: 15, color: 'var(--accent-gold-light)' }}>
+                ⌨
+              </span>
+            }
+            label={`Vitesse de lecture : ${READING_LABELS[readingSpeed]}`}
+            sublabel="Rythme de révélation des scènes — toucher pour changer"
+            color="var(--accent-gold-light)"
+            onClick={cycleReadingSpeed}
+            active={readingSpeed !== 'instant'}
+          />
+
+          <MenuSection label="COMMUNAUTÉ" />
+
+          <MenuButton
+            icon={<MessageSquare size={15} strokeWidth={1.5} />}
+            label="Signaler / Donner mon avis"
+            sublabel="Bug, idée ou encouragement"
+            color="#86efac"
+            onClick={() => { onClose(); onOpenFeedback(); }}
           />
 
           <MenuSection label="PARTIE" />

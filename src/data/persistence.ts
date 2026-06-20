@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import type { GameState } from '../types/game';
+import type { GameState, Inheritance } from '../types/game';
 
 const SAVE_KEY = 'elias-save-v1';
 const ONBOARDING_KEY = 'elias-onboarding-v1';
@@ -21,26 +21,39 @@ export async function saveGame(state: GameState): Promise<void> {
     profileName: state.profileName,
     parentNames: state.parentNames,
     lifeContext: state.lifeContext,
+    difficulty: state.difficulty,
+    actionPoints: state.actionPoints,
+    actionsThisYear: state.actionsThisYear,
     amiRelationship: state.amiRelationship,
     crisesRemaining: state.crisesRemaining,
     flow: state.flow,
     combo: state.combo,
     maxCombo: state.maxCombo,
-    journal: state.journal.slice(-50), // keep last 50 entries
+    journal: state.journal.slice(-50),
+    currentEvent: state.currentEvent,
+    lastEventResult: state.lastEventResult,
     totalEvents: state.totalEvents,
     successRate: state.successRate,
     failedVerseIds: state.failedVerseIds,
     codex: state.codex,
+    currentTitle: state.currentTitle,
+    inheritance: state.inheritance,
     queuedCascadeEvents: state.queuedCascadeEvents,
     completedArcs: state.completedArcs,
     encounteredArcIds: state.encounteredArcIds,
     answeredArcEventIds: state.answeredArcEventIds,
+    flags: state.flags,
+    recentEventIds: state.recentEventIds,
+    recentVerseIds: state.recentVerseIds,
     consecutiveFails: state.consecutiveFails,
     reliefActive: state.reliefActive,
     spiritualSeason: state.spiritualSeason,
     amiDecayStreak: state.amiDecayStreak,
-    phase: state.phase,
-    difficulty: state.difficulty,
+    callFriendCount: state.callFriendCount,
+    friendIntroduced: state.friendIntroduced,
+    metrics: state.metrics,
+    phase: state.phase === 'event' || state.phase === 'result' ? 'idle' : state.phase,
+    discoveryMode: state.discoveryMode,
     timestamp: Date.now(),
   };
   await localforage.setItem(SAVE_KEY, toSave);
@@ -48,7 +61,7 @@ export async function saveGame(state: GameState): Promise<void> {
 
 export async function loadGame(): Promise<Partial<GameState> | null> {
   try {
-    const data = await localforage.getItem<any>(SAVE_KEY);
+    const data = await localforage.getItem<Partial<GameState> & { timestamp?: number }>(SAVE_KEY);
     if (!data) return null;
     // Vérifier que le save a moins de 7 jours
     if (data.timestamp && Date.now() - data.timestamp > 7 * 24 * 60 * 60 * 1000) {
@@ -171,10 +184,10 @@ export async function getAnalyticsSummary(): Promise<{
 
 /* ─── INHERITANCE ─── */
 
-export async function saveInheritance(data: any): Promise<void> {
+export async function saveInheritance(data: Inheritance): Promise<void> {
   await localforage.setItem(INHERITANCE_KEY, data);
 }
 
-export async function loadInheritance(): Promise<any | null> {
-  return await localforage.getItem(INHERITANCE_KEY);
+export async function loadInheritance(): Promise<Inheritance | null> {
+  return await localforage.getItem<Inheritance>(INHERITANCE_KEY);
 }

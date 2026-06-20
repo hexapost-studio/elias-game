@@ -5,7 +5,6 @@ import type {
   DifficultyLevel,
   JournalEntry,
   FlowPalier,
-  FlowState,
   CodexEntry,
   Title,
   Inheritance,
@@ -16,11 +15,21 @@ import type {
   SpiritualSeasonName,
   SpiritualSeason,
 } from '../types/game';
-import { getEventsForAge, assignDecoys, getEventById, resolveEventForAge } from '../data/events';
+import { getEventsForAge, pickDecoys, getEventById, resolveEventForAge } from '../data/events';
 import { getVerseById, VERSE_DATABASE } from '../data/verses';
 import { getArcById } from '../data/storyArcs';
 import { getMicroEventForAge } from '../data/microEvents';
 import { CONFIG } from '../../game/data/loader';
+import { pickCalling } from '../data/callings';
+import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
+import { mulberry32, makeSeed, rngWeightedPick, rngPick, type Rng } from './rng';
+import { buildEchoLinkEntry } from './echoLink';
+import { getChapterIntro, getDecadeCliffhanger, isDecadeStart, isDecadeEnd } from './lifeChapters';
+import { revealsAtAge } from './reveals';
+import { countUnlocked, collectionRewardText } from './collection';
+import { generateOpeningVignette } from './opening';
+import { resolvePlayerName, personalize } from './identity';
+import type { Calling } from '../types/game';
 
 const MAX_STAT = CONFIG.maxStat;
 const MIN_STAT = CONFIG.minStat;
@@ -28,24 +37,20 @@ const MAX_AGE = CONFIG.maxAge;
 
 /* ─── JAUGE DE FLOW ─── */
 
-const FLOW_PALIER_THRESHOLDS: Record<FlowPalier, [number, number]> = {
-  1: [0, 33],
-  2: [34, 66],
-  3: [67, 100],
-};
+const T = CONFIG.flow.thresholds;
 
 const FLOW_GAIN_BASE = CONFIG.flow.baseGain;
-const FLOW_MAX_TIME = CONFIG.flow.maxTime; // secondes max pour répondre
+const FLOW_MAX_TIME = CONFIG.flow.maxTime;
 const FLOW_PALIER_BONUS: Record<FlowPalier, number> = {
-  1: 1.0,
-  2: 1.5,
-  3: 2.5,
+  1: CONFIG.flow.multipliers.palier1,
+  2: CONFIG.flow.multipliers.palier2,
+  3: CONFIG.flow.multipliers.palier3,
 };
 
 /** Détermine le palier de Flow à partir de la valeur */
 export function getFlowPalier(value: number): FlowPalier {
-  if (value <= 33) return 1;
-  if (value <= 66) return 2;
+  if (value <= T.palier1) return 1;
+  if (value <= T.palier2) return 2;
   return 3;
 }
 
@@ -60,9 +65,9 @@ export function calculateFlowGain(
 /** Pénalité asymétrique — retombe au seuil inférieur du palier */
 export function calculateFlowPenalty(currentFlow: number): number {
   const palier = getFlowPalier(currentFlow);
-  if (palier === 3) return 66; // retombe en début de palier 2
-  if (palier === 2) return 33; // retombe en début de palier 1
-  return 0; // déjà au palier 1, retombe à 0
+  if (palier === 3) return CONFIG.flow.penaltyPalier3;
+  if (palier === 2) return CONFIG.flow.penaltyPalier2;
+  return 0;
 }
 
 /* ─── NOMS DES PARENTS ─── */
@@ -79,10 +84,10 @@ const MOTHER_NAMES = [
   'Abigaïl', 'Ruth', 'Sophie', 'Grâce', 'Christiane', 'Joie', 'Joyeuse', 'Béatrice',
 ];
 
-function generateParentNames(): { father: string; mother: string } {
+function generateParentNames(rng: Rng): { father: string; mother: string } {
   return {
-    father: FATHER_NAMES[Math.floor(Math.random() * FATHER_NAMES.length)],
-    mother: MOTHER_NAMES[Math.floor(Math.random() * MOTHER_NAMES.length)],
+    father: rngPick(rng, FATHER_NAMES),
+    mother: rngPick(rng, MOTHER_NAMES),
   };
 }
 
@@ -116,17 +121,13 @@ const SPOUSE_NAMES = [
   'Gloria', 'Ruth', 'Marthe', 'Suzanne', 'Léa', 'Rébecca', 'Miriam', 'Joanna',
 ];
 
-function pickRandom<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function generateLifeContext(): LifeContext {
+function generateLifeContext(rng: Rng): LifeContext {
   return {
-    friendName: pickRandom(FRIEND_NAMES),
-    city:       pickRandom(CITIES),
-    profession: pickRandom(PROFESSIONS),
-    churchName: pickRandom(CHURCH_NAMES),
-    spouseName: pickRandom(SPOUSE_NAMES),
+    friendName: rngPick(rng, FRIEND_NAMES),
+    city:       rngPick(rng, CITIES),
+    profession: rngPick(rng, PROFESSIONS),
+    churchName: rngPick(rng, CHURCH_NAMES),
+    spouseName: rngPick(rng, SPOUSE_NAMES),
   };
 }
 
@@ -147,30 +148,25 @@ const BIRTH_PROFILES: BirthProfile[] = [
   { name: 'Prodige',        stats: { foi: [60, 80], paix: [60, 80], physique: [60, 80], finances: [60, 80] }, weight: 5 },
 ];
 
-function pickBirthProfile(): BirthProfile {
-  const totalWeight = BIRTH_PROFILES.reduce((s, p) => s + p.weight, 0);
-  let r = Math.random() * totalWeight;
-  for (const profile of BIRTH_PROFILES) {
-    r -= profile.weight;
-    if (r <= 0) return profile;
-  }
-  return BIRTH_PROFILES[0];
+function pickBirthProfile(rng: Rng): BirthProfile {
+  return rngWeightedPick(rng, BIRTH_PROFILES, BIRTH_PROFILES.map((p) => p.weight));
 }
 
-function randomInRange([min, max]: [number, number]): number {
-  return Math.floor(min + Math.random() * (max - min));
+/** Tirage entier dans [min, max[ (exclusif en haut) — préserve la distribution d'origine. */
+function rngInRange(rng: Rng, [min, max]: [number, number]): number {
+  return Math.floor(min + rng() * (max - min));
 }
 
-export function generateBirthStats(): {
+export function generateBirthStats(rng: Rng): {
   stats: Record<StatName, number>;
   profileName: string;
 } {
-  const profile = pickBirthProfile();
+  const profile = pickBirthProfile(rng);
   const stats: Record<StatName, number> = {
-    foi: randomInRange(profile.stats.foi),
-    paix: randomInRange(profile.stats.paix),
-    physique: randomInRange(profile.stats.physique),
-    finances: randomInRange(profile.stats.finances),
+    foi: rngInRange(rng, profile.stats.foi),
+    paix: rngInRange(rng, profile.stats.paix),
+    physique: rngInRange(rng, profile.stats.physique),
+    finances: rngInRange(rng, profile.stats.finances),
   };
   return { stats, profileName: profile.name };
 }
@@ -288,12 +284,34 @@ export function recordVerseError(
 
 /* ─── ÉTAT INITIAL ─── */
 
-export function createInitialState(inheritance?: Inheritance): GameState {
-  const { stats, profileName } = generateBirthStats();
-  const parentNames = generateParentNames();
-  const lifeContext = generateLifeContext();
+export function createInitialState(inheritance?: Inheritance, forcedSeed?: number, playerName?: string): GameState {
+  // Seed de run + PRNG seedé pour la « colonne vertébrale » (Appel, saisons, traits).
+  const seed = forcedSeed ?? makeSeed();
+  const rng: Rng = mulberry32(seed);
+  const name = resolvePlayerName(playerName);
+
+  // Toute la naissance passe par le MÊME rng seedé → même graine = même destinée
+  // (itér. 10 / proposition A — graines partageables).
+  const { stats, profileName } = generateBirthStats(rng);
+  const parentNames = generateParentNames(rng);
+  const lifeContext = generateLifeContext(rng);
+
+  // Appel / Destinée — tiré pondéré (Partie 2 : choisi par le joueur).
+  const calling: Calling = pickCalling(rng);
+
+  // Stats de départ = naissance + héritage + bonus d'Appel.
+  const b = inheritance?.bonus ?? {};
+  const cb = calling.startBonus ?? {};
+  const startStats = {
+    foi: Math.min(100, stats.foi + (b.foi || 0) + (cb.foi || 0)),
+    paix: Math.min(100, stats.paix + (b.paix || 0) + (cb.paix || 0)),
+    physique: Math.min(100, stats.physique + (b.physique || 0) + (cb.physique || 0)),
+    finances: Math.min(100, stats.finances + (b.finances || 0) + (cb.finances || 0)),
+  };
+
   const state: GameState = {
     age: 0,
+    playerName: name,
     profileName,
     parentNames,
     lifeContext,
@@ -301,14 +319,10 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     actionsThisYear: [],
     amiRelationship: 50,
     crisesRemaining: 2,
-    stats: inheritance?.bonus
-      ? {
-          foi: Math.min(100, stats.foi + (inheritance.bonus.foi || 0)),
-          paix: Math.min(100, stats.paix + (inheritance.bonus.paix || 0)),
-          physique: Math.min(100, stats.physique + (inheritance.bonus.physique || 0)),
-          finances: Math.min(100, stats.finances + (inheritance.bonus.finances || 0)),
-        }
-      : stats,
+    stats: startStats,
+    calling,
+    traits: [],
+    seed,
     difficulty: 1,
     flow: { value: 33, palier: 1, timeToAnswer: 0, burnoutRate: 0 },
     combo: 0,
@@ -316,9 +330,9 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     journal: [
       {
         age: 0,
-        text: `Élias est né à ${lifeContext.city}. Ses parents : ${parentNames.father} et ${parentNames.mother}. Profil: ${profileName}. Il deviendra ${lifeContext.profession}.${
+        text: `${generateOpeningVignette({ city: lifeContext.city, calling, name }, rng)} Ses parents, ${parentNames.father} et ${parentNames.mother}, l'accueillent ; il grandira vers ${lifeContext.profession}.${
           inheritance?.title
-            ? ` Héritage: "${inheritance.title.name}" (bonus actif).`
+            ? ` Héritage : « ${inheritance.title.name} » (bonus actif).`
             : ''
         }`,
         type: 'milestone',
@@ -337,12 +351,16 @@ export function createInitialState(inheritance?: Inheritance): GameState {
     completedArcs: [],
     encounteredArcIds: [],
     recentEventIds: [],
+    recentVerseIds: [],
     answeredArcEventIds: [],
+    flags: {},
     consecutiveFails: 0,
     reliefActive: false,
     spiritualSeason: 'Réveil' as SpiritualSeasonName,
     amiDecayStreak: 0,
     callFriendCount: 0,
+    friendIntroduced: false,
+    discoveryMode: false,
     metrics: {
       ageAtDeath: 0,
       totalEvents: 0,
@@ -391,9 +409,9 @@ export function getCascadeEventsForAge(
 /* ─── BURNOUT ─── */
 
 export function calculateBurnoutRate(palier: FlowPalier): number {
-  if (palier === 3) return 3; // -3 physique par tour
-  if (palier === 2) return 1; // -1 physique par tour
-  return 0;
+  if (palier === 3) return CONFIG.burnout.palier3;
+  if (palier === 2) return CONFIG.burnout.palier2;
+  return CONFIG.burnout.palier1;
 }
 
 /* ─── GAME OVER ─── */
@@ -437,7 +455,7 @@ export function applyCrisisGrace(
       corrected[key as StatName] = 3;
       newCrises--;
       const label = STAT_LABELS[key] ?? key;
-      crisisMessage = `[CRISE] La jauge de ${label} a touché zéro. Une grâce divine a relevé Élias (${newCrises} grâce${newCrises !== 1 ? 's' : ''} restante${newCrises !== 1 ? 's' : ''}).`;
+      crisisMessage = `[CRISE] La jauge de ${label} a touché zéro. Une grâce divine a relevé ${state.playerName} (${newCrises} grâce${newCrises !== 1 ? 's' : ''} restante${newCrises !== 1 ? 's' : ''}).`;
     }
   }
 
@@ -457,20 +475,25 @@ export function applyNarrativeVariant(
 
   for (const variant of event.narrativeVariants) {
     const c = variant.condition;
+    let match = false;
     if (c.type === 'birth_profile') {
-      if (state.profileName === c.profileName) {
-        return { ...event, title: variant.title, description: variant.description };
-      }
+      match = state.profileName === c.profileName;
     } else if (c.type === 'stat_check' && c.stat && c.operator && c.value !== undefined) {
       const statValue = state.stats[c.stat];
-      const match =
+      match =
         (c.operator === 'gt' && statValue > c.value) ||
         (c.operator === 'lt' && statValue < c.value) ||
         (c.operator === 'gte' && statValue >= c.value) ||
         (c.operator === 'lte' && statValue <= c.value);
-      if (match) {
-        return { ...event, title: variant.title, description: variant.description };
-      }
+    } else if (c.type === 'season' && c.season) {
+      match = state.spiritualSeason === c.season;
+    } else if (c.type === 'has_trait' && c.traitId) {
+      match = (state.traits ?? []).some((t) => t.id === c.traitId);
+    } else if (c.type === 'calling' && c.callingId) {
+      match = state.calling?.id === c.callingId;
+    }
+    if (match) {
+      return { ...event, title: variant.title, description: variant.description };
     }
   }
   return event;
@@ -549,8 +572,55 @@ const SEASON_SEQUENCE: SpiritualSeasonName[] = [
   'Grâce',        // 90-99 — grâce ultime
 ];
 
+/** @deprecated Trajectoire figée — conservé pour compat. Voir computeSeasonTransition. */
 export function getSeasonForAge(age: number): SpiritualSeasonName {
   return SEASON_SEQUENCE[Math.min(Math.floor(age / 10), 9)];
+}
+
+/* ─── SAISONS ÉMERGENTES ─── */
+
+const SEASON_NAMES: SpiritualSeasonName[] = ['Réveil', 'Désert', 'Persécution', 'Abondance', 'Grâce'];
+
+/** Tendance douce de saison par stade de vie (remplace la table 100% figée). */
+function seasonBaseWeights(age: number): Record<SpiritualSeasonName, number> {
+  if (age <= 12) return { 'Réveil': 2.0, 'Grâce': 1.2, 'Désert': 0.8, 'Abondance': 0.7, 'Persécution': 0.6 };
+  if (age <= 25) return { 'Désert': 1.6, 'Réveil': 1.4, 'Persécution': 1.1, 'Grâce': 1.0, 'Abondance': 0.8 };
+  if (age <= 45) return { 'Persécution': 1.5, 'Abondance': 1.2, 'Désert': 1.2, 'Réveil': 1.0, 'Grâce': 0.9 };
+  if (age <= 65) return { 'Abondance': 1.5, 'Grâce': 1.3, 'Désert': 1.1, 'Persécution': 1.0, 'Réveil': 0.9 };
+  return { 'Grâce': 1.8, 'Désert': 1.2, 'Abondance': 1.1, 'Réveil': 1.0, 'Persécution': 0.8 };
+}
+
+/**
+ * Détermine la prochaine saison spirituelle de façon ÉMERGENTE :
+ * tendance d'âge × état intérieur d'Élias × biais d'Appel × anti-répétition,
+ * tiré via un PRNG seedé (reproductible). Chaque run vit une trajectoire différente.
+ */
+export function computeSeasonTransition(
+  state: GameState,
+  newAge: number,
+  rng: Rng,
+): SpiritualSeasonName {
+  const w = seasonBaseWeights(newAge);
+  const { foi, paix, finances } = state.stats;
+
+  // L'état intérieur appelle certaines saisons.
+  if (foi < 40) w['Désert'] *= 1.6;
+  if (paix < 40) { w['Persécution'] *= 1.5; w['Désert'] *= 1.3; }
+  if (finances > 70) w['Abondance'] *= 1.6;
+  if (finances < 35) w['Abondance'] *= 0.5;
+  if (foi > 70 && paix > 60) { w['Grâce'] *= 1.6; w['Réveil'] *= 1.3; }
+  if ((state.consecutiveFails ?? 0) >= 2) w['Persécution'] *= 1.4;
+  if (state.reliefActive) w['Grâce'] *= 1.8; // après la traversée dure, la grâce vient
+
+  // Biais d'Appel / Destinée.
+  const cb = state.calling?.seasonBias;
+  if (cb) for (const s of SEASON_NAMES) if (cb[s] !== undefined) w[s] *= cb[s]!;
+
+  // Anti-répétition — éviter de revivre 2× d'affilée la même saison (sauf forte attraction).
+  const current = state.spiritualSeason;
+  if (current) w[current] *= 0.45;
+
+  return rngWeightedPick(rng, SEASON_NAMES, SEASON_NAMES.map((s) => w[s]));
 }
 
 function getSeasonMultipliers(season: SpiritualSeasonName): Partial<Record<AfflictionCategory, number>> {
@@ -584,6 +654,9 @@ function computeEventWeight(
   }
 
   weight *= (seasonMult[event.category] ?? 1.0);
+  // Biais d'Appel (destinée) + traits gagnés — façonnent le contenu propre à la run.
+  weight *= (state.calling?.categoryBias?.[event.category] ?? 1.0);
+  weight *= getTraitCategoryBias(state.traits, event.category);
   return Math.max(0.1, weight);
 }
 
@@ -629,7 +702,7 @@ function filterEventsByStats(
  * Filtre les événements selon leurs prérequis (système d'arbre de déblocage).
  * Un event avec des prerequisites[] caché tant que toutes les conditions ne sont pas remplies.
  */
-function filterEventsByPrerequisites(
+export function filterEventsByPrerequisites(
   events: AfflictionEvent[],
   state: GameState
 ): AfflictionEvent[] {
@@ -638,8 +711,8 @@ function filterEventsByPrerequisites(
   // Versets débloqués dans le codex
   const unlockedVerses = new Set(
     Object.entries(state.codex)
-      .filter(([_, e]) => e.unlocked)
-      .map(([id, _]) => id)
+      .filter(([, e]) => e.unlocked)
+      .map(([id]) => id)
   );
   // Arcs complétés
   const completedArcIds = new Set(state.completedArcs.map(a => a.arcId));
@@ -664,10 +737,35 @@ function filterEventsByPrerequisites(
           return unlockedVerses.has(req.verseId);
         case 'arc_completed':
           return completedArcIds.has(req.arcId);
+        case 'flag':
+          // Branchement narratif (B) : le flag de conséquence doit valoir la valeur attendue.
+          return (state.flags?.[req.flagId] ?? false) === (req.value ?? true);
         default:
           return true;
       }
     });
+  });
+}
+
+/**
+ * Prédicat de déverrouillage d'une étape d'arc (Ajustement A — branchement B).
+ * Pur : ne dépend que de l'état. Une étape N>1 est ouverte si l'arc est en cours ET qu'UN
+ * event répondu de cet arc était à la séquence N-1 — robuste aux variantes hors-spine (même
+ * arcSequence, absentes de `eventIds`). Équivaut au déverrouillage par id positionnel pour les
+ * arcs linéaires (un event par séquence). Les events hors-arc retournent false ; l'exclusion des
+ * arcs déjà terminés reste à la charge de l'appelant.
+ */
+export function isArcStepUnlocked(state: GameState, e: AfflictionEvent): boolean {
+  if (!e.storyArcId || !e.arcSequence) return false;
+  // Séquence 1 : arc non encore commencé
+  if (e.arcSequence === 1) {
+    return !state.encounteredArcIds.includes(e.storyArcId);
+  }
+  // Séquence N > 1 : l'arc doit être en cours ET l'étape précédente avoir été répondue.
+  if (!state.encounteredArcIds.includes(e.storyArcId)) return false;
+  return (state.answeredArcEventIds ?? []).some((id) => {
+    const ev = getEventById(id);
+    return ev?.storyArcId === e.storyArcId && ev?.arcSequence === e.arcSequence! - 1;
   });
 }
 
@@ -717,16 +815,8 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
     if (!e.storyArcId || !e.arcSequence) return false;
     // Ignorer les événements des arcs déjà terminés
     if (completedArcEventIds.includes(e.id)) return false;
-    // Séquence 1 : arc non encore commencé
-    if (e.arcSequence === 1) {
-      return !state.encounteredArcIds.includes(e.storyArcId);
-    }
-    // Séquence N > 1 : l'arc doit être en cours ET l'event précédent doit avoir été répondu
-    if (!state.encounteredArcIds.includes(e.storyArcId)) return false;
-    const arc = getArcById(e.storyArcId);
-    if (!arc) return false;
-    const prevEventId = arc.eventIds[e.arcSequence - 2];
-    return (state.answeredArcEventIds ?? []).includes(prevEventId);
+    // Déverrouillage séquentiel robuste aux variantes de branche (Ajustement A — voir helper).
+    return isArcStepUnlocked(state, e);
   });
 
   // SRS: priorité aux versets avec erreurs
@@ -736,7 +826,7 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   );
 
   // Choix du pool: arcs non finis > SRS > tout
-  let pool = remainingArcEvents.length > 0
+  const pool = remainingArcEvents.length > 0
     ? remainingArcEvents
     : srsEvents.length > 0
     ? srsEvents
@@ -745,12 +835,27 @@ export function generateEvent(state: GameState): AfflictionEvent | null {
   // Sélection aléatoire — exclure les 5 événements récents si le pool le permet
   const deduped = pool.filter((e) => !state.recentEventIds.includes(e.id));
   const finalPool = deduped.length > 0 ? deduped : pool;
+
+  // Garde-fou verset — éviter le même verset correct que les 20 dernières questions
+  const verseDeduped = finalPool.filter((e) => !state.recentVerseIds?.includes(e.correctVerseId));
+  const poolFinal = verseDeduped.length > 0 ? verseDeduped : finalPool;
   // Sélection pondérée (Système 1) — poids basés sur les stats + saison spirituelle
   const seasonMult = getSeasonMultipliers(state.spiritualSeason ?? 'Réveil');
-  const weights = finalPool.map((e) => computeEventWeight(e, state, seasonMult));
-  const event = weightedPick(finalPool, weights);
-  const allDecoys = assignDecoys();
-  const fullEvent = allDecoys.find((e) => e.id === event.id) || event;
+  const weights = poolFinal.map((e) => computeEventWeight(e, state, seasonMult));
+  const event = weightedPick(poolFinal, weights);
+
+  // Dilemmes moraux (T-29) : pas de leurres de verset — résolution par acte, pas par verset.
+  const isMoral = Array.isArray(event.moralChoices) && event.moralChoices.length > 0;
+  const fullEvent = isMoral
+    ? event
+    : (() => {
+        // Leurres frais — exclure les versets récents pour éviter les répétitions de faux choix
+        const freshDecoys = pickDecoys(event.correctVerseId, event.category, 3, state.recentVerseIds ?? []);
+        return {
+          ...event,
+          decoyVerseIds: freshDecoys.length >= 3 ? freshDecoys : event.decoyVerseIds,
+        };
+      })();
 
   // Appliquer la variante d'âge, puis la variante narrative
   const ageResolved = resolveEventForAge(fullEvent, state.age);
@@ -779,6 +884,71 @@ function applyLifeContextToEvent(event: AfflictionEvent, state: GameState): Affl
   };
 }
 
+/* ─── MODE DÉCOUVERTE ─── */
+
+/**
+ * Logique pure du mode découverte (T-17).
+ * Révèle le verset et l'enregistre dans le codex, mais N'APPLIQUE AUCUN delta de stat.
+ * Retourne le nouvel état et un marqueur `correct = true` (pour afficher le bon verset).
+ */
+export function applyDiscoveryChoice(
+  state: GameState,
+  chosenVerseId: string,
+): {
+  correct: boolean;
+  correctVerse: { reference: string; text: string };
+  newState: GameState;
+} {
+  const event = state.currentEvent;
+  if (!event) throw new Error('Aucun événement actif en mode découverte');
+
+  const verse = getVerseById(event.correctVerseId)!;
+  const correct = chosenVerseId === event.correctVerseId;
+  const newState = { ...state };
+  const newCodex = { ...state.codex };
+
+  // Marquer le verset comme vu (apprentissage) — toujours le bon verset, quelle que soit la réponse.
+  newCodex[verse.id] = {
+    ...(newCodex[verse.id] || { verseId: verse.id, unlocked: false, timesUsed: 0, errorCount: 0 }),
+    unlocked: true,
+    unlockedAtAge: newCodex[verse.id]?.unlockedAtAge ?? state.age,
+    timesUsed: (newCodex[verse.id]?.timesUsed ?? 0) + 1,
+  };
+
+  newState.codex = newCodex;
+  newState.lastEventResult = 'success'; // affiche le verset dans l'UI résultat
+
+  // Journal : entrée distinctive sans conséquence de stats
+  const choiceLabel = correct
+    ? `Bonne réponse : ${verse.reference}`
+    : `Réponse incorrecte — le verset était ${verse.reference}`;
+
+  newState.journal = [
+    ...state.journal,
+    {
+      age: state.age,
+      text: `[DÉCOUVERTE] Mode entraînement — sans conséquence. ${choiceLabel}: "${verse.text}"`,
+      type: 'milestone' as const,
+      verseRef: verse.reference,
+    },
+  ];
+
+  // Fenêtre glissante : mise à jour pour éviter la répétition immédiate
+  const R = CONFIG.recentSlots;
+  newState.recentEventIds = [event.id, ...state.recentEventIds.slice(0, R - 1)];
+  const allVerseIds = [verse.id, ...event.decoyVerseIds];
+  newState.recentVerseIds = [
+    ...allVerseIds,
+    ...(state.recentVerseIds ?? []).slice(0, R - allVerseIds.length),
+  ];
+
+  return {
+    correct: true, // toujours afficher comme "succès" pour révéler le verset
+    correctVerse: { reference: verse.reference, text: verse.text },
+    newState,
+  };
+}
+
 /* ─── VALIDATION ─── */
 
 export function validateChoice(
@@ -790,6 +960,11 @@ export function validateChoice(
   correctVerse: { reference: string; text: string };
   newState: GameState;
 } {
+  // Mode découverte (T-17) : entraînement sans conséquence de stats.
+  if (state.discoveryMode) {
+    return applyDiscoveryChoice(state, chosenVerseId);
+  }
+
   const event = state.currentEvent;
   if (!event) throw new Error('Aucun événement actif');
 
@@ -799,9 +974,14 @@ export function validateChoice(
   const newStats = { ...state.stats };
   const newFlow = { ...state.flow };
   const newCodex = { ...state.codex };
+  // Signal pour le trait « L'Éprouvé » : victoire après ≥3 échecs consécutifs.
+  const brokeThenRose = correct && (state.consecutiveFails ?? 0) >= 3;
 
   if (correct) {
     // === SUCCÈS ===
+
+    // État du verset AVANT déblocage — pour célébrer son entrée au Grimoire (itér. 16).
+    const wasUnlocked = state.codex[verse.id]?.unlocked ?? false;
 
     // Correcteur de frustration (Système 2) — réinitialiser le compteur de fails
     newState.consecutiveFails = 0;
@@ -838,25 +1018,24 @@ export function validateChoice(
     newState.combo = state.combo + 1;
     newState.maxCombo = Math.max(newState.maxCombo, newState.combo);
 
-    // Bonus combo — paliers progressifs
-    if (newState.combo === 5) {
-      newStats.foi  = Math.min(MAX_STAT, newStats.foi + 3);
-      newStats.paix = Math.min(MAX_STAT, newStats.paix + 2);
-      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x5] Ferveur montante — Foi +3, Paix +2', type: 'milestone' as const }];
-    } else if (newState.combo === 10) {
-      newStats.foi      = Math.min(MAX_STAT, newStats.foi + 5);
-      newStats.paix     = Math.min(MAX_STAT, newStats.paix + 5);
-      newStats.physique = Math.min(MAX_STAT, newStats.physique + 3);
-      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x10] Le feu de Dieu — Foi +5, Paix +5, Corps +3', type: 'milestone' as const }];
-    } else if (newState.combo === 20) {
-      newStats.foi      = Math.min(MAX_STAT, newStats.foi + 8);
-      newStats.paix     = Math.min(MAX_STAT, newStats.paix + 8);
-      newStats.physique = Math.min(MAX_STAT, newStats.physique + 5);
-      newStats.finances = Math.min(MAX_STAT, newStats.finances + 5);
-      newState.journal = [...(newState.journal || state.journal), { age: state.age, text: '[COMBO x20] PRODIGE — toutes stats +bonus', type: 'milestone' as const }];
-    } else if (newState.combo > 0 && newState.combo % 5 === 0) {
-      // Paliers suivants (25, 30, ...) : +3 foi
-      newStats.foi = Math.min(MAX_STAT, newStats.foi + 3);
+    // Bonus combo — paliers progressifs (depuis balance.json)
+    const ct = CONFIG.combo.thresholds as Record<string, Record<string, number>>;
+    if (ct[String(newState.combo)]) {
+      const bonus = ct[String(newState.combo)];
+      for (const [stat, val] of Object.entries(bonus)) {
+        newStats[stat as StatName] = Math.min(MAX_STAT, newStats[stat as StatName] + val);
+      }
+      newState.journal = [...(newState.journal || state.journal), {
+        age: state.age,
+        text: `[COMBO x${newState.combo}] Bonus : ${Object.entries(bonus).map(([s, v]) => `${s} +${v}`).join(', ')}`,
+        type: 'milestone' as const,
+      }];
+    } else if (newState.combo > 0 && newState.combo % CONFIG.combo.repeatEvery === 0) {
+      // Paliers suivants : bonus répété
+      const rb = CONFIG.combo.repeatBonus as Record<string, number>;
+      for (const [stat, val] of Object.entries(rb)) {
+        newStats[stat as StatName] = Math.min(MAX_STAT, newStats[stat as StatName] + val);
+      }
     }
 
     // Codex: débloquer le verset
@@ -868,15 +1047,39 @@ export function validateChoice(
     };
 
     newState.lastEventResult = 'success';
+    // ...newState.journal (pas state.journal) — sinon l'entrée bonus [COMBO xN] posée juste
+    // au-dessus serait écrasée et le bonus, bien qu'appliqué aux stats, n'apparaîtrait jamais.
     newState.journal = [
-      ...state.journal,
+      ...newState.journal,
       {
         age: state.age,
-        text: `[VICTOIRE] ${event.title} surmonté par ${verse.reference} (COMBO:${newState.combo})`,
+        text: `[VICTOIRE] "${event.title}" surmonté par ${verse.reference}: "${verse.text}" (COMBO:${newState.combo})`,
         type: 'success',
         verseRef: verse.reference,
       },
     ];
+
+    // Récompense de collection (itér. 16) : un verset qui REJOINT le Grimoire (1ʳᵉ fois)
+    // est célébré, du tout premier au corpus complet — la promesse de l'onboarding rendue
+    // tangible. `...newState.journal` pour survivre (le bloc précédent rebâtit le journal).
+    if (!wasUnlocked) {
+      newState.journal = [
+        ...newState.journal,
+        {
+          age: state.age,
+          text: collectionRewardText(verse.reference, countUnlocked(newCodex), VERSE_DATABASE.length),
+          type: 'milestone' as const,
+        },
+      ];
+    }
+
+    // Flags de conséquence (B) : le succès pose les flags déclarés → branchement narratif.
+    if (event.setsFlagsOnSuccess?.length) {
+      newState.flags = {
+        ...(state.flags ?? {}),
+        ...Object.fromEntries(event.setsFlagsOnSuccess.map((f) => [f, true])),
+      };
+    }
 
     // Arc narratif: tracker complétion (la rencontre est tracée plus bas, hors du bloc correct)
     if (event.storyArcId && event.arcSequence) {
@@ -890,7 +1093,7 @@ export function validateChoice(
           ...newState.journal,
           {
             age: state.age,
-            text: `[ARC COMPLÉTÉ] ${arc.name} — "${arc.description}"`,
+            text: `[ARC_COMPLET] ${arc.name} — "${arc.description}"`,
             type: 'milestone',
           },
         ];
@@ -954,7 +1157,7 @@ export function validateChoice(
     ];
 
     // Cascade: programmer l'événement dérivé
-    let newQueued = [...state.queuedCascadeEvents];
+    const newQueued = [...state.queuedCascadeEvents];
     if (event.cascadeEventId) {
       const cascadeEvent = getEventById(event.cascadeEventId);
       if (cascadeEvent) {
@@ -985,6 +1188,14 @@ export function validateChoice(
         verseRef: verse.reference,
       },
     ];
+
+    // Flags de conséquence (B) : l'échec peut ouvrir une autre branche (jamais un « mauvais » flag punitif).
+    if (event.setsFlagsOnFail?.length) {
+      newState.flags = {
+        ...(state.flags ?? {}),
+        ...Object.fromEntries(event.setsFlagsOnFail.map((f) => [f, true])),
+      };
+    }
   }
 
   // Burnout rate update
@@ -1001,10 +1212,19 @@ export function validateChoice(
     }
   }
 
-  // Fenêtre glissante des événements récents — 20 slots pour mieux éviter les répétitions
+const R = CONFIG.recentSlots;
+
+  // Fenêtre glissante des événements récents
   newState.recentEventIds = [
     event.id,
-    ...state.recentEventIds.slice(0, 19),
+    ...state.recentEventIds.slice(0, R - 1),
+  ];
+
+  // Fenêtre glissante des versets récents (correct + leurres)
+  const allVerseIds = [verse.id, ...event.decoyVerseIds];
+  newState.recentVerseIds = [
+    ...allVerseIds,
+    ...(state.recentVerseIds ?? []).slice(0, R - allVerseIds.length),
   ];
 
   newState.stats = newStats;
@@ -1013,6 +1233,28 @@ export function validateChoice(
   newState.totalEvents = state.totalEvents + 1;
   const successes = newState.journal.filter((j) => j.type === 'success').length;
   newState.successRate = Math.round((successes / newState.totalEvents) * 100);
+
+  // Traits gagnés en cours de vie — évalués sur l'état mis à jour.
+  const awards = evaluateTraitAwards(newState, { brokeThenRose });
+  if (awards.length > 0) {
+    newState.traits = [
+      ...(state.traits ?? []),
+      ...awards.map((t) => ({ id: t.id, earnedAtAge: state.age })),
+    ];
+    const traitStats = { ...newState.stats };
+    for (const t of awards) {
+      if (t.gainBonus) {
+        for (const [s, v] of Object.entries(t.gainBonus)) {
+          traitStats[s as StatName] = Math.min(MAX_STAT, (traitStats[s as StatName] || 0) + (v ?? 0));
+        }
+      }
+      newState.journal = [
+        ...newState.journal,
+        { age: state.age, text: `[TRAIT] ${state.playerName} devient « ${t.name} » — ${t.description}`, type: 'milestone' as const },
+      ];
+    }
+    newState.stats = traitStats;
+  }
 
   return {
     correct,
@@ -1033,14 +1275,21 @@ const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Reco
   fast:        () => ({ statDelta: { foi: 5, physique: -2 },   label: 'Jeûne — Foi +5, Corps -2' }),
   serve:       (s) => ({ statDelta: { paix: 4, finances: 1 },  label: `Service à ${s.lifeContext.churchName} — Paix +4, Finances +1` }),
   call_friend: (s) => {
-    const count = (s as any).callFriendCount || 0;
+    const count = s.callFriendCount || 0;
     let extraPaix = 0;
     let extraAmi = 0;
     let note = '';
-    // Paliers de bonus passifs
-    if (count >= 20) { extraPaix = 3; extraAmi = 4; note = ' (Ami fidèle ×3 — 20e appel)'; }
-    else if (count >= 10) { extraPaix = 2; extraAmi = 3; note = ' (Ami proche ×2 — 10e appel)'; }
-    else if (count >= 5) { extraPaix = 1; extraAmi = 2; note = ' (Ami régulier ×1.5 — 5e appel)'; }
+    // Paliers de bonus passifs (depuis balance.json)
+    const paliers = CONFIG.ami.paliers as Record<string, { extraPaix: number; extraAmi: number }>;
+    const sortedKeys = Object.keys(paliers).map(Number).sort((a, b) => b - a);
+    for (const threshold of sortedKeys) {
+      if (count >= threshold) {
+        extraPaix = paliers[String(threshold)].extraPaix;
+        extraAmi = paliers[String(threshold)].extraAmi;
+        note = ` (Ami fidèle ×${threshold / 5} — ${threshold}e appel)`;
+        break;
+      }
+    }
     return {
       statDelta: { paix: 3 + extraPaix },
       label: `Appel à ${s.lifeContext.friendName} — Paix ${3 + extraPaix}${note}`,
@@ -1077,9 +1326,10 @@ export function applyPlayerAction(
   }
 
   for (const [stat, val] of Object.entries(statDelta)) {
-    newStats[stat as string] = Math.min(
+    const k = stat as keyof typeof newStats;
+    newStats[k] = Math.min(
       MAX_STAT,
-      Math.max(MIN_STAT, (newStats[stat as string] || 0) + Math.round((val ?? 0) * fidelityMultiplier))
+      Math.max(MIN_STAT, (newStats[k] || 0) + Math.round((val ?? 0) * fidelityMultiplier))
     );
   }
 
@@ -1121,9 +1371,20 @@ export function advanceAge(state: GameState): {
   newState.phase = 'idle';
   newState.currentEvent = null;
   newState.lastEventResult = null;
-  // Reset actions volontaires — 2 points avant 60 ans, 3 points senior
-  newState.actionPoints = newAge >= 60 ? 3 : 2;
+  // Reset actions volontaires — palier senior à 60 ans
+  newState.actionPoints = newAge >= CONFIG.actionPoints.seniorMinAge
+    ? CONFIG.actionPoints.seniorPoints
+    : CONFIG.actionPoints.standard;
   newState.actionsThisYear = [];
+
+  // Révélations de capacités (« l'univers s'étend ») — annonce des paliers franchis.
+  const reveals = revealsAtAge(newAge);
+  if (reveals.length > 0) {
+    newState.journal = [
+      ...newState.journal,
+      ...reveals.map((r) => ({ age: newAge, text: personalize(r.text, newState.playerName), type: 'milestone' as const })),
+    ];
+  }
 
   // Retirer les cascades déclenchées
   newState.queuedCascadeEvents = state.queuedCascadeEvents.filter(
@@ -1131,21 +1392,35 @@ export function advanceAge(state: GameState): {
   );
 
   // Dépenses financières par âge (Système d'argent)
-  if (newAge >= 18 && newAge <= 25) {
-    newStats.finances = Math.max(MIN_STAT, newStats.finances - 2);
-  } else if (newAge >= 26 && newAge <= 45) {
-    newStats.finances = Math.max(MIN_STAT, newStats.finances - 3);
-  } else if (newAge >= 46 && newAge <= 65) {
-    newStats.finances = Math.max(MIN_STAT, newStats.finances - 1);
+  const fc = CONFIG.aging.financeCost;
+  if (newAge >= fc.youngAdult.minAge && newAge <= fc.youngAdult.maxAge) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - fc.youngAdult.cost);
+  } else if (newAge >= fc.adult.minAge && newAge <= fc.adult.maxAge) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - fc.adult.cost);
+  } else if (newAge >= fc.midlife.minAge && newAge <= fc.midlife.maxAge) {
+    newStats.finances = Math.max(MIN_STAT, newStats.finances - fc.midlife.cost);
   }
 
   // Pénalité de vieillissement
-  if (newAge > 40) {
-    newStats.physique = Math.max(MIN_STAT, newStats.physique - 1);
+  if (newAge >= CONFIG.aging.physiqueDeclineStart) {
+    newStats.physique = Math.max(MIN_STAT, newStats.physique - CONFIG.aging.physiqueDeclineRate);
   }
-  if (newAge > 60) {
-    newStats.physique = Math.max(MIN_STAT, newStats.physique - 2);
-    newStats.paix     = Math.max(MIN_STAT, newStats.paix     - 1);
+  if (newAge >= CONFIG.aging.paixDeclineStart) {
+    newStats.physique = Math.max(MIN_STAT, newStats.physique - CONFIG.aging.physiqueDeclineRateOld);
+    newStats.paix     = Math.max(MIN_STAT, newStats.paix     - CONFIG.aging.paixDeclineRate);
+  }
+
+  // Introduction de l'ami d'enfance
+  if (!state.friendIntroduced && newAge >= CONFIG.ami.friendIntroAge) {
+    newState.friendIntroduced = true;
+    newState.journal = [
+      ...(newState.journal ?? state.journal),
+      {
+        age: newAge,
+        text: `[AMI] Tu as grandi avec ${state.lifeContext.friendName}. Une amitié sincère est née au fil des années.`,
+        type: 'milestone' as const,
+      },
+    ];
   }
 
   // Decay naturel — pression de fond (évite mid-game trop facile)
@@ -1158,15 +1433,16 @@ export function advanceAge(state: GameState): {
     newStats.paix = Math.max(1, newStats.paix - 1);
   }
 
-  // Decay de l'amitié (Système 4) — -3 par an sans contact, plancher à 10
+  // Decay de l'amitié (Système 4) — perte par an sans contact, plancher
+  const ami = CONFIG.ami;
   const usedCallFriend = state.actionsThisYear.includes('call_friend');
-  if (!usedCallFriend && newAge >= 8) {
-    newState.amiRelationship = Math.max(10, (state.amiRelationship ?? 50) - 3);
+  if (!usedCallFriend && newAge >= ami.decayStartAge) {
+    newState.amiRelationship = Math.max(ami.floor, (state.amiRelationship ?? 50) - ami.decayPerYear);
   }
-  // Streak de froideur — journal si 2 ans consécutifs sous 20
-  if (newState.amiRelationship < 20) {
+  // Streak de froideur — journal si N années consécutives sous le seuil
+  if (newState.amiRelationship < ami.streakThreshold) {
     newState.amiDecayStreak = (state.amiDecayStreak ?? 0) + 1;
-    if (newState.amiDecayStreak === 2) {
+    if (newState.amiDecayStreak >= ami.streakAlertAfter) {
       newState.journal = [
         ...newState.journal,
         {
@@ -1180,23 +1456,52 @@ export function advanceAge(state: GameState): {
     newState.amiDecayStreak = 0;
   }
 
-  // Transition de saison spirituelle (Système 3)
-  const newSeason = getSeasonForAge(newAge);
-  if (newSeason !== (state.spiritualSeason ?? 'Réveil')) {
-    newState.spiritualSeason = newSeason;
-    const s = SPIRITUAL_SEASONS[newSeason];
+  // Transition de saison ÉMERGENTE (Système 3) — re-roll aux paliers de décennie,
+  // piloté par l'état d'Élias + l'Appel + le seed de run (trajectoire unique par partie).
+  if (newAge >= 10 && newAge % 10 === 0) {
+    const seasonRng = mulberry32(((state.seed ?? 0) ^ Math.imul(newAge, 0x9e3779b1)) >>> 0);
+    const newSeason = computeSeasonTransition(
+      { ...newState, stats: newStats },
+      newAge,
+      seasonRng,
+    );
+    if (newSeason !== (state.spiritualSeason ?? 'Réveil')) {
+      newState.spiritualSeason = newSeason;
+      const s = SPIRITUAL_SEASONS[newSeason];
+      newState.journal = [
+        ...(newState.journal ?? state.journal),
+        {
+          age: newAge,
+          text: `[SAISON] ${s.label} — ${s.description}`,
+          type: 'milestone' as const,
+        },
+      ];
+    }
+  }
+
+  // Chapitres de vie (T-24) — carte d'intro de décennie (bornes 10, 20, …, 90 ans)
+  if (isDecadeStart(newAge)) {
+    const currentSeason = newState.spiritualSeason ?? state.spiritualSeason ?? 'Réveil';
+    const chapterIntro = getChapterIntro(newAge, currentSeason, state.calling?.id);
     newState.journal = [
       ...(newState.journal ?? state.journal),
-      {
-        age: newAge,
-        text: `[SAISON] ${s.label} — ${s.description}`,
-        type: 'milestone' as const,
-      },
+      chapterIntro,
     ];
   }
 
-  // Flow décroît naturellement si inactif
-  if (newState.flow.value > 0 && newState.phase !== 'event') {
+  // Cliffhanger de fin de décennie (âges 9, 19, 29, …, 89)
+  if (isDecadeEnd(newAge)) {
+    const cliffhanger = getDecadeCliffhanger(newAge, newState.playerName);
+    if (cliffhanger) {
+      newState.journal = [
+        ...(newState.journal ?? state.journal),
+        cliffhanger,
+      ];
+    }
+  }
+
+  // Flow décroît naturellement si inactif (phase = 'idle' à ce stade — cf. plus haut)
+  if (newState.flow.value > 0) {
     newState.flow = {
       ...newState.flow,
       value: Math.max(0, newState.flow.value - 2),
@@ -1213,14 +1518,15 @@ export function advanceAge(state: GameState): {
 
   // Journal milestones
   const ageEvents: string[] = [];
-  if (newAge === 0)  ageEvents.push('[NAISSANCE] Élias vient de naître.');
-  if (newAge === 15) ageEvents.push('[ADOLESCENCE] Élias entre dans l\'adolescence. Les premiers choix commencent.');
-  if (newAge === 25) ageEvents.push('[JEUNE ADULTE] Élias prend sa vie en main. Le combat intérieur s\'intensifie.');
-  if (newAge === 30) ageEvents.push('[MATURITÉ] 30 ans. La vie forge ce que la foi doit porter. Les fondations se testent.');
-  if (newAge === 40) ageEvents.push('[PIVOT] 40 ans. Le corps commence à parler. Ce qui était acquis doit être renouvelé.');
-  if (newAge === 50) ageEvents.push('[PROFONDEUR] 50 ans. Ce qui comptait avant compte moins. Ce qui était flou devient clair.');
-  if (newAge === 60) ageEvents.push('[SAGESSE] 60 ans. Élias marche vers la sagesse. Les dernières grandes batailles approchent.');
-  if (newAge === 80) ageEvents.push('[GLORIEUX] Les dernières forteresses tombent. Le Prodige achève sa course.');
+  const name = newState.playerName;
+  if (newAge === 0)  ageEvents.push(`[NAISSANCE] ${name} vient de naître.`);
+  if (newAge === 15) ageEvents.push(`[JALON] ${name} entre dans l'adolescence. Les premiers choix commencent.`);
+  if (newAge === 25) ageEvents.push(`[JALON] ${name} prend sa vie en main. Le combat intérieur s'intensifie.`);
+  if (newAge === 30) ageEvents.push('[JALON] 30 ans. La vie forge ce que la foi doit porter. Les fondations se testent.');
+  if (newAge === 40) ageEvents.push('[JALON] 40 ans. Le corps commence à parler. Ce qui était acquis doit être renouvelé.');
+  if (newAge === 50) ageEvents.push('[JALON] 50 ans. Ce qui comptait avant compte moins. Ce qui était flou devient clair.');
+  if (newAge === 60) ageEvents.push(`[JALON] 60 ans. ${name} marche vers la sagesse. Les dernières grandes batailles approchent.`);
+  if (newAge === 80) ageEvents.push('[JALON] Les dernières forteresses tombent. Le Prodige achève sa course.');
 
   if (ageEvents.length > 0) {
     newState.journal = [
@@ -1237,15 +1543,21 @@ export function advanceAge(state: GameState): {
   const hasCascade = newState.queuedCascadeEvents.some(
     (q) => q.triggerAge === newAge
   );
-  // Pas d'épreuves interactives avant 5 ans — le bébé/très jeune enfant ne choisit pas de versets
+  // Pas d'épreuves interactives avant l'âge configuré
   const shouldGenerate =
-    newAge >= 5 &&
-    (hasCascade || Math.random() < 0.55 || state.failedVerseIds.length > 0);
+    newAge >= CONFIG.firstEventAge &&
+    (hasCascade || Math.random() < CONFIG.eventChancePerYear || state.failedVerseIds.length > 0);
 
   let eventGenerated = false;
   if (shouldGenerate) {
     const event = generateEvent(newState);
     if (event) {
+      // Bulle de rappel causale (T-22) : si cet event est conditionné par un choix passé,
+      // injecter une entrée de journal AVANT l'épreuve pour rendre le lien visible.
+      const echoEntry = buildEchoLinkEntry(event, newState);
+      if (echoEntry) {
+        newState.journal = [...newState.journal, echoEntry];
+      }
       newState.currentEvent = event;
       newState.phase = 'event';
       eventGenerated = true;
@@ -1253,7 +1565,7 @@ export function advanceAge(state: GameState): {
   }
 
   // Micro-événements passifs (indépendants des épreuves)
-  if (Math.random() < 0.55) {
+  if (Math.random() < CONFIG.microEventChance) {
     const micro = getMicroEventForAge(newAge, state.parentNames, state.lifeContext);
     if (micro) {
       newState.journal = [

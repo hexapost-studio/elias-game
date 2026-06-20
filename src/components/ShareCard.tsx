@@ -1,6 +1,21 @@
 import type { FC } from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { XIcon } from './IconSystem';
+
+/** Copie un texte dans le presse-papier (avec repli `execCommand` pour les vieux UA). */
+async function copyToClipboard(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+}
 
 const BIBLE_QUOTES = [
   '"Car je connais les projets que j\'ai formés pour vous, dit l\'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l\'espérance." — Jérémie 29:11',
@@ -18,6 +33,8 @@ const BIBLE_QUOTES = [
 ];
 
 interface ShareCardProps {
+  playerName: string;
+  seed: number;
   age: number;
   successRate: number;
   maxCombo: number;
@@ -28,43 +45,42 @@ interface ShareCardProps {
 }
 
 export const ShareCard: FC<ShareCardProps> = ({
-  age, successRate, maxCombo, titleName, isVictory, completedArcsCount, onClose,
+  playerName, seed, age, successRate, maxCombo, titleName, isVictory, completedArcsCount, onClose,
 }) => {
   const [copied, setCopied] = useState(false);
-  const quoteRef = useRef(BIBLE_QUOTES[Math.floor(Math.random() * BIBLE_QUOTES.length)]);
+  // Pick aléatoire UNE fois via l'initialiseur paresseux de useState (autorisé à être
+  // impur, exécuté hors rendu) → plus de Math.random ni de lecture de ref au rendu.
+  const [quote] = useState(
+    () => BIBLE_QUOTES[Math.floor(Math.random() * BIBLE_QUOTES.length)],
+  );
 
   const parts = [
-    `✦ La vie d'Élias ✦`,
+    `✦ La vie de ${playerName} ✦`,
     `Âge : ${age} ans${isVictory ? ' · VICTOIRE' : ''}`,
   ];
   if (titleName) parts.push(`Titre : ${titleName}`);
   parts.push(`Réussite : ${successRate}% · Combo max : ×${maxCombo}`);
   if (completedArcsCount > 0) parts.push(`Arcs complétés : ${completedArcsCount}`);
-  parts.push('', `${quoteRef.current}`);
-  parts.push('', `Joue Élias ➜ https://la-vie-d-elias.jouons.cc`);
+  parts.push(`Graine : ${seed} (rejoue la même vie)`);
+  parts.push('', `${quote}`);
+  parts.push('', `Joue ${playerName} ➜ https://la-vie-d-elias.jouons.cc`);
   const shareText = parts.join('\n');
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(shareText);
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = shareText;
-      ta.style.cssText = 'position:fixed;opacity:0;';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-    }
+    await copyToClipboard(shareText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
   };
 
-  // Auto-copie au montage
+  // Auto-copie au montage. L'effet est auto-suffisant (ne dépend que de `shareText`,
+  // stable sur la vie de la carte) : plus de dépendance manquante `handleCopy`.
   useEffect(() => {
-    const timer = setTimeout(() => { handleCopy(); }, 300);
+    const timer = setTimeout(() => {
+      void copyToClipboard(shareText).then(() => setCopied(true));
+      setTimeout(() => setCopied(false), 2200);
+    }, 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [shareText]);
 
   const handleShare = async () => {
     if ('share' in navigator) {
@@ -73,7 +89,7 @@ export const ShareCard: FC<ShareCardProps> = ({
         return;
       } catch { /* cancelled */ }
     }
-    handleCopy();
+    void handleCopy();
   };
 
   return (

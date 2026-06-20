@@ -65,6 +65,7 @@ if (events.length > 0) {
 
   // Puis valider
   const ageRanges = { '0-15': 0, '16-25': 0, '26-60': 0, '61+': 0 };
+  let moralCount = 0;
   for (const e of events) {
     check(e.id && typeof e.id === 'string', `ID: ${e.id}`);
     // Skip duplicate check — déjà fait à la collecte
@@ -73,7 +74,19 @@ if (events.length > 0) {
     check(Array.isArray(e.ageRange) && e.ageRange.length === 2, `ageRange: ${e.id}`);
     check(e.ageRange[0] <= e.ageRange[1], `ageRange ordonné: ${e.id}`);
     check(CATEGORIES.includes(e.category), `Catégorie valide: ${e.id}`);
-    check(ids.has(e.correctVerseId), `Verset correct existe: ${e.id} → ${e.correctVerseId}`);
+
+    // Dilemmes moraux (T-29) : ont moralChoices[] au lieu de correctVerseId
+    const isMoral = Array.isArray(e.moralChoices) && e.moralChoices.length > 0;
+    if (isMoral) {
+      moralCount++;
+      for (const mc of e.moralChoices) {
+        check(mc.id && typeof mc.id === 'string', `MoralChoice.id présent: ${e.id}/${mc.id}`);
+        check(mc.label && mc.label.length > 0, `MoralChoice.label présent: ${e.id}/${mc.id}`);
+        check(Array.isArray(mc.flagsSet) && mc.flagsSet.length > 0, `MoralChoice.flagsSet non vide: ${e.id}/${mc.id}`);
+      }
+    } else {
+      check(ids.has(e.correctVerseId), `Verset correct existe: ${e.id} → ${e.correctVerseId}`);
+    }
 
     // Tranche d'âge
     const a = e.ageRange[0];
@@ -90,7 +103,7 @@ if (events.length > 0) {
   for (const [range, count] of Object.entries(ageRanges)) {
     check(count >= 3, `Tranche ${range} ≥ 3 events (${count})`);
   }
-  console.log(`  → ${events.length} événements valides`);
+  console.log(`  → ${events.length} événements valides (dont ${moralCount} dilemmes moraux)`);
 }
 console.log();
 

@@ -158,7 +158,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Seul face aux moqueries",
+        "description": "En plein désert intérieur, les rires de tes camarades résonnent plus fort. Tu t'isoles pour ne plus souffrir. Mais le silence aussi fait mal."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "La première ligne de front",
+        "description": "Le Combattant apprend tôt que la foi se paie comptant. Ces moqueries sont ta première bataille. Tiens-tu bon ou courbes-tu l'échine ?"
+      }
+    ]
   },
   {
     "id": "e-fond-001-c",
@@ -369,7 +387,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Les examens, au fond du puits",
+        "description": "La charge des études tombe en pleine saison sèche. Pas d'élan, pas d'encouragement — juste les révisions et la peur de ne pas être à la hauteur."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "L'étude comme vocation",
+        "description": "Tu ressens que l'école est un terrain de formation, pas seulement un tremplin. Mais l'angoisse des examens te rappelle que grandir coûte quelque chose."
+      }
+    ]
   },
   {
     "id": "e-choix-001-c",
@@ -455,7 +491,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "finances": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "L'argent facile en temps de prospérité",
+        "description": "En pleine saison favorable, cette promesse d'enrichissement rapide brille encore plus fort. Est-ce la bénédiction… ou le piège qui teste la fidélité ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le raccourci du bâtisseur",
+        "description": "Tu veux construire quelque chose de grand — et ce plan semble couper les années d'attente. Mais une fondation volée peut-elle tenir ?"
+      }
+    ]
   },
   {
     "id": "e-choix-003-c",
@@ -497,7 +551,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "L'appel qui bouleverse l'orientation",
+        "description": "En plein réveil spirituel, la question de l'orientation prend une autre dimension. Tes parents veulent médecine. Mais quelque chose en toi brûle d'une autre flamme."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Médecin ou messager ?",
+        "description": "Tes parents ont tracé une route. Toi, tu entends un autre appel. L'Évangéliste naît dans ce genre de choix cornélien — là où la logique humaine cède la place à la foi."
+      }
+    ]
   },
   {
     "id": "e-choix-005",
@@ -519,7 +591,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "La relation toxique en temps d'épreuve",
+        "description": "En saison d'épreuve, cette dépendance affective ressemble à un refuge. Mais ce qui protège maintenant peut enchaîner pour longtemps."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "La brebis blessée",
+        "description": "Le Berger sait reconnaître une relation malsaine — mais pas toujours quand c'est lui-même qui s'y trouve. Parfois, c'est toi la brebis qui a besoin de secours."
+      }
+    ]
   },
   {
     "id": "e-choix-005-c",
@@ -567,7 +657,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "Le feu du réveil face aux moqueries",
+        "description": "Un réveil traverse ta ville, et quelque chose s'embrase en toi. Mais les regards de tes amis te refroidissent. Assumeras-tu ce feu au grand jour ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "La soif cachée de l'intercesseur",
+        "description": "Tu pries en secret depuis des années. Ce réveil spirituel t'appelle à sortir de l'ombre. Mais le coût de la visibilité te fait hésiter."
+      }
+    ]
   },
   {
     "id": "e-prod-001",
@@ -589,7 +697,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Le licenciement, en plein désert",
+        "description": "L'entreprise licencie alors que tout semblait déjà sec. Pas de filet, pas de réponse du ciel — juste les factures et le silence. Tiendras-tu sans rien voir ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "L'œuvre s'effondre",
+        "description": "Le projet que tu bâtissais s'écroule du jour au lendemain. Toi qui construis, te voilà les mains vides. La peur du lendemain te paralyse."
+      }
+    ]
   },
   {
     "id": "e-prod-001-c",
@@ -632,7 +758,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "La porte dérobée de la réussite",
+        "description": "Tout te sourit, et c'est justement là qu'une porte s'entrouvre. Un(e) collègue s'intéresse de près. Personne ne le saurait. L'abondance teste le cœur autant que le manque."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "La brèche du berger",
+        "description": "Toi qui veilles sur les autres, voilà que ta propre maison vacille. Un(e) collègue s'approche au mauvais moment. Qui garde le gardien ?"
+      }
+    ]
   },
   {
     "id": "e-prod-002-c",
@@ -675,7 +819,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "L'injustice en saison d'épreuve",
+        "description": "En pleine saison d'épreuve publique, la promotion accordée à un autre te brûle doublement. Comment garder le cœur pur quand le système semble se liguer contre toi ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le chantier ignoré",
+        "description": "Tu bâtissais — et c'est un autre qui récolte. Le Bâtisseur sait que la construction prend du temps. Mais quand le fruit est volé, l'amertume menace les fondations."
+      }
+    ]
   },
   {
     "id": "e-prod-003-c",
@@ -718,7 +880,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "Cloué au lit, toi qui portais les autres",
+        "description": "Le diagnostic tombe. Toi qui intercédais pour tous, te voilà à ton tour sur le lit. Les nuits sont longues. Sauras-tu recevoir ce que tu donnais ?"
+      },
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "La maladie sous la grâce",
+        "description": "Le diagnostic tombe en pleine saison de repos. Le corps faiblit, mais une paix étrange t'enveloppe. Le découragement guette pourtant aux heures sombres."
+      }
+    ]
   },
   {
     "id": "e-prod-004-c",
@@ -761,7 +941,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Le feu qui vacille",
+        "description": "Toi qui annonçais avec flamme, tu te surprends à réciter sans brûler. Le service continue, mécanique. Comment rallumer ce qui faisait ta force ?"
+      },
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Servir à sec",
+        "description": "Tu sers, tu travailles, tu gères tout — et le puits semble vide. Ta foi était vive ; maintenant chaque geste coûte. Le désert t'apprend autre chose."
+      }
+    ]
   },
   {
     "id": "e-prod-005-c",
@@ -804,7 +1002,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Les chaînes de famille, en plein désert",
+        "description": "Les mêmes schémas réapparaissent — divorce, pauvreté, silence — et tu es en pleine saison aride. Pas de force supplémentaire pour résister à l'héritage. Ou bien si ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "Briser la malédiction de lignée",
+        "description": "Le Combattant est souvent celui qui brise la première generation. Les schémas s'accumulent depuis longtemps — mais quelqu'un doit être le premier à dire non."
+      }
+    ]
   },
   {
     "id": "e-prod-006-c",
@@ -846,7 +1062,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "L'élève qu'on appelle à conduire",
+        "description": "Toi qui aimais apprendre dans l'ombre, on te pousse devant. Un ministère, une responsabilité. La peur de n'être pas prêt te serre la gorge."
+      },
+      {
+        "condition": {
+          "type": "has_trait",
+          "traitId": "incassable"
+        },
+        "title": "Appelé, et cette fois sans trembler",
+        "description": "On te propose un poste à responsabilité. Tu as déjà touché le fond et tu t'es relevé : la peur frappe encore, mais elle ne commande plus. Diras-tu oui ?"
+      }
+    ]
   },
   {
     "id": "e-prod-008",
@@ -868,7 +1102,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "finances": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "La paresse au cœur du festin",
+        "description": "La saison d'abondance a anesthésié le moteur. Tout va bien — alors pourquoi se battre ? Mais les plus jeunes avancent et le confort devient un tombeau."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le bâtisseur au repos",
+        "description": "Toi qui étais en chantier permanent, tu t'es arrêté. La paresse s'est glissée derrière la fatigue légitime. Qui garde le feu quand les mains se posent ?"
+      }
+    ]
   },
   {
     "id": "e-prod-008-c",
@@ -1247,13 +1499,34 @@
     "cascadeEventId": "arc-louise-2-c",
     "storyArcId": "arc-louise",
     "arcSequence": 2,
+    "setsFlagsOnSuccess": [
+      "louise_pardonnee"
+    ],
     "minStat": {
       "paix": 20
     },
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Les retrouvailles sous la grâce",
+        "description": "Louise est en face de toi, les yeux brillants. La saison de grâce adoucit le poids de 15 ans de silence. La réconciliation est possible — si tu ouvres la main."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger et la blessée",
+        "description": "Louise a souffert. Toi aussi. Le Berger reconnaît en elle une âme qui cherche à rentrer au bercail. L'atmosphère est lourde, mais tu sais que la grâce peut tout transformer."
+      }
+    ]
   },
   {
     "id": "arc-louise-2-c",
@@ -1295,6 +1568,13 @@
     "thematicFlavor": "La paix retrouvée",
     "storyArcId": "arc-louise",
     "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "flag",
+        "flagId": "louise_pardonnee",
+        "value": true
+      }
+    ],
     "minStat": {
       "paix": 25
     },
@@ -1313,6 +1593,62 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
+    }
+  },
+  {
+    "id": "arc-louise-3-hard",
+    "title": "Le chemin plus long",
+    "description": "La rencontre n'a pas effacé la blessure d'un coup. Le silence est retombé, plus lourd. Mais tu refuses de laisser l'amertume reprendre racine en toi. Tu choisis, jour après jour, de bénir Louise dans la prière, même de loin. La guérison sera plus lente — la grâce, elle, ne t'a pas quitté.",
+    "ageRange": [
+      32,
+      47
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "thematicFlavor": "Persévérer dans la grâce",
+    "storyArcId": "arc-louise",
+    "arcSequence": 3,
+    "prerequisites": [
+      {
+        "kind": "flag",
+        "flagId": "louise_pardonnee",
+        "value": false
+      }
+    ],
+    "decoyVerseIds": [],
+    "statImpactOnSuccess": {
+      "paix": 2
+    }
+  },
+  {
+    "id": "arc-louise-4",
+    "title": "Des années plus tard",
+    "description": "Le temps a passé. Que la route ait été courte ou longue, le Seigneur a achevé son œuvre : la blessure s'est refermée, et là où il y avait une racine d'amertume pousse maintenant une amitié rendue. Tu racontes parfois cette histoire à ceux qui désespèrent de pardonner — comme un témoignage vivant de sa fidélité.",
+    "ageRange": [
+      33,
+      55
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-010",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "thematicFlavor": "Restauration et témoignage",
+    "storyArcId": "arc-louise",
+    "arcSequence": 4,
+    "decoyVerseIds": [],
+    "statImpactOnSuccess": {
+      "foi": 2,
+      "paix": 2
     }
   },
   {
@@ -1398,7 +1734,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "Transmettre ce qu'on a reçu",
+        "description": "Mathias attend avec son carnet. Toi, tu te souviens du temps où tu étais à sa place. Le Disciple sait que la vraie transmission commence par la vulnérabilité."
+      },
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "Enseigner en saison de fruit",
+        "description": "Mathias est assis en face de toi, prêt à apprendre. La saison d'abondance est propice à la transmission. Ce que tu as semé commence à porter des fruits inattendus."
+      }
+    ]
   },
   {
     "id": "arc-mathias-2-c",
@@ -1452,7 +1806,25 @@
     ],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Le disciple douteux, dans ton propre désert",
+        "description": "Mathias remet tout en question — et toi, en pleine saison de désert, tu n'as pas les réponses faciles. Peut-être que la bonne réponse est justement : moi non plus."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger face au doute de son disciple",
+        "description": "Mathias traverse une crise de foi. \"Si Dieu est bon, pourquoi ?\" Le Berger ne fuit pas les questions difficiles — il reste présent quand tout vacille."
+      }
+    ]
   },
   {
     "id": "arc-mathias-3-c",
@@ -1817,7 +2189,25 @@
     ],
     "statImpactOnSuccess": {
       "foi": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "Démissionner sous les épreuves",
+        "description": "Tu démissionnes en pleine saison d'épreuve — ce que tes collègues lisent comme une fuite est en réalité une obéissance. Le combat spirituel a ce visage paradoxal."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "La retraite du combattant",
+        "description": "Démissionner n'est pas fuir — c'est choisir son prochain terrain de combat. Mais le Combattant ressent chaque abandon comme une défaite potentielle. L'obéissance coûte ici."
+      }
+    ]
   },
   {
     "id": "arc-tentation-5",
@@ -1869,7 +2259,25 @@
     "decoyVerseIds": [],
     "statImpactOnSuccess": {
       "paix": 1
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Le diagnostic en plein désert",
+        "description": "Le médecin parle, et ses mots tombent dans le silence du désert intérieur. Pas d'euphorie spirituelle pour amortir le choc — juste la réalité brute et la foi nue."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "L'intercesseur qui reçoit le diagnostic",
+        "description": "Tu portais les maladies des autres devant Dieu — et maintenant c'est toi le malade. Le médecin repose son stylo. Ton Appel ne t'immunise pas contre la douleur."
+      }
+    ]
   },
   {
     "id": "arc-guerison-1-c",
@@ -2373,7 +2781,25 @@
       "foi": 5,
       "paix": 4
     },
-    "thematicFlavor": "Le découragement est le plus grand ennemi de la persévérance."
+    "thematicFlavor": "Le découragement est le plus grand ennemi de la persévérance.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Prier dans le vide, en plein désert",
+        "description": "Tu pries, tu jeûnes, tu crois — et le ciel semble muet. Le désert intérieur amplifie le silence de Dieu. La tentation de tout lâcher s'installe."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "intercesseur"
+        },
+        "title": "L'intercesseur épuisé",
+        "description": "Tu portes les prières de tous — mais les tiennes semblent tomber dans le vide. Celui qui plaide pour les autres peine à se porter lui-même devant l'Éternel."
+      }
+    ]
   },
   {
     "id": "e-decour-002",
@@ -2399,7 +2825,25 @@
     "minStat": {
       "foi": 30
     },
-    "thematicFlavor": "La flamme peut renaître — mais il faut oser souffler sur les braises."
+    "thematicFlavor": "La flamme peut renaître — mais il faut oser souffler sur les braises.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "La routine en saison sèche",
+        "description": "En saison de désert, la routine de foi prend une saveur amère. Les gestes sont là, les mots aussi — mais le cœur est absent. Comment revenir à la première flamme ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "L'évangéliste à cours de feu",
+        "description": "Toi qui embrasais les autres, te voilà à bout de souffle. L'enthousiasme d'annoncer s'est éteint dans les habitudes. Un messager sans flamme peut-il encore porter le feu ?"
+      }
+    ]
   },
   {
     "id": "e-lourd-001",
@@ -2471,7 +2915,30 @@
       "paix": 3,
       "physique": 5
     },
-    "thematicFlavor": "La maladie teste le corps mais peut fortifier l'âme."
+    "thematicFlavor": "La maladie teste le corps mais peut fortifier l'âme.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Malade, et le ciel se tait",
+        "description": "Une maladie te cloue au lit en pleine traversée aride. {mère} veille, {père} prie, mais le ciel paraît silencieux. Continueras-tu d'espérer la guérison ?"
+      }
+    ],
+    "byAge": {
+      "enfant": {
+        "description": "Tu es petit, et la fièvre ne tombe pas. {mère} pose une main fraîche sur ton front, {père} murmure une prière près de ton lit. Tu ne comprends pas tout, mais tu sens qu'on te porte.",
+        "thematicFlavor": "fièvre d'enfant"
+      },
+      "ado": {
+        "description": "Cloué au lit alors que tes amis vivent dehors, tu rumines. Pourquoi toi ? {mère} veille, {père} prie, mais tu voudrais surtout comprendre. La guérison viendra-t-elle ?"
+      },
+      "senior": {
+        "description": "Le corps, fidèle si longtemps, déclare forfait. Allongé, tu repasses ta vie. {mère} n'est plus là pour veiller, mais d'autres prient à ton chevet. Tu sais désormais Qui tient ton souffle.",
+        "thematicFlavor": "le corps qui lâche"
+      }
+    }
   },
   {
     "id": "e-gueris-002",
@@ -2590,7 +3057,25 @@
       "foi": 4,
       "paix": 5
     },
-    "thematicFlavor": "La joie de Dieu n'est pas l'absence de tristesse — elle est sa présence au milieu."
+    "thematicFlavor": "La joie de Dieu n'est pas l'absence de tristesse — elle est sa présence au milieu.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Le deuil sous la grâce",
+        "description": "La perte est réelle et douloureuse — mais la saison de grâce pose une douceur étrange par-dessus la tristesse. Le cantique monte malgré les larmes."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger qui perd une brebis",
+        "description": "Toi qui accompagnes les autres dans l'épreuve, voilà que c'est toi qui es frappé. La douleur est vraie. Et pourtant, la même foi que tu prêchais t'attend au tournant."
+      }
+    ]
   },
   {
     "id": "e-joie-002",
@@ -2613,7 +3098,25 @@
       "foi": 4,
       "paix": 5
     },
-    "thematicFlavor": "La joie du retour dépasse l'amertume du passé."
+    "thematicFlavor": "La joie du retour dépasse l'amertume du passé.",
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Le prodigue revient en saison de grâce",
+        "description": "Un ami perdu refait surface — et la saison de grâce ouvre le cœur à recevoir ce retour sans conditions. La réconciliation se fait plus légère que prévu."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger et le prodigue",
+        "description": "Ton ami prodigue est de retour. Le Berger en toi le reconnaît avant même qu'il parle. Mais certains à l'église résistent. Comment porter à la fois la grâce et la vérité ?"
+      }
+    ]
   },
   {
     "id": "e-echec-001",
@@ -2777,7 +3280,25 @@
     "statImpactOnSuccess": {
       "foi": 3,
       "paix": 4
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "La dispute en saison d'épreuve",
+        "description": "Les tensions d'une saison difficile ont nourri cette explosion. Les mots lancés en période de stress font plus de dégâts. Réparer demande d'admettre que la pression a parlé."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger et l'ami blessé",
+        "description": "Toi qui réconcilies les autres, te voilà en conflit avec ton propre ami. La dispute est réelle. Le Berger doit apprendre à se faire berger à son tour."
+      }
+    ]
   },
   {
     "id": "e-ami-003",
@@ -2842,7 +3363,25 @@
     },
     "statImpactOnSuccess": {
       "finances": 15
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Abondance"
+        },
+        "title": "L'investissement en saison favorable",
+        "description": "L'occasion arrive en pleine saison d'abondance — tout semble aligné. Est-ce un signe ou simplement la tentation habillée en bénédiction ?"
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "L'investissement du bâtisseur",
+        "description": "Ce projet résonne avec ta vision de construire quelque chose de durable. Mais bâtir sur une fondation risquée peut tout faire s'effondrer. La prudence est aussi une forme de sagesse."
+      }
+    ]
   },
   {
     "id": "e-fin-002",
@@ -2865,7 +3404,25 @@
       "foi": 2,
       "paix": 2,
       "finances": 2
-    }
+    },
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "La crise professionnelle en plein désert",
+        "description": "Les mots « plan social » tombent en saison aride. Pas de réserve intérieure pour absorber le choc. Mais les déserts ont toujours précédé les promesses."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Le chantier menacé",
+        "description": "Tu avais construit quelque chose — et voilà qu'on te dit qu'il n'y a peut-être plus de place pour toi. Le Bâtisseur doit parfois reposer ses outils et faire confiance à l'Architecte."
+      }
+    ]
   },
   {
     "id": "e-fin-003",
@@ -2893,7 +3450,10 @@
     "id": "arc-ami-1",
     "title": "La rencontre de {ami}",
     "description": "Tu as 8 ans et un nouveau voisin vient d'emménager. {ami} est ton âge et semble aussi timide que toi. Un regard échangé par-dessus la clôture. La vie t'offre peut-être le début de la plus belle amitié de ton existence.",
-    "ageRange": [8, 12],
+    "ageRange": [
+      8,
+      12
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-004",
     "decoyVerseIds": [],
@@ -2917,7 +3477,10 @@
     "id": "arc-ami-1-c",
     "title": "L'occasion manquée",
     "description": "Tu es resté dans ton coin. Le nouveau voisin s'est fait d'autres amis. Pendant des années, tu te demanderas ce qui aurait pu être si tu avais osé ce premier sourire.",
-    "ageRange": [9, 13],
+    "ageRange": [
+      9,
+      13
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-005",
     "decoyVerseIds": [],
@@ -2937,7 +3500,10 @@
     "id": "arc-ami-2",
     "title": "Le secret confié",
     "description": "Les années ont passé, et {ami} est devenu ton meilleur ami. Un jour, il/elle te confie un secret lourd, quelque chose de jamais partagé. Ce qu'il/elle te dit pourrait tout changer ou tout briser. Comment porter ce poids ?",
-    "ageRange": [12, 18],
+    "ageRange": [
+      12,
+      18
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-001",
     "decoyVerseIds": [],
@@ -2967,7 +3533,10 @@
     "id": "arc-ami-2-c",
     "title": "Le secret révélé",
     "description": "Tu n'as pas su garder le secret. Il s'est répandu comme une traînée de poudre. {ami} ne te regarde plus avec les mêmes yeux. La confiance est brisée, peut-être pour toujours.",
-    "ageRange": [13, 19],
+    "ageRange": [
+      13,
+      19
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-001",
     "decoyVerseIds": [],
@@ -2987,7 +3556,10 @@
     "id": "arc-ami-3",
     "title": "La première trahison",
     "description": "{ami} a dit des choses dans ton dos. Les mots te reviennent, déformés mais blessants. La déception te serre la gorge. Tout ce que vous avez construit semble s'effondrer. Pardonner ou couper les ponts ?",
-    "ageRange": [16, 25],
+    "ageRange": [
+      16,
+      25
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-004",
     "decoyVerseIds": [],
@@ -3017,7 +3589,10 @@
     "id": "arc-ami-3-c",
     "title": "La rupture",
     "description": "Tu as laissé la blessure pourrir. Les mots ne sont jamais sortis. L'amitié s'est éteinte dans le silence, et chaque fois que tu croises {ami} dans la rue, ton cœur se serre.",
-    "ageRange": [17, 26],
+    "ageRange": [
+      17,
+      26
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-006",
     "decoyVerseIds": [],
@@ -3037,7 +3612,10 @@
     "id": "arc-ami-4",
     "title": "Le pardon risqué",
     "description": "Après la tempête, tu décides de tendre la main. Un message, un appel, une rencontre. Le pardon est un risque — {ami} pourrait te rejeter à nouveau. Mais quelque chose au fond de toi sait que l'amitié véritable mérite ce risque.",
-    "ageRange": [22, 35],
+    "ageRange": [
+      22,
+      35
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amer-009",
     "decoyVerseIds": [],
@@ -3067,7 +3645,10 @@
     "id": "arc-ami-4-c",
     "title": "L'orgueil qui sépare",
     "description": "Tu n'as pas fait le premier pas. L'orgueil a été plus fort. Les années passeront et le fossé se creusera. L'amitié devient un souvenir doux-amer.",
-    "ageRange": [23, 36],
+    "ageRange": [
+      23,
+      36
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-006",
     "decoyVerseIds": [],
@@ -3087,7 +3668,10 @@
     "id": "arc-ami-5",
     "title": "Les années de silence",
     "description": "La vie vous a éloignés. {ami} a pris un chemin différent, et vous ne vous parlez plus comme avant. Un appel manqué, un anniversaire oublié, et le silence s'est installé. Tu regardes un vieille photo et tu te demandes si l'amitié peut survivre à l'absence.",
-    "ageRange": [30, 50],
+    "ageRange": [
+      30,
+      50
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-005",
     "decoyVerseIds": [],
@@ -3117,7 +3701,10 @@
     "id": "arc-ami-5-c",
     "title": "L'oubli",
     "description": "Tu n'as pas relancé le contact. Les années ont passé et {ami} est devenu un étranger. Un jour tu apprendras son déménagement, et il sera trop tard.",
-    "ageRange": [31, 51],
+    "ageRange": [
+      31,
+      51
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-005",
     "decoyVerseIds": [],
@@ -3137,7 +3724,10 @@
     "id": "arc-ami-6",
     "title": "Le retour de l'ami",
     "description": "Après des années, {ami} réapparaît. Un message inattendu, un appel qui surprend. La vie a fait son œuvre sur vous deux. Les blessures sont cicatrisées, les regrets apaisés. Vous vous retrouvez comme si le temps n'avait pas passé. L'amitié reprend son souffle.",
-    "ageRange": [40, 60],
+    "ageRange": [
+      40,
+      60
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-003",
     "decoyVerseIds": [],
@@ -3167,7 +3757,10 @@
     "id": "arc-ami-6-c",
     "title": "Le rendez-vous manqué",
     "description": "Tu n'as pas répondu. La vie était trop occupée, les priorités ailleurs. {ami} n'a pas insisté. L'opportunité de renouer s'est envolée.",
-    "ageRange": [41, 61],
+    "ageRange": [
+      41,
+      61
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-002",
     "decoyVerseIds": [],
@@ -3187,7 +3780,10 @@
     "id": "arc-ami-7",
     "title": "L'épreuve de la maladie",
     "description": "{ami} tombe gravement malade. Les années de complicité, de rires et de larmes défilent devant tes yeux alors que tu t'assois à son chevet. La maladie est impitoyable, mais ta présence est ton dernier cadeau. Rester fort pour lui/elle ou t'effondrer avec lui/elle ?",
-    "ageRange": [55, 72],
+    "ageRange": [
+      55,
+      72
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-006",
     "decoyVerseIds": [],
@@ -3217,7 +3813,10 @@
     "id": "arc-ami-7-c",
     "title": "La fuite devant la souffrance",
     "description": "La maladie de {ami} te terrifie. Tu trouves des excuses pour ne pas y aller. Les jours passent, puis les semaines. Quand tu trouves enfin le courage, il/elle est déjà parti(e). Le regret t'accompagnera.",
-    "ageRange": [56, 73],
+    "ageRange": [
+      56,
+      73
+    ],
     "category": "peur_angoisse",
     "correctVerseId": "v-peur-007",
     "decoyVerseIds": [],
@@ -3237,7 +3836,10 @@
     "id": "arc-ami-8",
     "title": "L'héritage de l'amitié",
     "description": "{ami} n'est plus là. Mais en vidant sa chambre, tu trouves une lettre, écrite il y a longtemps : \\\"Merci d'avoir été mon ami. Sans toi, ma vie aurait été plus sombre.\\\" Les larmes coulent, mais ce sont des larmes de gratitude. Une amitié qui a traversé 60 ans ne meurt jamais vraiment — elle devient un héritage.",
-    "ageRange": [62, 78],
+    "ageRange": [
+      62,
+      78
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-002",
     "decoyVerseIds": [],
@@ -3266,7 +3868,10 @@
     "id": "arc-metier-1",
     "title": "La vocation naissante",
     "description": "Tu as 18 ans et tu dois choisir une voie. Tous tes amis semblent savoir ce qu'ils veulent faire, mais toi tu hésites. Une opportunité de {métier} se présente, modeste mais prometteuse. Est-ce un signe de Dieu ou une simple coïncidence ?",
-    "ageRange": [18, 25],
+    "ageRange": [
+      18,
+      25
+    ],
     "category": "direction_divine",
     "correctVerseId": "v-direct-001",
     "decoyVerseIds": [],
@@ -3291,7 +3896,10 @@
     "id": "arc-metier-1-c",
     "title": "L'occasion perdue",
     "description": "Tu as laissé passer l'opportunité, par peur ou par indécision. Le temps passe et d'autres prennent ta place. Tu restes à attendre un signe qui ne vient pas.",
-    "ageRange": [19, 26],
+    "ageRange": [
+      19,
+      26
+    ],
     "category": "echec_reussite",
     "correctVerseId": "v-echec-002",
     "decoyVerseIds": [],
@@ -3311,7 +3919,10 @@
     "id": "arc-metier-2",
     "title": "Le premier emploi",
     "description": "Ton premier vrai travail dans le {métier} commence. L'enthousiasme des débuts est vite confronté à la réalité : collègues difficiles, tâches ingrates, horaires épuisants. {ami} te conseille de tenir bon, que c'est un passage obligé. Mais est-ce vraiment la volonté de Dieu ?",
-    "ageRange": [20, 32],
+    "ageRange": [
+      20,
+      32
+    ],
     "category": "direction_divine",
     "correctVerseId": "v-direct-002",
     "decoyVerseIds": [],
@@ -3342,7 +3953,10 @@
     "id": "arc-metier-2-c",
     "title": "L'abandon prématuré",
     "description": "Tu as démissionné sans réfléchir, brûlé par l'orgueil ou le découragement. Les portes se ferment derrière toi, et tu regrettes de ne pas avoir persévéré.",
-    "ageRange": [21, 33],
+    "ageRange": [
+      21,
+      33
+    ],
     "category": "decouragement",
     "correctVerseId": "v-decour-001",
     "decoyVerseIds": [],
@@ -3362,7 +3976,10 @@
     "id": "arc-metier-3",
     "title": "Le dilemme éthique",
     "description": "Ton supérieur te demande de falsifier un rapport pour sauver un contrat important. La pression est énorme : ta carrière, ta famille, tout est en jeu. {ami} te dit de suivre ta conscience, mais {conjoint} s'inquiète pour vos finances. Que faire quand obéir à Dieu semble insensé aux yeux du monde ?",
-    "ageRange": [28, 45],
+    "ageRange": [
+      28,
+      45
+    ],
     "category": "echec_reussite",
     "correctVerseId": "v-echec-002",
     "decoyVerseIds": [],
@@ -3393,7 +4010,10 @@
     "id": "arc-metier-3-c",
     "title": "Le compromis fatal",
     "description": "Tu as cédé à la pression. Le rapport a été falsifié, le contrat signé. Mais ta conscience te ronge. Chaque nuit, tu te demandes qui tu es devenu.",
-    "ageRange": [29, 46],
+    "ageRange": [
+      29,
+      46
+    ],
     "category": "culpabilite",
     "correctVerseId": "v-culpa-001",
     "decoyVerseIds": [],
@@ -3413,7 +4033,10 @@
     "id": "arc-metier-4",
     "title": "La traversée du désert",
     "description": "Ton entreprise de {métier} traverse une crise. Les commandes s'effondrent, les dettes s'accumulent. Les nuits sont longues et la tentation de tout abandonner est forte. {église} prie pour toi, mais la situation ne change pas. Dieu est-il vraiment présent dans cette traversée ?",
-    "ageRange": [35, 55],
+    "ageRange": [
+      35,
+      55
+    ],
     "category": "echec_reussite",
     "correctVerseId": "v-echec-001",
     "decoyVerseIds": [],
@@ -3444,7 +4067,10 @@
     "id": "arc-metier-4-c",
     "title": "La faillite",
     "description": "Tu as tout perdu. L'entreprise a fermé, les créanciers réclament. Tu te sens humilié, vaincu. Le chemin du {métier} semble fini.",
-    "ageRange": [36, 56],
+    "ageRange": [
+      36,
+      56
+    ],
     "category": "decouragement",
     "correctVerseId": "v-decour-002",
     "decoyVerseIds": [],
@@ -3464,7 +4090,10 @@
     "id": "arc-metier-5",
     "title": "La transmission",
     "description": "Les années ont passé et tu es devenu un maître dans ton {métier}. Un jeune collègue te demande de le former, comme quelqu'un t'a formé autrefois. En regardant tout le chemin parcouru — les échecs, les prières non exaucées, les miracles silencieux — tu réalises que ta vraie réussite n'est pas ce que tu as bâti, mais ce que tu transmets. Le {métier} n'était que le véhicule de quelque chose de plus grand.",
-    "ageRange": [45, 65],
+    "ageRange": [
+      45,
+      65
+    ],
     "category": "direction_divine",
     "correctVerseId": "v-direct-005",
     "decoyVerseIds": [],
@@ -3494,7 +4123,10 @@
     "id": "arc-parents-1",
     "title": "L'ombre du père",
     "description": "Tu as 10 ans et tu commences à comprendre que ton père n'est pas le héros que tu imaginais. Ses absences, ses silences, ses colères. Ta mère essuie ses larmes en cachette. L'image que tu te faisais de l'autorité paternelle se fissure, et avec elle, peut-être, l'image de Dieu lui-même.",
-    "ageRange": [10, 16],
+    "ageRange": [
+      10,
+      16
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-005",
     "decoyVerseIds": [],
@@ -3512,13 +4144,34 @@
     "thematicFlavor": "Notre image de Dieu se forme souvent dans le regard de nos parents.",
     "cascadeEventId": "arc-parents-1-c",
     "storyArcId": "arc-parents",
-    "arcSequence": 1
+    "arcSequence": 1,
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "L'ombre du père, en saison sèche",
+        "description": "Tu grandis en comprenant que ton père n'est pas le héros que tu imaginais — et cette saison de désert intérieur amplifie la blessure. L'enfance abîmée laisse des traces profondes."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "combattant"
+        },
+        "title": "La blessure du fils du combattant",
+        "description": "Parfois, le plus grand combat est de pardonner à celui qui t'a blessé le premier. L'ombre de ton père pèse lourd sur l'identité qui se forme."
+      }
+    ]
   },
   {
     "id": "arc-parents-1-c",
     "title": "La blessure scellée",
     "description": "Tu t'es enfermé dans ta chambre et dans ton silence. La déception envers ton père s'est transformée en mur. Personne ne saura ce que tu ressens.",
-    "ageRange": [11, 17],
+    "ageRange": [
+      11,
+      17
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-006",
     "decoyVerseIds": [],
@@ -3538,7 +4191,10 @@
     "id": "arc-parents-2",
     "title": "La révolte adolescente",
     "description": "L'adolescence est un champ de bataille entre toi et tes parents. Chaque parole est une provocation, chaque règle une oppression. {père} crie, {mère} pleure, et toi tu claques les portes. Mais au fond, ce n'est pas contre eux que tu te bats — c'est contre toi-même.",
-    "ageRange": [14, 22],
+    "ageRange": [
+      14,
+      22
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-001",
     "decoyVerseIds": [],
@@ -3562,13 +4218,34 @@
         "kind": "event_completed",
         "eventId": "arc-parents-1"
       }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "La révolte adolescente en saison d'épreuve",
+        "description": "Chaque règle devient une provocation quand le monde extérieur te met déjà sous pression. La maison ressemble à un second front. La paix semble inaccessible."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "L'apprenti qui se rebelle",
+        "description": "Le Disciple apprend en questionnant — mais à l'adolescence, le questionnement peut virer à la rébellion. La tension avec tes parents cache une vraie question sur l'autorité et la foi."
+      }
     ]
   },
   {
     "id": "arc-parents-2-c",
     "title": "La rupture consommée",
     "description": "Les mots sont allés trop loin. Tu as quitté la maison en claquant la porte, jurant de ne jamais revenir. Le fossé entre toi et tes parents est devenu un abîme.",
-    "ageRange": [15, 23],
+    "ageRange": [
+      15,
+      23
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-003",
     "decoyVerseIds": [],
@@ -3588,7 +4265,10 @@
     "id": "arc-parents-3",
     "title": "Le pont fragile",
     "description": "Les années ont passé. Tu es devenu adulte et tu commences à comprendre que tes parents étaient juste des humains, avec leurs propres blessures. {mère} t'appelle pour ton anniversaire. Sa voix tremble un peu. Le silence entre vous est lourd de tout ce qui n'a pas été dit. C'est peut-être le moment de construire un pont.",
-    "ageRange": [22, 38],
+    "ageRange": [
+      22,
+      38
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-006",
     "decoyVerseIds": [],
@@ -3612,13 +4292,34 @@
         "kind": "event_completed",
         "eventId": "arc-parents-2"
       }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Grâce"
+        },
+        "title": "Le pardon en saison de grâce",
+        "description": "Les années ont passé. La saison de grâce ouvre un espace pour voir tes parents différemment — des humains avec leurs limites. Le pont se reconstruit dans la douceur."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "disciple"
+        },
+        "title": "Comprendre ses maîtres imparfaits",
+        "description": "Le Disciple apprend que ses premiers enseignants — ses parents — n'étaient pas parfaits. Cette réalisation est douloureuse mais libératrice. La transmission imparfaite reste une transmission."
+      }
     ]
   },
   {
     "id": "arc-parents-3-c",
     "title": "L'occasion gâchée",
     "description": "Tu n'as pas su trouver les mots. La conversation a tourné court. Le silence est retombé, peut-être pour des années encore.",
-    "ageRange": [23, 39],
+    "ageRange": [
+      23,
+      39
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-002",
     "decoyVerseIds": [],
@@ -3638,7 +4339,10 @@
     "id": "arc-parents-4",
     "title": "La maladie de {père}",
     "description": "L'appel que tu redoutais est arrivé. {père} est malade, gravement. Tu te rends à l'hôpital et tu vois cet homme autrefois si fort, diminué, vulnérable. Toutes les rancoeurs s'effacent devant la fragilité. Le temps presse. Que veux-tu lui dire avant qu'il ne soit trop tard ?",
-    "ageRange": [30, 52],
+    "ageRange": [
+      30,
+      52
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-009",
     "decoyVerseIds": [],
@@ -3668,7 +4372,10 @@
     "id": "arc-parents-4-c",
     "title": "Le silence du regret",
     "description": "Tu n'es pas allé à l'hôpital. Les vieilles blessures étaient trop fraîches. Le temps a passé et l'occasion de parler s'est envolée. Le poids du non-dit est devenu un fardeau permanent.",
-    "ageRange": [31, 53],
+    "ageRange": [
+      31,
+      53
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-006",
     "decoyVerseIds": [],
@@ -3688,7 +4395,10 @@
     "id": "arc-parents-5",
     "title": "Les adieux",
     "description": "Le jour est venu. {père} ou {mère} s'en va. Tu es là, main dans la main, à veiller les derniers instants. Les mots de la Bible que tu as lus enfant résonnent soudain avec une force nouvelle. Ce départ n'est pas une fin — c'est un passage. Mais le cœur saigne quand même.",
-    "ageRange": [35, 58],
+    "ageRange": [
+      35,
+      58
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-003",
     "decoyVerseIds": [],
@@ -3718,7 +4428,10 @@
     "id": "arc-parents-5-c",
     "title": "L'absence rongée de regrets",
     "description": "Tu n'étais pas là au moment du départ. Les circonstances, la distance, les excuses. Tu n'as pas pu lui dire au revoir. Ce vide te poursuivra longtemps.",
-    "ageRange": [36, 59],
+    "ageRange": [
+      36,
+      59
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-002",
     "decoyVerseIds": [],
@@ -3738,7 +4451,10 @@
     "id": "arc-parents-6",
     "title": "L'héritage reçu",
     "description": "En vidant la maison de tes parents, tu trouves des objets chargés de souvenirs. Une Bible usée, des lettres, une vieille photo de mariage. Et soudain, tu comprends : malgré leurs erreurs, ils t'ont transmis quelque chose de précieux. Leur foi, imparfaite mais réelle. Tu réalises que tu es le maillon d'une chaîne qui ne s'arrête pas à toi. L'héritage des parents n'est pas dans ce qu'ils ont laissé — mais dans ce qu'ils ont semé en toi.",
-    "ageRange": [40, 65],
+    "ageRange": [
+      40,
+      65
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-004",
     "decoyVerseIds": [],
@@ -3768,7 +4484,10 @@
     "id": "arc-eglise-1",
     "title": "Le premier service",
     "description": "Tu as 15 ans et tu entres pour la première fois dans le lieu de culte de {église}. L'atmosphère est différente du dehors. Les chants, les visages, la présence. Quelque chose remue dans ton coeur. Tu ne sais pas encore nommer ce que tu ressens, mais tu sais que ce lieu n'est pas comme les autres.",
-    "ageRange": [15, 22],
+    "ageRange": [
+      15,
+      22
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-004",
     "decoyVerseIds": [],
@@ -3786,13 +4505,34 @@
     "thematicFlavor": "L'Église commence là où deux ou trois sont rassemblés en Son nom.",
     "cascadeEventId": "arc-eglise-1-c",
     "storyArcId": "arc-eglise",
-    "arcSequence": 1
+    "arcSequence": 1,
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "Le premier service en saison de réveil",
+        "description": "Tu entres dans l'Église en plein réveil spirituel. L'atmosphère est électrique. Quelque chose se pose sur toi comme une main invisible — et tu n'es plus tout à fait le même."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Le premier service de l'évangéliste",
+        "description": "Tu as 15 ans, tu entres dans {église} — et tu sais déjà que ce lieu va te marquer. L'Évangéliste en formation reconnaît un terrain. La question est : oses-tu t'engager ?"
+      }
+    ]
   },
   {
     "id": "arc-eglise-1-c",
     "title": "L'indifférence",
     "description": "Rien ne s'est passé. Le service t'a laissé froid. Les chants sonnaient faux, les prières semblaient vides. Tu es sorti comme tu es entré, sans avoir rien ressenti.",
-    "ageRange": [16, 23],
+    "ageRange": [
+      16,
+      23
+    ],
     "category": "doute_incredulite",
     "correctVerseId": "v-doute-003",
     "decoyVerseIds": [],
@@ -3812,7 +4552,10 @@
     "id": "arc-eglise-2",
     "title": "Le leadership",
     "description": "Les anciens de {église} te proposent de prendre une responsabilité. Leur regard est confiant, mais toi tu te sens petit. Le poids de servir Dieu dans son église est immense. Entre la peur de mal faire et l'appel pressant de l'Esprit, tu dois choisir : rester dans l'ombre ou accepter d'être vu ?",
-    "ageRange": [25, 42],
+    "ageRange": [
+      25,
+      42
+    ],
     "category": "combat_spirituel",
     "correctVerseId": "v-combat-002",
     "decoyVerseIds": [],
@@ -3836,13 +4579,34 @@
         "kind": "event_completed",
         "eventId": "arc-eglise-1"
       }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Persécution"
+        },
+        "title": "Le leadership en saison d'épreuve",
+        "description": "Les anciens te proposent une responsabilité — en pleine saison d'épreuve. C'est le mauvais moment… ou exactement le bon. Le combat forge les leaders."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Le berger appelé à berger",
+        "description": "La responsabilité que {église} te propose résonne avec tout ce que tu es. Mais le Berger sait que mener coûte cher. Tu te sens petit — c'est peut-être la bonne posture."
+      }
     ]
   },
   {
     "id": "arc-eglise-2-c",
     "title": "Le refus",
     "description": "Tu as refusé la responsabilité, prétextant le manque de temps ou de compétence. Mais au fond, c'est la peur qui a parlé. L'occasion de servir est passée.",
-    "ageRange": [26, 43],
+    "ageRange": [
+      26,
+      43
+    ],
     "category": "peur_angoisse",
     "correctVerseId": "v-peur-001",
     "decoyVerseIds": [],
@@ -3862,7 +4626,10 @@
     "id": "arc-eglise-3",
     "title": "La crise interne",
     "description": "Une division secoue {église}. Des frères et soeurs que tu aimais se déchirent. Les paroles blessantes volent, les camps se forment. Chacun croit défendre la vérité. Toi, tu vois le corps de Christ se déchirer et tu saignes avec lui. Prendre parti ou chercher la paix ?",
-    "ageRange": [32, 52],
+    "ageRange": [
+      32,
+      52
+    ],
     "category": "combat_spirituel",
     "correctVerseId": "v-combat-003",
     "decoyVerseIds": [],
@@ -3892,7 +4659,10 @@
     "id": "arc-eglise-3-c",
     "title": "La division consommée",
     "description": "Tu as pris parti, et la blessure s'est aggravée. Des membres ont quitté l'église. Le coeur de Dieu est attristé, et le tien aussi.",
-    "ageRange": [33, 53],
+    "ageRange": [
+      33,
+      53
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-001",
     "decoyVerseIds": [],
@@ -3912,7 +4682,10 @@
     "id": "arc-eglise-4",
     "title": "Le renouveau",
     "description": "Après la tempête, le calme. {église} panse ses plaies mais ne meurt pas. Un vent de l'Esprit souffle à nouveau. Les cendres de la division deviennent un terreau fertile. De nouvelles familles arrivent, les jeunes se lèvent. Le phénix renaît de ses cendres. Et toi, tu es là, témoin de la fidélité de Dieu. Son Église n'est pas un bâtiment — c'est un peuple que rien ne peut détruire.",
-    "ageRange": [38, 60],
+    "ageRange": [
+      38,
+      60
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-001",
     "decoyVerseIds": [],
@@ -3941,7 +4714,10 @@
     "id": "arc-ville-1",
     "title": "Le départ",
     "description": "Tu quittes {ville}, le lieu qui t'a vu grandir. Tes valises sont bouclées, ta chambre est vide. {mère} pleure sur le pas de la porte, {père} te serre la main trop fort. En montant dans le train, tu regardes les toits de {ville} s'éloigner. Une partie de toi reste là, mais une autre s'envole vers l'inconnu.",
-    "ageRange": [20, 30],
+    "ageRange": [
+      20,
+      30
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-006",
     "decoyVerseIds": [],
@@ -3960,13 +4736,34 @@
     "thematicFlavor": "Quitter son lieu d'origine est un exil qui forge l'identité.",
     "cascadeEventId": "arc-ville-1-c",
     "storyArcId": "arc-ville",
-    "arcSequence": 1
+    "arcSequence": 1,
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Réveil"
+        },
+        "title": "Partir en saison de réveil",
+        "description": "Tu quittes {ville} alors que quelque chose s'éveille en toi. Valises bouclées, chambre vide — et un appel qui grandit à mesure que tu t'éloignes. Peut-être que l'envoi commence ainsi."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "evangeliste"
+        },
+        "title": "Le départ de l'évangéliste",
+        "description": "Tu quittes {ville} avec une mission dans le cœur. {mère} pleure sur le pas de la porte. L'Évangéliste sait que partir n'est pas abandonner — c'est obéir."
+      }
+    ]
   },
   {
     "id": "arc-ville-1-c",
     "title": "L'enracinement par peur",
     "description": "Tu n'es pas parti. La peur de l'inconnu a été plus forte que l'appel de l'aventure. Mais chaque fois que tu passes devant la gare, tu te demandes ce que ta vie aurait été ailleurs.",
-    "ageRange": [21, 31],
+    "ageRange": [
+      21,
+      31
+    ],
     "category": "decouragement",
     "correctVerseId": "v-decour-001",
     "decoyVerseIds": [],
@@ -3986,7 +4783,10 @@
     "id": "arc-ville-2",
     "title": "La vie en diaspora",
     "description": "Dans ta nouvelle ville, tu es un étranger. Les coutumes sont différentes, les gens parlent autrement. Tu cherches une {église} où te sentir chez toi. Certains soirs, la nostalgie de {ville} te serre le coeur. Mais Dieu te montre que Lui aussi est présent ici, dans ce nouveau désert apprivoisé.",
-    "ageRange": [28, 48],
+    "ageRange": [
+      28,
+      48
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-001",
     "decoyVerseIds": [],
@@ -4011,13 +4811,34 @@
         "kind": "event_completed",
         "eventId": "arc-ville-1"
       }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "Étranger dans la ville, en plein désert",
+        "description": "Dans cette nouvelle ville, les coutumes sont incompréhensibles et le désert intérieur amplifie la solitude. Tu cherches une {église} — une ancre dans l'inconnu."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "batisseur"
+        },
+        "title": "Construire en terre étrangère",
+        "description": "Le Bâtisseur sait que les meilleures structures se bâtissent là où les besoins sont criants. Cette nouvelle ville est un chantier à découvrir — si tu dépasses la désorientation du début."
+      }
     ]
   },
   {
     "id": "arc-ville-2-c",
     "title": "L'exil amer",
     "description": "Tu n'as jamais réussi à t'adapter. La nouvelle ville t'a avalé. Tu vis en reclus, le coeur tourné vers le passé. La nostalgie est devenue une prison.",
-    "ageRange": [29, 49],
+    "ageRange": [
+      29,
+      49
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-007",
     "decoyVerseIds": [],
@@ -4037,7 +4858,10 @@
     "id": "arc-ville-3",
     "title": "Le retour aux racines",
     "description": "Après des années, tu retournes à {ville}. Les rues ont changé, les visages aussi. Mais quelque chose d'indicible est resté. Tu marches dans les lieux de ton enfance et tu réalises que tu n'es plus le même. Le départ t'a changé, la vie t'a formé. {ville} n'est plus la même — mais elle fait toujours partie de toi. Tu embrasses la terre natale avec la gratitude de celui qui a trouvé sa véritable patrie ailleurs.",
-    "ageRange": [42, 68],
+    "ageRange": [
+      42,
+      68
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-007",
     "decoyVerseIds": [],
@@ -4066,7 +4890,10 @@
     "id": "arc-conjoint-1",
     "title": "La rencontre de {conjoint}",
     "description": "Tu n'y croyais plus. Les années passaient, les prières semblaient sans réponse. Et puis {conjoint} est apparu(e). Un regard, un sourire, une coïncidence qui n'en est pas une. Ton coeur s'emballe comme un adolescent. Mais comment être sûr(e) que c'est de Dieu ? L'amour et la raison s'affrontent dans ta tête.",
-    "ageRange": [22, 32],
+    "ageRange": [
+      22,
+      32
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-001",
     "decoyVerseIds": [],
@@ -4090,7 +4917,10 @@
     "id": "arc-conjoint-1-c",
     "title": "L'occasion manquée",
     "description": "Tu n'as pas osé. La peur du rejet, la crainte de te tromper. {conjoint} est parti(e) et tu es resté(e) seul(e) avec tes questions et tes regrets.",
-    "ageRange": [23, 33],
+    "ageRange": [
+      23,
+      33
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-002",
     "decoyVerseIds": [],
@@ -4110,7 +4940,10 @@
     "id": "arc-conjoint-2",
     "title": "L'alliance",
     "description": "Le jour du mariage est arrivé. {conjoint} est là, devant toi, rayonnant(e). Les mots de l'alliance résonnent : pour le meilleur et pour le pire. L'émotion te submerge. Ce n'est pas juste une cérémonie — c'est un covenant devant Dieu. Deux vies qui n'en feront plus qu'une, avec Lui au centre.",
-    "ageRange": [24, 38],
+    "ageRange": [
+      24,
+      38
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-004",
     "decoyVerseIds": [],
@@ -4141,7 +4974,10 @@
     "id": "arc-conjoint-2-c",
     "title": "L'engagement brisé",
     "description": "Le mariage n'a pas eu lieu. Les doutes ont eu raison de toi. La peur de l'engagement a gagné. Tu es resté(e) seul(e) avec l'amertume de ce qui aurait pu être.",
-    "ageRange": [25, 39],
+    "ageRange": [
+      25,
+      39
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-003",
     "decoyVerseIds": [],
@@ -4161,7 +4997,10 @@
     "id": "arc-conjoint-3",
     "title": "La tempête",
     "description": "Le mariage traverse une crise profonde. Les mots blessent, les silences tuent. {conjoint} et toi, vous vous êtes perdus de vue. Le lit que vous partagez est devenu un champ de bataille. Les conseils de {ami} n'y font rien. Prier ensemble semble impossible. L'amour est-il assez fort pour traverser cette nuit ?",
-    "ageRange": [30, 48],
+    "ageRange": [
+      30,
+      48
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-002",
     "decoyVerseIds": [],
@@ -4186,13 +5025,34 @@
         "kind": "event_completed",
         "eventId": "arc-conjoint-2"
       }
+    ],
+    "narrativeVariants": [
+      {
+        "condition": {
+          "type": "season",
+          "season": "Désert"
+        },
+        "title": "La tempête en plein désert",
+        "description": "Le couple traverse une crise — et la saison de désert amplifie tout. Les mots blessent, les silences tuent, et le ciel semble muet. C'est le moment le plus dur, et peut-être le plus formateur."
+      },
+      {
+        "condition": {
+          "type": "calling",
+          "callingId": "berger"
+        },
+        "title": "Berger de sa propre maison",
+        "description": "{conjoint} et toi, vous vous êtes perdus dans la tempête. Le Berger qui guide les autres doit apprendre à soigner son propre foyer. Commencer ici."
+      }
     ]
   },
   {
     "id": "arc-conjoint-3-c",
     "title": "La séparation",
     "description": "La tempête a tout emporté. Vous avez choisi la séparation. Les enfants souffrent, la maison est vide, et toi tu te demandes où Dieu était dans tout ça.",
-    "ageRange": [31, 49],
+    "ageRange": [
+      31,
+      49
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-001",
     "decoyVerseIds": [],
@@ -4212,7 +5072,10 @@
     "id": "arc-conjoint-4",
     "title": "Le renouveau",
     "description": "Vous avez traversé l'orage. Les morceaux épars de votre mariage sont recollés, un par un, par des mains patientes. Les séances de conseil, les nuits de prière, les larmes versées ensemble. {conjoint} te regarde avec des yeux nouveaux. L'amour n'est plus celui des premiers jours — il est plus profond, plus vrai. Il a été éprouvé par le feu.",
-    "ageRange": [36, 58],
+    "ageRange": [
+      36,
+      58
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-002",
     "decoyVerseIds": [],
@@ -4243,7 +5106,10 @@
     "id": "arc-conjoint-4-c",
     "title": "Le pardon impossible",
     "description": "Les blessures étaient trop profondes. Le renouveau n'a pas eu lieu. Vous vivez sous le même toit comme des étrangers polis. Le mariage est un contrat, plus une alliance.",
-    "ageRange": [37, 59],
+    "ageRange": [
+      37,
+      59
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-006",
     "decoyVerseIds": [],
@@ -4263,7 +5129,10 @@
     "id": "arc-conjoint-5",
     "title": "Les années de maturité",
     "description": "Les enfants ont grandi, la maison est plus calme. Tu regardes {conjoint} traverser la pièce et tu vois toute une vie dans ce simple mouvement. Les cheveux gris, les rides, les gestes ralentis. L'amour n'est plus fiévreux — il est paisible comme un feu qui a brûlé toute la nuit. Vous vous comprenez sans mots. Vous êtes devenus un seul être.",
-    "ageRange": [48, 68],
+    "ageRange": [
+      48,
+      68
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-003",
     "decoyVerseIds": [],
@@ -4293,7 +5162,10 @@
     "id": "arc-conjoint-5-c",
     "title": "L'éloignement",
     "description": "Les années vous ont éloignés plus que rapprochés. Vous vivez des vies parallèles, chacun dans sa routine. L'amour n'est pas mort, mais il s'est endormi, faute d'attention.",
-    "ageRange": [49, 69],
+    "ageRange": [
+      49,
+      69
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-001",
     "decoyVerseIds": [],
@@ -4313,7 +5185,10 @@
     "id": "arc-conjoint-6",
     "title": "Le départ de {conjoint}",
     "description": "Le jour que tu redoutais est arrivé. {conjoint} n'est plus là. Le lit est trop grand, la maison trop silencieuse. Tu ouvres l'armoire et ses vêtements portent encore son odeur. Les souvenirs déferlent comme une vague. Mais au milieu de la douleur, une paix étrange. Tu n'es pas seul(e). Dieu est là, et Il tient la main de {conjoint} depuis l'éternité. L'alliance n'a pas été brisée — elle a été transférée dans une dimension que tes yeux ne voient pas encore.",
-    "ageRange": [62, 82],
+    "ageRange": [
+      62,
+      82
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-001",
     "decoyVerseIds": [],
@@ -4342,7 +5217,10 @@
     "id": "e-senior-004",
     "title": "Les souvenirs qui consolent",
     "description": "À 90 ans, le passé te visite chaque nuit. Les visages de ceux que tu as aimés défilent comme un film. {ami}, {conjoint}, tes parents. Certains souvenirs sont doux, d'autres piquent encore. Mais dans la lumière du matin, tu comprends que chaque souvenir est un cadeau. Même les douleurs d'autrefois sont devenues des leçons précieuses.",
-    "ageRange": [90, 100],
+    "ageRange": [
+      90,
+      100
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-002",
     "decoyVerseIds": [],
@@ -4362,7 +5240,10 @@
     "id": "e-senior-005",
     "title": "La solitude de l'âge",
     "description": "Les visites se font rares. Les amis sont partis les uns après les autres. {église} a changé, tu ne reconnais plus personne. Les journées sont longues et silencieuses. La solitude pèse comme une couverture de plomb. Où est Dieu dans ce désert de la vieillesse ?",
-    "ageRange": [90, 100],
+    "ageRange": [
+      90,
+      100
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-005",
     "decoyVerseIds": [],
@@ -4382,7 +5263,10 @@
     "id": "e-senior-006",
     "title": "L'Éternel est mon berger",
     "description": "La peur de la mort vient te visiter certaines nuits. Le souffle est court, le coeur fragile. Tu te réveilles en sursaut, la main sur la poitrine. Mais quelque chose de plus fort que la peur se lève en toi — une confiance que tu n'as jamais connue aussi pure. Le Berger qui t'a conduit toute ta vie ne t'abandonnera pas au dernier vallon.",
-    "ageRange": [91, 100],
+    "ageRange": [
+      91,
+      100
+    ],
     "category": "peur_angoisse",
     "correctVerseId": "v-peur-007",
     "decoyVerseIds": [],
@@ -4402,7 +5286,10 @@
     "id": "e-senior-007",
     "title": "La moisson des larmes",
     "description": "Tu contemples ta vie et tu vois tout à la fois : les échecs, les victoires, les joies, les chagrins. Tant de larmes versées en secret, tant de prières jamais exaucées. Et pourtant, aujourd'hui, tout prend sens. Ce qui semblait être des détours était en réalité le chemin. La vie n'a pas été parfaite, mais elle a été pleine. Les larmes du matin ont fait place aux chants du soir.",
-    "ageRange": [92, 100],
+    "ageRange": [
+      92,
+      100
+    ],
     "category": "decouragement",
     "correctVerseId": "v-decour-002",
     "decoyVerseIds": [],
@@ -4422,7 +5309,10 @@
     "id": "e-senior-008",
     "title": "Le chant du cygne",
     "description": "Tu sens que l'heure approche. Mais la peur n'est plus là. Ce qui reste, c'est une gratitude immense. Chaque souffle est une prière, chaque battement de coeur une louange. Tu dictes tes dernières paroles à un petit-fils venu te voir. Ce que tu lui confies n'est pas une liste de biens matériels, mais un testament spirituel : \\\"Dieu a été fidèle. Il le sera toujours.\\\"",
-    "ageRange": [93, 100],
+    "ageRange": [
+      93,
+      100
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-001",
     "decoyVerseIds": [],
@@ -4442,7 +5332,10 @@
     "id": "e-steril-002",
     "title": "L'adoption du coeur",
     "description": "Après des années d'attente, de prières et de larmes, tu réalises que la stérilité n'est pas une punition mais un chemin différent. {conjoint} et toi décidez d'ouvrir votre cœur autrement. Un enfant a besoin d'une famille, et vous avez un amour à donner. L'adoption n'est pas un plan B — c'est peut-être le plan A que Dieu avait prévu depuis le début.",
-    "ageRange": [28, 55],
+    "ageRange": [
+      28,
+      55
+    ],
     "category": "sterilite",
     "correctVerseId": "v-steril-002",
     "decoyVerseIds": [],
@@ -4458,5 +5351,590 @@
       "finances": 3
     },
     "thematicFlavor": "Dieu écrit souvent notre histoire avec des lettres que nous n'attendions pas."
+  },
+  {
+    "id": "e-moral-001",
+    "title": "La trahison de l'ami",
+    "description": "{ami} t'a confié un secret douloureux. Quelques jours plus tard, un collègue te demande directement si tu sais quelque chose à ce sujet. Répondre la vérité protégerait peut-être quelqu'un, mais briserait la confiance d'une amitié. Le mensonge épargnerait {ami}, mais pèserait sur ta conscience. Et le silence ? Il a ses propres conséquences.",
+    "ageRange": [18, 32],
+    "category": "amertume_rejet",
+    "correctVerseId": "",
+    "decoyVerseIds": [],
+    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "thematicFlavor": "L'intégrité se mesure quand personne ne regarde.",
+    "moralChoices": [
+      {
+        "id": "mc-001-verite",
+        "label": "Dire la vérité",
+        "description": "Tu révèles ce que tu sais. Douloureux pour {ami}, mais la vérité reste debout.",
+        "flagsSet": ["ami_001_truth_told"],
+        "statDeltas": { "foi": 3, "paix": -2 }
+      },
+      {
+        "id": "mc-001-mensonge",
+        "label": "Mentir pour protéger",
+        "description": "Tu nies savoir quoi que ce soit. L'amitié est sauvée, mais quelque chose se ferme en toi.",
+        "flagsSet": ["ami_001_lie_told"],
+        "statDeltas": { "paix": -3, "foi": -1 }
+      },
+      {
+        "id": "mc-001-silence",
+        "label": "Garder le silence",
+        "description": "Tu ne dis rien. Ni mensonge ni vérité. Le chemin étroit entre les deux.",
+        "flagsSet": ["ami_001_silence_kept"],
+        "statDeltas": { "paix": 1 }
+      }
+    ]
+  },
+  {
+    "id": "e-moral-002",
+    "title": "Le mensonge au travail",
+    "description": "Ton supérieur te demande si tu as terminé un rapport. Il ne l'est pas — et il en a besoin pour une réunion importante dans une heure. Dire la vérité pourrait compromettre ta réputation. Mentir gagnerait du temps, mais l'erreur finira par remonter. Tu pourrais aussi avouer et proposer une solution immédiate.",
+    "ageRange": [22, 40],
+    "category": "orgueil_independance",
+    "correctVerseId": "",
+    "decoyVerseIds": [],
+    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "thematicFlavor": "L'humilité n'est pas une faiblesse — c'est une force tranquille.",
+    "moralChoices": [
+      {
+        "id": "mc-002-avouer",
+        "label": "Avouer et proposer une solution",
+        "description": "Tu dis la vérité, tu présentes ce que tu as fait et tu t'engages à finir en urgence.",
+        "flagsSet": ["travail_002_honest"],
+        "statDeltas": { "foi": 4, "paix": 2, "finances": -1 }
+      },
+      {
+        "id": "mc-002-mentir",
+        "label": "Prétendre que c'est presque fini",
+        "description": "Tu gagnes du temps avec un demi-mensonge. La pression s'accumule en silence.",
+        "flagsSet": ["travail_002_deceived"],
+        "statDeltas": { "paix": -4, "foi": -2 }
+      }
+    ]
+  },
+  {
+    "id": "e-moral-003",
+    "title": "Le pardon difficile",
+    "description": "Quelqu'un t'a blessé profondément — une parole publique, une trahison que tu n'as pas demandée. Cette personne revient vers toi, tête baissée, et te demande pardon. Une partie de toi veut pardonner. Une autre veut qu'elle comprenne l'étendue du mal. Et une autre encore voudrait simplement disparaître pour ne plus souffrir.",
+    "ageRange": [20, 55],
+    "category": "amertume_rejet",
+    "correctVerseId": "",
+    "decoyVerseIds": [],
+    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "thematicFlavor": "Pardonner, ce n'est pas effacer — c'est choisir de ne plus porter.",
+    "moralChoices": [
+      {
+        "id": "mc-003-pardonner",
+        "label": "Pardonner sincèrement",
+        "description": "Tu choisis de pardonner — pas parce que c'est facile, mais parce que tu refuses que cette blessure devienne ton maître.",
+        "flagsSet": ["pardon_003_given"],
+        "statDeltas": { "paix": 5, "foi": 3 }
+      },
+      {
+        "id": "mc-003-refuser",
+        "label": "Refuser pour l'instant",
+        "description": "Tu ne te sens pas prêt. Tu lui dis que tu as besoin de temps. L'honnêteté avant la performance.",
+        "flagsSet": ["pardon_003_deferred"],
+        "statDeltas": { "paix": -2, "foi": 1 }
+      },
+      {
+        "id": "mc-003-confronter",
+        "label": "Parler d'abord de la blessure",
+        "description": "Tu lui dis ce qu'il t'a fait ressentir, en détail, avant de donner une réponse. La vérité avant la réconciliation.",
+        "flagsSet": ["pardon_003_truth_first"],
+        "statDeltas": { "paix": 1, "foi": 2 }
+      }
+    ]
+  },
+
+  {
+    "id": "e-esprit-003",
+    "title": "La langue inconnue",
+    "description": "Lors d'une veillée de prière, quelqu'un se met à prier dans une langue que personne ne reconnaît. Certains sont troublés, d'autres émus. Tu ne sais pas quoi en penser. Le Saint-Esprit se manifeste-t-il encore aujourd'hui comme dans les Actes ?",
+    "ageRange": [16, 50],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-004",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 4, "paix": 2 },
+    "thematicFlavor": "L'Esprit souffle où il veut — notre tâche est d'être ouverts.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-esprit-004",
+    "title": "Le fruit qu'on ne voit pas",
+    "description": "Cela fait des mois que tu sers fidèlement dans ton église. Mais les résultats semblent maigres : peu de conversions, peu de changements visibles. Tu commences à te demander si le Saint-Esprit est vraiment à l'œuvre en toi, ou si tu fais tout dans ta propre force.",
+    "ageRange": [22, 65],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-003",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -4, "paix": -3, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "thematicFlavor": "L'Esprit produit des fruits que nos yeux ne savent pas toujours lire.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-esprit-005",
+    "title": "La voix intérieure",
+    "description": "Un matin, en te levant, quelque chose te pousse à appeler un vieil ami que tu n'as pas contacté depuis des années. Tu résistes — c'est étrange, il sera peut-être surpris. Mais la conviction ne lâche pas. Est-ce le Saint-Esprit qui te parle, ou simplement ta nostalgie ?",
+    "ageRange": [24, 70],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-002",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -2, "paix": -1, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 4, "paix": 3 },
+    "thematicFlavor": "L'obéissance au souffle intérieur commence par le silence.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-parole-003",
+    "title": "Le verset qui s'impose",
+    "description": "Depuis quelques jours, un verset revient sans cesse dans ta tête. Tu l'entends à la radio, un ami le cite par hasard, tu l'aperçois sur une affiche. Tu commences à te demander si Dieu essaie de te dire quelque chose à travers sa Parole.",
+    "ageRange": [18, 75],
+    "category": "parole_de_dieu",
+    "correctVerseId": "v-parole-002",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -3, "paix": -1, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "thematicFlavor": "La Parole de Dieu n'est jamais un accident.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-parole-004",
+    "title": "La Bible fermée",
+    "description": "Il y a trois semaines que tu n'as pas ouvert ta Bible. Les journées sont chargées, la fatigue prend le dessus. Tu la vois sur ta table de nuit, légèrement poussiéreuse. Quelque chose en toi ressent le vide, mais tu trouves toujours une raison de remettre à demain.",
+    "ageRange": [20, 70],
+    "category": "parole_de_dieu",
+    "correctVerseId": "v-parole-004",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -5, "paix": -3, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 4, "paix": 3 },
+    "thematicFlavor": "Le pain de l'âme ne se donne pas de lui-même — il faut choisir de le rompre.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-parole-005",
+    "title": "La promesse incomprise",
+    "description": "Tu t'es accroché pendant des années à une promesse biblique. Tu avais l'impression que Dieu te l'avait donnée pour toi, personnellement. Mais les circonstances semblent la contredire à chaque tournant. Avais-tu vraiment bien compris ? Ou la Parole de Dieu s'applique-t-elle différemment ?",
+    "ageRange": [25, 65],
+    "category": "parole_de_dieu",
+    "correctVerseId": "v-parole-001",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -5, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 4 },
+    "thematicFlavor": "La Parole de Dieu s'accomplit toujours — mais rarement comme on l'imaginait.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-priere-003",
+    "title": "La prière sans réponse",
+    "description": "Tu pries pour la même chose depuis six mois. Rien ne change. Parfois tu te demandes si tu parles vraiment à quelqu'un, ou si tes prières montent et retombent dans le vide. Le silence de Dieu est la chose la plus difficile à porter pour une âme croyante.",
+    "ageRange": [18, 70],
+    "category": "priere",
+    "correctVerseId": "v-priere-002",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -5, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 4 },
+    "thematicFlavor": "Le silence de Dieu n'est pas son absence — c'est souvent sa salle d'attente.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-priere-004",
+    "title": "L'intercession pour un ennemi",
+    "description": "Quelqu'un t'a causé un tort profond. Un ami te suggère de prier pour cette personne. L'idée te révolte. Prier pour quelqu'un qui t'a blessé ? Et pourtant, quelque chose dans ces mots te poursuit. La prière comme chemin vers la liberté intérieure.",
+    "ageRange": [22, 70],
+    "category": "priere",
+    "correctVerseId": "v-priere-001",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 6 },
+    "thematicFlavor": "Prier pour un ennemi, c'est refuser que la haine ait le dernier mot.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-priere-005",
+    "title": "La prière du désespéré",
+    "description": "Tu as tout essayé. Les médecins, les amis, les psychologues. Au bout du rouleau, dans ta chambre, tu tombes à genoux pour la première fois depuis longtemps. Les mots ne viennent pas facilement. Tu dis juste : 'Aide-moi.' Et dans le silence qui suit, quelque chose se dépose en toi.",
+    "ageRange": [25, 80],
+    "category": "priere",
+    "correctVerseId": "v-priere-003",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 6 },
+    "thematicFlavor": "La prière la plus courte peut être la plus honnête.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-soif-003",
+    "title": "Le témoignage qui allume",
+    "description": "Tu écoutes quelqu'un raconter comment il a rencontré Dieu d'une manière profonde et personnelle. Quelque chose se lève en toi — un désir que tu n'avais pas ressenti depuis longtemps. Tu veux cette même intimité. Cette faim-là est-elle la plus sacrée qui soit ?",
+    "ageRange": [16, 65],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-001",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "thematicFlavor": "Le désir de Dieu est déjà Dieu à l'œuvre en toi.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-soif-004",
+    "title": "La retraite de silence",
+    "description": "Un ami t'invite à une retraite spirituelle de trois jours. Pas de téléphone, pas de distractions — juste la prière, la Parole et le silence. Ton agenda est surchargé, et l'idée de tout lâcher te fait peur. Mais quelque chose te dit que ton âme a besoin de ce vide pour entendre à nouveau.",
+    "ageRange": [22, 70],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-002",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -4, "paix": -3, "physique": -1, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 5 },
+    "thematicFlavor": "On ne rencontre Dieu dans la foule que si on l'a d'abord trouvé dans le désert.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-soif-005",
+    "title": "Le creux de l'âme",
+    "description": "Tu as tout ce dont tu avais besoin : un travail stable, une famille aimante, une église fidèle. Et pourtant, au milieu de tout ça, un vide que tu ne sais pas nommer. Une faim que les belles choses ne rassasient pas. C'est peut-être la soif de Dieu — le seul qui puisse combler ce que rien d'autre ne peut atteindre.",
+    "ageRange": [28, 75],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-003",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -4, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 5 },
+    "thematicFlavor": "L'âme a ses déserts que seul Dieu peut irriguer.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-obeis-003",
+    "title": "L'ordre incompréhensible",
+    "description": "En lisant la Bible, tu tombes sur une injonction divine que tu trouves difficile à comprendre — donner aux pauvres jusqu'à l'inconfort, pardonner à l'infini, aimer ceux qui te persécutent. L'obéissance ne demande-t-elle pas de comprendre d'abord ? Ou est-ce la confiance qui précède la compréhension ?",
+    "ageRange": [18, 65],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-002",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "thematicFlavor": "L'obéissance sans compréhension est la forme la plus pure de la confiance.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-obeis-004",
+    "title": "Le premier pas dans le vide",
+    "description": "Dieu t'a clairement appelé à quitter quelque chose de confortable — un emploi, un lieu de vie, une relation — pour suivre ce qu'Il t'a montré. Tu n'as aucune garantie de résultat. Le premier pas ressemble à un pas dans le vide. Et pourtant, quelque chose te dit que le sol apparaîtra sous ton pied.",
+    "ageRange": [20, 60],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-001",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -5, "paix": -4, "physique": 0, "finances": -3 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 4, "finances": 2 },
+    "thematicFlavor": "La foi marche avant de voir — c'est sa définition même.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-obeis-005",
+    "title": "Obéir à ce qu'on préférerait oublier",
+    "description": "Il y a quelqu'un à qui tu dois des excuses depuis longtemps. Tu le sais. Chaque fois que tu pries, son visage revient. Dieu ne semble pas te laisser avancer avant que tu règles ça. L'obéissance ne commence pas toujours par une grande mission — parfois c'est juste un coup de téléphone qu'on n'a pas encore passé.",
+    "ageRange": [22, 75],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-003",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 6 },
+    "thematicFlavor": "L'obéissance commence souvent par réparer ce qu'on a abîmé.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-lourd-003",
+    "title": "L'épuisement du service",
+    "description": "Tu sers dans l'église depuis des années sans jamais dire non. Responsable de la jeunesse, de l'accueil, de la logistique — tu es partout à la fois. Un dimanche matin, tu te réveilles et tu n'as plus l'énergie de te lever. Le burnout spirituel n'est pas un péché — c'est un signal.",
+    "ageRange": [25, 65],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-001",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -3, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 4, "paix": 5, "physique": 2 },
+    "thematicFlavor": "Dieu ne nous appelle pas à tout porter — il nous invite à poser ce qui n'est pas à nous.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-lourd-004",
+    "title": "Le deuil interminable",
+    "description": "Tu portes le deuil d'une perte depuis trop longtemps. Les autres semblent avoir tourné la page. Mais pour toi, la douleur est encore là, certains jours aussi vive qu'au premier moment. La tristesse n'est pas de l'incrédulité — c'est de l'amour qui n'a plus où aller.",
+    "ageRange": [30, 85],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-002",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -3, "paix": -5, "physique": -2, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 4, "paix": 5 },
+    "thematicFlavor": "Dieu garde nos larmes dans son outre — rien de ce qu'on porte n'est invisible à Ses yeux.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-lourd-005",
+    "title": "Le corps qui lâche",
+    "description": "Ton corps envoie des signaux que tu ignores depuis trop longtemps. Maux de dos persistants, insomnies, tensions aux épaules. Le médecin dit que c'est le stress. Ton âme, elle, sait que tu portes bien plus que tes forces ne permettent. Il est temps de remettre certains fardeaux à Celui qui peut les tenir.",
+    "ageRange": [30, 75],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-004",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -2, "paix": -3, "physique": -5, "finances": -2 },
+    "statImpactOnSuccess": { "foi": 3, "paix": 4, "physique": 3 },
+    "thematicFlavor": "Prendre soin de son corps, c'est aussi honorer le temple de l'Esprit.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-gueris-003",
+    "title": "La prière des anciens",
+    "description": "Ta santé se dégrade et les médecins hésitent encore sur le diagnostic. Un frère aîné de ton église te propose une prière d'onction selon Jacques 5. Quelque chose en toi résiste — est-ce vraiment pour aujourd'hui ? Et si rien ne se passe, que restera-t-il de ta foi ?",
+    "ageRange": [25, 80],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-002",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -4, "paix": -3, "physique": -3, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 5, "physique": 4 },
+    "thematicFlavor": "La foi pour la guérison ne dépend pas du résultat — elle précède.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-gueris-004",
+    "title": "La maladie d'un enfant",
+    "description": "Ton enfant est hospitalisé. Les examens durent depuis plusieurs jours. Tu veilles à son chevet, les heures se mélangent. Dans ce couloir d'hôpital aux néons blancs, tu fais des allers-retours entre la chapelle et sa chambre. La foi en la guérison et l'acceptation de la volonté divine ne sont pas opposées — mais trouver leur équilibre est un combat intérieur.",
+    "ageRange": [28, 55],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-001",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -5, "paix": -6, "physique": 0, "finances": -3 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 6 },
+    "thematicFlavor": "Dans la salle d'attente de la guérison, Dieu est assis à côté de toi.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-gueris-005",
+    "title": "La guérison intérieure",
+    "description": "Ton corps va bien, mais à l'intérieur quelque chose reste cassé — une mémoire douloureuse, une blessure d'enfance, une honte que tu portes comme une cicatrice invisible. Un conseiller chrétien te dit que Dieu peut aussi guérir ces endroits-là. Et si la guérison la plus profonde n'était pas physique ?",
+    "ageRange": [20, 70],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-003",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 7 },
+    "thematicFlavor": "Certaines guérisons ne se voient pas mais se ressentent pour toujours.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-steril-003",
+    "title": "L'annonce difficile",
+    "description": "Le médecin est direct : les chances d'avoir un enfant naturellement sont très faibles. Tu rentres chez toi avec cette nouvelle qui pèse des tonnes. Comment dire à ta famille ? Comment continuer à croire quand le corps dit non ? La stérilité n'est pas un refus de Dieu — mais dans ce moment, c'est difficile de ne pas le ressentir ainsi.",
+    "ageRange": [22, 45],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-001",
+    "spawnProbability": 0.25,
+    "statImpactOnFail": { "foi": -6, "paix": -7, "physique": -2, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 4 },
+    "thematicFlavor": "Dieu entend le cri du ventre vide autant que celui de la prière à voix haute.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-steril-004",
+    "title": "La grossesse miraculeuse",
+    "description": "Après des années de prière et d'attente, une ligne apparaît sur le test. Tu restes immobile devant ce signe pendant un long moment. Entre les larmes et le rire, tu ne sais plus comment appeler ce que tu ressens. Certaines promesses de Dieu arrivent juste à temps — même quand 'à temps' a semblé si long.",
+    "ageRange": [25, 45],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-003",
+    "spawnProbability": 0.2,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 8, "paix": 7, "physique": 2 },
+    "thematicFlavor": "La joie la plus profonde est celle qui a traversé l'attente.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-steril-005",
+    "title": "La grâce suffisante",
+    "description": "L'enfant n'est pas venu, et maintenant l'âge ne le permettra plus. Après le deuil, après la colère, après l'acceptation difficile, il reste quelque chose d'inattendu : une paix. Pas la résignation, mais la confiance. Dieu a peut-être préparé une autre forme de fécondité — des enfants spirituels, une vie donnée aux autres, un amour qui rayonne au-delà du sang.",
+    "ageRange": [40, 70],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-002",
+    "spawnProbability": 0.2,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 7 },
+    "thematicFlavor": "La fécondité spirituelle ne connaît pas les limites du corps.",
+    "decoyVerseIds": []
+  },
+
+  {
+    "id": "e-senior-009",
+    "title": "Transmettre la flamme",
+    "description": "Ton petit-fils passe une semaine chez toi. Il est curieux, pose des questions sur la foi, sur la vie. Tu réalises que tu as une opportunité rare : lui transmettre non pas seulement des souvenirs, mais une manière de voir le monde. Ce que tu semeras en lui maintenant, il le portera peut-être jusqu'à ses propres petits-enfants.",
+    "ageRange": [75, 100],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-006",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 6 },
+    "thematicFlavor": "L'héritage le plus précieux ne tient pas dans un testament notarial.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-010",
+    "title": "Le bilan devant Dieu",
+    "description": "Une nuit d'insomnie à 78 ans. Tu repenses à ta vie entière — les choix faits et ceux manqués, les personnes aimées et celles que tu as blessées. Est-ce que ta vie a eu du sens ? Est-ce que tu as été fidèle ? La réponse n'est peut-être pas ce que tu croyais. La grâce dépasse les bilans.",
+    "ageRange": [75, 95],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-001",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 6 },
+    "thematicFlavor": "Dieu juge avec miséricorde ce que nous jugeons avec sévérité.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-011",
+    "title": "La fragilité du corps",
+    "description": "Tu n'arrives plus à ouvrir les bocaux seul. Monter les escaliers prend le double de temps. Tu regardes tes mains — elles ne font plus ce qu'elles faisaient. Vieillir, c'est apprendre une dépendance que l'orgueil rechigne à accepter. Et si cette vulnérabilité était, elle aussi, une forme de grâce ?",
+    "ageRange": [75, 95],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-003",
+    "spawnProbability": 0.4,
+    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": -3, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 5, "physique": 1 },
+    "thematicFlavor": "La force de Dieu se déploie pleinement là où la nôtre s'arrête.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-012",
+    "title": "La paix qui dépasse",
+    "description": "Tu aurais dû être inquiet — la santé fragile, les dépenses qui augmentent, l'avenir incertain. Mais quelque chose d'étrange s'est installé en toi avec les années : une paix que tu n'arrives même pas à expliquer aux plus jeunes. Comme si chaque tempête traversée t'avait déposé un peu plus profond dans les bras de Dieu.",
+    "ageRange": [75, 100],
+    "category": "doute_incredulite",
+    "correctVerseId": "v-doute-005",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -2, "paix": -3, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 8 },
+    "thematicFlavor": "La foi qui a survécu aux tempêtes n'a plus besoin de se prouver.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-013",
+    "title": "L'héritage spirituel",
+    "description": "Tu te demandes ce que tu laisseras derrière toi. Pas les objets, ni l'argent — mais est-ce que ceux que tu as côtoyés ont été touchés ? Est-ce que ton passage dans leur vie a eu un sens ? Tu commences à écrire des lettres à chacun de tes enfants. Chaque mot est une prière.",
+    "ageRange": [78, 100],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-001",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -3, "paix": -3, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "thematicFlavor": "La vie bien vécue est le seul testament qui traverse les générations.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-014",
+    "title": "Les réconciliations tardives",
+    "description": "Il n'est pas trop tard. Tu as 80 ans et tu écris un message à quelqu'un avec qui tu t'étais disputé il y a quinze ans. Tu appuies sur 'Envoyer' en tremblant un peu. Les réconciliations tardives ont un goût particulier — elles ont traversé l'orgueil, la rancœur, et le temps. Et elles en sont plus précieuses.",
+    "ageRange": [76, 98],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-004",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 8 },
+    "thematicFlavor": "Il n'est jamais trop tard pour défaire ce que le temps a entortillé.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-015",
+    "title": "L'ombre de la mort",
+    "description": "Un ami proche vient de mourir. Son âge était proche du tien. Tu réalises que le fil entre ici et là-bas est plus fin que tu ne le croyais. La mort n'est plus un concept lointain — c'est une voisine. Et pourtant, quelque chose en toi tient ferme. Comme si des années passées avec Dieu avaient rempli quelque chose que la mort ne peut pas vider.",
+    "ageRange": [78, 100],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-007",
+    "spawnProbability": 0.4,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "thematicFlavor": "Celui qui a appris à vivre avec Dieu apprend aussi à mourir dans Sa paix.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-016",
+    "title": "Le don de la sagesse",
+    "description": "Des jeunes de ton église te demandent de les mentorer. Au début tu hésites — qui es-tu pour guider quelqu'un ? Mais en parlant avec eux, tu réalises que ce que tu possèdes n'a pas de prix : non pas la théorie, mais des années de vie vécue avec Dieu. La sagesse ne s'invente pas — elle se transmet.",
+    "ageRange": [75, 95],
+    "category": "combat_spirituel",
+    "correctVerseId": "v-combat-005",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -2, "paix": -2, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 5 },
+    "thematicFlavor": "Les anciens sont les mémoires vivantes de la fidélité de Dieu.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-017",
+    "title": "La prière intercédante du vieil âge",
+    "description": "Tu n'as plus la force de courir, de construire, d'organiser. Mais tu peux encore prier. Tu dresses une liste de noms — enfants, petits-enfants, amis, voisins — et tu pries chacun d'eux chaque matin. L'intercession est le ministère que l'âge ne peut pas confisquer.",
+    "ageRange": [75, 100],
+    "category": "priere",
+    "correctVerseId": "v-priere-002",
+    "spawnProbability": 0.4,
+    "statImpactOnFail": { "foi": -2, "paix": -2, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "thematicFlavor": "Le genou courbé d'un ancien vaut une armée de jeunes sur leurs pieds.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-018",
+    "title": "La gratitude du soir",
+    "description": "Chaque soir, avant de t'endormir, tu passes en revue ta journée et tu trouves au moins trois choses pour lesquelles tu es reconnaissant. Ce n'est pas une technique positive — c'est une discipline spirituelle. Avec les années, tu as appris que la gratitude est la posture naturelle de quelqu'un qui connaît la fidélité de Dieu.",
+    "ageRange": [75, 100],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-003",
+    "spawnProbability": 0.4,
+    "statImpactOnFail": { "foi": -2, "paix": -3, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 6, "paix": 7 },
+    "thematicFlavor": "La reconnaissance est la mémoire du cœur — et Dieu y est toujours.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-019",
+    "title": "L'abandon de la maison familiale",
+    "description": "La grande maison où tu as élevé tes enfants est devenue trop grande, trop lourde à entretenir. Il faut la vendre. Chaque pièce est un souvenir, chaque mur raconte une histoire. Partir de cette maison, c'est laisser une partie de toi-même. Mais Dieu habite partout où tu poses ta foi — pas seulement dans ces murs.",
+    "ageRange": [75, 90],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-003",
+    "spawnProbability": 0.3,
+    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 2 },
+    "statImpactOnSuccess": { "foi": 5, "paix": 5, "finances": 3 },
+    "thematicFlavor": "Le vrai foyer n'est pas celui qu'on quitte — c'est Celui vers qui on va.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-020",
+    "title": "Mourir à soi-même au dernier souffle",
+    "description": "À 85 ans, il y a encore des combats intérieurs. L'orgueil qui veut avoir le dernier mot, l'inquiétude qui refuse de lâcher prise, le regret qui occupe les nuits. Vieillir dans la foi ne veut pas dire que les batailles s'arrêtent — mais elles changent de nature. Tu apprends à mourir à toi-même, doucement, un jour à la fois.",
+    "ageRange": [80, 100],
+    "category": "orgueil_independance",
+    "correctVerseId": "v-orgueil-005",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -4, "paix": -4, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "thematicFlavor": "La sanctification ne s'arrête pas à un âge — elle dure jusqu'au bout.",
+    "decoyVerseIds": []
+  },
+  {
+    "id": "e-senior-021",
+    "title": "La joie à contre-courant",
+    "description": "Tes contemporains parlent de leurs maux, de leurs peurs, de la fin qui approche. Toi, quelque chose d'inattendu s'est produit : une joie tranquille qui n'a pas de raison logique. Pas la joie de la santé ou de l'abondance — celle d'une présence. Quelqu'un est là avec toi dans ce dernier tronçon du chemin, et ça suffit.",
+    "ageRange": [80, 100],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-001",
+    "spawnProbability": 0.35,
+    "statImpactOnFail": { "foi": -3, "paix": -3, "physique": 0, "finances": 0 },
+    "statImpactOnSuccess": { "foi": 7, "paix": 8 },
+    "thematicFlavor": "La joie profonde n'est pas l'absence de douleur — c'est la présence de Dieu malgré elle.",
+    "decoyVerseIds": []
   }
 ]

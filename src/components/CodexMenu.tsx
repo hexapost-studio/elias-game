@@ -3,6 +3,7 @@ import { useGameStore } from '../stores/gameStore';
 import { VERSE_DATABASE } from '../data/verses';
 import { BookOpen, Lock, AlertTriangle, XIcon, Check, Bookmark, Sparkles } from './IconSystem';
 import type { AfflictionCategory } from '../types/game';
+import { reviewPromptsFor } from '../engine/reviewPrompts';
 
 interface CodexMenuProps {
   onClose: () => void;
@@ -13,7 +14,7 @@ const BOOK_TEXT  = '#3a1f10';
 const BOOK_MUTED = '#8b5a38';
 const BOOK_ACCENT = '#6b2020';
 
-const CAT_LABELS: Record<AfflictionCategory, string> = {
+const CAT_LABELS: Partial<Record<AfflictionCategory, string>> = {
   peur_angoisse:        'Peur & Angoisse',
   impudicite_addiction: 'Impudicité',
   finances_paresse:     'Finances',
@@ -24,7 +25,7 @@ const CAT_LABELS: Record<AfflictionCategory, string> = {
   orgueil_independance: 'Orgueil',
 };
 
-const CAT_COLORS: Record<AfflictionCategory, string> = {
+const CAT_COLORS: Partial<Record<AfflictionCategory, string>> = {
   peur_angoisse:        '#8b5cf6',
   impudicite_addiction: '#ef4444',
   finances_paresse:     '#f59e0b',
@@ -63,6 +64,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
 
   const card = cards[index % cards.length];
   const total = cards.length;
+  const prompts = reviewPromptsFor(card.id, card.category as AfflictionCategory);
 
   const next = () => { setRevealed(false); setTimeout(() => setIndex((i) => (i + 1) % total), 120); };
   const prev = () => { setRevealed(false); setTimeout(() => setIndex((i) => (i - 1 + total) % total), 120); };
@@ -118,8 +120,13 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
 
             {/* Texte caché ou révélé */}
             {revealed ? (
-              <div style={{ fontSize: 13, color: BOOK_TEXT, lineHeight: 1.8, fontStyle: 'italic', textAlign: 'center', animation: 'fadeIn 0.3s ease' }}>
-                « {card.text} »
+              <div style={{ animation: 'fadeIn 0.3s ease' }}>
+                <div style={{ fontSize: 13, color: BOOK_TEXT, lineHeight: 1.8, fontStyle: 'italic', textAlign: 'center' }}>
+                  « {card.text} »
+                </div>
+                <div style={{ marginTop: 14, fontSize: 10, color: BOOK_MUTED, textAlign: 'center', letterSpacing: 0.3 }}>
+                  ✦ {prompts.encouragement}
+                </div>
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '12px 0' }}>
@@ -133,7 +140,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
                   color: BOOK_MUTED,
                   letterSpacing: 0.5,
                 }}>
-                  Appuyer pour révéler
+                  {prompts.revealPrompt}
                 </div>
               </div>
             )}
@@ -148,7 +155,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
         {/* Hint */}
         {!revealed && (
           <div style={{ marginTop: 16, fontSize: 11, color: 'var(--text-secondary)' }}>
-            Essaie de réciter le verset avant de regarder
+            {prompts.reciteHint}
           </div>
         )}
       </div>

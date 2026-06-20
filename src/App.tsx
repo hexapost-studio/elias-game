@@ -1,54 +1,67 @@
-import { useEffect, useState, useRef, useMemo, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
 import { VerseChoices } from './components/VerseChoices';
+import { MoralChoicePanel } from './components/MoralChoicePanel';
+import { isMoralEvent } from './engine/moralChoice';
 import { EliasPortrait } from './components/EliasPortrait';
 import { getVerseById } from './data/verses';
 import { computeFinalMetrics, determineTitle, SPIRITUAL_SEASONS } from './engine/gameEngine';
 import {
-  ENEMY_COMPONENTS,
   Crown,
   Church,
   BookOpen,
   Award,
   Star,
   Zap,
-  Music,
-  Moon,
   RotateCw,
+  MessageSquare,
 } from './components/IconSystem';
+import { ENEMY_COMPONENTS } from './components/iconMeta';
 import { DebugView } from './components/DebugView';
 import { Onboarding } from './components/Onboarding';
 import { Prologue } from './components/Prologue';
 import type { PrologueResult } from './components/Prologue';
 import { ArcTracker } from './components/ArcTracker';
+import { AmbitionTracker } from './components/AmbitionTracker';
 import { DailyVerse } from './components/DailyVerse';
 import { MainMenu } from './components/MainMenu';
 
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
+const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, isAmbientPlaying, setAmbientPlaybackRate, playTheme, stopTheme } from './engine/juice';
-import { isAiEnabled, generateJournalEntry, generateDynamicEvent, pickVerseForAge } from './services/aiNarrator';
+import { flushLocalQueue } from './services/feedback';
+import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo } from './engine/juice';
+import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
+import { generateOfflineJournal } from './services/offlineNarrator';
+import { getTraitById } from './data/traits';
+import { deriveEchoes } from './engine/echoes';
+import { pickVictoryBanner, pickVictorySubline, pickSetbackLabel, pickSetbackEncouragement } from './engine/reactions';
+import { mulberry32, hashSeed } from './engine/rng';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
 import { ActionPanel } from './components/ActionPanel';
+import { JournalBubble } from './components/JournalBubble';
+import { deriveSenderFromJournalEntry } from './engine/messageSender';
 import type { AfflictionEvent } from './types/game';
 import './index.css';
 
 function BackgroundParticles() {
-  const particles = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => ({
+  // Particules décoratives tirées UNE fois via l'initialiseur paresseux de useState
+  // (autorisé à être impur, hors du chemin de rendu) → plus de Math.random au rendu.
+  const [particles] = useState(() =>
+    Array.from({ length: 12 }, (_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       size: `${1 + Math.random() * 2}px`,
       duration: `${8 + Math.random() * 12}s`,
       delay: `${Math.random() * 10}s`,
       opacity: `${0.2 + Math.random() * 0.3}`,
-    }));
-  }, []);
+    })),
+  );
 
   return (
     <div id="bg-particles">
@@ -74,7 +87,6 @@ function App() {
   const {
     age,
     phase,
-    difficulty,
     combo,
     totalEvents,
     successRate,
@@ -84,26 +96,47 @@ function App() {
     lastEventResult,
     gameOver,
     currentTitle,
-    inheritance,
     codex,
     stats,
+    playerName,
     lifeContext,
     parentNames,
     actionsThisYear,
     spiritualSeason,
+    calling,
+    traits,
+    discoveryMode,
     initGame,
+    initGameWithSeed,
     startWithPrologue,
     ageUp,
     dismissResult,
     hydrateFromSave,
   } = useGameStore();
 
-  const [showResult, setShowResult] = useState(false);
-  const [showVerseConfirm, setShowVerseConfirm] = useState(false);
+  // Affichage du résultat DÉRIVÉ du store (phase + dernier résultat) : showResult et
+  // showVerseConfirm retombent à false exactement quand dismissResult() repasse en 'idle'.
+  // Plus aucun setState dans l'effet de résultat (qui ne fait plus que le juice impératif).
+  const showResult = phase === 'result' && lastEventResult === 'success';
+  const showVerseConfirm = phase === 'result' && lastEventResult === 'fail';
+  // Réaction tirée par un RNG SEEDÉ sur l'événement → déterministe et stable entre rendus
+  // (plus de Math.random au rendu, plus besoin de la figer en state).
+  const reactionRng = currentEvent ? mulberry32(hashSeed(`${currentEvent.id}:${combo}`)) : Math.random;
+  const victory = showResult
+    ? {
+        banner: pickVictoryBanner(combo, reactionRng),
+        subline: pickVictorySubline({ category: currentEvent?.category, combo, season: spiritualSeason }, reactionRng),
+      }
+    : { banner: 'VICTOIRE', subline: '' };
+  const setback = showVerseConfirm
+    ? { label: pickSetbackLabel(reactionRng), grace: pickSetbackEncouragement(reactionRng) }
+    : { label: 'Épreuve non surmontée', grace: '' };
   const [showCodex, setShowCodex] = useState(false);
   const [showLexicon, setShowLexicon] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
   const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+  const [seedInput, setSeedInput] = useState('');
   const [showPrologue, setShowPrologue] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -121,7 +154,9 @@ function App() {
   type AiJournalEntry = { age: number; text: string; generating: boolean };
   const [aiJournalEntries, setAiJournalEntries] = useState<AiJournalEntry[]>([]);
   const [pendingAiEvent, setPendingAiEvent] = useState<AfflictionEvent | null>(null);
-  const [generatingAiEvent, setGeneratingAiEvent] = useState(false);
+  // Garde anti-réentrance de la génération IA : un ref (jamais lu au rendu) plutôt qu'un
+  // state → pas de setState dans l'effet, pas de re-render inutile.
+  const generatingAiEvent = useRef(false);
 
   const state = useGameStore.getState();
   // Init juice + load save + onboarding
@@ -145,11 +180,16 @@ function App() {
           setReducedSounds(prefs.reducedSounds ?? false);
           setSlowTimer(prefs.slowTimer ?? false);
         }
-      } catch {}
+      } catch {
+        /* prefs corrompues/absentes → valeurs par défaut */
+      }
       setLoading(false);
+      // Renvoyer les feedbacks mis en file locale (best-effort, si Supabase configuré)
+      flushLocalQueue().catch(() => {});
     }
     init();
-  }, []);
+    // hydrateFromSave est une action Zustand (référence stable) → l'effet reste mono-exécution.
+  }, [hydrateFromSave]);
 
   // Appliquer la classe dyslexic-mode sur #root
   useEffect(() => {
@@ -175,19 +215,22 @@ function App() {
     }
   }, [slowTimer]);
 
-  // Appliquer reducedSounds
+  // Appliquer reducedSounds : couper l'état « musique on » au rendu (reset on prop change)
+  // quand le réglage s'active, et stopper l'audio (impératif) dans l'effet.
+  const [prevReduced, setPrevReduced] = useState(reducedSounds);
+  if (prevReduced !== reducedSounds) {
+    setPrevReduced(reducedSounds);
+    if (reducedSounds) setAmbientOn(false);
+  }
   useEffect(() => {
-    if (reducedSounds) {
-      stopAmbient();
-      setAmbientOn(false);
-    }
+    if (reducedSounds) stopAmbient();
   }, [reducedSounds]);
 
   const journal = state.journal;
 
-  // Scroll journal
+  // Scroll journal (en phase 'idle' ; showResult est faux hors 'result' par construction)
   useEffect(() => {
-    if (!showResult && phase === 'idle') {
+    if (phase === 'idle') {
       journalRef.current?.scrollTo({
         top: journalRef.current.scrollHeight,
         behavior: 'smooth',
@@ -201,35 +244,40 @@ function App() {
     if (containerRef.current) setShakeContainer(containerRef.current);
   }, []);
 
+  // Effet de RÉSULTAT : ne fait QUE le juice impératif (son/particules/vibration) sur la
+  // transition. La bannière et les modales sont dérivées au rendu (cf. plus haut) ; seul
+  // l'auto-dismiss du succès reste ici, et son setState part du callback différé du timer.
   useEffect(() => {
-    if (phase === 'result' && lastEventResult) {
-      if (lastEventResult === 'success') {
-        playSuccess();
-        // Haptic feedback : succès
-        try { navigator.vibrate([5, 50, 10]); } catch {}
-        if (containerRef.current) {
-          spawnParticles(containerRef.current, 'success', 10);
-          glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
-        }
-        setShowResult(true);
-        const timer = setTimeout(() => {
-          setShowResult(false);
-          dismissResult();
-        }, 1500);
-        return () => clearTimeout(timer);
-      } else {
-        // Échec → confirmation manuelle, le joueur doit lire le verset
-        playFail();
-        // Haptic feedback : échec
-        try { navigator.vibrate(20); } catch {}
-        screenShake(6, 400);
-        if (containerRef.current) {
-          spawnParticles(containerRef.current, 'fail', 6);
-        }
-        setShowVerseConfirm(true);
+    if (phase !== 'result' || !lastEventResult) return;
+    if (lastEventResult === 'success') {
+      playSuccess();
+      try { navigator.vibrate([5, 50, 10]); } catch { /* vibrate non supporté */ }
+      if (containerRef.current) {
+        spawnParticles(containerRef.current, 'success', 10);
+        glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
+      }
+      const timer = setTimeout(() => dismissResult(), 1500);
+      return () => clearTimeout(timer);
+    } else {
+      // Échec → confirmation manuelle, le joueur doit lire le verset.
+      playFail();
+      try { navigator.vibrate(20); } catch { /* vibrate non supporté */ }
+      screenShake(6, 400);
+      if (containerRef.current) {
+        spawnParticles(containerRef.current, 'fail', 6);
       }
     }
-  }, [phase, lastEventResult]);
+  }, [phase, lastEventResult, dismissResult]);
+
+  // Son de fin de partie — EFFET (pas en rendu) : un effet sonore ne doit jamais
+  // partir pendant le rendu. Joué une seule fois à la bascule en game over.
+  useEffect(() => {
+    if (gameOver?.isOver && !gameOverSoundPlayed.current) {
+      gameOverSoundPlayed.current = true;
+      if (gameOver.reason === 'victory') playLevelUp();
+      else playFail();
+    }
+  }, [gameOver?.isOver, gameOver?.reason]);
 
   // Combo sound
   const prevCombo = useRef(0);
@@ -252,13 +300,20 @@ function App() {
     prevAge.current = age;
   }, [age]);
 
-  // Reset game-over sound guard when a new game begins
-  useEffect(() => {
-    if (!gameOver?.isOver) {
-      gameOverSoundPlayed.current = false;
+  // Reset des modales de fin quand une nouvelle partie commence : fait PENDANT le rendu
+  // (pattern « reset state on prop change ») au lieu d'un setState dans un effet.
+  const overNow = gameOver?.isOver ?? false;
+  const [prevOver, setPrevOver] = useState(overNow);
+  if (prevOver !== overNow) {
+    setPrevOver(overNow);
+    if (!overNow) {
       setShowShareCard(false);
       setShowLifeReview(false);
     }
+  }
+  // Garde sonore de game-over : reset d'un ref (non concerné par set-state-in-effect).
+  useEffect(() => {
+    if (!gameOver?.isOver) gameOverSoundPlayed.current = false;
   }, [gameOver?.isOver]);
 
   // Dynamic music: slow the track slightly when any stat is critically low
@@ -268,47 +323,85 @@ function App() {
     setAmbientPlaybackRate(min <= 20 ? 0.92 : min <= 35 ? 0.96 : 1.0);
   }, [stats, ambientOn]);
 
-  // ── Journal vivant : entrée IA à chaque anniversaire ─────────────────────
+  // Season crossfade: quand la saison spirituelle change, bascule la piste
+  // Les fichiers ambient-*.mp3 doivent exister dans public/audio/
+  // Si absents, le .catch() silencieux gère l'erreur (rien ne joue)
   useEffect(() => {
-    if (!isAiEnabled() || age === 0 || phase === 'gameover') return;
+    if (!ambientOn || !spiritualSeason) return;
+    const seasonSlug = spiritualSeason
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlève accents
+      .toLowerCase();
+    crossfadeTo(`/audio/ambient-${seasonSlug}.mp3`);
+  }, [spiritualSeason, ambientOn]);
+
+  // ── Journal vivant : narrateur offline (immédiat) + IA en bonus ──────────
+  useEffect(() => {
+    if (age === 0 || gameOver?.isOver) return;
     const s = useGameStore.getState();
+
+    // Résultats récents (succès/échec) et traits gagnés cette année — contexte narratif.
+    const recentResults = s.journal
+      .filter((e) => e.type === 'success' || e.type === 'fail')
+      .slice(-3)
+      .map((e) => (e.type === 'success' ? 'success' : 'fail') as 'success' | 'fail');
+    const newTraitIds = (s.traits ?? [])
+      .filter((t) => t.earnedAtAge === age)
+      .map((t) => t.id);
+
+    // Échos : moments marquants passés (traits/arcs) → rappels narratifs occasionnels.
+    const echoes = deriveEchoes(s);
+
+    // 1) Narrateur offline — toujours disponible, écrit tout de suite.
+    const offline = generateOfflineJournal({
+      age, stats, season: spiritualSeason, calling, traits,
+      newTraitIds, recentResults, successRate, lifeContext, parentNames, actionsThisYear,
+      echoes,
+    });
+    // Exception ASSUMÉE à set-state-in-effect : génération de CONTENU (narratif aléatoire,
+    // non dérivable au rendu) accumulé par âge puis raffiné en async (IA) — c'est le cas
+    // légitime « effet qui produit des données » (cf. doc React). Un vrai retrait imposerait
+    // de remonter la génération dans l'action `advanceAge` du store (évolution future).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAiJournalEntries((prev) => [
+      ...prev.filter((e) => e.age !== age),
+      { age, text: offline, generating: isAiEnabled() },
+    ]);
+
+    // 2) IA narrative — si un backend est branché, raffine l'entrée (bonus).
+    if (!isAiEnabled()) return;
     const recentTitles = s.journal
       .filter((e) => e.type !== 'milestone')
       .slice(-5)
       .map((e) => e.text.replace(/^\d+a\s+/, '').split('.')[0]);
 
-    // Ajouter un placeholder "en génération..."
-    setAiJournalEntries((prev) => [
-      ...prev.filter((e) => e.age !== age),
-      { age, text: '', generating: true },
-    ]);
-
-    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames, actionsThisYear)
+    generateJournalEntry(age, stats, recentTitles, successRate, lifeContext, parentNames, actionsThisYear, playerName)
       .then((text) => {
-        if (!text) {
-          setAiJournalEntries((prev) => prev.filter((e) => !(e.age === age && e.generating)));
-          return;
-        }
         setAiJournalEntries((prev) =>
-          prev.map((e) => (e.age === age && e.generating ? { age, text, generating: false } : e))
+          prev.map((e) =>
+            e.age === age && e.generating
+              ? { age, text: text || e.text || offline, generating: false }
+              : e
+          )
         );
       })
       .catch(() =>
-        setAiJournalEntries((prev) => prev.filter((e) => !(e.age === age && e.generating)))
+        setAiJournalEntries((prev) =>
+          prev.map((e) => (e.age === age && e.generating ? { ...e, generating: false } : e))
+        )
       );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [age]);
 
   // ── Événements dynamiques : pré-génération en arrière-plan ───────────────
   useEffect(() => {
-    if (!isAiEnabled() || phase !== 'idle' || generatingAiEvent || pendingAiEvent) return;
+    if (!isAiEnabled() || phase !== 'idle' || generatingAiEvent.current || pendingAiEvent) return;
     // 1 chance sur 3 de générer un événement IA pour la prochaine fois
     if (Math.random() > 0.33) return;
 
-    setGeneratingAiEvent(true);
-    generateDynamicEvent(age, stats, lifeContext, parentNames)
+    generatingAiEvent.current = true;
+    generateDynamicEvent(age, stats, lifeContext, parentNames, playerName)
       .then((narrative) => {
-        if (!narrative) { setGeneratingAiEvent(false); return; }
+        if (!narrative) { generatingAiEvent.current = false; return; }
         const event: AfflictionEvent = {
           id:              `ai-${Date.now()}`,
           title:           narrative.title,
@@ -321,9 +414,9 @@ function App() {
           thematicFlavor:  narrative.thematicFlavor,
         };
         setPendingAiEvent(event);
-        setGeneratingAiEvent(false);
+        generatingAiEvent.current = false;
       })
-      .catch(() => setGeneratingAiEvent(false));
+      .catch(() => { generatingAiEvent.current = false; });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
@@ -335,11 +428,7 @@ function App() {
   // ─── GAME OVER ───
   if (gameOver?.isOver) {
     const isVictory = gameOver.reason === 'victory';
-    if (!gameOverSoundPlayed.current) {
-      gameOverSoundPlayed.current = true;
-      if (isVictory) playLevelUp();
-      else playFail();
-    }
+    // (Le son de fin est joué par un effet dédié — rendu pur.)
     const unlockedCount = Object.values(codex).filter((c) => c.unlocked).length;
     const metrics = computeFinalMetrics(state);
     const title = determineTitle(metrics);
@@ -358,7 +447,7 @@ function App() {
 
     const handleExportJournal = async () => {
       const lines = [
-        `=== La vie d'Élias ===`,
+        `=== La vie de ${playerName} ===`,
         `Âge : ${age} ans · Réussite : ${successRate}% · Combo max : ×${state.maxCombo}`,
         ...(title ? [`Titre : ${title.name}`] : []),
         '',
@@ -368,7 +457,8 @@ function App() {
             : `${e.age}a ✦ ${e.text}`
         ),
         '',
-        `Joue Élias ➜ ${window.location.origin}`,
+        `Graine : ${state.seed} (rejoue la même vie)`,
+        `Joue ${playerName} ➜ ${window.location.origin}`,
       ].join('\n');
       try {
         await navigator.clipboard.writeText(lines);
@@ -461,6 +551,34 @@ function App() {
               </div>
             )}
 
+            {calling && (
+              <div className="gameover-calling" style={{ color: calling.color }}>
+                <span className="gameover-calling-icon">{calling.icon}</span>
+                {calling.titleFlavor
+                  ? calling.titleFlavor
+                  : `Sur la voie ${calling.name}`}
+              </div>
+            )}
+
+            {traits.length > 0 && (
+              <div id="gameover-traits-bar">
+                {traits.map((t) => {
+                  const def = getTraitById(t.id);
+                  if (!def) return null;
+                  return (
+                    <span
+                      key={t.id}
+                      className="trait-chip"
+                      style={{ borderColor: def.color, color: def.color }}
+                      title={def.description}
+                    >
+                      {def.icon} {def.name}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+
             <div className="gameover-stats">
               <div>Âge : <strong>{age}</strong> ans</div>
               <div>Épreuves : <strong>{totalEvents}</strong></div>
@@ -511,16 +629,18 @@ function App() {
                     'Je vous laisse la paix, je vous donne ma paix. Jean 14.27',
                     'Nous savons que toutes choses concourent au bien de ceux qui aiment Dieu. Romains 8.28',
                   ];
-                  return fallbackVerses[Math.floor(Math.random() * fallbackVerses.length)];
+                  // Rendu PUR : index dérivé d'un état stable (âge + versets débloqués),
+                  // pas de Math.random en rendu — verset constant sur les re-renders.
+                  return fallbackVerses[(age + unlockedCount) % fallbackVerses.length];
                 })() } »
               </div>
               <div style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 8 }}>
                 {(() => {
-                  if (stats.foi > 70) return "Élias a marché avec Dieu jusqu'au bout.";
-                  if (stats.paix > 70) return "La paix d'Élias a traversé les tempêtes.";
-                  if (stats.physique > 70) return 'Élias a combattu le bon combat jusqu\'à la fin.';
-                  if (stats.finances > 70) return 'Élias a été fidèle dans les petites et grandes choses.';
-                  return "Élias a terminé sa course. La grâce l'attendait au bout du chemin.";
+                  if (stats.foi > 70) return `${playerName} a marché avec Dieu jusqu'au bout.`;
+                  if (stats.paix > 70) return `La paix de ${playerName} a traversé les tempêtes.`;
+                  if (stats.physique > 70) return `${playerName} a combattu le bon combat jusqu'à la fin.`;
+                  if (stats.finances > 70) return `${playerName} a été fidèle dans les petites et grandes choses.`;
+                  return `${playerName} a terminé sa course. La grâce l'attendait au bout du chemin.`;
                 })()}
               </div>
             </div>
@@ -546,12 +666,31 @@ function App() {
             <button className="btn-restart" onClick={initGame}>
               NOUVELLE PARTIE {title ? '✦ HÉRITAGE' : ''}
             </button>
+
+            <button
+              className="btn-share-alt"
+              style={{ marginTop: 8 }}
+              onClick={() => { playClick(); initGameWithSeed(state.seed, playerName); }}
+              title="Recommence une vie issue de la même graine (même monde, mêmes stats de départ)"
+            >
+              ↻ REJOUER CETTE GRAINE · {state.seed}
+            </button>
+
+            <button
+              className="feedback-link"
+              onClick={() => { playClick(); setShowFeedback(true); }}
+            >
+              <MessageSquare size={12} strokeWidth={1.8} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+              Un bug ? Une idée ? Donne ton avis
+            </button>
           </div>
         )}
 
         {/* Share card modal */}
         {showShareCard && (
           <ShareCard
+            playerName={playerName}
+            seed={state.seed}
             age={age}
             successRate={successRate}
             maxCombo={state.maxCombo}
@@ -561,6 +700,10 @@ function App() {
             onClose={() => setShowShareCard(false)}
           />
         )}
+
+        <Suspense fallback={null}>
+          {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
+        </Suspense>
 
         {import.meta.env.DEV && <DebugView />}
       </div>
@@ -627,6 +770,8 @@ function App() {
           )}
         </span>
         <span className="info-bar-item">
+          {/* Ambition de run (T-25) — Appel + progression des arcs */}
+          <AmbitionTracker />
           {/* Badge saison spirituelle */}
           {(() => {
             const s = SPIRITUAL_SEASONS[spiritualSeason ?? 'Réveil'];
@@ -644,6 +789,28 @@ function App() {
               </span>
             );
           })()}
+          {/* Badge mode découverte (T-17) — indicateur visuel discret en haut */}
+          {discoveryMode && (
+            <span
+              title="Mode entraînement actif — les stats ne sont pas affectées"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '3px 10px',
+                borderRadius: 12,
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                background: 'rgba(59,130,246,0.18)',
+                border: '1px solid rgba(59,130,246,0.5)',
+                color: '#93c5fd',
+              }}
+            >
+              <BookOpen size={10} strokeWidth={2} className="inline-icon-no-mr" />
+              DECOUVERTE
+            </span>
+          )}
           {combo > 2 && (() => {
             const nextMilestone = combo < 5 ? 5 : combo < 10 ? 10 : combo < 20 ? 20 : null;
             const tierColor = combo >= 20 ? '#a78bfa' : combo >= 10 ? '#fb923c' : combo >= 5 ? '#fbbf24' : '#f59e0b';
@@ -668,7 +835,7 @@ function App() {
             onClick={() => {
               const next = !ambientOn;
               setAmbientOn(next);
-              next ? startAmbient() : stopAmbient();
+              if (next) startAmbient(); else stopAmbient();
             }}
             title={ambientOn ? 'Couper la musique' : 'Activer la musique'}
             className="btn-music"
@@ -690,6 +857,26 @@ function App() {
         </span>
       </div>
 
+      {/* Pastilles de traits gagnés en cours de vie */}
+      {traits && traits.length > 0 && (
+        <div id="traits-bar">
+          {traits.map((t) => {
+            const def = getTraitById(t.id);
+            if (!def) return null;
+            return (
+              <span
+                key={t.id}
+                className="trait-chip"
+                title={`${def.name} (acquis à ${t.earnedAtAge} ans) — ${def.description}`}
+                style={{ border: `1px solid ${def.color}55`, background: `${def.color}14`, color: def.color }}
+              >
+                {def.icon} {def.name}
+              </span>
+            );
+          })}
+        </div>
+      )}
+
       <div id="content-area">
         {/* Enemy SVG background */}
         {EnemySvg && phase === 'event' && (
@@ -706,17 +893,17 @@ function App() {
         >
           {journal.length === 0 ? (
             <div className="journal-empty">
-              Le voyage d'Élias commence...
+              Le voyage de {playerName} commence...
             </div>
           ) : (
             (() => {
               // Fusionner entrées normales + entrées IA, triées par âge
               type MixedEntry =
-                | { kind: 'normal'; i: number; age: number; type: string; text: string }
+                | { kind: 'normal'; i: number; age: number; type: string; text: string; verseRef?: string }
                 | { kind: 'ai'; age: number; text: string; generating: boolean };
 
               const normal: MixedEntry[] = journal.map((e, i) => ({
-                kind: 'normal', i, age: e.age ?? 0, type: e.type, text: e.text,
+                kind: 'normal', i, age: e.age ?? 0, type: e.type, text: e.text, verseRef: e.verseRef,
               }));
               const ai: MixedEntry[] = aiJournalEntries.map((e) => ({
                 kind: 'ai', age: e.age, text: e.text, generating: e.generating,
@@ -725,26 +912,23 @@ function App() {
 
               return all.map((entry, idx) => {
                 if (entry.kind === 'normal') {
+                  // Dériver l'émetteur depuis l'entrée de journal (T-21)
+                  const journalEntry = { age: entry.age, text: entry.text, type: entry.type as 'event' | 'success' | 'fail' | 'milestone' | 'cascade' | 'micro' | 'moral', verseRef: entry.verseRef };
+                  const msgSender = deriveSenderFromJournalEntry(journalEntry);
                   return (
-                    <div key={`n-${entry.i}`} className={`journal-entry entry-${entry.type}`}>
-                      {entry.type === 'milestone' ? (
-                        <span>{entry.text}</span>
-                      ) : entry.type === 'micro' ? (
-                        <><span className="entry-age-before">{entry.age}a</span>{' '}
-                        <span className="entry-separator">·</span>
-                        {entry.text}</>
-                      ) : (
-                        <><span className="entry-age-before">{entry.age}a</span> {entry.text}</>
-                      )}
-                    </div>
+                    <JournalBubble
+                      key={`n-${entry.i}`}
+                      entry={journalEntry}
+                      sender={msgSender}
+                    />
                   );
                 }
-                // Entrée IA
+                // Entrée IA — rendu textuel préservé (pas de sender dérivé pour l'IA)
                 return (
                   <div key={`ai-${idx}`} className={`journal-ai-entry${entry.generating ? ' generating' : ''}`}>
                     {entry.generating ? (
                       <span className="entry-age-tag">
-                        <span>{entry.age}a</span> ✦ Élias écrit dans son journal...
+                        <span>{entry.age}a</span> ✦ {playerName} écrit dans son journal...
                       </span>
                     ) : (
                       <>
@@ -764,7 +948,10 @@ function App() {
         {/* Choices overlay pendant un événement */}
         {phase === 'event' && (
           <div id="choices-area">
-            <VerseChoices />
+            {currentEvent && isMoralEvent(currentEvent)
+              ? <MoralChoicePanel />
+              : <VerseChoices />
+            }
           </div>
         )}
       </div>
@@ -773,7 +960,10 @@ function App() {
       {showResult && currentEvent && (
         <div className="result-flash success">
           <div className="result-flash-icon" style={{ color: 'var(--success)' }}>✦</div>
-          <div className="result-verse" style={{ color: 'var(--success)' }}>VICTOIRE</div>
+          <div className="result-verse" style={{ color: 'var(--success)' }}>{victory.banner}</div>
+          {victory.subline && (
+            <div className="result-subline">{victory.subline}</div>
+          )}
         </div>
       )}
 
@@ -785,7 +975,7 @@ function App() {
             <div className="result-flash-icon" style={{ color: 'var(--danger)' }}>✕</div>
 
             <div className="verse-fail-label">
-              Épreuve non surmontée
+              {setback.label}
             </div>
 
             {/* Carte verset */}
@@ -804,8 +994,14 @@ function App() {
               </div>
             </div>
 
+            {setback.grace && (
+              <div className="verse-fail-grace">
+                ✦ {setback.grace}
+              </div>
+            )}
+
             <button
-              onClick={() => { setShowVerseConfirm(false); dismissResult(); }}
+              onClick={() => dismissResult()}
               className="btn-primary"
             >
               J'AI COMPRIS{' '}
@@ -837,9 +1033,22 @@ function App() {
         )}
       </div>
 
+      {/* Bouton flottant discret — signaler un bug / donner son avis */}
+      {phase !== 'event' && (
+        <button
+          onClick={() => { playClick(); setShowFeedback(true); }}
+          title="Signaler un bug ou donner ton avis"
+          aria-label="Donner mon avis"
+          className="feedback-fab"
+        >
+          <MessageSquare size={16} strokeWidth={1.8} />
+        </button>
+      )}
+
       <Suspense fallback={null}>
         {showCodex && <CodexMenu onClose={() => setShowCodex(false)} />}
         {showLexicon && <LexiconMenu onClose={() => setShowLexicon(false)} />}
+        {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
       </Suspense>
 
       {/* Menu burger principal */}
@@ -848,12 +1057,13 @@ function App() {
           onClose={() => setShowMainMenu(false)}
           onOpenCodex={() => setShowCodex(true)}
           onOpenLexicon={() => setShowLexicon(true)}
+          onOpenFeedback={() => { setShowMainMenu(false); setShowFeedback(true); }}
           onNewGame={() => { setShowMainMenu(false); setShowNewGameConfirm(true); }}
           ambientOn={ambientOn}
           onToggleAmbient={() => {
             const next = !ambientOn;
             setAmbientOn(next);
-            next ? startAmbient() : stopAmbient();
+            if (next) startAmbient(); else stopAmbient();
           }}
           currentTitle={currentTitle?.name ?? null}
           age={age}
@@ -896,18 +1106,44 @@ function App() {
                 </span></>
               )}
             </div>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={seedInput}
+              onChange={(e) => setSeedInput(e.target.value.replace(/[^0-9]/g, ''))}
+              placeholder="Graine partagée (optionnel)"
+              aria-label="Graine partagée optionnelle"
+              style={{
+                width: '100%', padding: '10px 12px', marginBottom: 12,
+                fontSize: 13, textAlign: 'center',
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.22)', borderRadius: 10,
+                color: 'var(--text-primary)', fontFamily: 'var(--font-body)',
+                outline: 'none',
+              }}
+            />
             <div className="btn-row">
               <button
-                onClick={() => setShowNewGameConfirm(false)}
+                onClick={() => { setSeedInput(''); setShowNewGameConfirm(false); }}
                 className="btn-cancel"
               >
                 ANNULER
               </button>
               <button
-                onClick={() => { setShowNewGameConfirm(false); setShowPrologue(true); }}
+                onClick={() => {
+                  setShowNewGameConfirm(false);
+                  const s = seedInput.trim();
+                  if (s !== '') {
+                    // Graine saisie → on rejoue ce monde exact, sans prologue.
+                    initGameWithSeed(Number(s));
+                    setSeedInput('');
+                  } else {
+                    setShowPrologue(true);
+                  }
+                }}
                 className="btn-danger"
               >
-                RECOMMENCER
+                {seedInput.trim() !== '' ? 'JOUER LA GRAINE' : 'RECOMMENCER'}
               </button>
             </div>
           </div>
@@ -932,6 +1168,10 @@ function App() {
           onComplete={() => {
             setShowOnboarding(false);
             markOnboardingDone();
+            // Onboarding zéro-friction (itér. 14) : aucune première vie anonyme —
+            // on enchaîne sur le Prologue (nom + choix formateurs) au lieu de
+            // déposer le joueur sur un Élias par défaut.
+            setShowPrologue(true);
           }}
         />
       )}

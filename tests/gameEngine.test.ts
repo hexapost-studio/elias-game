@@ -13,12 +13,12 @@ import {
   calculateBurnoutRate,
   createInitialCodex,
   getSrsPriorityVerses,
-  computeFinalMetrics,
   determineTitle,
   TITLES,
 } from '../src/engine/gameEngine';
 import { getEventsForAge, getEventById, TOTAL_EVENTS, EVENT_DATABASE } from '../src/data/events';
 import { TOTAL_VERSES, VERSE_DATABASE } from '../src/data/verses';
+import { mulberry32 } from '../src/engine/rng';
 
 /* ═══════════════════
    T1 — Initialisation
@@ -36,7 +36,7 @@ describe('T1: Initialisation du jeu', () => {
   it('le RNG génère des stats de départ variées', () => {
     const profiles = new Set<string>();
     for (let i = 0; i < 20; i++) {
-      const { profileName } = generateBirthStats();
+      const { profileName } = generateBirthStats(mulberry32(i));
       profiles.add(profileName);
     }
     // Au moins 2 profils différents sur 20 runs
@@ -45,7 +45,7 @@ describe('T1: Initialisation du jeu', () => {
 
   it('toutes les jauges initiales sont entre 30 et 95', () => {
     for (let i = 0; i < 10; i++) {
-      const { stats } = generateBirthStats();
+      const { stats } = generateBirthStats(mulberry32(i));
       for (const value of Object.values(stats)) {
         expect(value).toBeGreaterThanOrEqual(30);
         expect(value).toBeLessThanOrEqual(95);
@@ -114,12 +114,12 @@ describe('T3: Système de Burnout', () => {
     expect(calculateBurnoutRate(1)).toBe(0);
   });
 
-  it('Palier 2 : -1 physique par tour', () => {
-    expect(calculateBurnoutRate(2)).toBe(1);
+  it('Palier 2 : pas de burn-out (itér. 35 — anti-inversion)', () => {
+    expect(calculateBurnoutRate(2)).toBe(0);
   });
 
-  it('Palier 3 : -3 physique par tour', () => {
-    expect(calculateBurnoutRate(3)).toBe(3);
+  it('Palier 3 : -1 physique par tour (itér. 35 — burnout adouci)', () => {
+    expect(calculateBurnoutRate(3)).toBe(1);
   });
 });
 
@@ -261,6 +261,25 @@ describe('T8: Système de Codex', () => {
     const { newState } = validateChoice(state, event.correctVerseId);
     expect(newState.codex[event.correctVerseId].unlocked).toBe(true);
     expect(newState.codex[event.correctVerseId].timesUsed).toBe(1);
+  });
+
+  it('régression : un palier de combo conserve SON entrée de journal [COMBO xN] (itér. 17)', () => {
+    const state = createInitialState();
+    state.age = 10;
+    state.phase = 'event';
+    state.combo = 4; // ce succès porte le combo à 5 → palier (balance.json thresholds.5)
+
+    const event = getEventById('e-fond-004');
+    if (!event) return;
+    state.currentEvent = event;
+
+    const { newState } = validateChoice(state, event.correctVerseId);
+    expect(newState.combo).toBe(5);
+    // Les DEUX entrées doivent coexister (le bug rebâtissait le journal depuis state.journal,
+    // écrasant l'entrée combo posée juste avant).
+    const texts = newState.journal.map((e) => e.text);
+    expect(texts.some((t) => t.includes('[COMBO x5]'))).toBe(true);
+    expect(texts.some((t) => t.includes('[VICTOIRE]'))).toBe(true);
   });
 
   it('une erreur enregistre le comptage dans le Codex', () => {
