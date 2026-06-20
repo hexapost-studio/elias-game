@@ -109,3 +109,41 @@ Atteinte quand :
 1. **Phase 1 verte** : `npx eslint . -f json` → **0** erreur `react-hooks/*` sur les 9 fichiers ciblés.
 2. **≥ 3 arcs C1 jouables** (events présents, `npm run validate` vert).
 3. **4 portes QA vertes** sur HEAD (`bash tools/qa-gate.sh` → exit 0).
+
+---
+
+## Phase 4 — Équilibre contenu & polish déterministe (v0.2.0)
+
+> **Audit itér. 51 (2026-06-20)** : diagnostic corrigé après vérification du code.
+> T-33/T-35/T-36/T-38 étaient de **faux trous** — déjà implémentés (voir détail ci-dessous).
+> Seul T-34 est un vrai manque de contenu. Nouveau trou détecté : `pickDecoys` non seedé.
+>
+> **Faux trous confirmés (ne pas réimplémenter) :**
+> - T-33 leurres : `pickDecoys()` (`src/data/events.ts:13`) génère les leurres à la volée si `decoyVerseIds` vide.
+> - T-35 SRS : `getSrsPriorityVerses()` (`gameEngine.ts:388`) branché dans `advanceAge` lignes 822-832.
+> - T-36 titres : `determineTitle()` + `computeFinalMetrics()` (`gameEngine.ts:1593,1632`) + affiché App.tsx.
+> - T-38 graine : `ShareCard.tsx:64` affiche déjà `Graine : ${seed} (rejoue la même vie)`.
+> - T-37 saisons audio : code en place (`juice.ts:playSeasonTrack`), manque = assets `.mp3`, pas du code.
+
+### Tier 1 — Équilibre contenu (RÉEL)
+- [ ] **T-34** **Catégories sous-représentées** — `impudicite_addiction` (3), `culpabilite` (3),
+      `abondance_financiere` (3) → ≥ 8 events chacune (+15 minimum). Et rééquilibrer
+      `amertume_rejet` (44 events = 19 % du total) en enrichissant les autres au lieu d'en supprimer.
+      Format `game/data/events.json` + `npm run validate` vert.
+
+### Tier 2 — Déterminisme & qualité
+- [x] **T-39** **`pickDecoys` seedé ?** — DÉCISION (2026-06-20) : **garder `Math.random()`**.
+      `pickDecoys` est appelé avec `recentVerseIds` en exclusion (gameEngine.ts:853) → variété
+      pédagogique intentionnelle. La graine pilote le backbone, pas les leurres (couche présentation).
+      Le CHOIX seul pilote la divergence narrative — CLAUDE.md §RNG seedé.
+
+### Tier 3 — Assets audio saisons
+- [ ] **T-40** **Pistes ambient saisons** — `public/audio/ambient-{saison}.mp3` (4 fichiers) pour
+      `playSeasonTrack` (`juice.ts:341`). Travail = production audio, pas de code. À faire quand les
+      assets sont disponibles.
+
+### 🎯 Definition of v0.2.0
+Atteinte quand :
+1. Catégories `impudicite_addiction`/`culpabilite`/`abondance_financiere` à ≥ 8 events (T-34) + `npm run validate` vert.
+2. Décision T-39 prise + appliquée si retenu.
+3. `bash tools/qa-gate.sh` → exit 0.

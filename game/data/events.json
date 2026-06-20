@@ -5356,33 +5356,55 @@
     "id": "e-moral-001",
     "title": "La trahison de l'ami",
     "description": "{ami} t'a confié un secret douloureux. Quelques jours plus tard, un collègue te demande directement si tu sais quelque chose à ce sujet. Répondre la vérité protégerait peut-être quelqu'un, mais briserait la confiance d'une amitié. Le mensonge épargnerait {ami}, mais pèserait sur ta conscience. Et le silence ? Il a ses propres conséquences.",
-    "ageRange": [18, 32],
+    "ageRange": [
+      18,
+      32
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "",
     "decoyVerseIds": [],
-    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "statImpactOnFail": {
+      "foi": 0,
+      "paix": 0,
+      "physique": 0,
+      "finances": 0
+    },
     "thematicFlavor": "L'intégrité se mesure quand personne ne regarde.",
     "moralChoices": [
       {
         "id": "mc-001-verite",
         "label": "Dire la vérité",
         "description": "Tu révèles ce que tu sais. Douloureux pour {ami}, mais la vérité reste debout.",
-        "flagsSet": ["ami_001_truth_told"],
-        "statDeltas": { "foi": 3, "paix": -2 }
+        "flagsSet": [
+          "ami_001_truth_told"
+        ],
+        "statDeltas": {
+          "foi": 3,
+          "paix": -2
+        }
       },
       {
         "id": "mc-001-mensonge",
         "label": "Mentir pour protéger",
         "description": "Tu nies savoir quoi que ce soit. L'amitié est sauvée, mais quelque chose se ferme en toi.",
-        "flagsSet": ["ami_001_lie_told"],
-        "statDeltas": { "paix": -3, "foi": -1 }
+        "flagsSet": [
+          "ami_001_lie_told"
+        ],
+        "statDeltas": {
+          "paix": -3,
+          "foi": -1
+        }
       },
       {
         "id": "mc-001-silence",
         "label": "Garder le silence",
         "description": "Tu ne dis rien. Ni mensonge ni vérité. Le chemin étroit entre les deux.",
-        "flagsSet": ["ami_001_silence_kept"],
-        "statDeltas": { "paix": 1 }
+        "flagsSet": [
+          "ami_001_silence_kept"
+        ],
+        "statDeltas": {
+          "paix": 1
+        }
       }
     ]
   },
@@ -5390,26 +5412,45 @@
     "id": "e-moral-002",
     "title": "Le mensonge au travail",
     "description": "Ton supérieur te demande si tu as terminé un rapport. Il ne l'est pas — et il en a besoin pour une réunion importante dans une heure. Dire la vérité pourrait compromettre ta réputation. Mentir gagnerait du temps, mais l'erreur finira par remonter. Tu pourrais aussi avouer et proposer une solution immédiate.",
-    "ageRange": [22, 40],
+    "ageRange": [
+      22,
+      40
+    ],
     "category": "orgueil_independance",
     "correctVerseId": "",
     "decoyVerseIds": [],
-    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "statImpactOnFail": {
+      "foi": 0,
+      "paix": 0,
+      "physique": 0,
+      "finances": 0
+    },
     "thematicFlavor": "L'humilité n'est pas une faiblesse — c'est une force tranquille.",
     "moralChoices": [
       {
         "id": "mc-002-avouer",
         "label": "Avouer et proposer une solution",
         "description": "Tu dis la vérité, tu présentes ce que tu as fait et tu t'engages à finir en urgence.",
-        "flagsSet": ["travail_002_honest"],
-        "statDeltas": { "foi": 4, "paix": 2, "finances": -1 }
+        "flagsSet": [
+          "travail_002_honest"
+        ],
+        "statDeltas": {
+          "foi": 4,
+          "paix": 2,
+          "finances": -1
+        }
       },
       {
         "id": "mc-002-mentir",
         "label": "Prétendre que c'est presque fini",
         "description": "Tu gagnes du temps avec un demi-mensonge. La pression s'accumule en silence.",
-        "flagsSet": ["travail_002_deceived"],
-        "statDeltas": { "paix": -4, "foi": -2 }
+        "flagsSet": [
+          "travail_002_deceived"
+        ],
+        "statDeltas": {
+          "paix": -4,
+          "foi": -2
+        }
       }
     ]
   },
@@ -5417,47 +5458,80 @@
     "id": "e-moral-003",
     "title": "Le pardon difficile",
     "description": "Quelqu'un t'a blessé profondément — une parole publique, une trahison que tu n'as pas demandée. Cette personne revient vers toi, tête baissée, et te demande pardon. Une partie de toi veut pardonner. Une autre veut qu'elle comprenne l'étendue du mal. Et une autre encore voudrait simplement disparaître pour ne plus souffrir.",
-    "ageRange": [20, 55],
+    "ageRange": [
+      20,
+      55
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "",
     "decoyVerseIds": [],
-    "statImpactOnFail": { "foi": 0, "paix": 0, "physique": 0, "finances": 0 },
+    "statImpactOnFail": {
+      "foi": 0,
+      "paix": 0,
+      "physique": 0,
+      "finances": 0
+    },
     "thematicFlavor": "Pardonner, ce n'est pas effacer — c'est choisir de ne plus porter.",
     "moralChoices": [
       {
         "id": "mc-003-pardonner",
         "label": "Pardonner sincèrement",
         "description": "Tu choisis de pardonner — pas parce que c'est facile, mais parce que tu refuses que cette blessure devienne ton maître.",
-        "flagsSet": ["pardon_003_given"],
-        "statDeltas": { "paix": 5, "foi": 3 }
+        "flagsSet": [
+          "pardon_003_given"
+        ],
+        "statDeltas": {
+          "paix": 5,
+          "foi": 3
+        }
       },
       {
         "id": "mc-003-refuser",
         "label": "Refuser pour l'instant",
         "description": "Tu ne te sens pas prêt. Tu lui dis que tu as besoin de temps. L'honnêteté avant la performance.",
-        "flagsSet": ["pardon_003_deferred"],
-        "statDeltas": { "paix": -2, "foi": 1 }
+        "flagsSet": [
+          "pardon_003_deferred"
+        ],
+        "statDeltas": {
+          "paix": -2,
+          "foi": 1
+        }
       },
       {
         "id": "mc-003-confronter",
         "label": "Parler d'abord de la blessure",
         "description": "Tu lui dis ce qu'il t'a fait ressentir, en détail, avant de donner une réponse. La vérité avant la réconciliation.",
-        "flagsSet": ["pardon_003_truth_first"],
-        "statDeltas": { "paix": 1, "foi": 2 }
+        "flagsSet": [
+          "pardon_003_truth_first"
+        ],
+        "statDeltas": {
+          "paix": 1,
+          "foi": 2
+        }
       }
     ]
   },
-
   {
     "id": "e-esprit-003",
     "title": "La langue inconnue",
     "description": "Lors d'une veillée de prière, quelqu'un se met à prier dans une langue que personne ne reconnaît. Certains sont troublés, d'autres émus. Tu ne sais pas quoi en penser. Le Saint-Esprit se manifeste-t-il encore aujourd'hui comme dans les Actes ?",
-    "ageRange": [16, 50],
+    "ageRange": [
+      16,
+      50
+    ],
     "category": "saint_esprit",
     "correctVerseId": "v-esprit-004",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 4, "paix": 2 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 2
+    },
     "thematicFlavor": "L'Esprit souffle où il veut — notre tâche est d'être ouverts.",
     "decoyVerseIds": []
   },
@@ -5465,12 +5539,23 @@
     "id": "e-esprit-004",
     "title": "Le fruit qu'on ne voit pas",
     "description": "Cela fait des mois que tu sers fidèlement dans ton église. Mais les résultats semblent maigres : peu de conversions, peu de changements visibles. Tu commences à te demander si le Saint-Esprit est vraiment à l'œuvre en toi, ou si tu fais tout dans ta propre force.",
-    "ageRange": [22, 65],
+    "ageRange": [
+      22,
+      65
+    ],
     "category": "saint_esprit",
     "correctVerseId": "v-esprit-003",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -4, "paix": -3, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 3
+    },
     "thematicFlavor": "L'Esprit produit des fruits que nos yeux ne savent pas toujours lire.",
     "decoyVerseIds": []
   },
@@ -5478,26 +5563,47 @@
     "id": "e-esprit-005",
     "title": "La voix intérieure",
     "description": "Un matin, en te levant, quelque chose te pousse à appeler un vieil ami que tu n'as pas contacté depuis des années. Tu résistes — c'est étrange, il sera peut-être surpris. Mais la conviction ne lâche pas. Est-ce le Saint-Esprit qui te parle, ou simplement ta nostalgie ?",
-    "ageRange": [24, 70],
+    "ageRange": [
+      24,
+      70
+    ],
     "category": "saint_esprit",
     "correctVerseId": "v-esprit-002",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -2, "paix": -1, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 4, "paix": 3 },
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -1,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
     "thematicFlavor": "L'obéissance au souffle intérieur commence par le silence.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-parole-003",
     "title": "Le verset qui s'impose",
     "description": "Depuis quelques jours, un verset revient sans cesse dans ta tête. Tu l'entends à la radio, un ami le cite par hasard, tu l'aperçois sur une affiche. Tu commences à te demander si Dieu essaie de te dire quelque chose à travers sa Parole.",
-    "ageRange": [18, 75],
+    "ageRange": [
+      18,
+      75
+    ],
     "category": "parole_de_dieu",
     "correctVerseId": "v-parole-002",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -3, "paix": -1, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -1,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 3
+    },
     "thematicFlavor": "La Parole de Dieu n'est jamais un accident.",
     "decoyVerseIds": []
   },
@@ -5505,12 +5611,23 @@
     "id": "e-parole-004",
     "title": "La Bible fermée",
     "description": "Il y a trois semaines que tu n'as pas ouvert ta Bible. Les journées sont chargées, la fatigue prend le dessus. Tu la vois sur ta table de nuit, légèrement poussiéreuse. Quelque chose en toi ressent le vide, mais tu trouves toujours une raison de remettre à demain.",
-    "ageRange": [20, 70],
+    "ageRange": [
+      20,
+      70
+    ],
     "category": "parole_de_dieu",
     "correctVerseId": "v-parole-004",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -5, "paix": -3, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 4, "paix": 3 },
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
     "thematicFlavor": "Le pain de l'âme ne se donne pas de lui-même — il faut choisir de le rompre.",
     "decoyVerseIds": []
   },
@@ -5518,26 +5635,47 @@
     "id": "e-parole-005",
     "title": "La promesse incomprise",
     "description": "Tu t'es accroché pendant des années à une promesse biblique. Tu avais l'impression que Dieu te l'avait donnée pour toi, personnellement. Mais les circonstances semblent la contredire à chaque tournant. Avais-tu vraiment bien compris ? Ou la Parole de Dieu s'applique-t-elle différemment ?",
-    "ageRange": [25, 65],
+    "ageRange": [
+      25,
+      65
+    ],
     "category": "parole_de_dieu",
     "correctVerseId": "v-parole-001",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -5, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 4 },
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 4
+    },
     "thematicFlavor": "La Parole de Dieu s'accomplit toujours — mais rarement comme on l'imaginait.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-priere-003",
     "title": "La prière sans réponse",
     "description": "Tu pries pour la même chose depuis six mois. Rien ne change. Parfois tu te demandes si tu parles vraiment à quelqu'un, ou si tes prières montent et retombent dans le vide. Le silence de Dieu est la chose la plus difficile à porter pour une âme croyante.",
-    "ageRange": [18, 70],
+    "ageRange": [
+      18,
+      70
+    ],
     "category": "priere",
     "correctVerseId": "v-priere-002",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -5, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 4 },
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
     "thematicFlavor": "Le silence de Dieu n'est pas son absence — c'est souvent sa salle d'attente.",
     "decoyVerseIds": []
   },
@@ -5545,12 +5683,23 @@
     "id": "e-priere-004",
     "title": "L'intercession pour un ennemi",
     "description": "Quelqu'un t'a causé un tort profond. Un ami te suggère de prier pour cette personne. L'idée te révolte. Prier pour quelqu'un qui t'a blessé ? Et pourtant, quelque chose dans ces mots te poursuit. La prière comme chemin vers la liberté intérieure.",
-    "ageRange": [22, 70],
+    "ageRange": [
+      22,
+      70
+    ],
     "category": "priere",
     "correctVerseId": "v-priere-001",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 6 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
     "thematicFlavor": "Prier pour un ennemi, c'est refuser que la haine ait le dernier mot.",
     "decoyVerseIds": []
   },
@@ -5558,26 +5707,47 @@
     "id": "e-priere-005",
     "title": "La prière du désespéré",
     "description": "Tu as tout essayé. Les médecins, les amis, les psychologues. Au bout du rouleau, dans ta chambre, tu tombes à genoux pour la première fois depuis longtemps. Les mots ne viennent pas facilement. Tu dis juste : 'Aide-moi.' Et dans le silence qui suit, quelque chose se dépose en toi.",
-    "ageRange": [25, 80],
+    "ageRange": [
+      25,
+      80
+    ],
     "category": "priere",
     "correctVerseId": "v-priere-003",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 6 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 6
+    },
     "thematicFlavor": "La prière la plus courte peut être la plus honnête.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-soif-003",
     "title": "Le témoignage qui allume",
     "description": "Tu écoutes quelqu'un raconter comment il a rencontré Dieu d'une manière profonde et personnelle. Quelque chose se lève en toi — un désir que tu n'avais pas ressenti depuis longtemps. Tu veux cette même intimité. Cette faim-là est-elle la plus sacrée qui soit ?",
-    "ageRange": [16, 65],
+    "ageRange": [
+      16,
+      65
+    ],
     "category": "soif_de_dieu",
     "correctVerseId": "v-soif-001",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 3
+    },
     "thematicFlavor": "Le désir de Dieu est déjà Dieu à l'œuvre en toi.",
     "decoyVerseIds": []
   },
@@ -5585,12 +5755,23 @@
     "id": "e-soif-004",
     "title": "La retraite de silence",
     "description": "Un ami t'invite à une retraite spirituelle de trois jours. Pas de téléphone, pas de distractions — juste la prière, la Parole et le silence. Ton agenda est surchargé, et l'idée de tout lâcher te fait peur. Mais quelque chose te dit que ton âme a besoin de ce vide pour entendre à nouveau.",
-    "ageRange": [22, 70],
+    "ageRange": [
+      22,
+      70
+    ],
     "category": "soif_de_dieu",
     "correctVerseId": "v-soif-002",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -4, "paix": -3, "physique": -1, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 5 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 5
+    },
     "thematicFlavor": "On ne rencontre Dieu dans la foule que si on l'a d'abord trouvé dans le désert.",
     "decoyVerseIds": []
   },
@@ -5598,26 +5779,47 @@
     "id": "e-soif-005",
     "title": "Le creux de l'âme",
     "description": "Tu as tout ce dont tu avais besoin : un travail stable, une famille aimante, une église fidèle. Et pourtant, au milieu de tout ça, un vide que tu ne sais pas nommer. Une faim que les belles choses ne rassasient pas. C'est peut-être la soif de Dieu — le seul qui puisse combler ce que rien d'autre ne peut atteindre.",
-    "ageRange": [28, 75],
+    "ageRange": [
+      28,
+      75
+    ],
     "category": "soif_de_dieu",
     "correctVerseId": "v-soif-003",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -4, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 5 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 5
+    },
     "thematicFlavor": "L'âme a ses déserts que seul Dieu peut irriguer.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-obeis-003",
     "title": "L'ordre incompréhensible",
     "description": "En lisant la Bible, tu tombes sur une injonction divine que tu trouves difficile à comprendre — donner aux pauvres jusqu'à l'inconfort, pardonner à l'infini, aimer ceux qui te persécutent. L'obéissance ne demande-t-elle pas de comprendre d'abord ? Ou est-ce la confiance qui précède la compréhension ?",
-    "ageRange": [18, 65],
+    "ageRange": [
+      18,
+      65
+    ],
     "category": "obeissance",
     "correctVerseId": "v-obeis-002",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 3 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 3
+    },
     "thematicFlavor": "L'obéissance sans compréhension est la forme la plus pure de la confiance.",
     "decoyVerseIds": []
   },
@@ -5625,12 +5827,24 @@
     "id": "e-obeis-004",
     "title": "Le premier pas dans le vide",
     "description": "Dieu t'a clairement appelé à quitter quelque chose de confortable — un emploi, un lieu de vie, une relation — pour suivre ce qu'Il t'a montré. Tu n'as aucune garantie de résultat. Le premier pas ressemble à un pas dans le vide. Et pourtant, quelque chose te dit que le sol apparaîtra sous ton pied.",
-    "ageRange": [20, 60],
+    "ageRange": [
+      20,
+      60
+    ],
     "category": "obeissance",
     "correctVerseId": "v-obeis-001",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -5, "paix": -4, "physique": 0, "finances": -3 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 4, "finances": 2 },
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -4,
+      "physique": 0,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 4,
+      "finances": 2
+    },
     "thematicFlavor": "La foi marche avant de voir — c'est sa définition même.",
     "decoyVerseIds": []
   },
@@ -5638,26 +5852,48 @@
     "id": "e-obeis-005",
     "title": "Obéir à ce qu'on préférerait oublier",
     "description": "Il y a quelqu'un à qui tu dois des excuses depuis longtemps. Tu le sais. Chaque fois que tu pries, son visage revient. Dieu ne semble pas te laisser avancer avant que tu règles ça. L'obéissance ne commence pas toujours par une grande mission — parfois c'est juste un coup de téléphone qu'on n'a pas encore passé.",
-    "ageRange": [22, 75],
+    "ageRange": [
+      22,
+      75
+    ],
     "category": "obeissance",
     "correctVerseId": "v-obeis-003",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 6 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
     "thematicFlavor": "L'obéissance commence souvent par réparer ce qu'on a abîmé.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-lourd-003",
     "title": "L'épuisement du service",
     "description": "Tu sers dans l'église depuis des années sans jamais dire non. Responsable de la jeunesse, de l'accueil, de la logistique — tu es partout à la fois. Un dimanche matin, tu te réveilles et tu n'as plus l'énergie de te lever. Le burnout spirituel n'est pas un péché — c'est un signal.",
-    "ageRange": [25, 65],
+    "ageRange": [
+      25,
+      65
+    ],
     "category": "lourdeur_fatigue",
     "correctVerseId": "v-lourd-001",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -3, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 4, "paix": 5, "physique": 2 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -3,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5,
+      "physique": 2
+    },
     "thematicFlavor": "Dieu ne nous appelle pas à tout porter — il nous invite à poser ce qui n'est pas à nous.",
     "decoyVerseIds": []
   },
@@ -5665,12 +5901,23 @@
     "id": "e-lourd-004",
     "title": "Le deuil interminable",
     "description": "Tu portes le deuil d'une perte depuis trop longtemps. Les autres semblent avoir tourné la page. Mais pour toi, la douleur est encore là, certains jours aussi vive qu'au premier moment. La tristesse n'est pas de l'incrédulité — c'est de l'amour qui n'a plus où aller.",
-    "ageRange": [30, 85],
+    "ageRange": [
+      30,
+      85
+    ],
     "category": "lourdeur_fatigue",
     "correctVerseId": "v-lourd-002",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -3, "paix": -5, "physique": -2, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 4, "paix": 5 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -5,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
     "thematicFlavor": "Dieu garde nos larmes dans son outre — rien de ce qu'on porte n'est invisible à Ses yeux.",
     "decoyVerseIds": []
   },
@@ -5678,26 +5925,49 @@
     "id": "e-lourd-005",
     "title": "Le corps qui lâche",
     "description": "Ton corps envoie des signaux que tu ignores depuis trop longtemps. Maux de dos persistants, insomnies, tensions aux épaules. Le médecin dit que c'est le stress. Ton âme, elle, sait que tu portes bien plus que tes forces ne permettent. Il est temps de remettre certains fardeaux à Celui qui peut les tenir.",
-    "ageRange": [30, 75],
+    "ageRange": [
+      30,
+      75
+    ],
     "category": "lourdeur_fatigue",
     "correctVerseId": "v-lourd-004",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -2, "paix": -3, "physique": -5, "finances": -2 },
-    "statImpactOnSuccess": { "foi": 3, "paix": 4, "physique": 3 },
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": -5,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "physique": 3
+    },
     "thematicFlavor": "Prendre soin de son corps, c'est aussi honorer le temple de l'Esprit.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-gueris-003",
     "title": "La prière des anciens",
     "description": "Ta santé se dégrade et les médecins hésitent encore sur le diagnostic. Un frère aîné de ton église te propose une prière d'onction selon Jacques 5. Quelque chose en toi résiste — est-ce vraiment pour aujourd'hui ? Et si rien ne se passe, que restera-t-il de ta foi ?",
-    "ageRange": [25, 80],
+    "ageRange": [
+      25,
+      80
+    ],
     "category": "maladie_guerison",
     "correctVerseId": "v-gueris-002",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -4, "paix": -3, "physique": -3, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 5, "physique": 4 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": -3,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 5,
+      "physique": 4
+    },
     "thematicFlavor": "La foi pour la guérison ne dépend pas du résultat — elle précède.",
     "decoyVerseIds": []
   },
@@ -5705,12 +5975,23 @@
     "id": "e-gueris-004",
     "title": "La maladie d'un enfant",
     "description": "Ton enfant est hospitalisé. Les examens durent depuis plusieurs jours. Tu veilles à son chevet, les heures se mélangent. Dans ce couloir d'hôpital aux néons blancs, tu fais des allers-retours entre la chapelle et sa chambre. La foi en la guérison et l'acceptation de la volonté divine ne sont pas opposées — mais trouver leur équilibre est un combat intérieur.",
-    "ageRange": [28, 55],
+    "ageRange": [
+      28,
+      55
+    ],
     "category": "maladie_guerison",
     "correctVerseId": "v-gueris-001",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -5, "paix": -6, "physique": 0, "finances": -3 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 6 },
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": 0,
+      "finances": -3
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 6
+    },
     "thematicFlavor": "Dans la salle d'attente de la guérison, Dieu est assis à côté de toi.",
     "decoyVerseIds": []
   },
@@ -5718,26 +5999,47 @@
     "id": "e-gueris-005",
     "title": "La guérison intérieure",
     "description": "Ton corps va bien, mais à l'intérieur quelque chose reste cassé — une mémoire douloureuse, une blessure d'enfance, une honte que tu portes comme une cicatrice invisible. Un conseiller chrétien te dit que Dieu peut aussi guérir ces endroits-là. Et si la guérison la plus profonde n'était pas physique ?",
-    "ageRange": [20, 70],
+    "ageRange": [
+      20,
+      70
+    ],
     "category": "maladie_guerison",
     "correctVerseId": "v-gueris-003",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 7
+    },
     "thematicFlavor": "Certaines guérisons ne se voient pas mais se ressentent pour toujours.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-steril-003",
     "title": "L'annonce difficile",
     "description": "Le médecin est direct : les chances d'avoir un enfant naturellement sont très faibles. Tu rentres chez toi avec cette nouvelle qui pèse des tonnes. Comment dire à ta famille ? Comment continuer à croire quand le corps dit non ? La stérilité n'est pas un refus de Dieu — mais dans ce moment, c'est difficile de ne pas le ressentir ainsi.",
-    "ageRange": [22, 45],
+    "ageRange": [
+      22,
+      45
+    ],
     "category": "sterilite",
     "correctVerseId": "v-steril-001",
     "spawnProbability": 0.25,
-    "statImpactOnFail": { "foi": -6, "paix": -7, "physique": -2, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 4 },
+    "statImpactOnFail": {
+      "foi": -6,
+      "paix": -7,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
     "thematicFlavor": "Dieu entend le cri du ventre vide autant que celui de la prière à voix haute.",
     "decoyVerseIds": []
   },
@@ -5745,12 +6047,24 @@
     "id": "e-steril-004",
     "title": "La grossesse miraculeuse",
     "description": "Après des années de prière et d'attente, une ligne apparaît sur le test. Tu restes immobile devant ce signe pendant un long moment. Entre les larmes et le rire, tu ne sais plus comment appeler ce que tu ressens. Certaines promesses de Dieu arrivent juste à temps — même quand 'à temps' a semblé si long.",
-    "ageRange": [25, 45],
+    "ageRange": [
+      25,
+      45
+    ],
     "category": "sterilite",
     "correctVerseId": "v-steril-003",
     "spawnProbability": 0.2,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 8, "paix": 7, "physique": 2 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 8,
+      "paix": 7,
+      "physique": 2
+    },
     "thematicFlavor": "La joie la plus profonde est celle qui a traversé l'attente.",
     "decoyVerseIds": []
   },
@@ -5758,26 +6072,47 @@
     "id": "e-steril-005",
     "title": "La grâce suffisante",
     "description": "L'enfant n'est pas venu, et maintenant l'âge ne le permettra plus. Après le deuil, après la colère, après l'acceptation difficile, il reste quelque chose d'inattendu : une paix. Pas la résignation, mais la confiance. Dieu a peut-être préparé une autre forme de fécondité — des enfants spirituels, une vie donnée aux autres, un amour qui rayonne au-delà du sang.",
-    "ageRange": [40, 70],
+    "ageRange": [
+      40,
+      70
+    ],
     "category": "sterilite",
     "correctVerseId": "v-steril-002",
     "spawnProbability": 0.2,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 7
+    },
     "thematicFlavor": "La fécondité spirituelle ne connaît pas les limites du corps.",
     "decoyVerseIds": []
   },
-
   {
     "id": "e-senior-009",
     "title": "Transmettre la flamme",
     "description": "Ton petit-fils passe une semaine chez toi. Il est curieux, pose des questions sur la foi, sur la vie. Tu réalises que tu as une opportunité rare : lui transmettre non pas seulement des souvenirs, mais une manière de voir le monde. Ce que tu semeras en lui maintenant, il le portera peut-être jusqu'à ses propres petits-enfants.",
-    "ageRange": [75, 100],
+    "ageRange": [
+      75,
+      100
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-006",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -3, "paix": -2, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 6 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 6
+    },
     "thematicFlavor": "L'héritage le plus précieux ne tient pas dans un testament notarial.",
     "decoyVerseIds": []
   },
@@ -5785,12 +6120,23 @@
     "id": "e-senior-010",
     "title": "Le bilan devant Dieu",
     "description": "Une nuit d'insomnie à 78 ans. Tu repenses à ta vie entière — les choix faits et ceux manqués, les personnes aimées et celles que tu as blessées. Est-ce que ta vie a eu du sens ? Est-ce que tu as été fidèle ? La réponse n'est peut-être pas ce que tu croyais. La grâce dépasse les bilans.",
-    "ageRange": [75, 95],
+    "ageRange": [
+      75,
+      95
+    ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-001",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 6 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 6
+    },
     "thematicFlavor": "Dieu juge avec miséricorde ce que nous jugeons avec sévérité.",
     "decoyVerseIds": []
   },
@@ -5798,12 +6144,24 @@
     "id": "e-senior-011",
     "title": "La fragilité du corps",
     "description": "Tu n'arrives plus à ouvrir les bocaux seul. Monter les escaliers prend le double de temps. Tu regardes tes mains — elles ne font plus ce qu'elles faisaient. Vieillir, c'est apprendre une dépendance que l'orgueil rechigne à accepter. Et si cette vulnérabilité était, elle aussi, une forme de grâce ?",
-    "ageRange": [75, 95],
+    "ageRange": [
+      75,
+      95
+    ],
     "category": "peur_angoisse",
     "correctVerseId": "v-peur-003",
     "spawnProbability": 0.4,
-    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": -3, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 5, "physique": 1 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -3,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "physique": 1
+    },
     "thematicFlavor": "La force de Dieu se déploie pleinement là où la nôtre s'arrête.",
     "decoyVerseIds": []
   },
@@ -5811,12 +6169,23 @@
     "id": "e-senior-012",
     "title": "La paix qui dépasse",
     "description": "Tu aurais dû être inquiet — la santé fragile, les dépenses qui augmentent, l'avenir incertain. Mais quelque chose d'étrange s'est installé en toi avec les années : une paix que tu n'arrives même pas à expliquer aux plus jeunes. Comme si chaque tempête traversée t'avait déposé un peu plus profond dans les bras de Dieu.",
-    "ageRange": [75, 100],
+    "ageRange": [
+      75,
+      100
+    ],
     "category": "doute_incredulite",
     "correctVerseId": "v-doute-005",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -2, "paix": -3, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 8 },
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 8
+    },
     "thematicFlavor": "La foi qui a survécu aux tempêtes n'a plus besoin de se prouver.",
     "decoyVerseIds": []
   },
@@ -5824,12 +6193,23 @@
     "id": "e-senior-013",
     "title": "L'héritage spirituel",
     "description": "Tu te demandes ce que tu laisseras derrière toi. Pas les objets, ni l'argent — mais est-ce que ceux que tu as côtoyés ont été touchés ? Est-ce que ton passage dans leur vie a eu un sens ? Tu commences à écrire des lettres à chacun de tes enfants. Chaque mot est une prière.",
-    "ageRange": [78, 100],
+    "ageRange": [
+      78,
+      100
+    ],
     "category": "identite_appel",
     "correctVerseId": "v-ident-001",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -3, "paix": -3, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 7
+    },
     "thematicFlavor": "La vie bien vécue est le seul testament qui traverse les générations.",
     "decoyVerseIds": []
   },
@@ -5837,12 +6217,23 @@
     "id": "e-senior-014",
     "title": "Les réconciliations tardives",
     "description": "Il n'est pas trop tard. Tu as 80 ans et tu écris un message à quelqu'un avec qui tu t'étais disputé il y a quinze ans. Tu appuies sur 'Envoyer' en tremblant un peu. Les réconciliations tardives ont un goût particulier — elles ont traversé l'orgueil, la rancœur, et le temps. Et elles en sont plus précieuses.",
-    "ageRange": [76, 98],
+    "ageRange": [
+      76,
+      98
+    ],
     "category": "amertume_rejet",
     "correctVerseId": "v-amer-004",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -3, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 8 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 8
+    },
     "thematicFlavor": "Il n'est jamais trop tard pour défaire ce que le temps a entortillé.",
     "decoyVerseIds": []
   },
@@ -5850,12 +6241,23 @@
     "id": "e-senior-015",
     "title": "L'ombre de la mort",
     "description": "Un ami proche vient de mourir. Son âge était proche du tien. Tu réalises que le fil entre ici et là-bas est plus fin que tu ne le croyais. La mort n'est plus un concept lointain — c'est une voisine. Et pourtant, quelque chose en toi tient ferme. Comme si des années passées avec Dieu avaient rempli quelque chose que la mort ne peut pas vider.",
-    "ageRange": [78, 100],
+    "ageRange": [
+      78,
+      100
+    ],
     "category": "peur_angoisse",
     "correctVerseId": "v-peur-007",
     "spawnProbability": 0.4,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 7
+    },
     "thematicFlavor": "Celui qui a appris à vivre avec Dieu apprend aussi à mourir dans Sa paix.",
     "decoyVerseIds": []
   },
@@ -5863,12 +6265,23 @@
     "id": "e-senior-016",
     "title": "Le don de la sagesse",
     "description": "Des jeunes de ton église te demandent de les mentorer. Au début tu hésites — qui es-tu pour guider quelqu'un ? Mais en parlant avec eux, tu réalises que ce que tu possèdes n'a pas de prix : non pas la théorie, mais des années de vie vécue avec Dieu. La sagesse ne s'invente pas — elle se transmet.",
-    "ageRange": [75, 95],
+    "ageRange": [
+      75,
+      95
+    ],
     "category": "combat_spirituel",
     "correctVerseId": "v-combat-005",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -2, "paix": -2, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 5 },
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 5
+    },
     "thematicFlavor": "Les anciens sont les mémoires vivantes de la fidélité de Dieu.",
     "decoyVerseIds": []
   },
@@ -5876,12 +6289,23 @@
     "id": "e-senior-017",
     "title": "La prière intercédante du vieil âge",
     "description": "Tu n'as plus la force de courir, de construire, d'organiser. Mais tu peux encore prier. Tu dresses une liste de noms — enfants, petits-enfants, amis, voisins — et tu pries chacun d'eux chaque matin. L'intercession est le ministère que l'âge ne peut pas confisquer.",
-    "ageRange": [75, 100],
+    "ageRange": [
+      75,
+      100
+    ],
     "category": "priere",
     "correctVerseId": "v-priere-002",
     "spawnProbability": 0.4,
-    "statImpactOnFail": { "foi": -2, "paix": -2, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 7
+    },
     "thematicFlavor": "Le genou courbé d'un ancien vaut une armée de jeunes sur leurs pieds.",
     "decoyVerseIds": []
   },
@@ -5889,12 +6313,23 @@
     "id": "e-senior-018",
     "title": "La gratitude du soir",
     "description": "Chaque soir, avant de t'endormir, tu passes en revue ta journée et tu trouves au moins trois choses pour lesquelles tu es reconnaissant. Ce n'est pas une technique positive — c'est une discipline spirituelle. Avec les années, tu as appris que la gratitude est la posture naturelle de quelqu'un qui connaît la fidélité de Dieu.",
-    "ageRange": [75, 100],
+    "ageRange": [
+      75,
+      100
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-003",
     "spawnProbability": 0.4,
-    "statImpactOnFail": { "foi": -2, "paix": -3, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 6, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 6,
+      "paix": 7
+    },
     "thematicFlavor": "La reconnaissance est la mémoire du cœur — et Dieu y est toujours.",
     "decoyVerseIds": []
   },
@@ -5902,12 +6337,24 @@
     "id": "e-senior-019",
     "title": "L'abandon de la maison familiale",
     "description": "La grande maison où tu as élevé tes enfants est devenue trop grande, trop lourde à entretenir. Il faut la vendre. Chaque pièce est un souvenir, chaque mur raconte une histoire. Partir de cette maison, c'est laisser une partie de toi-même. Mais Dieu habite partout où tu poses ta foi — pas seulement dans ces murs.",
-    "ageRange": [75, 90],
+    "ageRange": [
+      75,
+      90
+    ],
     "category": "decouragement",
     "correctVerseId": "v-decour-003",
     "spawnProbability": 0.3,
-    "statImpactOnFail": { "foi": -4, "paix": -5, "physique": -1, "finances": 2 },
-    "statImpactOnSuccess": { "foi": 5, "paix": 5, "finances": 3 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -1,
+      "finances": 2
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 3
+    },
     "thematicFlavor": "Le vrai foyer n'est pas celui qu'on quitte — c'est Celui vers qui on va.",
     "decoyVerseIds": []
   },
@@ -5915,12 +6362,23 @@
     "id": "e-senior-020",
     "title": "Mourir à soi-même au dernier souffle",
     "description": "À 85 ans, il y a encore des combats intérieurs. L'orgueil qui veut avoir le dernier mot, l'inquiétude qui refuse de lâcher prise, le regret qui occupe les nuits. Vieillir dans la foi ne veut pas dire que les batailles s'arrêtent — mais elles changent de nature. Tu apprends à mourir à toi-même, doucement, un jour à la fois.",
-    "ageRange": [80, 100],
+    "ageRange": [
+      80,
+      100
+    ],
     "category": "orgueil_independance",
     "correctVerseId": "v-orgueil-005",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -4, "paix": -4, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 7 },
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 7
+    },
     "thematicFlavor": "La sanctification ne s'arrête pas à un âge — elle dure jusqu'au bout.",
     "decoyVerseIds": []
   },
@@ -5928,13 +6386,369 @@
     "id": "e-senior-021",
     "title": "La joie à contre-courant",
     "description": "Tes contemporains parlent de leurs maux, de leurs peurs, de la fin qui approche. Toi, quelque chose d'inattendu s'est produit : une joie tranquille qui n'a pas de raison logique. Pas la joie de la santé ou de l'abondance — celle d'une présence. Quelqu'un est là avec toi dans ce dernier tronçon du chemin, et ça suffit.",
-    "ageRange": [80, 100],
+    "ageRange": [
+      80,
+      100
+    ],
     "category": "tristesse_joie",
     "correctVerseId": "v-joie-001",
     "spawnProbability": 0.35,
-    "statImpactOnFail": { "foi": -3, "paix": -3, "physique": 0, "finances": 0 },
-    "statImpactOnSuccess": { "foi": 7, "paix": 8 },
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 7,
+      "paix": 8
+    },
     "thematicFlavor": "La joie profonde n'est pas l'absence de douleur — c'est la présence de Dieu malgré elle.",
     "decoyVerseIds": []
+  },
+  {
+    "id": "e-imput-001",
+    "title": "La première image",
+    "description": "Un ami de {ville} t'a montré des images que tu ne devrais pas voir. L'image reste gravée dans ton esprit. Tu n'en as parlé à personne, pas même à {père}.",
+    "ageRange": [
+      8,
+      13
+    ],
+    "category": "impudicite_addiction",
+    "correctVerseId": "v-imput-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    },
+    "thematicFlavor": "Ce que tu accueilles dans ton regard forme ton cœur."
+  },
+  {
+    "id": "e-imput-002",
+    "title": "Juste pour une fois",
+    "description": "La soirée après l'office bat son plein. Tout le monde boit pour se détendre. On te tend un verre en riant : « Allez, pour une fois. C'est une fête. »",
+    "ageRange": [
+      16,
+      25
+    ],
+    "category": "impudicite_addiction",
+    "correctVerseId": "v-imput-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3
+    },
+    "thematicFlavor": "La liberté n'est pas de céder — c'est de ne pas être enchaîné."
+  },
+  {
+    "id": "e-imput-003",
+    "title": "L'écran qui mange le temps",
+    "description": "Les heures passées sur ton téléphone ou les jeux ont commencé à s'étirer. {conjoint} te demande si tu l'aimes encore. Tu ne sais plus quoi répondre.",
+    "ageRange": [
+      22,
+      45
+    ],
+    "category": "impudicite_addiction",
+    "correctVerseId": "v-imput-009",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4
+    },
+    "thematicFlavor": "L'addiction commence toujours par une petite concession."
+  },
+  {
+    "id": "e-imput-004",
+    "title": "Une attention qui trouble",
+    "description": "Une collègue de {métier} se montre trop attentive depuis quelques semaines. Ce que tu ressens commence à troubler ta conscience. {conjoint} ne sait rien.",
+    "ageRange": [
+      28,
+      60
+    ],
+    "category": "impudicite_addiction",
+    "correctVerseId": "v-imput-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -6,
+      "paix": -6,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "La pureté n'est pas une faiblesse — c'est la gardienne des promesses."
+  },
+  {
+    "id": "e-imput-005",
+    "title": "Le verre du soir",
+    "description": "Depuis la perte d'un proche, le verre du soir est devenu deux, puis trois. Le médecin de {ville} s'inquiète. Tu te dis que tu contrôles encore.",
+    "ageRange": [
+      55,
+      90
+    ],
+    "category": "impudicite_addiction",
+    "correctVerseId": "v-imput-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -5,
+      "physique": -4,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "Le vide que tu remplis d'alcool, seul Dieu peut le combler."
+  },
+  {
+    "id": "e-culpa-003",
+    "title": "Le mensonge qui tient",
+    "description": "Tu as menti à {père} pour éviter une punition. Il t'a cru. Le mensonge est maintenant trop grand pour être défait, et sa confiance te brûle chaque jour.",
+    "ageRange": [
+      10,
+      18
+    ],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4
+    },
+    "thematicFlavor": "Un mensonge préservé pèse plus lourd qu'une honte avouée."
+  },
+  {
+    "id": "e-culpa-004",
+    "title": "Des mots qui ne s'effacent pas",
+    "description": "Des mots prononcés dans la colère ont brisé ton amitié avec {ami}. Tu as essayé de t'excuser, mais {ami} ne répond plus. La culpabilité s'installe.",
+    "ageRange": [
+      18,
+      40
+    ],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -5,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "La condamnation que tu portes, Dieu ne te l'a pas donnée."
+  },
+  {
+    "id": "e-culpa-005",
+    "title": "Une décision aux conséquences imprévues",
+    "description": "Une décision prise dans ton travail de {métier} a eu des conséquences graves pour quelqu'un d'innocent. Tu ne pouvais pas tout prévoir, mais la honte ne te quitte pas.",
+    "ageRange": [
+      28,
+      55
+    ],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -5,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "Demander pardon à Dieu ne signifie pas que tout disparaît — mais que tu peux continuer."
+  },
+  {
+    "id": "e-culpa-006",
+    "title": "Le silence qui dure",
+    "description": "Il y a des années, tu as dit quelque chose d'irréparable à un membre de ta famille. Vous ne vous parlez plus depuis. Chaque réunion à {église} te le rappelle.",
+    "ageRange": [
+      35,
+      70
+    ],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -6,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 6
+    },
+    "thematicFlavor": "Dieu oublie ce qu'Il pardonne — même quand toi tu ne peux pas."
+  },
+  {
+    "id": "e-culpa-007",
+    "title": "Le mur des regrets",
+    "description": "En regardant ta vie derrière toi, tu vois des chemins non pris, des personnes que tu aurais dû aimer mieux. La nuit, les regrets deviennent un mur.",
+    "ageRange": [
+      60,
+      95
+    ],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -7,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 7
+    },
+    "thematicFlavor": "Ce n'est pas ta vie idéale que Dieu rachète — c'est ta vie réelle."
+  },
+  {
+    "id": "e-abond-003",
+    "title": "Le premier vrai salaire",
+    "description": "Tu reçois ton premier vrai salaire de {métier}. L'envie de tout dépenser pour toi est forte. {père} te dit d'être sage, mais personne ne te regarde.",
+    "ageRange": [
+      16,
+      25
+    ],
+    "category": "abondance_financiere",
+    "correctVerseId": "v-abond-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": -4
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3
+    },
+    "thematicFlavor": "L'argent révèle ce que le cœur cachait."
+  },
+  {
+    "id": "e-abond-004",
+    "title": "La promotion qui change tout",
+    "description": "Tu viens d'être promu(e) à {métier}. Le salaire double. Tes anciens amis de {église} te semblent soudain moins intéressants. Quelque chose change en toi.",
+    "ageRange": [
+      25,
+      50
+    ],
+    "category": "abondance_financiere",
+    "correctVerseId": "v-abond-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -5,
+      "paix": -3,
+      "physique": 0,
+      "finances": 2
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 3
+    },
+    "thematicFlavor": "L'abondance est un test de fidélité, pas une récompense de foi."
+  },
+  {
+    "id": "e-abond-005",
+    "title": "La collecte qui résiste",
+    "description": "L'église de {ville} lance une collecte pour une famille dans le besoin. Le montant suggéré te semble élevé. Tu as les moyens, mais quelque chose résiste en toi.",
+    "ageRange": [
+      28,
+      65
+    ],
+    "category": "abondance_financiere",
+    "correctVerseId": "v-abond-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4
+    },
+    "thematicFlavor": "Dieu ne calcule pas comme le monde calcule."
+  },
+  {
+    "id": "e-abond-006",
+    "title": "L'investissement miraculeux",
+    "description": "Un ami de {ville} te propose un investissement qui promet de doubler ta mise en six mois. Tout le monde y va. La somme en jeu représente tes économies.",
+    "ageRange": [
+      35,
+      70
+    ],
+    "category": "abondance_financiere",
+    "correctVerseId": "v-abond-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": -8
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5
+    },
+    "thematicFlavor": "La vraie sécurité ne se place pas en bourse."
+  },
+  {
+    "id": "e-abond-007",
+    "title": "Que faire de ce que la vie m'a donné ?",
+    "description": "Tu prends conscience que tu as accumulé plus que tu ne pourras jamais dépenser. Tes enfants attendent. {église} a des besoins. Que faire de ce que la vie t'a donné ?",
+    "ageRange": [
+      60,
+      95
+    ],
+    "category": "abondance_financiere",
+    "correctVerseId": "v-abond-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5
+    },
+    "thematicFlavor": "Tout ce que tu tiens appartient à Celui qui t'a tout donné."
   }
 ]
