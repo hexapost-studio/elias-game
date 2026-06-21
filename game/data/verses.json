@@ -2138,19 +2138,10 @@
   },
   {
     "id": "v-steril-002",
-    "ref": "Psaume 113.9",
-    "text": "Il donne une maison à celle qui était stérile, il fait d'elle une mère joyeuse au milieu de ses enfants.",
+    "ref": "1 Samuel 1.27",
+    "text": "C'est pour cet enfant que je priais, et l'Éternel m'a accordé ce que je lui demandais.",
     "cat": "sterilite",
-    "tags": [
-      "stérilité",
-      "fécondité",
-      "joie"
-    ],
-    "impact": {
-      "foi": 4,
-      "paix": 4
-    },
-    "diff": 2
+    "diff": 1
   },
   {
     "id": "v-steril-003",
@@ -2836,5 +2827,180 @@
     "text": "Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relâchons pas.",
     "cat": "lourdeur_fatigue",
     "diff": 2
+  },
+  {
+    "id": "v-gueris-006",
+    "ref": "Psaume 30.2",
+    "text": "Éternel, mon Dieu, je t'ai invoqué, et tu m'as guéri.",
+    "cat": "maladie_guerison",
+    "diff": 1
+  },
+  {
+    "id": "v-gueris-007",
+    "ref": "Matthieu 8.17",
+    "text": "Il a pris nos infirmités, et il s'est chargé de nos maladies.",
+    "cat": "maladie_guerison",
+    "diff": 2
+  },
+  {
+    "id": "v-gueris-008",
+    "ref": "3 Jean 1.2",
+    "text": "Bien-aimé, je souhaite que tu prospères à tous égards et que tu sois en bonne santé, comme ton âme prospère.",
+    "cat": "maladie_guerison",
+    "diff": 1
+  },
+  {
+    "id": "v-decour-006",
+    "ref": "Josué 1.9",
+    "text": "Sois fort et courageux! Ne t'effraie pas et ne t'épouvante pas, car l'Éternel, ton Dieu, est avec toi dans tout ce que tu entreprendras.",
+    "cat": "decouragement",
+    "diff": 1
+  },
+  {
+    "id": "v-decour-007",
+    "ref": "1 Rois 19.7",
+    "text": "Lève-toi et mange, car le chemin est trop long pour toi.",
+    "cat": "decouragement",
+    "diff": 2
+  },
+  {
+    "id": "v-decour-008",
+    "ref": "Psaume 34.19",
+    "text": "L'Éternel est près de ceux qui ont le cœur brisé, et il sauve ceux qui ont l'esprit dans l'abattement.",
+    "cat": "decouragement",
+    "diff": 1
+  },
+  {
+    "id": "v-obeis-006",
+    "ref": "Jean 15.14",
+    "text": "Vous êtes mes amis, si vous faites ce que je vous commande.",
+    "cat": "obeissance",
+    "diff": 1
+  },
+  {
+    "id": "v-obeis-007",
+    "ref": "Ésaïe 1.19",
+    "text": "Si vous êtes disposés et obéissants, vous mangerez les meilleures productions du pays.",
+    "cat": "obeissance",
+    "diff": 2
+  },
+  {
+    "id": "v-obeis-008",
+    "ref": "Matthieu 7.24",
+    "text": "Quiconque entend ces paroles que je dis et les met en pratique sera semblable à un homme prudent qui a bâti sa maison sur le roc.",
+    "cat": "obeissance",
+    "diff": 2
+  },
+  {
+    "id": "v-priere-006",
+    "ref": "Luc 18.1",
+    "text": "Il leur dit une parabole pour montrer qu'il faut toujours prier et ne pas se relâcher.",
+    "cat": "priere",
+    "diff": 1
+  },
+  {
+    "id": "v-priere-007",
+    "ref": "Psaume 145.18",
+    "text": "L'Éternel est près de tous ceux qui l'invoquent, de tous ceux qui l'invoquent avec sincérité.",
+    "cat": "priere",
+    "diff": 1
+  },
+  {
+    "id": "v-priere-008",
+    "ref": "Romains 8.26",
+    "text": "L'Esprit vient aussi au secours de notre faiblesse, car nous ne savons pas ce qu'il nous convient de demander dans nos prières.",
+    "cat": "priere",
+    "diff": 2
+  },
+  {
+    "id": "v-steril-006",
+    "ref": "Genèse 21.1",
+    "text": "L'Éternel visita Sara comme il l'avait dit, et l'Éternel accomplit pour elle ce qu'il avait promis.",
+    "cat": "sterilite",
+    "diff": 1
+  },
+  {
+    "id": "v-steril-007",
+    "ref": "Luc 1.45",
+    "text": "Heureuse celle qui a cru, parce que les choses qui lui ont été dites de la part du Seigneur s'accompliront.",
+    "cat": "sterilite",
+    "diff": 2
+  },
+  {
+    "id": "v-steril-008",
+    "ref": "Psaume 127.3",
+    "text": "Des fils sont un héritage de l'Éternel, le fruit des entrailles est une récompense.",
+    "cat": "sterilite",
+    "diff": 1
+  },
+  {
+    "id": "v-echec-006",
+    "ref": "Proverbes 16.3",
+    "text": "Recommande à l'Éternel tes œuvres, et tes projets réussiront.",
+    "cat": "echec_reussite",
+    "diff": 1
+  },
+  {
+    "id": "v-echec-007",
+    "ref": "Ésaïe 43.19",
+    "text": "Voici, je vais faire une chose nouvelle; elle est déjà en germe, ne la reconnaissez-vous pas?",
+    "cat": "echec_reussite",
+    "diff": 2
+  },
+  {
+    "id": "v-echec-008",
+    "ref": "Lamentations 3.22-23",
+    "text": "C'est par la grâce de l'Éternel que nous ne sommes pas consumés, car sa compassion ne s'est pas épuisée; elle se renouvelle chaque matin.",
+    "cat": "echec_reussite",
+    "diff": 1
+  },
+  {
+    "id": "v-soif-006",
+    "ref": "Psaume 63.2",
+    "text": "Mon âme a soif de toi, ma chair soupire après toi, dans une terre aride, desséchée, sans eau.",
+    "cat": "soif_de_dieu",
+    "diff": 1
+  },
+  {
+    "id": "v-soif-007",
+    "ref": "Amos 8.11",
+    "text": "Voici, les jours viennent où j'enverrai la famine dans le pays, non pas la famine du pain et la soif de l'eau, mais la famine d'entendre les paroles de l'Éternel.",
+    "cat": "soif_de_dieu",
+    "diff": 3
+  },
+  {
+    "id": "v-soif-008",
+    "ref": "Jean 4.14",
+    "text": "Mais celui qui boira de l'eau que je lui donnerai n'aura plus jamais soif; l'eau que je lui donnerai deviendra en lui une source d'eau qui jaillira jusque dans la vie éternelle.",
+    "cat": "soif_de_dieu",
+    "diff": 2
+  },
+  {
+    "id": "v-esprit-007",
+    "ref": "Éphésiens 5.18",
+    "text": "Ne vous enivrez pas de vin, ce qui mène à la débauche; mais soyez remplis de l'Esprit.",
+    "cat": "saint_esprit",
+    "diff": 2
+  },
+  {
+    "id": "v-esprit-008",
+    "ref": "Ézéchiel 36.26",
+    "text": "Je vous donnerai un cœur nouveau, et je mettrai en vous un esprit nouveau; j'ôterai de votre corps le cœur de pierre, et je vous donnerai un cœur de chair.",
+    "cat": "saint_esprit",
+    "diff": 1
+  },
+  {
+    "id": "v-parole-007",
+    "ref": "Apocalypse 1.3",
+    "text": "Heureux celui qui lit et ceux qui entendent les paroles de la prophétie et qui gardent les choses qui y sont écrites!",
+    "cat": "parole_de_dieu",
+    "diff": 2
+  },
+  {
+    "id": "v-parole-008",
+    "ref": "2 Timothée 3.16-17",
+    "text": "Toute Écriture est inspirée de Dieu et utile pour enseigner, pour convaincre, pour corriger, pour instruire dans la justice, afin que l'homme de Dieu soit compétent et équipé pour toute bonne œuvre.",
+    "cat": "parole_de_dieu",
+    "diff": 1
   }
 ]

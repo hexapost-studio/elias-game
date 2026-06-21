@@ -7924,5 +7924,389 @@
       "finances": 0
     },
     "thematicFlavor": "L'eau vive reste gratuite, même pour les vieux soldats de la foi."
+  },
+  {
+    "id": "e-gueris-009",
+    "title": "La fièvre de l'enfance",
+    "description": "Tu as huit ans. La nuit est longue, le front brûlant. Maman est à ton chevet. Le médecin ne vient que demain. Dans le silence, tu entends papa murmurer une prière.",
+    "ageRange": [
+      6,
+      14
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "physique": 2
+    },
+    "thematicFlavor": "L'invocation simple d'un enfant touche le cœur de Dieu."
+  },
+  {
+    "id": "e-gueris-010",
+    "title": "La maladie chronique",
+    "description": "Le médecin confirme : cette maladie est chronique. Tu devras vivre avec, adapter ton mode de vie. Les traitements sont lourds. Comment garder la foi dans la durée ?",
+    "ageRange": [
+      20,
+      65
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": -3,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "physique": 2
+    },
+    "thematicFlavor": "Christ a porté nos infirmités — elles ne définissent pas notre espérance."
+  },
+  {
+    "id": "e-gueris-011",
+    "title": "La santé comme signe",
+    "description": "Après une longue période de maladie, tu retrouves des forces. Un ami te demande si tu crois que Dieu s'intéresse vraiment à la santé du corps. Que lui répondre ?",
+    "ageRange": [
+      25,
+      75
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-008",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "physique": 2
+    },
+    "thematicFlavor": "Dieu veut notre prospérité totale — corps, âme et esprit."
+  },
+  {
+    "id": "e-gueris-012",
+    "title": "Prier pour la guérison d'un autre",
+    "description": "Un frère de {église} te demande de prier pour lui. Il souffre depuis des mois. Tu hésites : et si rien ne change ? Dieu t'a-t-il donné l'autorité de prier pour la guérison ?",
+    "ageRange": [
+      18,
+      80
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "physique": 0
+    },
+    "thematicFlavor": "Prier les uns pour les autres — un acte de foi communautaire."
+  },
+  {
+    "id": "e-obeis-009",
+    "title": "L'ordre que tu ne comprends pas",
+    "description": "Le pasteur te demande de servir dans le département enfance alors que tu te sens appelé à la prédication. Tu vois ça comme un affront. Mais il insiste.",
+    "ageRange": [
+      18,
+      40
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "L'obéissance précède souvent la promotion."
+  },
+  {
+    "id": "e-obeis-010",
+    "title": "Rendre l'argent",
+    "description": "Tu réalises que le caissier t'a rendu trop de monnaie. Ce n'est que 5 euros. Mais quelque chose te dit que c'est une question d'obéissance, pas de montant.",
+    "ageRange": [
+      12,
+      80
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -2,
+      "physique": 0,
+      "finances": 2
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": -1
+    },
+    "thematicFlavor": "L'amitié de Dieu se gagne dans les petites obéissances."
+  },
+  {
+    "id": "e-obeis-011",
+    "title": "La promesse tenue",
+    "description": "Tu avais promis à Dieu de jeûner chaque vendredi pendant un mois. La troisième semaine, un déjeuner d'affaires est programmé ce jour-là. Annuler compromet un contrat.",
+    "ageRange": [
+      22,
+      65
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 2
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Les bénédictions de l'obéissance surpassent les compromis de la convenance."
+  },
+  {
+    "id": "e-obeis-012",
+    "title": "Bâtir sur le roc",
+    "description": "Un ami te propose un raccourci financier légalement ambigu. C'est tentant. Tu as entendu ce passage des Écritures cent fois. Mais l'appliquer là, maintenant, coûte.",
+    "ageRange": [
+      25,
+      60
+    ],
+    "category": "obeissance",
+    "correctVerseId": "v-obeis-008",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 3
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": -1
+    },
+    "thematicFlavor": "Mettre en pratique — pas seulement entendre — c'est là que la foi se révèle."
+  },
+  {
+    "id": "e-priere-008",
+    "title": "La prière de la nuit",
+    "description": "Trois heures du matin. Tu n'arrives pas à dormir. Une charge lourde te pèse. Tu ne sais pas exactement quoi demander à Dieu. Les mots ne viennent pas.",
+    "ageRange": [
+      18,
+      85
+    ],
+    "category": "priere",
+    "correctVerseId": "v-priere-008",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "physique": 1
+    },
+    "thematicFlavor": "L'Esprit intercède — même quand les mots nous manquent."
+  },
+  {
+    "id": "e-priere-009",
+    "title": "Se lever tôt pour prier",
+    "description": "Tu as décidé de te lever à 6h pour prier avant le travail. Trois jours sur cinq, le réveil ne sonne pas — ou tu l'éteins. La bonne volonté est là, la régularité non.",
+    "ageRange": [
+      18,
+      65
+    ],
+    "category": "priere",
+    "correctVerseId": "v-priere-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "physique": 0
+    },
+    "thematicFlavor": "Toujours prier sans se relâcher — une discipline, pas un sentiment."
+  },
+  {
+    "id": "e-priere-010",
+    "title": "La prière commune",
+    "description": "Lors d'une réunion de cellule, le responsable vous propose de prier à voix haute à tour de rôle. Tu es intimidé. Tu ne sais pas si ta prière est assez bien.",
+    "ageRange": [
+      14,
+      55
+    ],
+    "category": "priere",
+    "correctVerseId": "v-priere-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "Dieu est près de ceux qui l'invoquent avec sincérité — même gauchement."
+  },
+  {
+    "id": "e-priere-011",
+    "title": "Prier sans cesse",
+    "description": "Un vieux frère te dit qu'il prie tout au long de la journée — en marchant, en travaillant, en cuisinant. Tu trouves ça exagéré. Mais il rayonne d'une paix que tu n'as pas.",
+    "ageRange": [
+      20,
+      70
+    ],
+    "category": "priere",
+    "correctVerseId": "v-priere-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "La prière sans cesse n'est pas une performance — c'est une posture."
+  },
+  {
+    "id": "e-steril-009",
+    "title": "La promesse qui tarde",
+    "description": "Dieu t'a mis dans le cœur la certitude d'avoir des enfants. Cela fait sept ans. Rien. Les tests médicaux ne trouvent rien d'irréversible. Mais rien ne vient.",
+    "ageRange": [
+      24,
+      42
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -4,
+      "paix": -4,
+      "physique": -1,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Heureuse celle qui a cru — les promesses de Dieu ont leur propre calendrier."
+  },
+  {
+    "id": "e-steril-010",
+    "title": "Le regard des autres",
+    "description": "À l'église, la fête des mères est douloureuse. Les enfants offrent des fleurs à leurs mamans. Tu souris. Mais en dedans, quelque chose se brise encore une fois.",
+    "ageRange": [
+      26,
+      48
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Dieu voit la femme stérile — et il la fait crier de joie."
+  },
+  {
+    "id": "e-steril-011",
+    "title": "La foi d'Abraham",
+    "description": "Tu as lu l'histoire d'Abraham et Sara pour la centième fois. Ce soir, elle te touche différemment. La promesse de Dieu tient malgré l'impossibilité biologique.",
+    "ageRange": [
+      28,
+      55
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Croire sans chanceler quand tout dit le contraire — voilà la foi d'Abraham."
+  },
+  {
+    "id": "e-steril-012",
+    "title": "L'héritage spirituel",
+    "description": "Tu n'as pas eu d'enfants biologiques. Mais trois jeunes de {église} t'appellent 'maman dans la foi'. Dieu a-t-il répondu différemment à ta prière ?",
+    "ageRange": [
+      45,
+      75
+    ],
+    "category": "sterilite",
+    "correctVerseId": "v-steril-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "L'Écriture invite la stérile à crier de joie — ses enfants sont nombreux."
   }
 ]
