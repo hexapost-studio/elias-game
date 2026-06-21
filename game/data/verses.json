@@ -2766,5 +2766,75 @@
       "paix": 4
     },
     "diff": 1
+  },
+  {
+    "id": "v-orgueil-007",
+    "ref": "Jérémie 9.23",
+    "text": "Que le sage ne se glorifie pas en sa sagesse, que le fort ne se glorifie pas en sa force, que le riche ne se glorifie pas en sa richesse!",
+    "cat": "orgueil_independance",
+    "diff": 2
+  },
+  {
+    "id": "v-orgueil-008",
+    "ref": "1 Corinthiens 4.7",
+    "text": "Qu'as-tu que tu n'aies reçu? Et si tu l'as reçu, pourquoi te glorifies-tu, comme si tu ne l'avais pas reçu?",
+    "cat": "orgueil_independance",
+    "diff": 3
+  },
+  {
+    "id": "v-doute-007",
+    "ref": "Romains 10.17",
+    "text": "Ainsi la foi vient de ce qu'on entend, et ce qu'on entend vient de la parole de Christ.",
+    "cat": "doute_incredulite",
+    "diff": 1
+  },
+  {
+    "id": "v-doute-008",
+    "ref": "Jean 20.27",
+    "text": "Ne sois pas incrédule, mais crois.",
+    "cat": "doute_incredulite",
+    "diff": 2
+  },
+  {
+    "id": "v-direct-006",
+    "ref": "Psaume 25.9",
+    "text": "Il dirige les humbles dans la justice, il enseigne aux humbles sa voie.",
+    "cat": "direction_divine",
+    "diff": 1
+  },
+  {
+    "id": "v-direct-007",
+    "ref": "Jérémie 29.11",
+    "text": "Car je connais les projets que j'ai formés sur vous, dit l'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l'espérance.",
+    "cat": "direction_divine",
+    "diff": 1
+  },
+  {
+    "id": "v-direct-008",
+    "ref": "Galates 5.25",
+    "text": "Si nous vivons par l'Esprit, marchons aussi selon l'Esprit.",
+    "cat": "direction_divine",
+    "diff": 2
+  },
+  {
+    "id": "v-lourd-006",
+    "ref": "Psaume 55.23",
+    "text": "Jette ton fardeau sur l'Éternel, et il te soutiendra; il ne laissera jamais chanceler le juste.",
+    "cat": "lourdeur_fatigue",
+    "diff": 1
+  },
+  {
+    "id": "v-lourd-007",
+    "ref": "Matthieu 11.30",
+    "text": "Car mon joug est doux et mon fardeau est léger.",
+    "cat": "lourdeur_fatigue",
+    "diff": 1
+  },
+  {
+    "id": "v-lourd-008",
+    "ref": "Galates 6.9",
+    "text": "Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relâchons pas.",
+    "cat": "lourdeur_fatigue",
+    "diff": 2
   }
 ]

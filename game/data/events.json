@@ -7540,5 +7540,389 @@
       "paix": 4
     },
     "thematicFlavor": "Tous les grands hommes de foi ont connu ce désert — tu n'es pas le premier."
+  },
+  {
+    "id": "e-direct-006",
+    "title": "Le choix de filière",
+    "description": "Bac en poche, deux voies s'ouvrent : une licence à l'université, là où sont tes amis, ou une formation technique plus humble mais plus solide. Tes parents te poussent vers le prestige. Mais lequel est vraiment le bon chemin ?",
+    "ageRange": [
+      16,
+      22
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 2
+    },
+    "thematicFlavor": "L'humilité ouvre souvent les meilleurs chemins."
+  },
+  {
+    "id": "e-direct-007",
+    "title": "La mutation proposée",
+    "description": "Ton employeur te propose un poste dans une autre ville, avec une promotion et un meilleur salaire. Mais c'est loin de {église} et de ta communauté. Tu as deux semaines pour décider.",
+    "ageRange": [
+      30,
+      55
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "finances": 3
+    },
+    "thematicFlavor": "Entendre la voix de Dieu dans le bruit des décisions importantes."
+  },
+  {
+    "id": "e-direct-008",
+    "title": "La responsabilité d'ancien",
+    "description": "Le pasteur te demande de rejoindre l'équipe d'anciens. C'est un honneur, mais tu te sens indigne. Tu sais que cela demandera de la sagesse que tu estimes ne pas posséder.",
+    "ageRange": [
+      40,
+      65
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-008",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Le service naît de l'Esprit, non de la confiance en soi."
+  },
+  {
+    "id": "e-direct-009",
+    "title": "Partir en mission à soixante-cinq ans",
+    "description": "À la retraite, un réseau missionnaire te propose d'accompagner une équipe de formation pendant deux ans à l'étranger. Ta famille s'inquiète pour ta santé. Toi, tu brûles intérieurement.",
+    "ageRange": [
+      60,
+      80
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-007",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "La vocation de Dieu n'a pas de date d'expiration."
+  },
+  {
+    "id": "e-lourd-009",
+    "title": "Les nuits blanches de la session",
+    "description": "Les examens approchent. Les nuits blanches s'accumulent, les cours s'empilent. Tu dors quatre heures et tu n'arrives plus à retenir quoi que ce soit. L'épuisement te guette.",
+    "ageRange": [
+      16,
+      26
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "physique": 2
+    },
+    "thematicFlavor": "Le repos en Christ n'est pas un luxe, c'est une invitation."
+  },
+  {
+    "id": "e-lourd-010",
+    "title": "La vie en sandwich",
+    "description": "Tu travailles à plein temps, tu t'occupes des enfants le soir, et tes parents vieillissants te réclament le week-end. Tu n'as plus de temps pour toi — ni pour Dieu.",
+    "ageRange": [
+      28,
+      52
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-006",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "physique": 2
+    },
+    "thematicFlavor": "Jeter son fardeau n'est pas de la faiblesse : c'est de la foi."
+  },
+  {
+    "id": "e-lourd-011",
+    "title": "Le soignant qui s'oublie",
+    "description": "Depuis six mois, tu accompagnes un proche atteint d'une maladie grave. Tu assures les nuits, les rendez-vous, les démarches. Tu donnes tout — mais tu te vides.",
+    "ageRange": [
+      32,
+      60
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -4,
+      "physique": -3,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "physique": 2
+    },
+    "thematicFlavor": "La grâce de Dieu est une ressource inépuisable là où les nôtres s'épuisent."
+  },
+  {
+    "id": "e-lourd-012",
+    "title": "Les forces qui déclinent",
+    "description": "Autrefois tu gérais tout seul. Aujourd'hui monter un escalier te fatigue. Accepter d'être aidé te semble une humiliation. Pourtant les frères insistent pour te soulager.",
+    "ageRange": [
+      55,
+      85
+    ],
+    "category": "lourdeur_fatigue",
+    "correctVerseId": "v-lourd-008",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": -2,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "physique": 2
+    },
+    "thematicFlavor": "Persévérer jusqu'au bout — même quand le rythme ralentit."
+  },
+  {
+    "id": "e-echec-006",
+    "title": "Le devoir rendu",
+    "description": "Tu avais tout donné sur ce devoir. Le professeur rend les copies : 8 sur 20. Tu es sous le choc. Des camarades qui ont moins travaillé ont 14. L'injustice brûle.",
+    "ageRange": [
+      12,
+      18
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "Le juste qui tombe sept fois se relève — l'échec n'est pas la fin."
+  },
+  {
+    "id": "e-echec-007",
+    "title": "La fermeture",
+    "description": "Deux ans de travail acharné. Ton projet s'effondre : clients insuffisants, dettes qui s'accumulent. Tu dois mettre la clé sous la porte et tout recommencer à zéro.",
+    "ageRange": [
+      24,
+      38
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": -5
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 3
+    },
+    "thematicFlavor": "L'épreuve de la foi produit la patience — même dans la ruine."
+  },
+  {
+    "id": "e-echec-008",
+    "title": "La comparaison",
+    "description": "Sur les réseaux, tu vois tes anciens camarades : mariages, promotions, voyages. Toi tu stagnes depuis trois ans. Une voix murmure que tu as raté ta vie.",
+    "ageRange": [
+      30,
+      55
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Toutes choses concourent au bien — même celles qui ressemblent à du retard."
+  },
+  {
+    "id": "e-echec-009",
+    "title": "La reconnaissance tardive",
+    "description": "Tu reçois une distinction pour vingt ans de service fidèle. Lors du discours, tu te sens creux. Les applaudissements ne comblent pas ce que tu as sacrifié en chemin.",
+    "ageRange": [
+      50,
+      70
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-001",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 2
+    },
+    "thematicFlavor": "La force véritable vient de Christ, pas des honneurs humains."
+  },
+  {
+    "id": "e-soif-009",
+    "title": "La question qui brûle",
+    "description": "Tes amis ne pensent qu'aux sorties. Toi tu te poses des questions sur Dieu, sur le sens de la vie. Au lycée ça te rend étrange — mais tu ne peux pas faire taire cette soif.",
+    "ageRange": [
+      12,
+      18
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-002",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "Heureux ceux qui ont faim de justice — cette soif est une grâce."
+  },
+  {
+    "id": "e-soif-010",
+    "title": "La prière sèche",
+    "description": "Tu pries depuis des mois mais tu ne ressens rien. Aucune réponse perceptible. Aucune émotion. Tu continues par discipline, mais la sécheresse intérieure te fait douter.",
+    "ageRange": [
+      20,
+      40
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-003",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "L'invitation de Dieu n'expire pas — même dans le désert spirituel."
+  },
+  {
+    "id": "e-soif-011",
+    "title": "Le culte insuffisant",
+    "description": "Chaque dimanche tu repars sur ta faim. Les sermons ne te touchent plus. Tu as soif de quelque chose de plus profond, mais tu ne sais pas où le trouver sans blesser la communauté.",
+    "ageRange": [
+      28,
+      58
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-004",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "Viens à moi — la source ne tarit jamais."
+  },
+  {
+    "id": "e-soif-012",
+    "title": "Le retour au premier amour",
+    "description": "Tu te souviens du feu qui brûlait à ta conversion. Aujourd'hui, à soixante ans passés, tout est plus tiède. Tu lis la Parole par habitude. L'ardeur d'autrefois te manque.",
+    "ageRange": [
+      60,
+      90
+    ],
+    "category": "soif_de_dieu",
+    "correctVerseId": "v-soif-005",
+    "decoyVerseIds": [],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "L'eau vive reste gratuite, même pour les vieux soldats de la foi."
   }
 ]
