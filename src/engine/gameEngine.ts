@@ -24,6 +24,7 @@ import { pickCalling } from '../data/callings';
 import { evaluateTraitAwards, getTraitCategoryBias } from '../data/traits';
 import { mulberry32, makeSeed, rngWeightedPick, rngPick, type Rng } from './rng';
 import { buildEchoLinkEntry } from './echoLink';
+import { resolveQuestionType } from './verseProgression';
 import { getChapterIntro, getDecadeCliffhanger, isDecadeStart, isDecadeEnd } from './lifeChapters';
 import { revealsAtAge } from './reveals';
 import { countUnlocked, collectionRewardText } from './collection';
@@ -1558,7 +1559,14 @@ export function advanceAge(state: GameState): {
       if (echoEntry) {
         newState.journal = [...newState.journal, echoEntry];
       }
-      newState.currentEvent = event;
+      // Progression de difficulté par verset (Design V2) :
+      // le questionType peut être surclassé selon la maîtrise du joueur avec ce verset.
+      const resolvedType = !event.moralChoices
+        ? resolveQuestionType(event.correctVerseId, newState.codex, event.questionType)
+        : undefined;
+      newState.currentEvent = resolvedType
+        ? { ...event, questionType: resolvedType }
+        : event;
       newState.phase = 'event';
       eventGenerated = true;
     }

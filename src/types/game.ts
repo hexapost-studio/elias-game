@@ -159,7 +159,7 @@ export interface AfflictionEvent {
   correctVerseId: string;
   decoyVerseIds: string[];
   /** 'choice' (défaut) = 4 chips de versets entiers. 'wordBank' = mot caché à retrouver. */
-  questionType?: 'choice' | 'wordBank';
+  questionType?: 'choice' | 'wordBank' | 'completion' | 'reference';
   /** Présent uniquement si questionType === 'wordBank'. */
   wordBank?: WordBankData;
   statImpactOnFail: StatImpact;

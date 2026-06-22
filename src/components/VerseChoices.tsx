@@ -9,6 +9,8 @@ import { shuffledChoiceIds } from '../engine/choiceOrder';
 import { deriveMessageSender } from '../engine/messageSender';
 import { TypingIndicator } from './TypingIndicator';
 import { buildWordBankChallenge } from '../engine/wordBank';
+import { buildCompletionChallenge } from '../engine/verseCompletion';
+import { VERSE_DATABASE } from '../data/verses';
 
 const PALIER_TIMER: Record<number, number | null> = {
   1: null,   // Pas de timer
@@ -345,11 +347,148 @@ export function VerseChoices() {
         );
       })()}
 
+      {/* ── Completion (Design V2) ── */}
+      {/* Quand questionType === 'completion' : début du verset + 4 fins à choisir. */}
+      {!hasAnswered && currentEvent.questionType === 'completion' && (() => {
+        const correctVerse = getVerseById(currentEvent.correctVerseId);
+        if (!correctVerse) return null;
+        const otherTexts = VERSE_DATABASE
+          .filter(v => v.cat === correctVerse.cat && v.id !== correctVerse.id)
+          .map(v => v.text);
+        const challenge = buildCompletionChallenge(correctVerse.text, otherTexts, currentEvent.id);
+        const handleClick = (option: string) => {
+          if (sendingChipId !== null) return;
+          const isCorrect = option === challenge.correctOption;
+          const verseIdToPass = isCorrect
+            ? currentEvent.correctVerseId
+            : (currentEvent.decoyVerseIds[0] ?? currentEvent.correctVerseId);
+          const finalTime = Math.max(0.1, maxTime - timeLeft);
+          try { navigator.vibrate(5); } catch { /* non supporté */ }
+          chooseVerse(verseIdToPass, Math.round(finalTime * 10) / 10);
+        };
+        return (
+          <div style={{ marginTop: 8 }}>
+            <div style={{
+              padding: '10px 14px',
+              borderRadius: 10,
+              background: 'rgba(245,158,11,0.06)',
+              border: '1px solid rgba(245,158,11,0.18)',
+              fontSize: 13,
+              lineHeight: 1.7,
+              color: 'var(--text-secondary)',
+              marginBottom: 6,
+              fontStyle: 'italic',
+            }}>
+              « {challenge.prefix}{' '}
+              <span style={{
+                display: 'inline-block',
+                minWidth: 60,
+                borderBottom: `2px solid ${eventSender.color}`,
+                marginInline: 4,
+                verticalAlign: 'bottom',
+              }} aria-label="suite du verset à retrouver">{'  '}</span> »
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', textAlign: 'center', marginBottom: 10 }}>
+              Retrouve la suite du verset
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {challenge.options.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleClick(opt)}
+                  style={{
+                    padding: '10px 14px',
+                    minHeight: 44,
+                    borderRadius: 10,
+                    border: `1.5px solid rgba(245,158,11,0.25)`,
+                    background: 'var(--bg-card)',
+                    color: 'var(--text-primary)',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 13,
+                    fontStyle: 'italic',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'background 0.12s, border-color 0.12s',
+                  }}
+                  aria-label={`Choisir : ${opt}`}
+                >
+                  …{opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── Reference (Design V2) ── */}
+      {/* Quand questionType === 'reference' : texte complet affiché, joueur choisit la référence. */}
+      {!hasAnswered && currentEvent.questionType === 'reference' && (() => {
+        const correctVerse = getVerseById(currentEvent.correctVerseId);
+        if (!correctVerse) return null;
+        const handleRefClick = (verseId: string) => {
+          if (sendingChipId !== null) return;
+          const finalTime = Math.max(0.1, maxTime - timeLeft);
+          try { navigator.vibrate(5); } catch { /* non supporté */ }
+          chooseVerse(verseId, Math.round(finalTime * 10) / 10);
+        };
+        return (
+          <div style={{ marginTop: 8 }}>
+            <div style={{
+              padding: '10px 14px',
+              borderRadius: 10,
+              background: 'rgba(245,158,11,0.06)',
+              border: '1px solid rgba(245,158,11,0.18)',
+              fontSize: 13,
+              lineHeight: 1.7,
+              color: 'var(--text-secondary)',
+              marginBottom: 6,
+              fontStyle: 'italic',
+            }}>
+              « {correctVerse.text} »
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', textAlign: 'center', marginBottom: 10 }}>
+              Quelle est la référence de ce verset ?
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {shuffledIds.map((verseId) => {
+                const v = getVerseById(verseId);
+                if (!v) return null;
+                return (
+                  <button
+                    key={verseId}
+                    onClick={() => handleRefClick(verseId)}
+                    style={{
+                      padding: '10px 14px',
+                      minHeight: 44,
+                      borderRadius: 10,
+                      border: `1.5px solid rgba(245,158,11,0.25)`,
+                      background: 'var(--bg-card)',
+                      color: 'var(--text-primary)',
+                      fontFamily: 'var(--font-body)',
+                      fontSize: 14,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      transition: 'background 0.12s, border-color 0.12s',
+                    }}
+                    aria-label={`Choisir la référence : ${v.reference}`}
+                  >
+                    {v.reference}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── Choices classiques — chips de versets (T-27) ── */}
       {/* Pendant l'animation d'envoi (sendingChipId !== null) : seule la chip
           sélectionnée est visible avec la classe --sending ; les autres sont masquées.
           Après réponse (hasAnswered) : plus de chips visibles (la bulle les remplace). */}
-      {!hasAnswered && currentEvent.questionType !== 'wordBank' && shuffledIds.map((verseId, i) => {
+      {!hasAnswered && currentEvent.questionType !== 'wordBank'
+        && currentEvent.questionType !== 'completion'
+        && currentEvent.questionType !== 'reference'
+        && shuffledIds.map((verseId, i) => {
         const verse = getVerseById(verseId);
         if (!verse) return null;
 
