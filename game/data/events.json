@@ -150,7 +150,7 @@
   {
     "id": "e-fond-001",
     "title": "Le harcèlement scolaire",
-    "description": "À l'école, un groupe d'élèves se moque de toi chaque jour à cause de ta foi. La peur te serre le ventre.",
+    "description": "Chaque matin, tu entres dans la cour et tu les vois déjà. Depuis trois semaines, les moqueries recommencent à cause de ta foi — 'le petit évangéliste'. Aujourd'hui, ils ont jeté ton sac devant tout le monde. Tu veux disparaître dans le sol.",
     "ageRange": [
       8,
       15
@@ -338,7 +338,7 @@
   {
     "id": "e-fond-004",
     "title": "La peur du noir",
-    "description": "Tu as 8 ans et tu fais des cauchemars chaque nuit. La peur du noir te paralyse.",
+    "description": "Tu as huit ans. Depuis un mois, tu te réveilles en sueur à 3h du matin. Cette ombre au bout du couloir. Le cœur qui s'emballe. Tu n'oses plus appeler maman — c'est la troisième nuit consécutive et tu es épuisé de toi-même.",
     "ageRange": [
       6,
       10
@@ -359,7 +359,7 @@
   {
     "id": "e-fond-005",
     "title": "Le premier appel",
-    "description": "À l'école du dimanche, tu sens quelque chose remuer dans ton cœur. Dieu t'appelle, mais c'est intimidant.",
+    "description": "La monitrice vient de finir son histoire. Tout le monde est silencieux. Quelque chose remue en toi — pas une émotion ordinaire, plus profond. Comme si quelqu'un t'appelait par ton prénom alors que personne n'a rien dit. Tu ne sais pas comment appeler ça.",
     "ageRange": [
       8,
       14
@@ -380,7 +380,7 @@
   {
     "id": "e-choix-001",
     "title": "La pression des études",
-    "description": "Les examens approchent. La charge est écrasante, les nuits sont courtes. L'angoisse monte.",
+    "description": "Il est 2h du matin. Quatrième nuit consécutive sur les mêmes notes. Tu relis la même page pour la huitième fois sans rien retenir. L'examen dans six heures. Tes mains tremblent légèrement. La panique commence à prendre le dessus sur tout le reste.",
     "ageRange": [
       16,
       25
@@ -441,7 +441,7 @@
   {
     "id": "e-choix-002",
     "title": "La tentation pornographique",
-    "description": "Un ami te montre un site. La curiosité te dévore. Personne ne le saurait jamais.",
+    "description": "{ami} t'a envoyé un lien hier soir. 'Regarde ça.' Tu sais exactement de quoi il s'agit. Tu avais fermé la fenêtre — mais le lien est encore dans l'historique. Il est 23h, tu es seul dans ta chambre. Personne ne le saurait jamais.",
     "ageRange": [
       14,
       22
@@ -545,7 +545,7 @@
   {
     "id": "e-choix-004",
     "title": "Le doute sur l'orientation",
-    "description": "Tes parents veulent médecine. Tu sens un appel différent. Est-ce ta volonté ou celle de Dieu ?",
+    "description": "Tes parents ont déjà tout décidé. Médecine. Ton père en parle à toute la famille lors du repas dominical — 'notre docteur'. Mais depuis six mois, quelque chose d'autre brûle en toi. Tu ne sais pas si c'est Dieu ou ta propre ambition. Les inscriptions ferment vendredi.",
     "ageRange": [
       16,
       22
@@ -584,7 +584,7 @@
   {
     "id": "e-choix-005",
     "title": "La relation toxique",
-    "description": "Cette personne te manipule, mais tu as peur de la solitude. Tu sais que c'est mauvais mais tu restes.",
+    "description": "Ta messagerie affiche vingt-trois messages depuis hier soir. Chaque fois que tu t'éloignes, il/elle revient avec des excuses. Tu sais que ce schéma est malsain. Tu l'as vu venir depuis des mois. Mais ce soir, encore une fois, il/elle pleure au téléphone. Et tu décroches.",
     "ageRange": [
       18,
       25
@@ -651,7 +651,7 @@
   {
     "id": "e-choix-006",
     "title": "La soif de Dieu",
-    "description": "Un réveil spirituel traverse ta ville. Tu sens un feu brûler en toi, mais les moqueries de tes amis refroidissent ton élan.",
+    "description": "Ça dure depuis trois semaines. Des gens de ton lycée — des gens que tu connais — se font baptiser. {ami} t'a envoyé une vidéo : ils chantent dans la rue. Tu sens quelque chose s'allumer en toi que tu ne sais pas nommer. Mais tes autres amis ricanent. 'La secte,' ils disent.",
     "ageRange": [
       16,
       24
@@ -690,7 +690,7 @@
   {
     "id": "e-prod-001",
     "title": "La perte d'emploi",
-    "description": "L'entreprise licencie. Les factures s'accumulent. La peur du lendemain te paralyse.",
+    "description": "On t'a remis l'enveloppe vendredi à 17h30. Plan social. Ton poste supprimé. Tu l'as annoncé à {conjoint} ce soir en rentrant. Le silence qui a suivi était pire que les cris. Le loyer tombe dans dix jours. Tu n'as pas dormi de la nuit.",
     "ageRange": [
       26,
       55
@@ -751,7 +751,7 @@
   {
     "id": "e-prod-002",
     "title": "La tentation adultère",
-    "description": "Un(e) collègue montre un intérêt marqué. Ton couple traverse une crise. Personne ne le saurait.",
+    "description": "Ton couple traverse la pire période depuis des années. Les conversations finissent par des portes claquées. Et cette collègue — elle, elle t'écoute. Elle comprend. Ce soir, elle a proposé un café après le travail, juste tous les deux. Tu sais exactement ce que ça veut dire. Et une partie de toi murmure : 'tu le mérites.'",
     "ageRange": [
       28,
       50
@@ -812,7 +812,7 @@
   {
     "id": "e-prod-003",
     "title": "L'amertume au travail",
-    "description": "Ton collègue a été promu à ta place. L'injustice te ronge. Tu travailles deux fois plus.",
+    "description": "L'annonce a été faite en réunion. Tu as applaudi, comme les autres. Mais tu as vu le regard du directeur — il évitait le tien. Ton collègue a été promu. Toi, tu as le double de son ancienneté. En sortant, quelqu'un a murmuré : 'c'est politique.' Tu savais déjà.",
     "ageRange": [
       26,
       50
@@ -2677,7 +2677,7 @@
   {
     "id": "e-soif-002",
     "title": "Le désert intérieur",
-    "description": "Tu traverses une période de sécheresse spirituelle. Les prières te semblent vides, la Bible sans saveur, les chants à {église} mécaniques. Tu sais que Dieu est là, mais tu ne le sens plus. {ami} a traversé la même chose.",
+    "description": "Tu chantes les mêmes chants qu'il y a dix ans. Tu prends les mêmes notes dans le même carnet. Mais quelque chose a changé — tu n'arrives plus à dire quand exactement tu as arrêté de ressentir quoi que ce soit. La forme est restée. Le feu s'est évaporé.",
     "ageRange": [
       18,
       80
@@ -2803,7 +2803,7 @@
   {
     "id": "e-decour-001",
     "title": "Les murs qui ne tombent pas",
-    "description": "Tu pries, tu jeûnes, tu crois — mais rien ne change. La situation à {église} empire, les finances de ta famille s'épuisent, et la fatigue accumulée te murmure : 'À quoi bon ?' Le découragement menace de tout engloutir.",
+    "description": "Combien de jours ? Tu as arrêté de compter. Des mois à prier pour cette même situation — mariage, santé, ministère, finances, tu sais pour quoi tu pries. Et rien. Ce matin, tu as ouvert ta Bible. Pour la première fois, les mots ne t'ont pas parlé. Tu as refermé sans lire.",
     "ageRange": [
       20,
       70
@@ -2888,7 +2888,7 @@
   {
     "id": "e-lourd-001",
     "title": "Un poids trop lourd",
-    "description": "Entre ton travail de {métier}, les engagements à {église}, la vie de famille, et les attentes de tout le monde, tu es épuisé. Chaque matin est une lutte pour sortir du lit. Le repos semble un luxe que tu ne peux pas t'offrir.",
+    "description": "Tu es assis dans ta voiture depuis vingt minutes sans pouvoir en sortir. À l'intérieur t'attendent les enfants, les devoirs, le dîner à préparer, l'appel de ta mère, le rapport à finir. Tu fermes les yeux. Tu ne sais pas ce qui va craquer en premier — toi ou les autres.",
     "ageRange": [
       25,
       70
@@ -5960,7 +5960,7 @@
   {
     "id": "e-lourd-004",
     "title": "Le deuil interminable",
-    "description": "Tu portes le deuil d'une perte depuis trop longtemps. Les autres semblent avoir tourné la page. Mais pour toi, la douleur est encore là, certains jours aussi vive qu'au premier moment. La tristesse n'est pas de l'incrédulité — c'est de l'amour qui n'a plus où aller.",
+    "description": "C'est la troisième fois cette semaine que tu prends ton téléphone pour lui envoyer un message — puis tu te souviens. Six mois. Les autres ont repris leur vie. Toi, tu as l'impression que le monde s'est remis en marche sans te demander ton avis.",
     "ageRange": [
       30,
       85
@@ -8308,5 +8308,515 @@
       "finances": 0
     },
     "thematicFlavor": "L'Écriture invite la stérile à crier de joie — ses enfants sont nombreux."
+  },
+  {
+    "id": "e-echo-louise-001",
+    "title": "Louise, trente ans après",
+    "description": "Il y a trente ans, tu avais choisi la paix plutôt que la rancune. Ce soir, Louise t'envoie un message. Elle vient de perdre son mari. 'Je voulais te dire avant de dormir : ce soir-là, quand tu m'as pardonné, tu m'as sauvé la vie. Je t'en ai voulu des années. Puis j'ai compris.'",
+    "ageRange": [
+      57,
+      75
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-004",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-louise-4"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "Le pardon accordé autrefois porte des fruits que tu ne soupçonnais pas."
+  },
+  {
+    "id": "e-echo-louise-002",
+    "title": "Le silence de Louise",
+    "description": "Tu vois une photo de Louise sur les réseaux. Elle dirige une association pour les femmes en détresse. Trente ans de silence entre vous. Tu te demandes si le pardon que tu n'avais pas accordé a laissé une cicatrice — chez elle, ou chez toi. Peut-être les deux.",
+    "ageRange": [
+      57,
+      75
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-006",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_failed",
+        "eventId": "arc-louise-4"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "Il n'est jamais trop tard pour que la grâce reprenne ce que l'amertume avait pris."
+  },
+  {
+    "id": "e-echo-louise-reflet",
+    "title": "La patience que tu n'avais pas",
+    "description": "Quelqu'un te dit ce soir : 'Tu as une patience pour les gens difficiles que je n'ai pas.' Tu souris sans répondre. Cette patience-là, tu l'as payée cher, il y a longtemps, dans une histoire dont tu ne parles jamais. Elle vaut plus que ce qu'elle a coûté.",
+    "ageRange": [
+      60,
+      82
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-009",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "arc_completed",
+        "arcId": "arc-louise"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Ce que l'on pardonne nous transforme autant que ceux qu'on pardonne."
+  },
+  {
+    "id": "e-echo-mathias-001",
+    "title": "L'appel de Mathias",
+    "description": "Ton téléphone sonne en plein milieu de la nuit. C'est Mathias. Sa voix tremble un peu. 'Je viens d'être ordonné. Je voulais que tu sois le premier à le savoir.' Un silence. 'À vingt-deux ans, quand tu as cru en moi alors que je ne croyais plus en moi-même — ça a tout changé.'",
+    "ageRange": [
+      52,
+      72
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-mathias-4"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Investir dans une vie, c'est une semence dont on récolte longtemps après."
+  },
+  {
+    "id": "e-echo-mathias-002",
+    "title": "La nouvelle de Mathias",
+    "description": "Un ami commun te raconte que Mathias a quitté la foi depuis plusieurs années. Tu te souviens de ce moment, il y a longtemps — quand tu aurais pu dire quelque chose, être là autrement. Tu ne sais pas si ça aurait changé quoi que ce soit. La question reste.",
+    "ageRange": [
+      52,
+      72
+    ],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-001",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_failed",
+        "eventId": "arc-mathias-4"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "Même les graines non récoltées peuvent germer ailleurs — Dieu connaît la suite."
+  },
+  {
+    "id": "e-echo-heritage-001",
+    "title": "Le journal de ton père",
+    "description": "En rangeant les affaires de ta mère, tu trouves un journal de ton père. La page du jour de ta naissance est cornée. Il avait écrit ton prénom, puis ces mots : 'Ce fils marchera avec Dieu. J'en suis convaincu. Qu'il sache que je l'ai confié à l'Éternel dès ce matin.'",
+    "ageRange": [
+      58,
+      80
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-heritage-3"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "Nous sommes la réponse à des prières que nous n'avons jamais entendues."
+  },
+  {
+    "id": "e-echo-heritage-reflet",
+    "title": "L'héritage que tu transmets",
+    "description": "Tu as maintenant l'âge qu'avait ton père quand il t'a transmis cet héritage — fragile, précieux, sans mode d'emploi. Tu regardes tes propres enfants. Tu te demandes ce que tu leur transmets, sans le savoir, sans le vouloir, juste en vivant devant eux.",
+    "ageRange": [
+      55,
+      78
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "arc_completed",
+        "arcId": "arc-heritage"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "La foi ne se lègue pas comme un bien — elle se vit, et les autres la reçoivent."
+  },
+  {
+    "id": "e-echo-tentation-001",
+    "title": "L'effondrement du pouvoir",
+    "description": "L'affaire éclate dans les journaux. L'organisation qui t'avait proposé ce poste il y a vingt ans vient de s'effondrer dans un scandale de corruption. Tu regardes l'écran. Ni soulagement ni triomphe. Juste une paix que tu avais choisie un soir, il y a longtemps.",
+    "ageRange": [
+      50,
+      68
+    ],
+    "category": "combat_spirituel",
+    "correctVerseId": "v-combat-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-tentation-5"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "La résistance à la tentation porte des fruits qu'on ne compte pas tout de suite."
+  },
+  {
+    "id": "e-echo-tentation-002",
+    "title": "Le journaliste",
+    "description": "Un journaliste t'appelle. Il a trouvé ton nom dans d'anciens documents. Il ne t'accuse de rien — il veut juste 'comprendre le contexte.' Mais ta voix hésite. Certains choix, même anciens, laissent des traces qui remontent quand on s'y attend le moins.",
+    "ageRange": [
+      50,
+      68
+    ],
+    "category": "combat_spirituel",
+    "correctVerseId": "v-combat-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_failed",
+        "eventId": "arc-tentation-5"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -4,
+      "physique": 0,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 0
+    },
+    "thematicFlavor": "La confession et le retournement sont toujours possibles — même longtemps après."
+  },
+  {
+    "id": "e-echo-guerison-001",
+    "title": "Le frère guéri",
+    "description": "Une femme t'aborde après le culte. Tu ne la reconnais pas. 'Mon frère était dans cette chambre d'hôpital, il y a vingt ans,' dit-elle. 'Des gens avaient prié pour lui avec les anciens. Il est pasteur aujourd'hui.' Elle pose sa main sur ton bras. 'C'était toi, n'est-ce pas ?'",
+    "ageRange": [
+      58,
+      82
+    ],
+    "category": "maladie_guerison",
+    "correctVerseId": "v-gueris-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-guerison-3"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "Une prière fidèle porte des fruits qu'on ne voit souvent que des années plus tard."
+  },
+  {
+    "id": "e-echo-metier-001",
+    "title": "Le jeune qui hésite",
+    "description": "Un jeune de vingt-deux ans vient te voir après la réunion. Il veut faire ce que tu fais. Il hésite à poser la vraie question : 'Comment tu as su que c'était ta vocation ?' Tu le regardes. Il ne sait pas que toi aussi, exactement à son âge, tu ne savais pas encore.",
+    "ageRange": [
+      55,
+      74
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-007",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-metier-5"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Dieu utilise nos parcours brisés pour guider ceux qui hésitent après nous."
+  },
+  {
+    "id": "e-echo-metier-002",
+    "title": "L'intégrité de l'autre",
+    "description": "Tu croises ton ancien collègue dans une conférence. Dix-huit ans sans se voir. Il a fondé son entreprise en restant intègre. La tienne a fermé après les compromis. Il te serre la main sans te juger. C'est peut-être ça qui fait le plus mal — qu'il ne te juge pas.",
+    "ageRange": [
+      50,
+      70
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_failed",
+        "eventId": "arc-metier-3"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -3,
+      "paix": -3,
+      "physique": 0,
+      "finances": -2
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 3,
+      "finances": 2
+    },
+    "thematicFlavor": "Toutes choses concourent au bien — même les chemins de traverse."
+  },
+  {
+    "id": "e-echo-parents-001",
+    "title": "La lettre de prière",
+    "description": "Ton neveu t'appelle — le fils de ta sœur, vingt ans. Il vient de trouver des lettres dans une vieille boîte. 'Il y a une lettre où mamie priait pour toi par ton prénom,' dit-il. 'Elle priait pour tes enfants aussi — ceux que tu n'avais pas encore.' Il lit à voix haute. Tu ne dis rien pendant un long moment.",
+    "ageRange": [
+      62,
+      82
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-001",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-parents-6"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "Les prières des parents nous précèdent sur des chemins que nous n'avons pas encore pris."
+  },
+  {
+    "id": "e-echo-eglise-001",
+    "title": "La bannière et le verset",
+    "description": "{église} t'envoie une photo pour le jubilé. Le groupe de jeunes qui avait failli disparaître vingt ans plus tôt compte maintenant quatre-vingt membres. Sur la bannière de la grande salle : un verset que tu leur avais lu lors de la dernière réunion avant la crise. Ils l'avaient gardé.",
+    "ageRange": [
+      58,
+      78
+    ],
+    "category": "saint_esprit",
+    "correctVerseId": "v-esprit-001",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-eglise-4"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "Ce que l'Esprit plante dans une crise, il le fait croître sur des décennies."
+  },
+  {
+    "id": "e-echo-conjoint-001",
+    "title": "La lettre jamais envoyée",
+    "description": "La maison est silencieuse depuis six mois. En rangeant les affaires de {conjoint}, tu trouves une enveloppe avec ton prénom. Une lettre, jamais envoyée, écrite des années plus tôt : 'Tu as été la réponse de Dieu à une prière que je faisais depuis l'âge de dix-sept ans. Merci d'avoir choisi de rester.'",
+    "ageRange": [
+      75,
+      93
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-conjoint-6"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "L'amour fidèle écrit des histoires que même la mort ne ferme pas."
+  },
+  {
+    "id": "e-echo-conjoint-reflet",
+    "title": "Le conseil aux jeunes",
+    "description": "Un jeune couple dans ta cellule traverse une crise. Ils te demandent comment vous avez fait, {conjoint} et toi, pour tenir dans les moments difficiles. Tu réfléchis un instant. 'On a décidé très tôt que partir n'était pas une option,' dis-tu. 'Et on a prié pour que Dieu soit plus fort que nos limites.'",
+    "ageRange": [
+      65,
+      88
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-001",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "arc_completed",
+        "arcId": "arc-conjoint"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "L'amour de Dieu est le seul fondement d'un amour humain qui dure."
+  },
+  {
+    "id": "e-echo-ami-001",
+    "title": "Le premier anniversaire sans lui",
+    "description": "C'est le premier anniversaire de {ami} depuis sa mort. Tu retrouves une photo de vous deux à vingt ans — l'époque des nuits de prière et des questions sans réponse. Tu te souviens qu'il t'avait dit une fois : 'Dieu m'a donné un ami au bon moment. C'est tout ce dont j'avais besoin.'",
+    "ageRange": [
+      65,
+      86
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-8"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "L'amitié fidèle est l'une des formes les plus concrètes de l'amour de Dieu."
   }
 ]
