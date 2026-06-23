@@ -597,8 +597,8 @@
   },
   {
     "id": "v-amer-003",
-    "ref": "Romains 8.1",
-    "text": "Il n'y a donc maintenant aucune condamnation pour ceux qui sont en Jésus-Christ.",
+    "ref": "Psaume 103.3-4",
+    "text": "C'est lui qui pardonne toutes tes iniquités, qui guérit toutes tes maladies; c'est lui qui délivre ta vie de la fosse, qui te couronne de bonté et de miséricorde.",
     "cat": "amertume_rejet",
     "tags": [
       "condamnation",
@@ -611,7 +611,7 @@
       "foi": 4,
       "paix": 3
     },
-    "diff": 1
+    "diff": 2
   },
   {
     "id": "v-amer-004",
@@ -2691,8 +2691,8 @@
   },
   {
     "id": "v-parole-005",
-    "ref": "Deutéronome 8.3",
-    "text": "L'homme ne vivra pas de pain seulement, mais de toute parole qui sort de la bouche de Dieu.",
+    "ref": "Psaume 119.130",
+    "text": "La révélation de tes paroles éclaire, elle donne de l'intelligence aux simples.",
     "cat": "parole_de_dieu",
     "tags": [
       "pain",
@@ -2705,7 +2705,7 @@
       "foi": 4,
       "paix": 3
     },
-    "diff": 1
+    "diff": 2
   },
   {
     "id": "v-parole-006",
@@ -2823,10 +2823,10 @@
   },
   {
     "id": "v-lourd-008",
-    "ref": "Galates 6.9",
-    "text": "Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relâchons pas.",
+    "ref": "2 Corinthiens 4.8-9",
+    "text": "Nous sommes pressés de toutes parts, sans être réduits à l'extrémité; dans la détresse, sans être dans le désespoir; persécutés, mais non abandonnés; abattus, mais non perdus.",
     "cat": "lourdeur_fatigue",
-    "diff": 2
+    "diff": 3
   },
   {
     "id": "v-gueris-006",
