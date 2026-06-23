@@ -159,6 +159,13 @@ export function getDecadeCliffhanger(
  * Prédicat : l'âge est-il une borne de début de décennie (multiple de 10, ≥ 10) ?
  * Utilisé par `advanceAge` pour injecter la carte d'intro.
  */
+/** Retourne le titre et le thème d'une décennie pour la ChapterCard. */
+export function getChapterData(age: number): { title: string; theme: string } {
+  const idx = decadeIndex(age);
+  const chapter = CHAPTERS[idx];
+  return { title: chapter.title, theme: chapter.theme };
+}
+
 export function isDecadeStart(age: number): boolean {
   return age >= 10 && age % 10 === 0;
 }

@@ -48,6 +48,8 @@ import { ShareCard } from './components/ShareCard';
 import { TestimonyCard } from './components/TestimonyCard';
 import { generateTestimony } from './engine/testimonyGenerator';
 import { ActionPanel } from './components/ActionPanel';
+import { ChapterCard } from './components/ChapterCard';
+import { isDecadeStart, getChapterData } from './engine/lifeChapters';
 import { JournalBubble } from './components/JournalBubble';
 import { deriveSenderFromJournalEntry } from './engine/messageSender';
 import type { AfflictionEvent } from './types/game';
@@ -148,6 +150,8 @@ function App() {
   const [ambientOn, setAmbientOn] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
   const [showTestimony, setShowTestimony] = useState(false);
+  // ChapterCard : âge de la dernière carte affichée (évite les répétitions)
+  const [shownChapterAge, setShownChapterAge] = useState(-1);
   const [showLifeReview, setShowLifeReview] = useState(false);
   // Accessibilité
   const [dyslexicMode, setDyslexicMode] = useState(false);
@@ -318,6 +322,7 @@ function App() {
       setShowShareCard(false);
       setShowLifeReview(false);
       setShowTestimony(false);
+      setShownChapterAge(-1); // reset pour la prochaine partie
     }
   }
   // Garde sonore de game-over : reset d'un ref (non concerné par set-state-in-effect).
@@ -694,6 +699,21 @@ function App() {
             </button>
           </div>
         )}
+
+        {/* ChapterCard (Design V2) — overlay de début de décennie (roman visuel) */}
+        {isDecadeStart(age) && !gameOver?.isOver && shownChapterAge !== age && (() => {
+          const { title, theme } = getChapterData(age);
+          return (
+            <ChapterCard
+              chapterTitle={title}
+              chapterTheme={theme}
+              age={age}
+              season={spiritualSeason}
+              callingName={calling?.name}
+              onContinue={() => setShownChapterAge(age)}
+            />
+          );
+        })()}
 
         {/* Témoignage de fin de vie (Design V2) — affiché en premier, avant le bilan */}
         {showTestimony && (() => {

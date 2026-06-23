@@ -353,7 +353,7 @@ export function VerseChoices() {
         const correctVerse = getVerseById(currentEvent.correctVerseId);
         if (!correctVerse) return null;
         const otherTexts = VERSE_DATABASE
-          .filter(v => v.cat === correctVerse.cat && v.id !== correctVerse.id)
+          .filter(v => v.category === correctVerse.category && v.id !== correctVerse.id)
           .map(v => v.text);
         const challenge = buildCompletionChallenge(correctVerse.text, otherTexts, currentEvent.id);
         const handleClick = (option: string) => {
