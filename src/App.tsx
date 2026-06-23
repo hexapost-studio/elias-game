@@ -45,6 +45,8 @@ import { mulberry32, hashSeed } from './engine/rng';
 import DevPanel from './components/DevPanel';
 import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
+import { TestimonyCard } from './components/TestimonyCard';
+import { generateTestimony } from './engine/testimonyGenerator';
 import { ActionPanel } from './components/ActionPanel';
 import { JournalBubble } from './components/JournalBubble';
 import { deriveSenderFromJournalEntry } from './engine/messageSender';
@@ -145,6 +147,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [ambientOn, setAmbientOn] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
+  const [showTestimony, setShowTestimony] = useState(false);
   const [showLifeReview, setShowLifeReview] = useState(false);
   // Accessibilité
   const [dyslexicMode, setDyslexicMode] = useState(false);
@@ -309,9 +312,12 @@ function App() {
   const [prevOver, setPrevOver] = useState(overNow);
   if (prevOver !== overNow) {
     setPrevOver(overNow);
-    if (!overNow) {
+    if (overNow) {
+      setShowTestimony(true); // déclenche le témoignage dès la fin de vie
+    } else {
       setShowShareCard(false);
       setShowLifeReview(false);
+      setShowTestimony(false);
     }
   }
   // Garde sonore de game-over : reset d'un ref (non concerné par set-state-in-effect).
@@ -688,6 +694,22 @@ function App() {
             </button>
           </div>
         )}
+
+        {/* Témoignage de fin de vie (Design V2) — affiché en premier, avant le bilan */}
+        {showTestimony && (() => {
+          const t = generateTestimony(
+            state,
+            metrics,
+            title?.name ?? null,
+            unlockedCount,
+          );
+          return (
+            <TestimonyCard
+              testimony={t}
+              onContinue={() => setShowTestimony(false)}
+            />
+          );
+        })()}
 
         {/* Share card modal */}
         {showShareCard && (
