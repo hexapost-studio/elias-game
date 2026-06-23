@@ -50,6 +50,7 @@ import { generateTestimony } from './engine/testimonyGenerator';
 import { ActionPanel } from './components/ActionPanel';
 import { ChapterCard } from './components/ChapterCard';
 import { isDecadeStart, getChapterData } from './engine/lifeChapters';
+import { DailyChallengeModal } from './components/DailyChallengeModal';
 import { JournalBubble } from './components/JournalBubble';
 import { deriveSenderFromJournalEntry } from './engine/messageSender';
 import type { AfflictionEvent } from './types/game';
@@ -152,6 +153,7 @@ function App() {
   const [showTestimony, setShowTestimony] = useState(false);
   // ChapterCard : âge de la dernière carte affichée (évite les répétitions)
   const [shownChapterAge, setShownChapterAge] = useState(-1);
+  const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [showLifeReview, setShowLifeReview] = useState(false);
   // Accessibilité
   const [dyslexicMode, setDyslexicMode] = useState(false);
@@ -1137,6 +1139,18 @@ function App() {
             setShowMainMenu(false);
             setShowTutorial(true);
           }}
+          onOpenDailyChallenge={() => {
+            setShowMainMenu(false);
+            setShowDailyChallenge(true);
+          }}
+        />
+      )}
+
+      {/* Épreuve du jour */}
+      {showDailyChallenge && (
+        <DailyChallengeModal
+          playerName={playerName}
+          onClose={() => setShowDailyChallenge(false)}
         />
       )}
 

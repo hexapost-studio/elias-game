@@ -39,6 +39,7 @@ interface MainMenuProps {
   onToggleReducedSounds: () => void;
   onToggleSlowTimer: () => void;
   onOpenTutorial: () => void;
+  onOpenDailyChallenge: () => void;
 }
 
 export const MainMenu: FC<MainMenuProps> = ({
@@ -59,6 +60,7 @@ export const MainMenu: FC<MainMenuProps> = ({
   onToggleReducedSounds,
   onToggleSlowTimer,
   onOpenTutorial,
+  onOpenDailyChallenge,
 }) => {
   const [volume, setVolume] = useState(Math.round(getAmbientVolume() * 100));
   const readingSpeed = useReadingSpeed();
@@ -128,6 +130,14 @@ export const MainMenu: FC<MainMenuProps> = ({
             sublabel="Vocabulaire EJP/ICC"
             color="#86efac"
             onClick={() => { onClose(); onOpenLexicon(); }}
+          />
+
+          <MenuButton
+            icon={<span style={{ fontSize: 15 }}>⚡</span>}
+            label="Épreuve du jour"
+            sublabel={`Défi commun — ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}`}
+            color="var(--accent-gold)"
+            onClick={() => { onClose(); onOpenDailyChallenge(); }}
           />
 
           <MenuSection label="PARAMÈTRES" />
