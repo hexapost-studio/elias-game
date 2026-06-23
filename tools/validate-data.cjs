@@ -47,6 +47,20 @@ for (const v of verses) {
 for (const cat of CATEGORIES) {
   check((catCounts[cat] || 0) >= 3, `Catégorie ${cat} ≥ 3 versets (${catCounts[cat] || 0})`);
 }
+
+// Doublons intra-catégorie (texte identique dans la même catégorie = ambiguïté visible dans les choix)
+const byCat = {};
+for (const v of verses) { if (!byCat[v.cat]) byCat[v.cat] = []; byCat[v.cat].push(v); }
+for (const [cat, vs] of Object.entries(byCat)) {
+  const textSeen = {};
+  for (const v of vs) {
+    const t = v.text.trim();
+    if (textSeen[t]) {
+      check(false, `Doublon intra-catégorie [${cat}]: ${textSeen[t]} et ${v.id} ont le même texte`);
+    }
+    textSeen[t] = v.id;
+  }
+}
 console.log(`  → ${verses.length} versets valides\n`);
 
 // 2. Événements
