@@ -466,11 +466,33 @@ export function getAmbientVolume(): number {
   return MUSIC_VOLUME;
 }
 
+/* ─── DÉBLOCAGE AUTOPLAY ───
+ * L'AudioContext créé hors d'un geste utilisateur démarre **suspendu** (politique
+ * autoplay des navigateurs) → `audio.play()` est rejeté et la musique reste muette.
+ * On réarme le son au **tout premier geste** : on reprend le contexte et on relance
+ * la piste laissée en pause (typiquement le thème lancé au montage). Écouteurs
+ * retirés dès qu'un geste a déclenché le déblocage. */
+let gestureUnlockArmed = false;
+function armAudioUnlock(): void {
+  if (gestureUnlockArmed || typeof document === 'undefined') return;
+  gestureUnlockArmed = true;
+  const evts: string[] = ['pointerdown', 'touchstart', 'keydown', 'click'];
+  const handler: EventListener = () => {
+    if (audioCtx?.state === 'suspended') audioCtx.resume().catch(() => {});
+    if (musicActive && currentAudio && currentAudio.paused) {
+      currentAudio.play().catch(() => {});
+    }
+    evts.forEach((e) => document.removeEventListener(e, handler));
+  };
+  evts.forEach((e) => document.addEventListener(e, handler, { passive: true }));
+}
+
 /* ─── INIT ─── */
 
 let initPromise: Promise<void> | null = null;
 
 export async function initJuice(): Promise<void> {
+  armAudioUnlock(); // dès le montage : prêt à débloquer l'audio au 1ᵉʳ geste
   if (initPromise) return initPromise;
   initPromise = (async () => {
     try { await initAudio(); } catch { /* no audio */ }

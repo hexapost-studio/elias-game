@@ -1467,6 +1467,22 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Résultat** : porte QA verte (vitest inclus), lint-diff 0→0 sur les 3 fichiers, dette inchangée.
 - **Rollback** : `git revert <hash itér.74>`.
 
+## Itération 75 — La musique se débloque au 1ᵉʳ geste (correctif playtest)
+
+- **Bug remonté (playtest)** : « je n'entends pas la musique quand je la lance. » Diagnostic —
+  `new AudioContext()` est créé au **montage** (`App.tsx:181` via `initJuice`), donc **hors d'un geste
+  utilisateur** → le navigateur le crée **suspendu** (politique autoplay). `playTheme()` est appelé une
+  fois juste après (échec silencieux, `audio.play()` rejeté et capturé par `.catch`) et **n'est jamais
+  relancé** après le 1ᵉʳ clic. Aucun handler global « reprendre l'audio au 1ᵉʳ geste » → silence total.
+- **Correctif** (`engine/juice.ts`) : `armAudioUnlock()` — écouteurs one-shot (`pointerdown`/`touchstart`/
+  `keydown`/`click`) armés dès `initJuice`. Au tout premier geste : `audioCtx.resume()` + relance de la
+  piste laissée en pause (`currentAudio.play()`), puis retrait de tous les écouteurs. Les SFX se
+  débloquaient déjà via le `resume()` interne de `play()` ; ce trou ne concernait que la musique.
+- **Note de vérif** : non testable en headless (Chromium headless n'applique pas la politique autoplay
+  → le contexte démarre `running`, le bug ne se manifeste pas). À confirmer dans un vrai navigateur.
+- **Résultat** : porte QA verte, lint-diff 0→0 (`engine/juice.ts`), dette inchangée.
+- **Rollback** : `git revert <hash itér.75>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

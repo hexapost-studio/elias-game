@@ -86,7 +86,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 71 | **Arc-ami : {ami} évolue + cohérence** : 5 scènes hors-spine (doute/mariage/chute/égarement/éveil, `spawnProbability`) + flag `ami_parti` (anti-réapparition posthume) + 3 contradictions long-terme corrigées | `db52c75` |
 | 72 | **Finances jouables** (correctif playtest) : la pauvreté ne tue plus (`checkGameOver` saute finances) + action **Travailler** (+Argent −Corps) | `8e9dc2a` |
 | 73 | **Leurres plus proches** (correctif playtest) : `pickDecoys` en 3 paliers (même cat. + tag commun → même cat. → autre cat.) — distracteurs pertinents, jamais hors-sujet | `02a144e` |
-| 74 | **Le mode wordBank apparaît** (correctif playtest + bug latent) : intention auteur honorée dès la 1ʳᵉ découverte + garde `canWordBank` (plus d'écran vide sur event sans champ) | _(ce commit)_ |
+| 74 | **Le mode wordBank apparaît** (correctif playtest + bug latent) : intention auteur honorée dès la 1ʳᵉ découverte + garde `canWordBank` (plus d'écran vide sur event sans champ) | `e028b7f` |
+| 75 | **Musique débloquée au 1ᵉʳ geste** (correctif playtest) : `armAudioUnlock` — resume `AudioContext` + relance la piste muette par l'autoplay (contexte créé hors geste = suspendu) | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).
