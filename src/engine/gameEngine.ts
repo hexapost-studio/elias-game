@@ -426,6 +426,10 @@ export function checkGameOver(state: GameState): {
   }
 
   for (const [stat, value] of Object.entries(state.stats)) {
+    // Les finances ne tuent JAMAIS : la pauvreté est une contrainte narrative,
+    // pas une fin de partie (« grâce > punition » ; cf. les béatitudes). Seules
+    // les jauges spirituelles/physiques (foi, paix, physique) sont vitales.
+    if (stat === 'finances') continue;
     if (value <= 0) {
       return { isOver: true, reason: `La jauge de ${stat} est tombée à zéro — les grâces sont épuisées.` };
     }
@@ -452,6 +456,9 @@ export function applyCrisisGrace(
   const corrected = { ...stats };
 
   for (const [key, val] of Object.entries(corrected)) {
+    // Les finances ne déclenchent pas de crise (elles ne tuent pas) — ne pas
+    // gaspiller une grâce de crise dessus. On laisse simplement la jauge basse.
+    if (key === 'finances') continue;
     if (val <= 0 && newCrises > 0) {
       corrected[key as StatName] = 3;
       newCrises--;
@@ -1298,6 +1305,7 @@ const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Reco
     };
   },
   read_word:   () => ({ statDelta: { foi: 3, paix: 1 },        label: 'Lecture de la Parole — Foi +3, Paix +1' }),
+  work:        () => ({ statDelta: { finances: 5, physique: -1 }, label: 'Travail honnête — Finances +5, Corps -1' }),
 };
 
 export function applyPlayerAction(

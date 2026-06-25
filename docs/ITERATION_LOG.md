@@ -1415,6 +1415,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Résultat** : porte QA verte — 188 v / **334 e**, ZERO erreur/warning. Contenu pur, zéro code, zéro dette.
 - **Rollback** : `git revert <hash itér.71>`.
 
+## Itération 72 — Finances jouables : la pauvreté ne tue plus + action « Travailler » (correctif playtest)
+
+- **Bug remonté (playtest réel)** : « il est impossible de gagner de l'argent, donc on finit
+  inévitablement par perdre. » Diagnostic code confirmé :
+  - **Aucune** des 5 actions (Prier/Jeûner/Servir/Appeler/Lire) ne crédite les finances (`serve` = +1
+    marginal). Économie des events : **+111** net possible sur succès (36 events) vs **−258** sur échec
+    (93 events). `checkGameOver` (`gameEngine.ts:429`) : **toute** jauge ≤ 0 = mort, finances comprise.
+  - → spirale descendante mécanique : finances → 0 → mort, sans levier de remontée.
+- **Correctif (choix produit : « les deux »)** :
+  1. **Finances ≠ mort** : `checkGameOver` saute `finances` (la pauvreté est une contrainte narrative,
+     pas une fin — « grâce > punition », cf. béatitudes). Seules foi/paix/physique restent vitales.
+     `applyCrisisGrace` saute aussi `finances` (ne gaspille pas une grâce de crise dessus).
+  2. **Action « Travailler »** (`work`) : Finances +5, Corps −1 (le travail honnête a un coût physique,
+     anti-spam). Ajoutée au type `PlayerAction`, à `ACTION_EFFECTS`, et au panneau (icône `Briefcase`).
+- **Résultat** : porte QA verte. Lint-diff 0→0 sur les 3 fichiers touchés (`types/game.ts`,
+  `engine/gameEngine.ts`, `components/ActionPanel.tsx`). Dette inchangée (0).
+- **Rollback** : `git revert <hash itér.72>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
