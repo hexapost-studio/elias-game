@@ -1,6 +1,6 @@
 import { useGameStore } from '../stores/gameStore';
 import type { PlayerAction } from '../types/game';
-import { Heart, Handshake, Phone, BookOpen, Briefcase } from 'lucide-react';
+import { Heart, Handshake, Phone, BookOpen, Briefcase, Moon } from 'lucide-react';
 
 interface ActionDef {
   id: PlayerAction;
@@ -16,6 +16,7 @@ const ACTIONS: ActionDef[] = [
   { id: 'call_friend', label: 'Appeler',      effect: '+Paix +Lien', icon: <Phone size={14} strokeWidth={1.5} /> },
   { id: 'read_word',   label: 'Lire',         effect: '+Foi',      icon: <BookOpen size={14} strokeWidth={1.5} /> },
   { id: 'work',        label: 'Travailler',   effect: '+Argent −Corps', icon: <Briefcase size={14} strokeWidth={1.5} /> },
+  { id: 'rest',        label: 'Se reposer',   effect: '+Corps · sabbat', icon: <Moon size={14} strokeWidth={1.5} /> },
 ];
 
 export function ActionPanel() {

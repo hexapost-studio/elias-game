@@ -35,7 +35,7 @@ function policyAction(state: GameState): PlayerAction {
   const lowest = (['physique', 'paix', 'foi'] as StatName[])
     .sort((a, b) => s[a] - s[b])[0];
   switch (lowest) {
-    case 'physique': return 'pray';        // aucune action ne MONTE le physique ; prier ne le coûte pas
+    case 'physique': return 'rest';        // repos/sabbat — seul levier qui relève le corps (itér.76)
     case 'paix':     return 'serve';       // paix
     default:         return 'read_word';   // foi
   }

@@ -1483,6 +1483,32 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Résultat** : porte QA verte, lint-diff 0→0 (`engine/juice.ts`), dette inchangée.
 - **Rollback** : `git revert <hash itér.75>`.
 
+## Itération 76 — Levier physique mesuré : la survie liée à la maîtrise des versets
+
+- **Origine** : mesure post-itér.72 (`tools/survival-sim.ts`). Les finances ne tuant plus, la mort
+  devient **physique à 97-100 %** ; or **aucune action ne relevait le corps** (jeûne/travail le
+  *baissent*) → horloge de mortalité sans levier, victoire(100) à 0-3 % même à 85 % de précision.
+- **Diagnostic clé (mesuré)** : ajouter un simple levier d'action sur le physique rend la victoire
+  **quasi-certaine** (~96-100 %) pour un joueur attentif, *quelle que soit sa précision* — l'économie
+  d'actions a du surplus (foi/paix bon marché à tenir) et le plafond 100 > usure sénior totale (~78),
+  donc on banque le corps en milieu de vie et on coast. La survie se **découplait** de la précision.
+- **Décision (utilisateur)** : *lier survie ↔ précision*. Deux mécaniques pures, **calibrées au sim** :
+  1. **Usure du corps à l'échec** (`gameEngine.ts`, `FAIL_PHYSIQUE_PENALTY = 3`) : chaque verset manqué
+     marque le corps (−3, soumis au même *softening* grâce>punition). Une faible précision érode le
+     physique plus vite que le repos ne suit.
+  2. **Repos / sabbat** (action `rest`, +1 Corps) — **consomme TOUT le tour** (1×/an sans nouvel état),
+     arbitrage réel : se reposer OU bâtir foi/paix cette année. *Ne fait que ralentir* le déclin (ne
+     banque pas), donc seul un joueur précis (peu d'échecs) atteint la vieillesse / la victoire.
+- **Courbe obtenue** (N=1000/précision, scénario *avec actions*) : médiane de mort 69→76→87→**100**,
+  =100 ans **0 %→2 %→15 %→69 %** pour 50→65→75→85 % de précision. Plancher passif (réponses seules)
+  réaligné sur la précision (médiane 47→64, ≥60 ans 3 %→73 %). Plus de « perte inévitable » pour qui
+  s'engage (≥60 ans 91-100 % avec actions) **et** victoire = exploit de maîtrise biblique.
+- **Tests** : `T13` (repos = sabbat plein tour + corps +1 ; mauvaise réponse use le corps ≥3).
+  Save-compat : aucun nouveau champ d'état (action enum + constante). Porte QA verte, dette inchangée.
+- **Outillage** : `tools/survival-sim.ts` durci (events de choix moral) + policy à jour (repos), commit
+  séparé `50190ec`.
+- **Rollback** : `git revert <hash itér.76>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

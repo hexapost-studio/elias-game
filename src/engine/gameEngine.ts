@@ -35,6 +35,8 @@ import type { Calling } from '../types/game';
 const MAX_STAT = CONFIG.maxStat;
 const MIN_STAT = CONFIG.minStat;
 const MAX_AGE = CONFIG.maxAge;
+/** Usure du corps à chaque verset manqué — lie la survie à la précision (itér.76). */
+const FAIL_PHYSIQUE_PENALTY = 3;
 
 /* ─── JAUGE DE FLOW ─── */
 
@@ -1137,6 +1139,12 @@ export function validateChoice(
       );
     }
 
+    // Usure du corps : faute de la Parole pour y répondre, l'épreuve marque le corps.
+    // C'est CE qui lie la survie à la maîtrise des versets — une faible précision érode
+    // le physique (l'unique horloge de mortalité), que le « Repos » ne peut plus suivre.
+    // Soumis au même softening (grâce > punition) et calibré au survival-sim (itér.76).
+    newStats.physique = Math.max(MIN_STAT, newStats.physique - Math.round(FAIL_PHYSIQUE_PENALTY * softening));
+
     // Grâce de crise : si une stat a touché 0 et qu'il reste des grâces
     const { stats: gracedStats, newCrises, crisisMessage } = applyCrisisGrace(state, newStats);
     Object.assign(newStats, gracedStats);
@@ -1306,6 +1314,10 @@ const ACTION_EFFECTS: Record<string, (s: GameState) => { statDelta: Partial<Reco
   },
   read_word:   () => ({ statDelta: { foi: 3, paix: 1 },        label: 'Lecture de la Parole — Foi +3, Paix +1' }),
   work:        () => ({ statDelta: { finances: 5, physique: -1 }, label: 'Travail honnête — Finances +5, Corps -1' }),
+  // Repos / sabbat (Marc 2.27, Matt 11.28) — seul levier qui relève le corps, l'unique
+  // horloge de mortalité après 41 ans. Ne s'utilise sensément que quand le corps faiblit
+  // (sinon les points iraient à foi/paix) → s'auto-régule. Calibré au survival-sim (itér.76).
+  rest:        () => ({ statDelta: { physique: 1 },              label: 'Repos / sabbat — Corps +1' }),
 };
 
 export function applyPlayerAction(
@@ -1353,7 +1365,10 @@ export function applyPlayerAction(
     newState: {
       ...state,
       stats: newStats,
-      actionPoints: state.actionPoints - 1,
+      // Le repos est un sabbat : il consacre TOUTE l'année (consomme tous les points
+      // d'action restants). Plafonne le levier physique à 1×/an sans nouvel état, et
+      // impose un vrai arbitrage — se reposer OU bâtir foi/paix cette année, pas les deux.
+      actionPoints: action === 'rest' ? 0 : state.actionPoints - 1,
       actionsThisYear: [...state.actionsThisYear, action],
       callFriendCount: action === 'call_friend'
         ? (state.callFriendCount ?? 0) + 1

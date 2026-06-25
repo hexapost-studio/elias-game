@@ -240,7 +240,7 @@ export interface LifeContext {
   spouseName: string;   // {conjoint} — conjoint(e), généré(e) à la naissance
 }
 
-export type PlayerAction = 'pray' | 'fast' | 'serve' | 'call_friend' | 'read_word' | 'work';
+export type PlayerAction = 'pray' | 'fast' | 'serve' | 'call_friend' | 'read_word' | 'work' | 'rest';
 
 export interface GameState {
   age: number;

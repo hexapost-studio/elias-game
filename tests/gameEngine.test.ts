@@ -5,6 +5,7 @@ import {
   checkGameOver,
   generateEvent,
   validateChoice,
+  applyPlayerAction,
   advanceAge,
   generateBirthStats,
   getFlowPalier,
@@ -440,5 +441,39 @@ describe('T12: Validation des choix', () => {
 
     const { newState } = validateChoice(state, event.correctVerseId);
     expect(newState.stats.foi).toBeLessThanOrEqual(100);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════
+   T13 — Levier physique : repos sabbat + usure à l'échec
+   (itér.76 — survie liée à la précision aux versets)
+   ═══════════════════════════════════════════════════════ */
+describe('T13: Levier physique (itér.76)', () => {
+  it('le repos est un sabbat : il consomme TOUT le tour et relève le corps', () => {
+    const state = createInitialState();
+    state.age = 50;
+    state.actionPoints = 3;
+    state.stats.physique = 40;
+
+    const res = applyPlayerAction(state, 'rest');
+    expect(res).not.toBeNull();
+    expect(res!.newState.actionPoints).toBe(0);          // tout le tour consommé
+    expect(res!.newState.stats.physique).toBe(41);       // +1 corps
+  });
+
+  it('une mauvaise réponse use le corps (≥3) — lie la survie à la précision', () => {
+    const state = createInitialState();
+    state.age = 30;
+    state.phase = 'event';
+    state.stats.physique = 80;
+
+    const event = getEventById('e-fond-004');
+    if (!event) return;
+    state.currentEvent = event;
+
+    const wrongId = event.decoyVerseIds[0] || 'v-imput-003';
+    const { correct, newState } = validateChoice(state, wrongId);
+    expect(correct).toBe(false);
+    expect(newState.stats.physique).toBeLessThanOrEqual(80 - 3);
   });
 });
