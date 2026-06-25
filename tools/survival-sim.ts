@@ -27,14 +27,15 @@ type StatName = 'foi' | 'paix' | 'physique' | 'finances';
 const ACCURACIES = [0.5, 0.65, 0.75, 0.85];
 const N = Number(process.env.N ?? 1000);
 
-/** Choisit l'action qui relève le mieux la stat la plus basse (joueur « sensé »). */
+/** Choisit l'action qui relève le mieux la stat VITALE la plus basse (joueur « sensé »).
+ *  Depuis itér.72 les finances ne tuent plus → un joueur sensé n'y dépense pas ses
+ *  points d'action ; seules foi/paix/physique conditionnent la survie. */
 function policyAction(state: GameState): PlayerAction {
   const s = state.stats;
-  const lowest = (['physique', 'finances', 'paix', 'foi'] as StatName[])
+  const lowest = (['physique', 'paix', 'foi'] as StatName[])
     .sort((a, b) => s[a] - s[b])[0];
   switch (lowest) {
-    case 'physique': return 'pray';        // évite jeûner (coûte physique) ; prier monte foi sans coût corps
-    case 'finances': return 'serve';       // paix + finances
+    case 'physique': return 'pray';        // aucune action ne MONTE le physique ; prier ne le coûte pas
     case 'paix':     return 'serve';       // paix
     default:         return 'read_word';   // foi
   }
@@ -62,7 +63,10 @@ function runLife(p: number, withActions: boolean): LifeResult {
       }
     }
 
-    if (state.currentEvent) {
+    // NB : les events de choix moral (e-moral-*) n'ont pas de correctVerseId — ils se
+    // résolvent hors `validateChoice` dans le vrai jeu. On les ignore ici (3/334, sans
+    // impact mesurable), sinon `getVerseById(undefined)!` planterait le harnais.
+    if (state.currentEvent?.correctVerseId) {
       const ev = state.currentEvent;
       seen.add(ev.id);
       total++;
