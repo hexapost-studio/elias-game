@@ -81,7 +81,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 34 | **Piste M** : harnais `tools/survival-sim.ts` (headless, hors porte) — mesure l'âge médian de mort / routine | `6c46312` |
 | 35 | **Piste B** : rééquilibrage senior MESURÉ (inversion supprimée, victoire(100) atteignable, ≥60 ans 3-17 %→94-97 %) | `fc027bf` |
 | 36 | **Phase 3 backlog** : fil polyphonique 7 Days-like (T-20..T-32) + principe **asset-ready** | `8c004b2` |
-| 69 | **Fluidité roman-visuel** : scène lue AVANT le verset (`descDone` gate, principe ①) + fix panneau Appel (`createPortal`) + musique réparée & **choix d'album** | _(ce commit)_ |
+| 69 | **Fluidité roman-visuel** : scène lue AVANT le verset (`descDone` gate, principe ①) + fix panneau Appel (`createPortal`) + musique réparée & **choix d'album** | `e6112e8` |
+| 70 | **Polish éditorial** : 9 échos décennaux de **jeunesse** (choix 18-38 ans → rappel à 58-82, principe ④) — contenu pur, 320→329 events | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).

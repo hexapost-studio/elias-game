@@ -1355,6 +1355,35 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   `parent=BODY`, `inPanel=true` (au sommet, opaque) ; 0 erreur console.
 - **Rollback** : `git revert <hash itér.69>`.
 
+### Itération 70 — Polish éditorial : échos décennaux de jeunesse (mémoire longue)
+- **Recherche** : design V2 §E (Échos décennaux, principe ④ *Encodage Contextuel*) — un choix fait
+  à 20-35 ans qui revient NOMMÉMENT à 55-75 ans crée un « cue » de rappel à très long terme et un
+  sentiment d'agentivité (les choix comptent). Système déjà outillé : `prerequisites` + `echoLink.ts`
+  (T-22) qui injecte une bulle de rappel « tu as surmonté/traversé « <titre source> » ».
+- **Analyse** : 17 échos décennaux existaient déjà, mais TOUS citent l'event **final** de leur arc
+  (sources à 40-78 ans). Le vrai levier « mémoire longue » du design — citer un choix de **jeunesse**
+  (18-38 ans) des décennies plus tard — n'était **pas** exploité. C'était le trou éditorial réel.
+- **Consensus** : 9 nouveaux échos référençant des sources de jeune adulte, déclenchés à 58-82 ans.
+  Mix grâce > punition : 7 « fruits de fidélité » (`event_succeeded`) + 2 rédemptions (`event_failed`,
+  où l'échec ancien devient sagesse/paix). Scène émotionnelle AVANT le verset (principe ①), situations
+  ultra-spécifiques (principe ④), tokens `{ville}/{père}/{conjoint}/{ami}/{église}` (principe ⑦).
+- **Application** (`game/data/events.json`, 320 → 329) :
+  - `e-echo-ville-001` ← `arc-ville-1` réussi (départ à 20-30 → sens révélé à 60-78)
+  - `e-echo-metier-vocation` ← `arc-metier-1` réussi (oui à 18 ans → témoignage à 58-76)
+  - `e-echo-tentation-jeunesse` ← `arc-tentation-3` réussi (refus de corruption → relais à 60-78)
+  - `e-echo-eglise-leadership` ← `arc-eglise-2` réussi (crise menée jeune → moisson à 60-78)
+  - `e-echo-conjoint-alliance` ← `arc-conjoint-2` réussi (vœux à 24 → gratitude à 62-82)
+  - `e-echo-parents-pont` ← `arc-parents-3` réussi (pont vers {père} → ne pas le briser à son tour)
+  - `e-echo-ami-pardonrisque` ← `arc-ami-4` réussi (pardon risqué jeune → 40 ans d'amitié)
+  - `e-echo-metier-abandon-releve` ← `arc-metier-2-c` **échoué** (abandon racheté en sagesse, 58-76)
+  - `e-echo-parents-rupture-grace` ← `arc-parents-2-c` **échoué** (rupture ado → plus de condamnation)
+  - Catégories réparties (direction_divine, identite_appel ×2, tristesse_joie ×2, amertume_rejet,
+    amour_de_dieu, decouragement, culpabilite) — culpabilité/découragement (sous-représentées) +1.
+- **Résultat** : porte QA verte — 188 v / **329 e**, ZERO erreur, ZERO warning (prérequis vérifiés
+  pointant tous vers des events existants, versets corrects de catégorie cohérente). Aucun `.ts/.tsx`
+  touché : contenu pur, zéro code, zéro dette.
+- **Rollback** : `git revert <hash itér.70>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

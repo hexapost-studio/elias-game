@@ -8818,5 +8818,275 @@
       "finances": 0
     },
     "thematicFlavor": "L'amitié fidèle est l'une des formes les plus concrètes de l'amour de Dieu."
+  },
+  {
+    "id": "e-echo-ville-001",
+    "title": "Le sens du départ",
+    "description": "Tu reviens à {ville} pour l'enterrement d'un proche. Soixante ans plus tôt, tu avais quitté cette ville sur une conviction que personne ne comprenait. Devant la tombe, un inconnu s'approche : « Vous êtes parti, et grâce à ça une œuvre est née là-bas. Ma fille y a rencontré Dieu. » Tu n'avais jamais su que ce départ avait tracé un chemin.",
+    "ageRange": [
+      60,
+      78
+    ],
+    "category": "direction_divine",
+    "correctVerseId": "v-direct-005",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ville-1"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Un pas d'obéissance, jeune, peut diriger une vie entière sans qu'on le voie."
+  },
+  {
+    "id": "e-echo-metier-vocation",
+    "title": "Ce que tu as choisi à dix-huit ans",
+    "description": "Un jeune de l'église te demande, les yeux pleins de doute : « Comment avez-vous su que c'était votre voie ? » Tu te revois à dix-huit ans, le jour où tu as dit oui à cette vocation que d'autres trouvaient déraisonnable. Quarante ans de travail tiennent dans sa question. Que lui réponds-tu ?",
+    "ageRange": [
+      58,
+      76
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-metier-1"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "L'appel embrassé dans la jeunesse devient, des décennies plus tard, un témoignage."
+  },
+  {
+    "id": "e-echo-tentation-jeunesse",
+    "title": "Le même miroir, une génération plus tard",
+    "description": "Un collègue plus jeune te confie, livide, qu'on lui propose un arrangement qui salirait ses mains mais remplirait ses poches. « On m'a dit que vous aviez refusé la même chose, il y a trente ans. » Il attend. Tu te souviens du miroir où tu as failli ne plus te reconnaître — et de Celui qui t'a tenu debout.",
+    "ageRange": [
+      60,
+      78
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-004",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-tentation-3"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "L'intégrité gardée jeune devient un point d'appui pour ceux qui te suivent."
+  },
+  {
+    "id": "e-echo-eglise-leadership",
+    "title": "La moisson de {église}",
+    "description": "À {église}, on t'invite pour les cinquante ans de la communauté. Tu te souviens des nuits de crise, jeune responsable, où tu as semé dans les larmes sans rien voir pousser. Aujourd'hui la salle est pleine de visages que tu ne connais pas — des fruits d'une graine que tu croyais perdue.",
+    "ageRange": [
+      60,
+      78
+    ],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-004",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-eglise-2"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "Ce qu'on sème dans les larmes au début se moissonne dans la joie, longtemps après."
+  },
+  {
+    "id": "e-echo-conjoint-alliance",
+    "title": "L'alliance, des décennies plus tard",
+    "description": "{conjoint} dort à côté de toi. Vous avez prononcé vos vœux il y a presque cinquante ans, deux jeunes gens qui ne savaient rien de ce qui les attendait. Il y a eu des temps pour pleurer et des temps pour rire. Cette nuit, en regardant ce visage aimé et vieilli, une gratitude immense te serre la gorge.",
+    "ageRange": [
+      62,
+      82
+    ],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-005",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-conjoint-2"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "L'alliance tenue à travers toutes les saisons est, à la fin, une seule longue grâce."
+  },
+  {
+    "id": "e-echo-parents-pont",
+    "title": "Le pont, dans l'autre sens",
+    "description": "Ton propre enfant, devenu adulte, frappe à ta porte un soir, le visage fermé, prêt à dire des choses difficiles. Tu reconnais ce regard : c'était le tien, jeune homme, devant {père}. Tu avais bâti vers lui un pont fragile, à force de pardon. Aujourd'hui c'est à toi de rester sur ce pont sans le briser.",
+    "ageRange": [
+      60,
+      80
+    ],
+    "category": "amertume_rejet",
+    "correctVerseId": "v-amer-009",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-parents-3"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Le pardon reçu et donné jeune t'apprend, vieux, à ne pas claquer la porte à ton tour."
+  },
+  {
+    "id": "e-echo-ami-pardonrisque",
+    "title": "Quarante ans d'amitié",
+    "description": "{ami} est à l'hôpital. En entrant, tu repenses au pardon que tu lui avais accordé jeune adulte, alors que tout le monde te disait de couper les ponts. Sans ce choix risqué, cette main que tu tiens aujourd'hui ne serait plus là depuis longtemps. « Tu te souviens ? » murmure-t-il.",
+    "ageRange": [
+      58,
+      78
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-4"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Un pardon risqué dans la jeunesse devient une amitié qui traverse toute une vie."
+  },
+  {
+    "id": "e-echo-metier-abandon-releve",
+    "title": "Ce que l'abandon t'a enseigné",
+    "description": "Un jeune vient te voir, prêt à tout lâcher comme toi autrefois. Tu n'es pas fier de ce premier emploi que tu as abandonné trop vite, jeune homme — mais Dieu a tissé même cet échec en sagesse. Tu sais exactement quoi lui dire, parce que tu es tombé là où il vacille aujourd'hui.",
+    "ageRange": [
+      58,
+      76
+    ],
+    "category": "decouragement",
+    "correctVerseId": "v-decour-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_failed",
+        "eventId": "arc-metier-2-c"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Même un abandon, traversé avec Dieu, peut devenir le don que tu offres à un autre."
+  },
+  {
+    "id": "e-echo-parents-rupture-grace",
+    "title": "La porte que tu avais claquée",
+    "description": "Devant la photo de {père}, parti depuis longtemps, le vieux remords remonte : adolescent, tu avais consommé la rupture, claqué la porte, dit l'irréparable. Cette nuit, tes propres petits-enfants dorment sous ton toit. Tu portes encore cette faute — mais une voix te rappelle qu'il n'y a plus de condamnation.",
+    "ageRange": [
+      58,
+      78
+    ],
+    "category": "culpabilite",
+    "correctVerseId": "v-culpa-004",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_failed",
+        "eventId": "arc-parents-2-c"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -3,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 5,
+      "finances": 0
+    },
+    "thematicFlavor": "La grâce remonte jusqu'aux portes claquées de l'adolescence : il n'y a plus de condamnation."
   }
 ]
