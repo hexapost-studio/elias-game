@@ -24,19 +24,28 @@ export type QuestionType = 'choice' | 'wordBank' | 'completion' | 'reference';
  * @param verseId       ID du verset correct de l'event
  * @param codex         Entrées du codex (timesUsed, errorCount)
  * @param authorDefined Type défini par l'auteur dans le JSON (intention éditoriale)
+ * @param canWordBank   L'event possède-t-il un champ `wordBank` ? Sans lui, le rendu
+ *                      wordBank est impossible (VerseChoices exige `event.wordBank`) —
+ *                      on ne doit JAMAIS résoudre vers 'wordBank' dans ce cas (écran vide).
  */
 export function resolveQuestionType(
   verseId: string,
   codex: Record<string, CodexEntry>,
   authorDefined?: QuestionType,
+  canWordBank: boolean = false,
 ): QuestionType {
   const entry = codex[verseId];
 
-  // Jamais vu → toujours 'choice' (première découverte en contexte émotionnel fort)
-  if (!entry || entry.timesUsed === 0) return 'choice';
+  // Intent éditorial respecté dès la 1ʳᵉ rencontre (et jusqu'à la 2ᵉ) : si l'auteur a
+  // choisi un type, on l'honore — sinon le mode wordBank conçu à la main n'apparaîtrait
+  // JAMAIS (les versets sont quasi toujours vus pour la 1ʳᵉ fois en une vie).
+  if (authorDefined && (!entry || entry.timesUsed <= 2)) {
+    if (authorDefined === 'wordBank' && !canWordBank) return 'choice';
+    return authorDefined;
+  }
 
-  // Intent éditorial respecté lors des 2 premières rencontres
-  if (authorDefined && entry.timesUsed <= 2) return authorDefined;
+  // Jamais vu, sans intent auteur → 'choice' (découverte en contexte émotionnel fort)
+  if (!entry || entry.timesUsed === 0) return 'choice';
 
   const successes = Math.max(0, entry.timesUsed - entry.errorCount);
   const errorRate = entry.timesUsed > 0 ? entry.errorCount / entry.timesUsed : 0;
@@ -44,10 +53,11 @@ export function resolveQuestionType(
   // Taux d'erreur > 50 % → revenir aux bases
   if (errorRate > 0.5) return 'choice';
 
-  // Progression par palier de maîtrise
+  // Progression par palier de maîtrise. wordBank n'est proposé que si l'event sait
+  // le rendre (sinon on reste sur 'choice' jusqu'à la complétion, auto-suffisante).
   if (successes >= 5 && entry.errorCount === 0) return 'reference';
   if (successes >= 3) return 'completion';
-  if (successes >= 1) return 'wordBank';
+  if (successes >= 1) return canWordBank ? 'wordBank' : 'choice';
 
   return 'choice';
 }

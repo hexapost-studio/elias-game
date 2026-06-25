@@ -1448,6 +1448,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Résultat** : porte QA verte, lint-diff 0→0 (`src/data/events.ts`), dette inchangée. Module pur, testable.
 - **Rollback** : `git revert <hash itér.73>`.
 
+## Itération 74 — Le mode wordBank apparaît enfin (correctif playtest + bug latent)
+
+- **Bug remonté (playtest)** : « le mode blank n'apparaît jamais. » Diagnostic — **deux** causes :
+  1. `resolveQuestionType` forçait `'choice'` dès `timesUsed === 0`, AVANT de regarder l'intention
+     auteur. Or les 10 events écrits en `questionType:'wordBank'` sont vus pour la **1ʳᵉ** (et souvent
+     unique) fois en une vie → systématiquement rétrogradés. Le mode conçu à la main ne sortait jamais.
+  2. **Bug latent** : la voie *dynamique* pouvait résoudre vers `'wordBank'` sur un event **sans champ
+     `wordBank`**. `VerseChoices` (l.270) exige `currentEvent.wordBank` pour rendre ce mode, et le
+     fallback (l.490) exclut `'wordBank'` → **écran sans aucun choix** (cul-de-sac silencieux).
+- **Correctif** : `resolveQuestionType(verseId, codex, authorDefined?, canWordBank)` —
+  - l'intention auteur est honorée **dès la 1ʳᵉ découverte** (et jusqu'à la 2ᵉ rencontre) ;
+  - on ne résout **jamais** vers `'wordBank'` si l'event n'a pas le champ (paramètre `canWordBank`,
+    câblé à `!!event.wordBank` dans `gameEngine.ts`) → plus d'écran vide possible ;
+  - la voie dynamique propose wordBank seulement si `canWordBank`, sinon reste sur `'choice'`.
+- **Tests** : `tests/verseProgression.test.ts` mis à jour (le contrat exige désormais `canWordBank`) +
+  2 cas neufs (wordBank honoré dès la 1ʳᵉ découverte ; refus si event non capable).
+- **Résultat** : porte QA verte (vitest inclus), lint-diff 0→0 sur les 3 fichiers, dette inchangée.
+- **Rollback** : `git revert <hash itér.74>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

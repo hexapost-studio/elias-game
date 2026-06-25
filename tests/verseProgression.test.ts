@@ -24,16 +24,20 @@ describe('resolveQuestionType', () => {
     expect(resolveQuestionType('v-test-001', makeEntry(0, 0))).toBe('choice');
   });
 
-  it('vu 1 fois, 0 erreur → wordBank', () => {
-    expect(resolveQuestionType('v-test-001', makeEntry(1, 0))).toBe('wordBank');
+  it('vu 1 fois, 0 erreur, event wordBank-capable → wordBank', () => {
+    expect(resolveQuestionType('v-test-001', makeEntry(1, 0), undefined, true)).toBe('wordBank');
+  });
+
+  it('vu 1 fois, 0 erreur, SANS capacité wordBank → choice (pas d\'écran vide)', () => {
+    expect(resolveQuestionType('v-test-001', makeEntry(1, 0), undefined, false)).toBe('choice');
   });
 
   it('vu 1 fois, 1 erreur → choice (taux erreur > 50%)', () => {
-    expect(resolveQuestionType('v-test-001', makeEntry(1, 1))).toBe('choice');
+    expect(resolveQuestionType('v-test-001', makeEntry(1, 1), undefined, true)).toBe('choice');
   });
 
-  it('vu 2 fois, 0 erreur → wordBank (successes=2 < 3)', () => {
-    expect(resolveQuestionType('v-test-001', makeEntry(2, 0))).toBe('wordBank');
+  it('vu 2 fois, 0 erreur, wordBank-capable → wordBank (successes=2 < 3)', () => {
+    expect(resolveQuestionType('v-test-001', makeEntry(2, 0), undefined, true)).toBe('wordBank');
   });
 
   it('vu 3 fois, 0 erreur → completion', () => {
@@ -60,12 +64,21 @@ describe('resolveQuestionType', () => {
     expect(resolveQuestionType('v-test-001', makeEntry(4, 3))).toBe('choice');
   });
 
+  it('authorDefined wordBank honoré DÈS la 1ʳᵉ découverte (jamais vu) si capable', () => {
+    // Le fix playtest : sans ça, le mode wordBank conçu à la main n'apparaissait jamais.
+    expect(resolveQuestionType('v-test-001', NEVER_SEEN, 'wordBank', true)).toBe('wordBank');
+  });
+
+  it('authorDefined wordBank ignoré si l\'event n\'a pas de champ wordBank → choice', () => {
+    expect(resolveQuestionType('v-test-001', NEVER_SEEN, 'wordBank', false)).toBe('choice');
+  });
+
   it('authorDefined respecte lors de la 1ere rencontre', () => {
-    expect(resolveQuestionType('v-test-001', makeEntry(1, 0), 'wordBank')).toBe('wordBank');
+    expect(resolveQuestionType('v-test-001', makeEntry(1, 0), 'wordBank', true)).toBe('wordBank');
   });
 
   it('authorDefined respecte lors de la 2e rencontre', () => {
-    expect(resolveQuestionType('v-test-001', makeEntry(2, 0), 'wordBank')).toBe('wordBank');
+    expect(resolveQuestionType('v-test-001', makeEntry(2, 0), 'wordBank', true)).toBe('wordBank');
   });
 
   it('authorDefined ignore a la 3e rencontre - progression prend le dessus', () => {

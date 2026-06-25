@@ -1570,7 +1570,7 @@ export function advanceAge(state: GameState): {
       // Progression de difficulté par verset (Design V2) :
       // le questionType peut être surclassé selon la maîtrise du joueur avec ce verset.
       const resolvedType = !event.moralChoices
-        ? resolveQuestionType(event.correctVerseId, newState.codex, event.questionType)
+        ? resolveQuestionType(event.correctVerseId, newState.codex, event.questionType, !!event.wordBank)
         : undefined;
       newState.currentEvent = resolvedType
         ? { ...event, questionType: resolvedType }
