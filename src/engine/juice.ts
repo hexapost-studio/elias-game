@@ -248,15 +248,68 @@ function killCurrentSource(): void {
   }, (FADE_OUT_SEC + 0.1) * 1000);
 }
 
-/* ─── MAPPING SAISON → PISTE ─── */
+/* ─── MAPPING SAISON → PISTE ───
+ * Les saisons pointent vers des pistes RÉELLES (les soundtracks existants).
+ * (Auparavant : ambient-{saison}.mp3, fichiers absents → la musique mourait en
+ *  silence dès le 1er changement de saison. Bug corrigé itér.69.) */
 
 const SEASON_TRACKS: Record<string, string> = {
-  'Réveil':      '/audio/ambient-reveil.mp3',
-  'Désert':      '/audio/ambient-desert.mp3',
-  'Persécution': '/audio/ambient-persecution.mp3',
-  'Abondance':   '/audio/ambient-abondance.mp3',
-  'Grâce':       '/audio/ambient-grace.mp3',
+  'Réveil':      '/audio/soundtrack-1.mp3',
+  'Désert':      '/audio/soundtrack-5.mp3',
+  'Persécution': '/audio/soundtrack-explore-the-fire.mp3',
+  'Abondance':   '/audio/soundtrack-3.mp3',
+  'Grâce':       '/audio/soundtrack-2.mp3',
 };
+
+/** Piste réelle pour une saison donnée (null si saison inconnue/absente). */
+export function seasonTrackPath(season: string | null | undefined): string | null {
+  if (!season) return null;
+  return SEASON_TRACKS[season] ?? null;
+}
+
+/* ─── ALBUMS — le joueur peut figer une ambiance pour sa partie ─── */
+
+export interface MusicAlbum { id: string; label: string; sub: string }
+
+/** Catalogue d'albums proposé au joueur. 'auto' = réactif à la saison,
+ *  'shuffle' = toutes les pistes au hasard, le reste = une piste fixe en boucle. */
+export const MUSIC_ALBUMS: MusicAlbum[] = [
+  { id: 'auto',    label: 'Auto',             sub: 'La musique suit la saison de vie' },
+  { id: 'shuffle', label: 'Aléatoire',        sub: 'Toutes les pistes, au hasard' },
+  { id: 'st1',     label: 'Ambiance I',       sub: 'Recueillement' },
+  { id: 'st2',     label: 'Ambiance II',      sub: 'Grâce' },
+  { id: 'st3',     label: 'Ambiance III',     sub: 'Élévation' },
+  { id: 'st4',     label: 'Ambiance IV',      sub: 'Marche' },
+  { id: 'st5',     label: 'Ambiance V',       sub: 'Désert' },
+  { id: 'st6',     label: 'Ambiance VI',      sub: 'Veillée' },
+  { id: 'fire',    label: 'Explore the Fire', sub: 'Combat' },
+];
+
+const ALBUM_TRACKS: Record<string, string> = {
+  st1:  '/audio/soundtrack-1.mp3',
+  st2:  '/audio/soundtrack-2.mp3',
+  st3:  '/audio/soundtrack-3.mp3',
+  st4:  '/audio/soundtrack-4.mp3',
+  st5:  '/audio/soundtrack-5.mp3',
+  st6:  '/audio/soundtrack-6.mp3',
+  fire: '/audio/soundtrack-explore-the-fire.mp3',
+};
+
+/** Piste fixe d'un album (fallback : 1ʳᵉ piste de la playlist). */
+export function albumTrack(id: string): string {
+  return ALBUM_TRACKS[id] ?? SOUNDTRACK_PATHS[0];
+}
+
+const ALBUM_KEY = 'elias-music-album';
+
+/** Album choisi, persisté entre les sessions (défaut : 'auto'). */
+export function getStoredAlbum(): string {
+  try { return localStorage.getItem(ALBUM_KEY) || 'auto'; } catch { return 'auto'; }
+}
+
+export function storeAlbum(id: string): void {
+  try { localStorage.setItem(ALBUM_KEY, id); } catch { /* ignore */ }
+}
 
 /** Joue UNE piste — stop ce qui jouait avant. */
 function playTrack(path: string, fadeIn = true, loop = false): void {
@@ -354,8 +407,9 @@ export function playSeasonTrack(seasonName: string): void {
   playTrack(path, true, true); // loop = true, la piste tourne jusqu'à la prochaine saison
 }
 
-/** Crossfade vers une piste quelconque (pour transition de saison). */
-export function crossfadeTo(path: string): void {
+/** Crossfade vers une piste quelconque (transition de saison / album figé).
+ *  `loop` : true pour qu'une piste fixe tourne jusqu'au prochain changement. */
+export function crossfadeTo(path: string, loop = false): void {
   if (!path) return;
 
   autoAdvance = false;
@@ -367,7 +421,7 @@ export function crossfadeTo(path: string): void {
     document.addEventListener('visibilitychange', _handleVisibility);
   }
 
-  playTrack(path, true, false);
+  playTrack(path, true, loop);
 }
 
 /** Arrête toute musique. */

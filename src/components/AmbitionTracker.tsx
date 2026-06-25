@@ -11,6 +11,7 @@
  *  - Bouton déclencheur discret — ne surcharge pas l'écran principal.
  */
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useGameStore } from '../stores/gameStore';
 import { deriveRunAmbition, getCallingProgress } from '../engine/runAmbition';
 import { STORY_ARCS } from '../data/storyArcs';
@@ -221,8 +222,10 @@ export function AmbitionTracker() {
         </span>
       </button>
 
-      {/* Panneau coulissant */}
-      {open && (
+      {/* Panneau coulissant — porté dans document.body pour échapper au
+          stacking context de #info-bar (position:relative; z-index:2) qui
+          piégeait le panneau sous le journal malgré son z-index:900. */}
+      {open && createPortal(
         <div
           id="ambition-panel"
           role="dialog"
@@ -373,11 +376,12 @@ export function AmbitionTracker() {
               />
             ))}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
-      {/* Overlay de fond pour fermeture au clic extérieur */}
-      {open && (
+      {/* Overlay de fond — porté lui aussi dans document.body */}
+      {open && createPortal(
         <div
           onClick={() => setOpen(false)}
           onTouchStart={(e) => { e.stopPropagation(); }}
@@ -389,7 +393,8 @@ export function AmbitionTracker() {
             background: 'rgba(0,0,0,0.3)',
             touchAction: 'none',
           }}
-        />
+        />,
+        document.body,
       )}
 
       {/* CSS prefers-reduced-motion */}

@@ -17,7 +17,7 @@ import { useState } from 'react';
 import {
   BookOpen, ScrollText, Award, Star, XIcon, Volume2, MessageSquare,
 } from './IconSystem';
-import { setAmbientVolume, getAmbientVolume } from '../engine/juice';
+import { setAmbientVolume, getAmbientVolume, MUSIC_ALBUMS } from '../engine/juice';
 import { DailyVerse } from './DailyVerse';
 import { useReadingSpeed, cycleReadingSpeed, READING_LABELS } from '../settings/textSpeed';
 
@@ -29,6 +29,8 @@ interface MainMenuProps {
   onNewGame: () => void;
   ambientOn: boolean;
   onToggleAmbient: () => void;
+  musicAlbum: string;
+  onSelectAlbum: (id: string) => void;
   currentTitle: string | null;
   age: number;
   successRate: number;
@@ -50,6 +52,8 @@ export const MainMenu: FC<MainMenuProps> = ({
   onNewGame,
   ambientOn,
   onToggleAmbient,
+  musicAlbum,
+  onSelectAlbum,
   currentTitle,
   age,
   successRate,
@@ -182,6 +186,41 @@ export const MainMenu: FC<MainMenuProps> = ({
               <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 28, textAlign: 'right' }}>{volume}%</span>
             </div>
           )}
+
+          {/* Choix d'album — le joueur peut figer une ambiance pour sa partie */}
+          <div style={{ padding: '4px 16px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 8, letterSpacing: 0.5 }}>
+              ALBUM
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {MUSIC_ALBUMS.map((alb) => {
+                const selected = musicAlbum === alb.id;
+                return (
+                  <button
+                    key={alb.id}
+                    onClick={() => onSelectAlbum(alb.id)}
+                    title={alb.sub}
+                    style={{
+                      padding: '6px 10px',
+                      borderRadius: 8,
+                      border: '1px solid',
+                      borderColor: selected ? 'var(--accent-gold)' : 'rgba(245,158,11,0.18)',
+                      background: selected ? 'rgba(245,158,11,0.16)' : 'transparent',
+                      color: selected ? 'var(--accent-gold-light)' : 'var(--text-muted)',
+                      fontSize: 11,
+                      fontWeight: selected ? 600 : 400,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {alb.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ fontSize: 9, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.4 }}>
+              {MUSIC_ALBUMS.find((a) => a.id === musicAlbum)?.sub ?? ''}
+            </div>
+          </div>
 
           <MenuSection label="ACCESSIBILITÉ" />
 

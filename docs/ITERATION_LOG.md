@@ -1322,6 +1322,39 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 
 - **Rollback** : `git revert c27fc19`.
 
+### Itération 69 — Fluidité roman-visuel : scène avant le verset + fix panneau Appel + musique par album
+- **Recherche** : retour de playtest du porteur — « les questions s'affichent avant de pouvoir lire
+  le texte d'histoire ». Confronté au design doc V2 (`DESIGN_V2_ROMAN_VISUEL.md`, principe ①
+  *Encodage Émotionnel*) : « la situation narrative DOIT créer de l'émotion AVANT que le verset soit
+  proposé ». Le moteur faisait l'inverse.
+- **Analyse** : trois défauts indépendants.
+  1. **Flow** — `VerseChoices.tsx` révélait la description ET affichait les choix simultanément.
+     Le chrono démarrait aussi pendant la lecture (inéquitable).
+  2. **Graphique** — le panneau « MON APPEL » (`position:fixed; z-index:900`) s'affichait *derrière*
+     le journal : `#info-bar` (ancêtre, `position:relative; z-index:2`) crée un *stacking context*
+     qui piégeait le `z-index:900` au niveau 2.
+  3. **Musique** — `SEASON_TRACKS` pointait vers des `ambient-*.mp3` inexistants → musique muette au
+     changement de saison.
+- **Consensus** : (a) bloquer choix + chrono + barre de temps derrière `descDone` ; (b) porter le
+  panneau + overlay dans `document.body` via `createPortal` ; (c) câbler `SEASON_TRACKS` sur les vrais
+  `soundtrack-N.mp3` + sélecteur de musique unifié (signature dédupliquée via ref) + **choix d'album**
+  par le joueur (`MUSIC_ALBUMS`, persistance localStorage, sélecteur de chips dans `MainMenu`).
+- **Application** :
+  - `src/components/VerseChoices.tsx` — 4 blocs de réponse (wordBank/completion/reference/choice) +
+    `timerRunning` + barre de temps gatés sur `descDone`. Skip tap-to-reveal préservé ; scènes déjà
+    lues / reduced-motion → `descDone` vrai d'emblée (zéro ralentissement).
+  - `src/components/AmbitionTracker.tsx` — `createPortal(panneau, document.body)` + overlay porté.
+  - `src/engine/juice.ts` — `SEASON_TRACKS` réels, `seasonTrackPath()`, `MUSIC_ALBUMS`/`albumTrack()`,
+    `getStoredAlbum`/`storeAlbum`, `crossfadeTo(path, loop)`.
+  - `src/App.tsx` — effet musical unifié signature+ref (auto/shuffle/album), prop `musicAlbum` +
+    `onSelectAlbum`.
+  - `src/components/MainMenu.tsx` — sélecteur d'album (chips sur `MUSIC_ALBUMS`).
+- **Résultat** : porte QA verte (188 v / 320 e, 0 erreur ; lint-diff 0→0 sur les 5 fichiers).
+  **Vérif navigateur `run-elias`** : sonde confirme `[event @+250ms] caret=true, chips=0` (scène en
+  cours = aucun choix) → `[after reveal] caret=false, chips=4` (scène lue = 4 versets) ; panneau Appel
+  `parent=BODY`, `inPanel=true` (au sommet, opaque) ; 0 erreur console.
+- **Rollback** : `git revert <hash itér.69>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

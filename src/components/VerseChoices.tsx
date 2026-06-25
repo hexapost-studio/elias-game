@@ -133,7 +133,9 @@ export function VerseChoices() {
   // L'effet ne pilote QUE le décompte (système externe). Son setState part du tick
   // différé → pas de set-state-in-effect. Tous les Hooks sont appelés AVANT toute sortie
   // anticipée (cf. plus bas), donc plus de rules-of-hooks.
-  const timerRunning = isActive && maxTime > 0 && !hasAnswered;
+  // Le chrono ne démarre qu'une fois la scène entièrement révélée (descDone) : on ne
+  // perd pas de temps pendant la lecture — la décision commence quand la question apparaît.
+  const timerRunning = isActive && maxTime > 0 && !hasAnswered && descDone;
   useEffect(() => {
     if (!timerRunning) return;
     const id = setInterval(() => {
@@ -197,7 +199,7 @@ export function VerseChoices() {
       {!isTyping && <>
 
       {/* Timer — caché en palier 1 (pas de pression) */}
-      {!noTimer && (
+      {!noTimer && descDone && (
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         <div className="timer-bar" style={{ background: 'rgba(255,255,255,0.08)' }}>
           <div
@@ -265,7 +267,7 @@ export function VerseChoices() {
 
       {/* ── Word Bank (T-42) ── */}
       {/* Quand questionType === 'wordBank' : afficher le verset avec ____ + chips de mots. */}
-      {!hasAnswered && currentEvent.questionType === 'wordBank' && currentEvent.wordBank && (() => {
+      {descDone && !hasAnswered && currentEvent.questionType === 'wordBank' && currentEvent.wordBank && (() => {
         const correctVerse = getVerseById(currentEvent.correctVerseId);
         if (!correctVerse) return null;
         const challenge = buildWordBankChallenge(
@@ -349,7 +351,7 @@ export function VerseChoices() {
 
       {/* ── Completion (Design V2) ── */}
       {/* Quand questionType === 'completion' : début du verset + 4 fins à choisir. */}
-      {!hasAnswered && currentEvent.questionType === 'completion' && (() => {
+      {descDone && !hasAnswered && currentEvent.questionType === 'completion' && (() => {
         const correctVerse = getVerseById(currentEvent.correctVerseId);
         if (!correctVerse) return null;
         const otherTexts = VERSE_DATABASE
@@ -422,7 +424,7 @@ export function VerseChoices() {
 
       {/* ── Reference (Design V2) ── */}
       {/* Quand questionType === 'reference' : texte complet affiché, joueur choisit la référence. */}
-      {!hasAnswered && currentEvent.questionType === 'reference' && (() => {
+      {descDone && !hasAnswered && currentEvent.questionType === 'reference' && (() => {
         const correctVerse = getVerseById(currentEvent.correctVerseId);
         if (!correctVerse) return null;
         const handleRefClick = (verseId: string) => {
@@ -485,7 +487,7 @@ export function VerseChoices() {
       {/* Pendant l'animation d'envoi (sendingChipId !== null) : seule la chip
           sélectionnée est visible avec la classe --sending ; les autres sont masquées.
           Après réponse (hasAnswered) : plus de chips visibles (la bulle les remplace). */}
-      {!hasAnswered && currentEvent.questionType !== 'wordBank'
+      {descDone && !hasAnswered && currentEvent.questionType !== 'wordBank'
         && currentEvent.questionType !== 'completion'
         && currentEvent.questionType !== 'reference'
         && shuffledIds.map((verseId, i) => {

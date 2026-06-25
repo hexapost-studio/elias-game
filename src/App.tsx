@@ -35,7 +35,7 @@ const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ d
 const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
 import { flushLocalQueue } from './services/feedback';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo } from './engine/juice';
+import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo, seasonTrackPath, albumTrack, getStoredAlbum, storeAlbum } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
@@ -149,6 +149,10 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ambientOn, setAmbientOn] = useState(false);
+  const [musicAlbum, setMusicAlbum] = useState<string>(() => getStoredAlbum());
+  // Dédoublonnage de la sélection musicale : ne relance une piste que si la
+  // "signature" (album + saison) change réellement (ref → pas de setState-in-effect).
+  const lastMusicSig = useRef('');
   const [showShareCard, setShowShareCard] = useState(false);
   const [showTestimony, setShowTestimony] = useState(false);
   // ChapterCard : âge de la dernière carte affichée (évite les répétitions)
@@ -339,16 +343,34 @@ function App() {
     setAmbientPlaybackRate(min <= 20 ? 0.92 : min <= 35 ? 0.96 : 1.0);
   }, [stats, ambientOn]);
 
-  // Season crossfade: quand la saison spirituelle change, bascule la piste
-  // Les fichiers ambient-*.mp3 doivent exister dans public/audio/
-  // Si absents, le .catch() silencieux gère l'erreur (rien ne joue)
+  // Sélection musicale unifiée : album choisi + saison de vie.
+  //  - 'auto'    → suit la saison (piste réelle, en boucle jusqu'au prochain virage)
+  //  - 'shuffle' → toutes les pistes au hasard (autoAdvance)
+  //  - album fixe → une piste en boucle
+  // Une "signature" évite de relancer la piste quand l'input n'a pas vraiment changé
+  // (ex. la saison bascule mais on est en album fixe → on ne coupe rien).
   useEffect(() => {
-    if (!ambientOn || !spiritualSeason) return;
-    const seasonSlug = spiritualSeason
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlève accents
-      .toLowerCase();
-    crossfadeTo(`/audio/ambient-${seasonSlug}.mp3`);
-  }, [spiritualSeason, ambientOn]);
+    if (!ambientOn) { lastMusicSig.current = ''; return; }
+
+    let sig: string;
+    let action: () => void;
+    if (musicAlbum === 'shuffle') {
+      sig = 'shuffle';
+      action = () => startAmbient();
+    } else if (musicAlbum === 'auto') {
+      const path = seasonTrackPath(spiritualSeason);
+      sig = 'auto:' + (path ?? 'none');
+      action = path ? () => crossfadeTo(path, true) : () => startAmbient();
+    } else {
+      sig = 'album:' + musicAlbum;
+      const path = albumTrack(musicAlbum);
+      action = () => crossfadeTo(path, true);
+    }
+
+    if (sig === lastMusicSig.current) return;
+    lastMusicSig.current = sig;
+    action();
+  }, [ambientOn, musicAlbum, spiritualSeason]);
 
   // ── Journal vivant : narrateur offline (immédiat) + IA en bonus ──────────
   useEffect(() => {
@@ -882,7 +904,7 @@ function App() {
             onClick={() => {
               const next = !ambientOn;
               setAmbientOn(next);
-              if (next) startAmbient(); else stopAmbient();
+              if (!next) stopAmbient(); // l'effet de sélection démarre la bonne piste à l'activation
             }}
             title={ambientOn ? 'Couper la musique' : 'Activer la musique'}
             className="btn-music"
@@ -1110,7 +1132,14 @@ function App() {
           onToggleAmbient={() => {
             const next = !ambientOn;
             setAmbientOn(next);
-            if (next) startAmbient(); else stopAmbient();
+            if (!next) stopAmbient(); // l'effet de sélection démarre la bonne piste à l'activation
+          }}
+          musicAlbum={musicAlbum}
+          onSelectAlbum={(id) => {
+            setMusicAlbum(id);
+            storeAlbum(id);
+            if (!ambientOn) { setAmbientOn(true); } // choisir un album active la musique
+            playClick();
           }}
           currentTitle={currentTitle?.name ?? null}
           age={age}
