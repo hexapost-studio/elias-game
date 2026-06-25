@@ -3526,7 +3526,7 @@
   {
     "id": "arc-ami-1-c",
     "title": "L'occasion manquée",
-    "description": "Tu es resté dans ton coin. Le nouveau voisin s'est fait d'autres amis. Pendant des années, tu te demanderas ce qui aurait pu être si tu avais osé ce premier sourire.",
+    "description": "Tu es resté dans ton coin ce jour-là, le cœur serré de timidité. Le premier sourire a tardé — il faudra un autre hasard, des mois plus tard, pour que {ami} et toi osiez enfin vous parler. Les plus belles amitiés prennent parfois un détour avant de commencer.",
     "ageRange": [
       9,
       13
@@ -3750,7 +3750,7 @@
   {
     "id": "arc-ami-5-c",
     "title": "L'oubli",
-    "description": "Tu n'as pas relancé le contact. Les années ont passé et {ami} est devenu un étranger. Un jour tu apprendras son déménagement, et il sera trop tard.",
+    "description": "Tu n'as pas relancé le contact. Les années ont passé et {ami} est devenu presque un étranger. Le silence s'est installé, lourd — mais au fond de toi, tu sais qu'une porte n'est jamais tout à fait fermée.",
     "ageRange": [
       31,
       51
@@ -3880,7 +3880,13 @@
       "paix": 1
     },
     "storyArcId": "arc-ami",
-    "arcSequence": 7
+    "arcSequence": 7,
+    "setsFlagsOnSuccess": [
+      "ami_parti"
+    ],
+    "setsFlagsOnFail": [
+      "ami_parti"
+    ]
   },
   {
     "id": "arc-ami-8",
@@ -3912,6 +3918,12 @@
         "kind": "event_completed",
         "eventId": "arc-ami-7"
       }
+    ],
+    "setsFlagsOnSuccess": [
+      "ami_parti"
+    ],
+    "setsFlagsOnFail": [
+      "ami_parti"
     ]
   },
   {
@@ -9002,10 +9014,10 @@
   {
     "id": "e-echo-ami-pardonrisque",
     "title": "Quarante ans d'amitié",
-    "description": "{ami} est à l'hôpital. En entrant, tu repenses au pardon que tu lui avais accordé jeune adulte, alors que tout le monde te disait de couper les ponts. Sans ce choix risqué, cette main que tu tiens aujourd'hui ne serait plus là depuis longtemps. « Tu te souviens ? » murmure-t-il.",
+    "description": "{ami} t'appelle un soir, sans raison particulière — juste pour entendre ta voix. Cela fait quarante ans que ça dure. Tu repenses au pardon risqué de ta jeunesse, quand tout le monde te disait de couper les ponts. Sans ce choix, cette amitié qui te tient chaud ce soir aurait disparu depuis longtemps.",
     "ageRange": [
-      58,
-      78
+      52,
+      74
     ],
     "category": "amour_de_dieu",
     "correctVerseId": "v-amour-003",
@@ -9014,6 +9026,11 @@
       {
         "kind": "event_succeeded",
         "eventId": "arc-ami-4"
+      },
+      {
+        "kind": "flag",
+        "flagId": "ami_parti",
+        "value": false
       }
     ],
     "statImpactOnFail": {
@@ -9088,5 +9105,195 @@
       "finances": 0
     },
     "thematicFlavor": "La grâce remonte jusqu'aux portes claquées de l'adolescence : il n'y a plus de condamnation."
+  },
+  {
+    "storyArcId": "arc-ami",
+    "arcSequence": 2,
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-2"
+      },
+      {
+        "kind": "flag",
+        "flagId": "ami_parti",
+        "value": false
+      }
+    ],
+    "id": "arc-ami-evo-doute",
+    "title": "La nuit où {ami} a douté",
+    "description": "{ami} t'appelle à minuit, la voix brisée. Après le drame qu'il/elle vient de vivre, il/elle ne croit plus en rien : « Si Dieu existait, ça ne serait pas arrivé. » Ce n'est pas une question piège — c'est un ami qui se noie. Tu peux argumenter, ou simplement lui rappeler ce qui tient quand on ne voit plus rien.",
+    "ageRange": [
+      18,
+      32
+    ],
+    "category": "doute_incredulite",
+    "correctVerseId": "v-doute-002",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 0
+    },
+    "spawnProbability": 0.7,
+    "thematicFlavor": "Porter la foi d'un ami quand la sienne vacille, c'est aimer concrètement."
+  },
+  {
+    "storyArcId": "arc-ami",
+    "arcSequence": 2,
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-2"
+      },
+      {
+        "kind": "flag",
+        "flagId": "ami_parti",
+        "value": false
+      }
+    ],
+    "id": "arc-ami-evo-mariage",
+    "title": "Le grand jour de {ami}",
+    "description": "{ami} se marie, et c'est toi qu'il/elle a choisi pour être à ses côtés ce jour-là. Dans la salle d'attente, il/elle te confie sa peur : « Et si je n'étais pas à la hauteur ? » Tu te revois, gamins, à vous promettre l'impossible par-dessus la clôture. Que lui dis-tu pour l'accompagner vers cet engagement ?",
+    "ageRange": [
+      25,
+      40
+    ],
+    "category": "tristesse_joie",
+    "correctVerseId": "v-joie-001",
+    "statImpactOnFail": {
+      "foi": -1,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 3,
+      "paix": 4,
+      "finances": 0
+    },
+    "spawnProbability": 0.65,
+    "thematicFlavor": "Les amitiés d'enfance deviennent les témoins des grands jours."
+  },
+  {
+    "storyArcId": "arc-ami",
+    "arcSequence": 2,
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-2"
+      },
+      {
+        "kind": "flag",
+        "flagId": "ami_parti",
+        "value": false
+      }
+    ],
+    "id": "arc-ami-evo-chute",
+    "title": "La chute de {ami}",
+    "description": "Tout ce que {ami} avait bâti s'est effondré en quelques mois — son projet, sa réputation, sa confiance. Il/elle débarque chez toi sans prévenir, méconnaissable, persuadé(e) d'être un raté. Tu connais ce regard : c'est celui de quelqu'un qui ne se relèvera pas tout seul.",
+    "ageRange": [
+      33,
+      50
+    ],
+    "category": "echec_reussite",
+    "correctVerseId": "v-echec-004",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 3,
+      "finances": 0
+    },
+    "spawnProbability": 0.7,
+    "thematicFlavor": "Relever un ami tombé, c'est lui prêter une foi qu'il a momentanément perdue."
+  },
+  {
+    "storyArcId": "arc-ami",
+    "arcSequence": 2,
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-2"
+      },
+      {
+        "kind": "flag",
+        "flagId": "ami_parti",
+        "value": false
+      }
+    ],
+    "id": "arc-ami-evo-egare",
+    "title": "{ami} s'égare",
+    "description": "{ami} a pris un mauvais virage : de mauvaises fréquentations, des nuits qui finissent mal, un mur entre lui/elle et tout ce qui comptait. La rumeur te conseille de t'éloigner avant d'être éclaboussé. Mais tu te souviens de qui il/elle était. L'aimer maintenant, c'est l'aimer quand c'est le moins mérité.",
+    "ageRange": [
+      26,
+      44
+    ],
+    "category": "amour_de_dieu",
+    "correctVerseId": "v-amour-002",
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "spawnProbability": 0.6,
+    "thematicFlavor": "Aimer un ami égaré sans cautionner sa chute — l'amour qui cherche, pas qui condamne."
+  },
+  {
+    "storyArcId": "arc-ami",
+    "arcSequence": 2,
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-ami-2"
+      },
+      {
+        "kind": "flag",
+        "flagId": "ami_parti",
+        "value": false
+      }
+    ],
+    "id": "arc-ami-evo-eveil",
+    "title": "L'éveil de {ami}",
+    "description": "Un soir, {ami} te pose LA question, presque gêné(e) : « Cette paix que tu as, même quand tout va mal… comment on fait pour l'avoir ? » Des années que tu vis ta foi sans la lui imposer. Aujourd'hui c'est lui/elle qui frappe à la porte. Tu sens que ta réponse pourrait changer le cours de sa vie.",
+    "ageRange": [
+      30,
+      50
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-006",
+    "statImpactOnFail": {
+      "foi": -1,
+      "paix": -1,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 5,
+      "paix": 4,
+      "finances": 0
+    },
+    "spawnProbability": 0.65,
+    "thematicFlavor": "Le plus beau fruit d'une amitié fidèle : voir l'autre rencontrer Celui qui t'a tenu."
   }
 ]

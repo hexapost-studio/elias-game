@@ -1384,6 +1384,37 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   touché : contenu pur, zéro code, zéro dette.
 - **Rollback** : `git revert <hash itér.70>`.
 
+## Itération 71 — Arc-ami : trajectoire propre de {ami} + cohérence long terme (proposition C du Design V2)
+
+- **Contexte** : « scènes où {ami} évolue ; le but du jeu c'est qu'il n'y ait pas qu'UNE histoire à
+  vivre ; chercher les incohérences qui se glissent sur le long terme. » Deux chantiers liés :
+  (1) faire de {ami} un **personnage** avec ses propres épreuves (roman visuel, proposition C du
+  Design V2 §3.2), pas un simple miroir d'Élias ; (2) auditer la **continuité** de l'arc sur 70 ans.
+- **Incohérences trouvées & corrigées** (le vrai bug « long terme ») :
+  - `arc-ami-1-c` disait l'amitié **jamais née** (« s'est fait d'autres amis ») alors que la spine
+    enchaîne sur `arc-ami-2` « {ami} est devenu ton meilleur ami » (la progression spine = `event_completed`,
+    succès **comme** échec). → reformulé en **début retardé** (« il faudra un autre hasard… ») : cohérent
+    ET ton grâce (un chemin plus humble, jamais une porte fermée).
+  - `arc-ami-5-c` annonçait « tu apprendras son déménagement, et il sera **trop tard** » — contredit par
+    `arc-ami-6` « le retour de l'ami ». → reformulé (« une porte n'est jamais tout à fait fermée »).
+  - **Mort de {ami} non tracée** : aucun flag ne marquait son décès (`arc-ami-7-c` fuite/mort,
+    `arc-ami-8` héritage), donc un event tardif pouvait le faire **réapparaître vivant**. Mon propre
+    écho `e-echo-ami-pardonrisque` (itér.70) le mettait à l'hôpital, susceptible de tomber **après**
+    sa mort. → ajout du flag **`ami_parti`** (posé `OnSuccess`+`OnFail` par `arc-ami-7-c` et `arc-ami-8`) ;
+    l'écho est regardé `ami_parti=false` + reformulé sans l'hôpital (un appel du soir, amitié vivante).
+- **Enrichissement — {ami} a sa propre vie** (5 events) : doute de foi, mariage, chute/effondrement,
+  saison d'égarement, éveil/rencontre de Dieu. Tous **hors-spine** (`storyArcId:arc-ami` + `arcSequence:2`
+  comme `arc-louise-3-hard`), donc rendus voix **« Ton ami »** (entourage). Gardés `event_succeeded:arc-ami-2`
+  (amitié de confiance établie — n'apparaissent **que** sur le bon chemin) + `ami_parti=false` (jamais
+  posthume). `event_succeeded:arc-ami-2` garantit que `arc-ami-2` est répondu **avant** → l'unlock de
+  seq3 est déjà acquis, **zéro perturbation** de l'ordre de la spine (vérifié `storyGraph.test`).
+- **Rejouabilité** (« pas qu'une histoire à vivre ») : `spawnProbability` 0.6–0.7 sur chaque scène
+  d'évolution → chaque partie révèle un **sous-ensemble différent** du parcours de {ami}.
+- **Garde-fou validé** : `storyGraph` exige `arcSequence` dès qu'il y a `storyArcId` (ligne 86) — respecté ;
+  un prérequis `flag value:false` est exempté du check « contenu mort » (ligne 129) — d'où `ami_parti=false` légal.
+- **Résultat** : porte QA verte — 188 v / **334 e**, ZERO erreur/warning. Contenu pur, zéro code, zéro dette.
+- **Rollback** : `git revert <hash itér.71>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
