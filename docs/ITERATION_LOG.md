@@ -1433,6 +1433,21 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   `engine/gameEngine.ts`, `components/ActionPanel.tsx`). Dette inchangée (0).
 - **Rollback** : `git revert <hash itér.72>`.
 
+## Itération 73 — Leurres « plus proches » : distracteurs thématiquement pertinents (correctif playtest)
+
+- **Demande (playtest)** : « désactiver les faux versets ». Précision technique : les leurres sont de
+  **vrais versets** (pas des textes inventés) ; le grief réel = des distracteurs parfois **hors-sujet**
+  qui rendent le choix trivial ou confus. Choix produit : **« leurres plus proches »** (garder 4 options
+  mais forcer la pertinence thématique).
+- **Avant** : `pickDecoys` mêlait la même catégorie au hasard puis complétait avec d'autres catégories —
+  un leurre manifestement hors-sujet pouvait apparaître.
+- **Après** : sélection en **3 paliers de proximité**, mêlés *à l'intérieur* de chaque palier (variété
+  préservée) : (1) même catégorie + ≥1 tag commun, (2) même catégorie sans tag commun, (3) autre catégorie
+  (filet de sécurité uniquement si la catégorie est trop petite). Un leurre hors-catégorie n'apparaît
+  donc plus que par nécessité. Le rappel actif (principe ②) reste, le choix devient pertinent (principe ⑥).
+- **Résultat** : porte QA verte, lint-diff 0→0 (`src/data/events.ts`), dette inchangée. Module pur, testable.
+- **Rollback** : `git revert <hash itér.73>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

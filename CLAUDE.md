@@ -84,7 +84,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 69 | **Fluidité roman-visuel** : scène lue AVANT le verset (`descDone` gate, principe ①) + fix panneau Appel (`createPortal`) + musique réparée & **choix d'album** | `e6112e8` |
 | 70 | **Polish éditorial** : 9 échos décennaux de **jeunesse** (choix 18-38 ans → rappel à 58-82, principe ④) — contenu pur, 320→329 events | `24310ac` |
 | 71 | **Arc-ami : {ami} évolue + cohérence** : 5 scènes hors-spine (doute/mariage/chute/égarement/éveil, `spawnProbability`) + flag `ami_parti` (anti-réapparition posthume) + 3 contradictions long-terme corrigées | `db52c75` |
-| 72 | **Finances jouables** (correctif playtest) : la pauvreté ne tue plus (`checkGameOver` saute finances) + action **Travailler** (+Argent −Corps) | _(ce commit)_ |
+| 72 | **Finances jouables** (correctif playtest) : la pauvreté ne tue plus (`checkGameOver` saute finances) + action **Travailler** (+Argent −Corps) | `8e9dc2a` |
+| 73 | **Leurres plus proches** (correctif playtest) : `pickDecoys` en 3 paliers (même cat. + tag commun → même cat. → autre cat.) — distracteurs pertinents, jamais hors-sujet | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).

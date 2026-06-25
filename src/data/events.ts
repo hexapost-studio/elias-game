@@ -10,6 +10,16 @@ import RAW_EVENTS from '../../game/data/events.json';
 export const EVENT_DATABASE: AfflictionEvent[] = RAW_EVENTS as unknown as AfflictionEvent[];
 export const TOTAL_EVENTS = EVENT_DATABASE.length;
 
+/**
+ * Choisit des versets-leurres « proches » du bon verset (jamais des hors-sujet
+ * grossiers). Trois paliers de proximité, mêlés à l'intérieur de chaque palier
+ * (variété préservée d'une partie à l'autre) :
+ *   1. même catégorie ET ≥1 tag commun  (le plus pertinent / pédagogique)
+ *   2. même catégorie, sans tag commun
+ *   3. autre catégorie                   (filet de sécurité : catégorie trop petite)
+ * On consomme les paliers dans l'ordre → un leurre hors-catégorie n'apparaît que
+ * si la catégorie du bon verset ne contient pas assez de candidats.
+ */
 export function pickDecoys(
   correctId: string,
   category: string,
@@ -17,20 +27,19 @@ export function pickDecoys(
   excludeIds: string[] = []
 ): string[] {
   const exclude = new Set([correctId, ...excludeIds]);
-  const sameCategory = VERSE_DATABASE.filter(
-    (v) => !exclude.has(v.id) && v.category === category
-  );
-  const others = VERSE_DATABASE.filter((v) => !exclude.has(v.id) && v.category !== category);
+  const correct = VERSE_DATABASE.find((v) => v.id === correctId);
+  const correctTags = new Set(correct?.tags ?? []);
+  const sharesTag = (v: { tags: string[] }) => v.tags.some((t) => correctTags.has(t));
 
-  const shuffledSame = [...sameCategory].sort(() => Math.random() - 0.5);
-  const shuffledOthers = [...others].sort(() => Math.random() - 0.5);
+  const shuffle = (pool: typeof VERSE_DATABASE) => [...pool].sort(() => Math.random() - 0.5);
+
+  const inCategory = VERSE_DATABASE.filter((v) => !exclude.has(v.id) && v.category === category);
+  const tier1 = shuffle(inCategory.filter(sharesTag));
+  const tier2 = shuffle(inCategory.filter((v) => !sharesTag(v)));
+  const tier3 = shuffle(VERSE_DATABASE.filter((v) => !exclude.has(v.id) && v.category !== category));
 
   const result: string[] = [];
-  for (const v of shuffledSame) {
-    if (result.length >= count) break;
-    result.push(v.id);
-  }
-  for (const v of shuffledOthers) {
+  for (const v of [...tier1, ...tier2, ...tier3]) {
     if (result.length >= count) break;
     result.push(v.id);
   }
