@@ -25,7 +25,8 @@
 - [x] **itér. 76** Levier physique mesuré (survie ↔ précision : `FAIL_PHYSIQUE_PENALTY` + action **Repos/sabbat**) → `bac0352`
 - [x] **itér. 77** Réconciliation docs — clôture Phase 4 (v0.2.0) → `923c753`
 - [x] **itér. 78** Le tutoriel ne casse plus le rendu (setState inter-composants `TutorialOverlay`→`App`), trouvé au playtest → `ae3a7bb`
-- [x] **itér. 79** Témoignage de fin de vie incassable — couverture de l'état viral `testimonyGenerator` (4 tests, états limites) → _(à committer)_
+- [x] **itér. 79** Témoignage de fin de vie incassable — couverture de l'état viral `testimonyGenerator` (4 tests, états limites) → `5734003`
+- [x] **itér. 80** Cohérence PWA — manifest `lang:'fr'` (était `en` par défaut), audit assets de prod 0 cassé → _(à committer)_
 
 ## 🟡 IN-PROGRESS  (≤ 1 tâche à la fois — invariant 1 = atomicité)
 - (vide)

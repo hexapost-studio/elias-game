@@ -14,6 +14,10 @@ export default defineConfig({
         name: 'Élias — Le Combat d\'une Vie',
         short_name: 'Élias',
         description: 'Simulateur de vie chrétien — mémorisez les Écritures pour surmonter les épreuves',
+        // App 100 % francophone (cf. index.html <html lang="fr">) — sans ce champ
+        // vite-plugin-pwa émettait "lang":"en" dans le manifest (incohérence à l'install PWA).
+        lang: 'fr',
+        dir: 'ltr',
         theme_color: '#2D1B4E',
         background_color: '#120d07',
         display: 'standalone',

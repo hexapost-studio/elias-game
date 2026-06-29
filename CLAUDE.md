@@ -91,7 +91,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 76 | **Levier physique mesuré** : survie liée à la précision — usure du corps à l'échec (`FAIL_PHYSIQUE_PENALTY`) + action **Repos/sabbat** (plein tour, ralentit sans banquer) ; victoire(100) = exploit de maîtrise (0%→69% selon précision), mesuré au survival-sim | `bac0352` |
 | 77 | **Réconciliation docs — clôture Phase 4 (v0.2.0)** : itér. 69-76 tracées dans la ROADMAP (miroir de HEAD), T-34 coché (cible ≥8 atteinte : 8/9/8 sur 334 events), T-40 audio parqué (bloqué-assets), v0.2.0 actée | `923c753` |
 | 78 | **Le tutoriel ne casse plus le rendu** (playtest finalisation) : `TutorialOverlay` appelait `onDone()` (setState d'App) pendant son rendu → erreur React inter-composants. `useTargetRect` + flag `measured`, `finish()` en effet. Smoke : 0 erreur console | `ae3a7bb` |
-| 79 | **Témoignage de fin de vie incassable** : couverture de l'état viral (partage WhatsApp) — `testimonyGenerator` testé sur états limites (mort précoce/journal vide/victoire/vie pleine), 4 tests. Générateur déjà défensif, aucun correctif | _(ce commit)_ |
+| 79 | **Témoignage de fin de vie incassable** : couverture de l'état viral (partage WhatsApp) — `testimonyGenerator` testé sur états limites (mort précoce/journal vide/victoire/vie pleine), 4 tests. Générateur déjà défensif, aucun correctif | `5734003` |
+| 80 | **Cohérence PWA** (polish livraison) : manifest `lang:'fr'`+`dir:'ltr'` (vite-plugin-pwa émettait `en` par défaut, incohérent avec `<html lang="fr">`). Audit assets de prod : 13 img + 3 icônes, 0 cassé | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).

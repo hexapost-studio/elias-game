@@ -1570,6 +1570,18 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   incassable. (Le bug de RENDU à la mort avait déjà été éliminé en amont, cf. itér.78.)
 - **Rollback** : `git revert <hash itér.79>`.
 
+## Itération 80 — Cohérence PWA : le manifest parle français (polish de livraison)
+
+- **Origine** : audit de livraison (« jeu livrable »). Vérification des assets/PWA du build de
+  production (`vite-plugin-pwa`). Tous les assets résolvent (13 `<img>` + 3 icônes manifest, 0 cassé),
+  service worker + workbox générés. **Mais** : `index.html` est `<html lang="fr">` alors que le
+  manifest généré émettait `"lang":"en"` (vite-plugin-pwa n'avait pas de `lang` explicite → défaut
+  anglais). Incohérence visible à l'installation PWA (langue annoncée à l'OS / au store).
+- **Application** : `vite.config.ts` — `lang: 'fr'` + `dir: 'ltr'` dans le bloc `manifest`.
+- **Vérification** : `vite build` → `dist/manifest.webmanifest` contient désormais `"lang":"fr"`.
+  Porte QA verte (build inclus), lint 0→0.
+- **Rollback** : `git revert <hash itér.80>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
