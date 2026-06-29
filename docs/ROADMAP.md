@@ -230,10 +230,11 @@ Atteinte quand :
             identique + thème en 1 endroit ; échelles `space`/`radius`/`fontSize`/`weight`/`tracking` ;
             helper composable `alpha(rgb,a)`). Contrat verrouillé par `tests/tokens.test.ts`.
       - [x] **Lot 1 — ActionPanel** (itér.90) : migré à valeur byte-identique (référence du patron).
-      - [ ] **Lots 2+** : migrer les autres composants stylés (`CodexMenu` 61, `Onboarding` 30,
-            `LexiconMenu` 29, `AmbitionTracker` 28, `ShareCard`, `TestimonyCard`, …). 1 lot = 1 commit +
-            porte verte. Délégué à `release-lead` (mécanique, suit le patron ActionPanel). Analyse
-            d'impact `code-review-graph` avant les fichiers à fort rayonnement (cf. G-5b).
+      - [x] **Lot 2 — CodexMenu** (itér.91) : migré à valeur byte-identique (couleurs→tokens,
+            `12→fontSize.md`/`8→radius.md`/`700→weight.bold`…). Shadowing local `color` résolu
+            (`catColor`). Démarré par `release-lead` (coupé par limite session), revu + validé + commité par le lead.
+      - [ ] **Lots 3+** : `Onboarding` 30, `LexiconMenu` 29, `AmbitionTracker` 28, `ShareCard`,
+            `TestimonyCard`, … 1 lot = 1 commit + porte verte, patron ActionPanel/CodexMenu.
 
 ### Tier 3 — Composition & prévention
 - [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage

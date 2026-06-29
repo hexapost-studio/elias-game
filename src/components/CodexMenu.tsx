@@ -4,6 +4,7 @@ import { VERSE_DATABASE } from '../data/verses';
 import { BookOpen, Lock, AlertTriangle, XIcon, Check, Bookmark, Sparkles } from './IconSystem';
 import type { AfflictionCategory } from '../types/game';
 import { reviewPromptsFor } from '../engine/reviewPrompts';
+import { color, font, fontSize, weight, radius } from '../styles/tokens';
 
 interface CodexMenuProps {
   onClose: () => void;
@@ -55,7 +56,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
         <div className="codex-empty-text">
           Aucun verset débloqué encore.<br />Surmonte des épreuves pour remplir ton Codex.
         </div>
-        <button onClick={onClose} className="btn-primary" style={{ padding: '10px 28px', fontSize: 12, letterSpacing: 1.5 }}>
+        <button onClick={onClose} className="btn-primary" style={{ padding: '10px 28px', fontSize: fontSize.md, letterSpacing: 1.5 }}>
           RETOUR
         </button>
       </div>
@@ -75,19 +76,19 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
       <div style={{ padding: '14px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Sparkles size={16} color="var(--accent-gold)" strokeWidth={1.5} />
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, color: 'var(--accent-gold)', letterSpacing: 2 }}>
+          <span style={{ fontFamily: font.display, fontSize: 13, color: color.accentGold, letterSpacing: 2 }}>
             RÉVISION
           </span>
         </div>
-        <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{index + 1} / {total}</span>
-        <button onClick={onClose} style={{ padding: '6px 10px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}>
+        <span style={{ fontSize: 11, color: color.textMuted }}>{index + 1} / {total}</span>
+        <button onClick={onClose} style={{ padding: '6px 10px', background: color.bgCard, border: '1px solid var(--border-subtle)', borderRadius: radius.md, cursor: 'pointer', color: color.textMuted, display: 'flex' }}>
           <XIcon size={13} strokeWidth={2} />
         </button>
       </div>
 
       {/* Barre de progression */}
       <div style={{ height: 3, background: 'rgba(255,255,255,0.06)', flexShrink: 0 }}>
-        <div style={{ height: '100%', background: 'var(--accent-violet)', width: `${((index + 1) / total) * 100}%`, transition: 'width 0.3s ease' }} />
+        <div style={{ height: '100%', background: color.accentViolet, width: `${((index + 1) / total) * 100}%`, transition: 'width 0.3s ease' }} />
       </div>
 
       {/* Carte */}
@@ -111,10 +112,10 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
             imageRendering: 'pixelated',
             padding: '24px 20px 20px',
           }}>
-            <div style={{ fontSize: 9, color: BOOK_MUTED, fontWeight: 700, letterSpacing: 1, marginBottom: 10, textTransform: 'uppercase' }}>
+            <div style={{ fontSize: fontSize.xs, color: BOOK_MUTED, fontWeight: weight.bold, letterSpacing: 1, marginBottom: 10, textTransform: 'uppercase' }}>
               {CAT_LABELS[card.category as AfflictionCategory] ?? card.category}
             </div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: BOOK_ACCENT, letterSpacing: 1, textAlign: 'center', marginBottom: 20 }}>
+            <div style={{ fontFamily: font.display, fontSize: 20, fontWeight: weight.bold, color: BOOK_ACCENT, letterSpacing: 1, textAlign: 'center', marginBottom: 20 }}>
               {card.reference}
             </div>
 
@@ -124,7 +125,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
                 <div style={{ fontSize: 13, color: BOOK_TEXT, lineHeight: 1.8, fontStyle: 'italic', textAlign: 'center' }}>
                   « {card.text} »
                 </div>
-                <div style={{ marginTop: 14, fontSize: 10, color: BOOK_MUTED, textAlign: 'center', letterSpacing: 0.3 }}>
+                <div style={{ marginTop: 14, fontSize: fontSize.sm, color: BOOK_MUTED, textAlign: 'center', letterSpacing: 0.3 }}>
                   ✦ {prompts.encouragement}
                 </div>
               </div>
@@ -154,7 +155,7 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
 
         {/* Hint */}
         {!revealed && (
-          <div style={{ marginTop: 16, fontSize: 11, color: 'var(--text-secondary)' }}>
+          <div style={{ marginTop: 16, fontSize: 11, color: color.textSecondary }}>
             {prompts.reciteHint}
           </div>
         )}
@@ -162,10 +163,10 @@ function FlashCardMode({ onClose }: { onClose: () => void }) {
 
       {/* Navigation */}
       <div style={{ padding: '16px 20px 32px', display: 'flex', gap: 12, flexShrink: 0 }}>
-        <button onClick={prev} style={{ flex: 1, padding: '12px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: 1, cursor: 'pointer' }}>
+        <button onClick={prev} style={{ flex: 1, padding: '12px', background: color.bgCard, border: '1px solid var(--border-subtle)', borderRadius: radius.lg, color: color.textMuted, fontFamily: font.display, fontSize: fontSize.md, letterSpacing: 1, cursor: 'pointer' }}>
           ← PRÉCÉDENT
         </button>
-        <button onClick={next} style={{ flex: 1, padding: '12px', background: 'var(--accent-violet)', border: 'none', borderRadius: 12, color: 'white', fontFamily: 'var(--font-display)', fontSize: 12, letterSpacing: 1, cursor: 'pointer' }}>
+        <button onClick={next} style={{ flex: 1, padding: '12px', background: color.accentViolet, border: 'none', borderRadius: radius.lg, color: 'white', fontFamily: font.display, fontSize: fontSize.md, letterSpacing: 1, cursor: 'pointer' }}>
           SUIVANT →
         </button>
       </div>
@@ -202,7 +203,7 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
   }).sort((a, b) => (b.unlocked / (b.total || 1)) - (a.unlocked / (a.total || 1)));
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: 'var(--bg-main)', zIndex: 20, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'absolute', inset: 0, background: color.bgMain, zIndex: 20, display: 'flex', flexDirection: 'column' }}>
       {showFlashCards && <FlashCardMode onClose={() => setShowFlashCards(false)} />}
 
       {/* Header */}
@@ -210,10 +211,10 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <BookOpen size={18} color="var(--accent-gold)" strokeWidth={1.5} />
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, color: 'var(--accent-gold)', letterSpacing: 2 }}>
+            <div style={{ fontFamily: font.display, fontSize: fontSize.lg, fontWeight: weight.bold, color: color.accentGold, letterSpacing: 2 }}>
               GRIMOIRE
             </div>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 1 }}>
+            <div style={{ fontSize: fontSize.sm, color: color.textMuted, marginTop: 1 }}>
               {unlockedCount}/{totalCount} versets · {progress}%
             </div>
           </div>
@@ -225,16 +226,16 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
               onClick={() => setShowFlashCards(true)}
               style={{
                 padding: '6px 12px',
-                background: 'var(--accent-violet)',
+                background: color.accentViolet,
                 border: 'none',
-                borderRadius: 8,
+                borderRadius: radius.md,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 5,
                 color: 'white',
-                fontSize: 10,
-                fontWeight: 600,
+                fontSize: fontSize.sm,
+                fontWeight: weight.medium,
                 letterSpacing: 0.5,
               }}
             >
@@ -242,7 +243,7 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
               RÉVISER
             </button>
           )}
-          <button onClick={onClose} style={{ padding: '6px 10px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 8, cursor: 'pointer', display: 'flex', color: 'var(--text-muted)' }}>
+          <button onClick={onClose} style={{ padding: '6px 10px', background: color.bgCard, border: '1px solid var(--border-subtle)', borderRadius: radius.md, cursor: 'pointer', display: 'flex', color: color.textMuted }}>
             <XIcon size={14} strokeWidth={2} />
           </button>
         </div>
@@ -251,9 +252,9 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
       {/* Barre de progression globale */}
       <div style={{ padding: '8px 16px 4px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
         <div style={{ flex: 1, height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
-          <div style={{ width: `${progress}%`, height: '100%', background: progress === 100 ? 'var(--success)' : 'var(--accent-violet)', borderRadius: 2, transition: 'width 0.5s ease' }} />
+          <div style={{ width: `${progress}%`, height: '100%', background: progress === 100 ? color.success : color.accentViolet, borderRadius: 2, transition: 'width 0.5s ease' }} />
         </div>
-        <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-violet-light)' }}>{progress}%</span>
+        <span style={{ fontSize: 11, fontWeight: weight.medium, color: color.accentVioletLight }}>{progress}%</span>
       </div>
 
       {/* Toggle catégories */}
@@ -263,13 +264,13 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
           style={{
             width: '100%',
             padding: '6px 12px',
-            background: showCategoryStats ? 'rgba(124,58,237,0.15)' : 'var(--bg-card)',
-            border: `1px solid ${showCategoryStats ? 'var(--accent-violet)' : 'var(--border-subtle)'}`,
-            borderRadius: 8,
+            background: showCategoryStats ? 'rgba(124,58,237,0.15)' : color.bgCard,
+            border: `1px solid ${showCategoryStats ? color.accentViolet : color.borderSubtle}`,
+            borderRadius: radius.md,
             cursor: 'pointer',
-            color: showCategoryStats ? 'var(--accent-violet-light)' : 'var(--text-muted)',
-            fontSize: 10,
-            fontWeight: 600,
+            color: showCategoryStats ? color.accentVioletLight : color.textMuted,
+            fontSize: fontSize.sm,
+            fontWeight: weight.medium,
             letterSpacing: 0.5,
             textAlign: 'left',
           }}
@@ -281,18 +282,18 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
           <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {catStats.map(({ cat, label, total, unlocked, errors }) => {
               const pct = total > 0 ? Math.round((unlocked / total) * 100) : 0;
-              const color = CAT_COLORS[cat];
+              const catColor = CAT_COLORS[cat];
               return (
                 <div key={cat}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-                    <span style={{ fontSize: 9, fontWeight: 600, color, letterSpacing: 0.5 }}>{label}</span>
-                    <span style={{ fontSize: 9, color: 'var(--text-muted)' }}>
+                    <span style={{ fontSize: fontSize.xs, fontWeight: weight.medium, color: catColor, letterSpacing: 0.5 }}>{label}</span>
+                    <span style={{ fontSize: fontSize.xs, color: color.textMuted }}>
                       {unlocked}/{total}
-                      {errors > 0 && <span style={{ color: 'var(--warning)', marginLeft: 6 }}>⚠ {errors} err.</span>}
+                      {errors > 0 && <span style={{ color: color.warning, marginLeft: 6 }}>⚠ {errors} err.</span>}
                     </span>
                   </div>
                   <div style={{ height: 3, background: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${pct}%`, background: color, borderRadius: 2, transition: 'width 0.4s ease', opacity: 0.85 }} />
+                    <div style={{ height: '100%', width: `${pct}%`, background: catColor, borderRadius: 2, transition: 'width 0.4s ease', opacity: 0.85 }} />
                   </div>
                 </div>
               );
@@ -304,7 +305,7 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
       {/* Filtres */}
       <div style={{ display: 'flex', gap: 6, padding: '2px 16px 8px', flexShrink: 0 }}>
         {(['all', 'unlocked', 'locked'] as const).map((f) => (
-          <button key={f} onClick={() => setFilter(f)} style={{ padding: '4px 14px', border: 'none', borderRadius: 14, fontSize: 10, fontWeight: 500, cursor: 'pointer', fontFamily: 'var(--font-body)', background: filter === f ? 'var(--accent-violet)' : 'var(--bg-card)', color: filter === f ? 'white' : 'var(--text-muted)' }}>
+          <button key={f} onClick={() => setFilter(f)} style={{ padding: '4px 14px', border: 'none', borderRadius: 14, fontSize: fontSize.sm, fontWeight: 500, cursor: 'pointer', fontFamily: font.body, background: filter === f ? color.accentViolet : color.bgCard, color: filter === f ? 'white' : color.textMuted }}>
             {f === 'all' ? 'Tous' : f === 'unlocked' ? 'Débloqués' : 'Verrouillés'}
           </button>
         ))}
@@ -318,14 +319,14 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
           const verse = verseMap.get(entry.verseId);
           if (!verse) return null;
           return (
-            <div key={entry.verseId} style={{ padding: '9px 12px', marginBottom: 6, borderRadius: 6, background: entry.unlocked ? 'rgba(255,255,255,0.55)' : 'rgba(180,120,80,0.08)', opacity: entry.unlocked ? 1 : 0.62, border: '1px solid', borderColor: entry.unlocked ? 'rgba(139,58,38,0.2)' : 'rgba(139,58,38,0.08)' }}>
+            <div key={entry.verseId} style={{ padding: '9px 12px', marginBottom: 6, borderRadius: radius.sm, background: entry.unlocked ? 'rgba(255,255,255,0.55)' : 'rgba(180,120,80,0.08)', opacity: entry.unlocked ? 1 : 0.62, border: '1px solid', borderColor: entry.unlocked ? 'rgba(139,58,38,0.2)' : 'rgba(139,58,38,0.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   {entry.unlocked
                     ? <img src="/ui/travelbook/UI_TravelBook_IconStar01a.png" alt="" style={{ width: 12, height: 12, imageRendering: 'pixelated', filter: 'brightness(0.7) sepia(0.5)' }} />
                     : <Lock size={10} color={BOOK_MUTED} strokeWidth={2} />
                   }
-                  <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 12, letterSpacing: 1, color: entry.unlocked ? BOOK_ACCENT : BOOK_MUTED }}>
+                  <span style={{ fontFamily: font.display, fontWeight: weight.bold, fontSize: fontSize.md, letterSpacing: 1, color: entry.unlocked ? BOOK_ACCENT : BOOK_MUTED }}>
                     {entry.unlocked ? verse.reference : '???'}
                   </span>
                 </div>
@@ -344,7 +345,7 @@ export function CodexMenu({ onClose }: CodexMenuProps) {
                 </div>
               )}
               {!entry.unlocked && (
-                <div style={{ fontSize: 10, color: BOOK_MUTED, marginTop: 4, paddingLeft: 20, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ fontSize: fontSize.sm, color: BOOK_MUTED, marginTop: 4, paddingLeft: 20, display: 'flex', alignItems: 'center', gap: 4 }}>
                   <Bookmark size={10} strokeWidth={1.5} />
                   Surmonter une épreuve
                 </div>

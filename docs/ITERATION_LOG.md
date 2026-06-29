@@ -1760,6 +1760,21 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   délégués à `release-lead` — mécaniques, suivent le patron ActionPanel.
 - **Rollback** : `git revert <hash itér.90>`.
 
+## Itération 91 — G-3 lot 2 : CodexMenu migré vers les design tokens (valeur identique)
+
+- **Origine** : tâche déléguée à l'agent `release-lead` (orchestration demandée par le porteur). L'agent
+  a migré `CodexMenu.tsx` mais a été coupé par la **limite de session** avant de committer (HEAD inchangé,
+  edit non commité dans l'arbre). Le classifieur de sûreté étant indisponible, le lead a **revu le diff
+  ligne à ligne** avant d'agir.
+- **Vérification (identité de valeur, AAA)** : substitutions confirmées sans dérive — couleurs `var(--…)`
+  → tokens équivalents ; nombres migrés UNIQUEMENT quand la valeur correspond (`12→fontSize.md`,
+  `8→radius.md`, `6→radius.sm`, `12→radius.lg`, `700→weight.bold`, `600→weight.medium`, `9/10/16→fontSize`),
+  valeurs hors barème (11, 13, 20, letterSpacings, paddings composites) laissées littérales. **Piège géré** :
+  variable locale `const color = CAT_COLORS[cat]` qui aurait shadowé l'import → renommée `catColor`, 4 usages
+  réaffectés correctement.
+- **Porte** : verte (527 tests, 6/6 étapes, `CodexMenu 0→0` lint, build OK). Rendu byte-identique.
+- **Rollback** : `git revert <hash itér.91>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
