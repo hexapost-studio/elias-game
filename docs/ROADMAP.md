@@ -27,7 +27,8 @@
 - [x] **itér. 78** Le tutoriel ne casse plus le rendu (setState inter-composants `TutorialOverlay`→`App`), trouvé au playtest → `ae3a7bb`
 - [x] **itér. 79** Témoignage de fin de vie incassable — couverture de l'état viral `testimonyGenerator` (4 tests, états limites) → `5734003`
 - [x] **itér. 80** Cohérence PWA — manifest `lang:'fr'` (était `en` par défaut), audit assets de prod 0 cassé → `07f6cfc`
-- [x] **itér. 81** **Save-compat (bug grave)** — `saveGame` whitelist complétée (`playerName`/`calling`/`seed`/`traits`) : recharger ne perd plus l'identité. Garde `tests/persistence.test.ts` → _(à committer)_
+- [x] **itér. 81** **Save-compat (bug grave)** — `saveGame` whitelist complétée (`playerName`/`calling`/`seed`/`traits`) : recharger ne perd plus l'identité. Garde `tests/persistence.test.ts` → `3775f2e`
+- [x] **itér. 82** Tour guidé — `useTargetRect` clé sur le `selector` : la dernière étape (`.btn-age`) n'est plus avalée par la cascade de saut des étapes absentes. Trouvé en revue de code. Garde `tests/tutorialOverlay.test.tsx` → _(à committer)_
 
 ## 🟡 IN-PROGRESS  (≤ 1 tâche à la fois — invariant 1 = atomicité)
 - (vide)

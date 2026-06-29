@@ -25,25 +25,33 @@ const REDUCED = typeof window !== 'undefined'
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** `measured` distingue « pas encore mesuré » (rect null transitoire) de « cible absente »
- *  (rect null APRÈS mesure) — indispensable pour ne pas sauter une étape avant le 1ᵉʳ rendu. */
+ *  (rect null APRÈS mesure) — indispensable pour ne pas sauter une étape avant le 1ᵉʳ rendu.
+ *
+ *  L'état est CLÉ sur le `selector` : tant que `state.selector` ≠ `selector` courant (l'effet de
+ *  mesure n'a pas encore tourné pour la nouvelle étape), on renvoie `measured:false` de façon
+ *  SYNCHRONE. Sans cette clé, l'état mesuré de l'étape précédente restait « collé » pendant les
+ *  re-rendus synchrones de `setStepIndex`, et une étape absente (ex. `.event-card` en phase idle)
+ *  faisait cascader le saut jusqu'à `finish()` AVANT que l'étape suivante (présente) soit mesurée. */
 function useTargetRect(selector: string): { rect: TargetRect | null; measured: boolean } {
-  const [state, setState] = useState<{ rect: TargetRect | null; measured: boolean }>(
-    { rect: null, measured: false },
+  const [state, setState] = useState<{ rect: TargetRect | null; measured: boolean; selector: string }>(
+    { rect: null, measured: false, selector },
   );
 
   useEffect(() => {
     function measure() {
       const el = document.querySelector(selector);
-      if (!el) { setState({ rect: null, measured: true }); return; }
+      if (!el) { setState({ rect: null, measured: true, selector }); return; }
       const r = el.getBoundingClientRect();
-      setState({ rect: { top: r.top, left: r.left, width: r.width, height: r.height }, measured: true });
+      setState({ rect: { top: r.top, left: r.left, width: r.width, height: r.height }, measured: true, selector });
     }
     measure();
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
   }, [selector]);
 
-  return state;
+  // État périmé (étape changée, mesure pas encore refaite) → traité comme « non mesuré ».
+  if (state.selector !== selector) return { rect: null, measured: false };
+  return { rect: state.rect, measured: state.measured };
 }
 
 function StepBubble({

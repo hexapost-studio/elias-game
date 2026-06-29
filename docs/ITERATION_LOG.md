@@ -1603,6 +1603,29 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   graine/traits.
 - **Rollback** : `git revert <hash itér.81>`.
 
+## Itération 82 — Le tour guidé n'avale plus sa dernière étape (revue de code auto)
+
+- **Origine** : revue de code (`/code-review`, high effort) des commits de finalisation
+  `bac0352..HEAD`. A débusqué une **régression latente dans ma propre itér.78**.
+- **Diagnostic** : `useTargetRect` ne réinitialisait pas son état de mesure au changement de
+  `selector`. Le tuto tourne en phase **idle** (au démarrage), or 2 de ses 6 étapes ciblent
+  `.event-card` / `#choices-area` — **absentes** tant qu'aucune épreuve n'est à l'écran. En passant
+  ces étapes, l'état mesuré « collé » de l'étape précédente (`rect:null, measured:true`) traversait
+  les re-rendus SYNCHRONES de `setStepIndex` → la cascade de sauts débordait sur l'étape suivante
+  (présente) et déclenchait `finish()` AVANT qu'elle soit mesurée. Effet : la dernière étape
+  « Avancer dans la vie » (`.btn-age`, pourtant présente) n'était jamais montrée.
+- **Correctif (cause racine)** : l'état de `useTargetRect` est désormais **clé sur le `selector`** —
+  tant que `state.selector` ≠ sélecteur courant, on renvoie `measured:false` de façon SYNCHRONE.
+  La cascade s'arrête donc à chaque étape jusqu'à sa propre mesure ; une étape présente est mesurée
+  puis affichée, une absente est sautée une par une.
+- **Garde** : `tests/tutorialOverlay.test.tsx` (jsdom, 2 cas) — arrangement présent/absent/absent/
+  présent : la dernière étape présente s'affiche (pas avalée par la cascade), `onDone` n'est pas
+  appelé prématurément, et l'appui sur « Terminer » l'appelle exactement une fois. Échoue sur
+  l'ancien code.
+- **Résultat** : 2 tests verts, smoke « 0 erreur console », porte QA verte. Process : la revue de
+  code systématique des commits a rattrapé un défaut qu'aucun test ni le smoke ne voyaient.
+- **Rollback** : `git revert <hash itér.82>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
