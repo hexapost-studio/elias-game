@@ -89,7 +89,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 74 | **Le mode wordBank apparaît** (correctif playtest + bug latent) : intention auteur honorée dès la 1ʳᵉ découverte + garde `canWordBank` (plus d'écran vide sur event sans champ) | `e028b7f` |
 | 75 | **Musique débloquée au 1ᵉʳ geste** (correctif playtest) : `armAudioUnlock` — resume `AudioContext` + relance la piste muette par l'autoplay (contexte créé hors geste = suspendu) | `d0a4139` |
 | 76 | **Levier physique mesuré** : survie liée à la précision — usure du corps à l'échec (`FAIL_PHYSIQUE_PENALTY`) + action **Repos/sabbat** (plein tour, ralentit sans banquer) ; victoire(100) = exploit de maîtrise (0%→69% selon précision), mesuré au survival-sim | `bac0352` |
-| 77 | **Réconciliation docs — clôture Phase 4 (v0.2.0)** : itér. 69-76 tracées dans la ROADMAP (miroir de HEAD), T-34 coché (cible ≥8 atteinte : 8/9/8 sur 334 events), T-40 audio parqué (bloqué-assets), v0.2.0 actée | _(ce commit)_ |
+| 77 | **Réconciliation docs — clôture Phase 4 (v0.2.0)** : itér. 69-76 tracées dans la ROADMAP (miroir de HEAD), T-34 coché (cible ≥8 atteinte : 8/9/8 sur 334 events), T-40 audio parqué (bloqué-assets), v0.2.0 actée | `923c753` |
+| 78 | **Le tutoriel ne casse plus le rendu** (playtest finalisation) : `TutorialOverlay` appelait `onDone()` (setState d'App) pendant son rendu → erreur React inter-composants. `useTargetRect` + flag `measured`, `finish()` en effet. Smoke : 0 erreur console | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).

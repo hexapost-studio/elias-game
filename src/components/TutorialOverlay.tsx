@@ -24,22 +24,26 @@ const PADDING = 6; // px autour de l'élément spotlighté
 const REDUCED = typeof window !== 'undefined'
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function useTargetRect(selector: string): TargetRect | null {
-  const [rect, setRect] = useState<TargetRect | null>(null);
+/** `measured` distingue « pas encore mesuré » (rect null transitoire) de « cible absente »
+ *  (rect null APRÈS mesure) — indispensable pour ne pas sauter une étape avant le 1ᵉʳ rendu. */
+function useTargetRect(selector: string): { rect: TargetRect | null; measured: boolean } {
+  const [state, setState] = useState<{ rect: TargetRect | null; measured: boolean }>(
+    { rect: null, measured: false },
+  );
 
   useEffect(() => {
     function measure() {
       const el = document.querySelector(selector);
-      if (!el) { setRect(null); return; }
+      if (!el) { setState({ rect: null, measured: true }); return; }
       const r = el.getBoundingClientRect();
-      setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
+      setState({ rect: { top: r.top, left: r.left, width: r.width, height: r.height }, measured: true });
     }
     measure();
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
   }, [selector]);
 
-  return rect;
+  return state;
 }
 
 function StepBubble({
@@ -170,12 +174,19 @@ function StepBubble({
 export function TutorialOverlay({ onDone }: Props) {
   const [stepIndex, setStepIndex] = useState(0);
   const step = TUTORIAL_STEPS[stepIndex];
-  const rect = useTargetRect(step.targetSelector);
+  const { rect, measured } = useTargetRect(step.targetSelector);
 
   const finish = useCallback(() => {
     markTutorialDone();
     onDone();
   }, [onDone]);
+
+  // Cible de la DERNIÈRE étape introuvable (après mesure) → terminer. `finish()` touche le
+  // parent (App) : on l'exécute en EFFET, jamais pendant le rendu — sinon React lève
+  // « Cannot update a component (App) while rendering a different component (TutorialOverlay) ».
+  useEffect(() => {
+    if (measured && !rect && stepIndex >= TUTORIAL_STEPS.length - 1) finish();
+  }, [measured, rect, stepIndex, finish]);
 
   const handleNext = useCallback(() => {
     if (stepIndex < TUTORIAL_STEPS.length - 1) {
@@ -199,11 +210,11 @@ export function TutorialOverlay({ onDone }: Props) {
   }, []);
 
   if (!rect) {
-    // Élément cible non trouvé — passer cette étape
-    if (stepIndex < TUTORIAL_STEPS.length - 1) {
+    // Pas encore mesuré → on attend (rien à peindre). Mesuré mais cible absente sur une étape
+    // intermédiaire → avancer : `setStepIndex` met à jour CE composant (pattern autorisé par
+    // React en rendu). La dernière étape absente est gérée par l'effet ci-dessus (`finish`).
+    if (measured && stepIndex < TUTORIAL_STEPS.length - 1) {
       setStepIndex((i) => i + 1);
-    } else {
-      finish();
     }
     return null;
   }

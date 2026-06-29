@@ -23,6 +23,8 @@
 - [x] **itér. 74** Mode wordBank honoré dès la 1ʳᵉ découverte + garde `canWordBank` → `e028b7f`
 - [x] **itér. 75** Musique débloquée au 1ᵉʳ geste (`armAudioUnlock`) → `d0a4139`
 - [x] **itér. 76** Levier physique mesuré (survie ↔ précision : `FAIL_PHYSIQUE_PENALTY` + action **Repos/sabbat**) → `bac0352`
+- [x] **itér. 77** Réconciliation docs — clôture Phase 4 (v0.2.0) → `923c753`
+- [x] **itér. 78** Le tutoriel ne casse plus le rendu (setState inter-composants `TutorialOverlay`→`App`), trouvé au playtest → `f0a107d`
 
 ## 🟡 IN-PROGRESS  (≤ 1 tâche à la fois — invariant 1 = atomicité)
 - (vide)

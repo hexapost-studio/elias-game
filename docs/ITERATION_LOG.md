@@ -1530,6 +1530,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   ensemble » — la dérive venait précisément de l'avoir relâché sur les correctifs playtest 69-76.
 - **Rollback** : `git revert <hash itér.77>`.
 
+## Itération 78 — Le tutoriel ne casse plus le rendu (setState inter-composants)
+
+- **Origine** : **playtest headless** (`smoke.mjs`) lancé dans la passe de finalisation. Signal :
+  erreur console React *« Cannot update a component (`App`) while rendering a different component
+  (`TutorialOverlay`) »*. Invisible aux tests unitaires — seul un parcours réel la révèle.
+- **Diagnostic (mesuré, via `m.args()`)** : quand la cible d'une étape du tutoriel est introuvable,
+  `TutorialOverlay` appelait `finish()` → `onDone()` (un setState d'**App**) **pendant son rendu**
+  (`TutorialOverlay.tsx:201-208`). Violation de l'invariant 4 (rendu pur). Bug latent en prime : au
+  1ᵉʳ rendu (avant mesure) `rect` est `null` → l'étape 0 pouvait être sautée à tort.
+- **Application (AAA, zéro dette lint)** :
+  1. `useTargetRect` expose `measured` — distingue « pas encore mesuré » de « cible absente après
+     mesure ». Plus de saut prématuré d'étape.
+  2. `finish()` (touche le parent App) déplacé dans un `useEffect` — jamais pendant le rendu.
+  3. `setStepIndex` (met à jour CE composant : pattern React autorisé en rendu) conservé, gardé par
+     `measured`.
+- **Résultat** : `smoke.mjs` → *« ERREURS CONSOLE : AUCUNE ✓ »*. Porte QA verte, lint 0→0 sur le
+  fichier, dette inchangée.
+- **Process** : confirme la valeur du **checkpoint playtest** (hors porte, browser-free) comme filet
+  pour les défauts de rendu que la QA auto ne voit pas.
+- **Rollback** : `git revert <hash itér.78>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
