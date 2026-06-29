@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { useGameFeedbackFx } from './hooks/useGameFeedbackFx';
 import { useAmbientMusic } from './hooks/useAmbientMusic';
+import { useAiEventPrefetch } from './hooks/useAiEventPrefetch';
 import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
@@ -38,14 +39,13 @@ const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => 
 import { loadGame, hasSeenOnboarding, markOnboardingDone, initLifetimeCodex } from './data/persistence';
 import { flushLocalQueue } from './services/feedback';
 import { initJuice, playClick, setShakeContainer, stopAmbient, playTheme, getStoredAlbum, storeAlbum } from './engine/juice';
-import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
+import { isAiEnabled, generateJournalEntry } from './services/aiNarrator';
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
 import { deriveEchoes } from './engine/echoes';
 import { pickVictoryBanner, pickVictorySubline, pickSetbackLabel, pickSetbackEncouragement } from './engine/reactions';
 import { mulberry32, hashSeed } from './engine/rng';
 import DevPanel from './components/DevPanel';
-import { pickDecoys } from './data/events';
 import { ShareCard } from './components/ShareCard';
 import { TestimonyCard } from './components/TestimonyCard';
 import { generateTestimony } from './engine/testimonyGenerator';
@@ -168,9 +168,6 @@ function App() {
   type AiJournalEntry = { age: number; text: string; generating: boolean };
   const [aiJournalEntries, setAiJournalEntries] = useState<AiJournalEntry[]>([]);
   const [pendingAiEvent, setPendingAiEvent] = useState<AfflictionEvent | null>(null);
-  // Garde anti-réentrance de la génération IA : un ref (jamais lu au rendu) plutôt qu'un
-  // state → pas de setState dans l'effet, pas de re-render inutile.
-  const generatingAiEvent = useRef(false);
 
   const state = useGameStore.getState();
   // Init juice + load save + onboarding
@@ -343,33 +340,8 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [age]);
 
-  // ── Événements dynamiques : pré-génération en arrière-plan ───────────────
-  useEffect(() => {
-    if (!isAiEnabled() || phase !== 'idle' || generatingAiEvent.current || pendingAiEvent) return;
-    // 1 chance sur 3 de générer un événement IA pour la prochaine fois
-    if (Math.random() > 0.33) return;
-
-    generatingAiEvent.current = true;
-    generateDynamicEvent(age, stats, lifeContext, parentNames, playerName)
-      .then((narrative) => {
-        if (!narrative) { generatingAiEvent.current = false; return; }
-        const event: AfflictionEvent = {
-          id:              `ai-${Date.now()}`,
-          title:           narrative.title,
-          description:     narrative.description,
-          ageRange:        [age, age + 2],
-          category:        narrative.category,
-          correctVerseId:  narrative.verseId,
-          decoyVerseIds:   pickDecoys(narrative.verseId, narrative.category),
-          statImpactOnFail: { foi: -3, paix: -3, physique: -1, finances: -1 },
-          thematicFlavor:  narrative.thematicFlavor,
-        };
-        setPendingAiEvent(event);
-        generatingAiEvent.current = false;
-      })
-      .catch(() => { generatingAiEvent.current = false; });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
+  // Pré-génération d'événement IA en arrière-plan (bonus) — extraite en hook (G-4 / itér.97).
+  useAiEventPrefetch({ phase, age, stats, lifeContext, parentNames, playerName, pendingAiEvent, setPendingAiEvent });
 
   // Enemy SVG component for current event
   const EnemySvg = currentEvent

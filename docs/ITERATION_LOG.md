@@ -1854,6 +1854,22 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   `e2e.mjs --until death` = parcours complet, **0 erreur console**.
 - **Rollback** : `git revert <hash itér.96>`.
 
+## Itération 97 — G-4 extraction 3 : `useAiEventPrefetch` (pré-génération IA sortie d'App.tsx)
+
+- **Extraction 3** : `src/hooks/useAiEventPrefetch.ts` regroupe l'effet de pré-génération d'événement
+  narratif IA (bonus, no-op sans backend) + la ref de garde `generatingAiEvent` — déplacés VERBATIM
+  (eslint-disable exhaustive-deps conservé). App appelle `useAiEventPrefetch({ phase, age, stats,
+  lifeContext, parentNames, playerName, pendingAiEvent, setPendingAiEvent })` ; la STATE `pendingAiEvent`
+  reste dans App (consommée au rendu).
+- **Imports relocalisés** : `generateDynamicEvent` (retiré de l'import aiNarrator d'App, `isAiEnabled`/
+  `generateJournalEntry` y restent — utilisés par le journal vivant) et `pickDecoys` (import retiré d'App).
+  Types du hook dérivés de `Parameters<typeof generateDynamicEvent>` (zéro friction).
+- **Vérif** : porte verte (527, App 0→0, hook 0→0) + `e2e.mjs --until restart` = naissance→mort→restart,
+  0 erreur console. **App.tsx : 1293 → 1175 lignes** (3 extractions : feedback FX, musique, prefetch IA).
+- **Reste G-4** : `useLivingJournal` (porte l'exception set-state assumée — mettre à jour CLAUDE.md §4),
+  bootstrap, `<GameOverlays>`. À faire posément (gros prop-surface).
+- **Rollback** : `git revert <hash itér.97>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

@@ -250,7 +250,12 @@ Atteinte quand :
       - [x] **Extraction 2 — `useAmbientMusic`** (itér.96) : 2 effets musique (ralenti dynamique +
             sélection unifiée album/saison) + ref `lastMusicSig` sortis ; setters d'état restés dans App.
             Rendu/audio identiques, e2e vert.
-      - [ ] **Extraction 3** — montage overlays (`<GameOverlays>` : Testimony/Chapter/Share/Tutorial/Codex…).
+      - [x] **Extraction 3 — `useAiEventPrefetch`** (itér.97) : pré-génération d'événement IA (bonus)
+            + ref `generatingAiEvent` sortis ; imports `generateDynamicEvent`/`pickDecoys` relocalisés.
+            Rendu identique, e2e --until restart vert. **App.tsx : 1293 → 1175 lignes.**
+      - [ ] **Extractions suivantes** (au besoin) : `useLivingJournal` (journal vivant — porte l'exception
+            assumée set-state-in-effect, cf. invariant CLAUDE.md §4 → mettre à jour la référence), bootstrap
+            d'init, et `<GameOverlays>` (gros prop-surface, 2 branches de rendu → à faire posément).
       - **Différé** : `useAccessibilityPrefs` — l'extraction CHANGERAIT le comportement (corrige un bug
         latent de persistance des prefs, non vérifiable par e2e) → à traiter comme un FIX explicite, pas
         un refactor pur. Documenté dans l'ITERATION_LOG itér.95.
