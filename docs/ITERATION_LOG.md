@@ -1669,6 +1669,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   zéro pilotage navigateur. Porte QA verte, dette inchangée.
 - **Rollback** : `git revert <hash itér.85>`.
 
+## Itération 86 — Audit méthode/outillage → Phase G dans la ROADMAP (backlog systémique)
+
+- **Demande** : auditer notre méthode et nos outils (QA, tests, design system, process) — a-t-on bâti
+  un SYSTÈME qui grandit, ou des scripts linéaires à retoucher à chaque fois ? Puis créer la doc/les
+  tâches pour les prochaines étapes.
+- **Audit (mesuré)** : cœur = système (engine 29 modules purs, 520 tests, outils générateurs,
+  `events.json` source unique, porte QA fail-fast). MAIS 3 couches **linéaires** : (1) **UI** — 419
+  styles inline pour 27 variables CSS (pas un design system) ; (2) **suivi de statut** — prose
+  manuelle qui dérive (35 mentions « réconciliation/dérive » dans les docs) ; (3) **`App.tsx`** 1293 l.
+  monolithe. Failles de méthode : trou dans le lint-diff de la porte (codes couleur → régression
+  masquable), détection **réactive** (testimony/persistence sans test avant itér.79/81), outils
+  disponibles sous-utilisés (`code-review-graph`), drivers e2e ad-hoc coûteux.
+- **Livrable** : **Phase G** ajoutée à `docs/ROADMAP.md` — 6 tâches `G-1..G-6` actionnables, mappées
+  sur l'audit, ROI décroissant (Tier 1 anti-gaspillage : G-1 porte QA, G-2 statut dérivé ; Tier 2 :
+  G-3 design tokens ; Tier 3 : G-4 découpe App, G-5 prévention, G-6 harnais e2e stable).
+- **Nature** : doc-only (markdown), zéro code touché. La porte QA reste donc verte par construction
+  (« aucun .ts/.tsx touché »).
+- **Rollback** : `git revert <hash itér.86>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

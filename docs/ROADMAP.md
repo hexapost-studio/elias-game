@@ -202,3 +202,46 @@ Atteinte quand :
   - [ ] **Lot 2+** — réécriture de ~15-20 épreuves (tension avant le verset) + échos restants (à la demande).
 - [x] **Décision produit tranchée** → **apprentissage persistant cross-parties** (façon SRS) :
   codex « à vie » accumulé, types `completion`/`reference` désormais atteignables → itér. 84 / `codexMemory.ts`.
+
+---
+
+## Phase G — Dette systémique & méthode (issu de l'audit itér.85)
+
+> **Constat d'audit** : le cœur (moteur/tests/données/outillage) est un vrai SYSTÈME qui grandit ;
+> mais **3 couches sont restées LINÉAIRES** (à retoucher à chaque fois) + la méthode est **réactive**
+> (rattrape les trous au lieu de les prévenir). Cette phase transforme ces 3 couches en systèmes et
+> rend la porte/le suivi fiables. ROI décroissant — Tier 1 d'abord (rapide, anti-gaspillage).
+
+### Tier 1 — Anti-gaspillage (rapide, à faire en premier)
+- [ ] **G-1** (audit C) **Fixer le trou de la porte QA** — dans `tools/qa-gate.sh` étape 5/5, la
+      comparaison `[ "$after" -gt "$before" ]` reçoit des codes couleur (`[33m0`) → le test échoue
+      et **tombe silencieusement sur ✓**, ce qui peut **MASQUER une régression lint**. Nettoyer la
+      sortie (`tr -dc '0-9'` sur before/after) avant comparaison. Critère : un fichier avec +1 erreur
+      lint fait bien ROUGIR la porte (tester avec un cas fabriqué). Effort : faible.
+- [ ] **G-2** (audit B) **Statut dérivé, pas narré** — `tools/status.mjs` (module pur + CLI) qui
+      GÉNÈRE l'état (nb events/versets/tests, dernière itér., hash HEAD, phases ✅/⏳) depuis
+      git + `game/data/*` + sortie vitest, au lieu de la prose tenue à la main qui DÉRIVE (14+21
+      mentions « réconciliation/dérive » dans les docs). Critère : `node tools/status.mjs` imprime un
+      tableau juste ; option `--check` qui échoue si CLAUDE.md/ROADMAP contredisent le réel. Effort : faible.
+
+### Tier 2 — Systématiser l'UI (le plus gros écart : 419 styles inline / 27 tokens)
+- [ ] **G-3** (audit A) **Design tokens** — créer `src/styles/tokens.ts` (+ extension des 27 variables
+      CSS) centralisant couleurs / espacements / rayons / typo, puis **migrer les composants par lots**
+      (commencer par les plus stylés : `TestimonyCard`, `ActionPanel`, `ShareCard`). Cible : faire
+      baisser les ~419 `style={{…}}` inline et permettre un changement de thème en 1 endroit.
+      1 lot = 1 commit + porte verte + smoke (rendu inchangé). Effort : moyen, incrémental.
+
+### Tier 3 — Composition & prévention
+- [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage
+      des overlays (Testimony/Chapter/Share/Tutorial), effet musique, effet journal vivant. Chaque
+      extraction = 1 commit, rendu pur préservé, smoke 0 erreur. Effort : moyen.
+- [ ] **G-5** **Prévention > réaction** — (a) politique « tout nouveau champ d'état ⇒ cas dans
+      `tests/persistence.test.ts` » (le bug save-compat itér.81 aurait été prévenu) ; (b) évaluer le
+      MCP `code-review-graph` pour l'analyse d'impact AVANT les changements transverses. Effort : faible.
+- [ ] **G-6** **Harnais e2e stable** — remplacer les drivers Playwright ad-hoc (fragiles, coûteux en
+      crédits) par UN script paramétré dans `.claude/skills/run-elias` pilotant naissance→mort→restart
+      de façon fiable (gère le gate `descDone`, le bouton « J'AI COMPRIS », le TestimonyCard). Réutilisable
+      au lieu d'être réécrit à chaque fois. Effort : moyen.
+
+> Note méthode : la porte QA est **sans navigateur** par choix → les bugs de RENDU (cf. itér.78)
+> lui échappent. G-1 peut ajouter le `smoke` (0 erreur console) en étape optionnelle non bloquante.

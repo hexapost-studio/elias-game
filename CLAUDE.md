@@ -97,7 +97,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 82 | **Tour guidé : dernière étape avalée** (trouvé en revue de code) : `useTargetRect` ne réinitialisait pas la mesure au changement de cible → la cascade de saut des étapes absentes (`.event-card`/`#choices-area`, idle) débordait sur `.btn-age`. État clé sur `selector` + garde `tests/tutorialOverlay.test.tsx` | `f4af4f8` |
 | 83 | **Phase F close — v0.3.0 « livrable »** : passe de finalisation (itér. 77-82) actée dans la ROADMAP (Definition v0.3.0 ✅). Jouable bout-en-bout, 0 erreur console, save fiable, PWA valide, 510 tests verts | `01c2f73` |
 | 84 | **Persistance du codex cross-parties** : module pur `codexMemory.ts` (`mergeCodex` accumulation) + codex « à vie » (clé dédiée sans expiration, cache boot) seedé aux 3 entrées de partie. Débloque `completion`/`reference` + priorité SRS d'une vie à l'autre. +10 tests | `681e7c7` |
-| 85 | **Phase 5 lot 1 + T-40 résolu** : 8 échos décennaux (contenu pur, 334→342 events, prerequisites réels, versets accordés, ton grâce>punition) ; **constat T-40** — audio des saisons déjà réglé (saisons mappées sur soundtracks présents, pas d'asset à produire) | _(ce commit)_ |
+| 85 | **Phase 5 lot 1 + T-40 résolu** : 8 échos décennaux (contenu pur, 334→342 events, prerequisites réels, versets accordés, ton grâce>punition) ; **constat T-40** — audio des saisons déjà réglé (saisons mappées sur soundtracks présents, pas d'asset à produire) | `f5c262d` |
+| 86 | **Audit méthode/outillage → Phase G** : constat « cœur = système, 3 couches linéaires (UI 419 inline styles, statut narré qui dérive, App.tsx 1293 l.) + méthode réactive ». 6 tâches G-1..G-6 dans la ROADMAP (doc-only) | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).
