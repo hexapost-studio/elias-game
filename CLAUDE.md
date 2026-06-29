@@ -29,7 +29,7 @@ Vite + Zustand + localforage** (PWA).
 ## Vérification (tout vert avant de committer)
 
 ```bash
-bash tools/qa-gate.sh   # PORTE UNIQUE : typecheck réel + vitest (190) + build + validate (118 v / 186 e) + lint-diff
+bash tools/qa-gate.sh   # PORTE : typecheck + vitest (523) + build + validate (188 v / 342 e) + cohérence-doc + lint-diff
 ```
 
 ⚠️ **`npx tsc --noEmit` seul est un NO-OP** ici : le `tsconfig.json` racine a `files:[]` + `references`,
@@ -48,7 +48,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
   `saveGame` (`src/data/persistence.ts`). Tout nouveau champ d'état doit être ajouté à la whitelist, sinon perdu.
 - **Réglages transverses** : `useSyncExternalStore` (cf. `settings/textSpeed.ts`, `settings/seenText.ts`).
 - **Sources de données** : arcs = `src/data/storyArcs.ts` (lu par le code) **et** `game/data/storyArcs.json`
-  (lu par le validateur — garder synchro) ; events = `game/data/events.json` (186) ; versets = `game/data/verses.json` (118).
+  (lu par le validateur — garder synchro) ; events = `game/data/events.json` (342) ; versets = `game/data/verses.json` (188).
+  ⚙️ Compteurs DÉRIVÉS (ne pas recopier à la main, ils dérivent) : `node tools/status.mjs` ; `--check` rougit si cette prose ment.
 - **Branchement narratif (B)** : modèle « **spine canonique + variantes hors-spine** » — `arc.eventIds[]` =
   un id par position (goulets de convergence) ; variantes flag-gated hors `eventIds` ; cascades `-c` =
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,

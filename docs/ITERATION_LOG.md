@@ -1706,6 +1706,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   510 tests, build, validate). Fichier `.sh` non concerné par le lint-diff (« aucun .ts/.tsx touché »).
 - **Rollback** : `git revert <hash itér.87>`.
 
+## Itération 88 — G-2 : le statut est DÉRIVÉ, plus narré (`tools/status.mjs` + garde de porte)
+
+- **Problème (audit B)** : le suivi d'état était de la prose recopiée à la main qui DÉRIVE — compteurs
+  d'events/versets/tests désynchronisés, « réconciliations » répétées. `--check` l'a prouvé : CLAUDE.md
+  affichait encore **118 versets / 186 events / 190 tests** alors que le réel est **188 / 342 / 523**.
+- **Livrable** : `tools/status.mjs` — fonctions PURES (`deriveStatus`, `checkDocs`, `deriveTestCount`)
+  + CLI gardée (`isMain`, zéro effet à l'import → testable). `node tools/status.mjs` imprime un tableau
+  dérivé (git + `game/data/*` + `ITERATION_LOG`) ; `--tests` ajoute le compte vitest réel ; `--check`
+  exit 1 si la prose canonique de CLAUDE.md ment. **Ciblage précis** : seulement les formes « état
+  courant » (`events.json` (N)`, `(N v / N e)`) — jamais les compteurs HISTORIQUES de la ROADMAP
+  (`320→342`, `Total X→Y`) qui sont des traces de process à figer.
+- **Application (l'outil ne dort pas)** : les 4 valeurs stales de CLAUDE.md corrigées (→ 188/342/523),
+  et `node tools/status.mjs --check` **câblé en étape 5/6 de `tools/qa-gate.sh`** : committer une doc
+  qui ment fait désormais ROUGIR la porte. Prévention > réaction.
+- **Garde** : `tests/status.test.ts` (3 tests — dérivation cohérente, `--check` vert sur doc juste,
+  `--check` détecte une assertion fabriquée stale). Porte complète verte (523 tests, 6/6 étapes).
+- **Rollback** : `git revert <hash itér.88>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

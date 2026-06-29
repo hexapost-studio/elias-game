@@ -218,11 +218,11 @@ Atteinte quand :
       en silence et tombait sur ✓ (régression lint MASQUÉE). Le remède noté ici (`tr -dc '0-9'`) était faux
       (gardait les chiffres des codes couleur). Corrigé à la **source** : `process.stdout.write(String(n))`.
       Critère vérifié : fichier fabriqué à +1 erreur → porte ROUGE. Porte complète verte.
-- [ ] **G-2** (audit B) **Statut dérivé, pas narré** — `tools/status.mjs` (module pur + CLI) qui
-      GÉNÈRE l'état (nb events/versets/tests, dernière itér., hash HEAD, phases ✅/⏳) depuis
-      git + `game/data/*` + sortie vitest, au lieu de la prose tenue à la main qui DÉRIVE (14+21
-      mentions « réconciliation/dérive » dans les docs). Critère : `node tools/status.mjs` imprime un
-      tableau juste ; option `--check` qui échoue si CLAUDE.md/ROADMAP contredisent le réel. Effort : faible.
+- [x] **G-2** (audit B) **Statut dérivé, pas narré** → itér. 88. `tools/status.mjs` (module pur
+      `deriveStatus`/`checkDocs` + CLI) GÉNÈRE l'état (events/versets/dilemmes, dernière itér., HEAD,
+      `--tests` → compte vitest réel) depuis git + `game/data/*`. `--check` rougit si la prose canonique
+      de CLAUDE.md ment — révélait 4 valeurs stales (118 v/186 e → 188/342), corrigées. **Câblé étape
+      5/6 de la porte QA** (anti-dérive permanent, pas un outil qui dort). +3 tests. Effort : faible.
 
 ### Tier 2 — Systématiser l'UI (le plus gros écart : 419 styles inline / 27 tokens)
 - [ ] **G-3** (audit A) **Design tokens** — créer `src/styles/tokens.ts` (+ extension des 27 variables

@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.." || exit 2
 fail() { echo "❌ PORTE QA ROUGE — $1"; exit 1; }
 step() { echo "── $1 ──"; }
 
-step "1/5 typecheck réel (tsc -p, ratchet vs baseline)"
+step "1/6 typecheck réel (tsc -p, ratchet vs baseline)"
 # ⚠️ `tsc --noEmit` seul est un NO-OP ici : le tsconfig.json racine a `files:[]` + `references`,
 # donc sans `-p`/`-b` rien n'est vérifié. On checke les VRAIS projets. La base a des erreurs de
 # type préexistantes (cf. tools/tsc-baseline.txt) → on applique un « ratchet » : interdit toute
@@ -30,16 +30,21 @@ if [ "$tsc_now" -lt "${TSC_BASELINE:-0}" ]; then
   echo "  ↓ baseline améliorable : mets à jour tools/tsc-baseline.txt à $tsc_now"
 fi
 
-step "2/5 vitest run"
+step "2/6 vitest run"
 npx vitest run || fail "vitest"
 
-step "3/5 vite build"
+step "3/6 vite build"
 npx vite build || fail "build"
 
-step "4/5 npm run validate"
+step "4/6 npm run validate"
 npm run validate || fail "validate (données)"
 
-step "5/5 lint-diff par fichier touché vs HEAD"
+step "5/6 cohérence doc (statut dérivé, pas narré — G-2)"
+# Anti-dérive : les compteurs « état courant » de CLAUDE.md doivent refléter le réel. Empêche de
+# committer une prose qui ment (events/versets recopiés à la main). Régénérer : node tools/status.mjs
+node tools/status.mjs --check || fail "doc stale (cf. node tools/status.mjs --check)"
+
+step "6/6 lint-diff par fichier touché vs HEAD"
 # Fichiers .ts/.tsx modifiés (suivis) + non suivis, hors supprimés.
 # (lecture portable — pas de `mapfile`, absent de bash 3.2 / macOS)
 FILES=()
