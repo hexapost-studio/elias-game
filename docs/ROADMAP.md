@@ -225,7 +225,7 @@ Atteinte quand :
       5/6 de la porte QA** (anti-dérive permanent, pas un outil qui dort). +3 tests. Effort : faible.
 
 ### Tier 2 — Systématiser l'UI (le plus gros écart : 419 styles inline / 27 tokens)
-- [~] **G-3** (audit A) **Design tokens** — EN COURS (multi-lots).
+- [x] **G-3** (audit A) **Design tokens** — SYSTÈME LIVRÉ + cœur gameplay migré (itér.90-94).
       - [x] **Lot 0 — système** (itér.90) : `src/styles/tokens.ts` (`color`→`var(--…)` donc rendu
             identique + thème en 1 endroit ; échelles `space`/`radius`/`fontSize`/`weight`/`tracking` ;
             helper composable `alpha(rgb,a)`). Contrat verrouillé par `tests/tokens.test.ts`.
@@ -236,8 +236,12 @@ Atteinte quand :
       - [x] **Lot 3 — AmbitionTracker** (itér.93) : migration partielle sûre (couleurs `var(--…)`
             + nombres du barème) ; laissés littéraux la couleur DYNAMIQUE de l'appel (`${callingColor}…`)
             et les hex sémantiques #34d399/#fbbf24 (hors :root). Rendu identique.
-      - [ ] **Lots 4+** : `Onboarding` 30, `LexiconMenu` 29, `ShareCard`, `TestimonyCard`, … 1 lot =
-            1 commit + porte verte, patron ActionPanel/CodexMenu. Vérif rendu via `e2e.mjs` (G-6).
+      - [x] **Lot 4 — ShareCard** (itér.94) : `var()`+barème migrés ; rgba/hex one-off (#4ade80/#a78bfa) laissés.
+      - **Différés à dessein** (palette BESPOKE hors `:root`, faible gain / risque de dérive de teinte
+        non détectable par la porte ni le harnais) : `Onboarding` (splash plein écran, `'Cinzel',serif`
+        ≠ `--font-display`, hex sépia uniques) et `LexiconMenu` (UI « livre/parchemin », bruns uniques).
+        Le SYSTÈME tokens est livré et le **cœur gameplay** (ActionPanel/CodexMenu/AmbitionTracker/ShareCard)
+        est migré. Ré-ouvrable si ces écrans sont retravaillés visuellement.
 
 ### Tier 3 — Composition & prévention
 - [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage

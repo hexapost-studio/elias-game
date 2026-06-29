@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useState, useEffect } from 'react';
 import { XIcon } from './IconSystem';
+import { color, font, fontSize, weight, space } from '../styles/tokens';
 
 /** Copie un texte dans le presse-papier (avec repli `execCommand` pour les vieux UA). */
 async function copyToClipboard(text: string): Promise<void> {
@@ -115,8 +116,8 @@ export const ShareCard: FC<ShareCardProps> = ({
           alignItems: 'center', marginBottom: 16,
         }}>
           <div style={{
-            fontFamily: 'var(--font-display)', fontSize: 12,
-            color: 'var(--accent-gold)', letterSpacing: 2,
+            fontFamily: font.display, fontSize: fontSize.md,
+            color: color.accentGold, letterSpacing: 2,
           }}>
             PARTAGER MA VIE
           </div>
@@ -124,7 +125,7 @@ export const ShareCard: FC<ShareCardProps> = ({
             onClick={onClose}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: 'var(--text-muted)', padding: 4, display: 'flex',
+              color: color.textMuted, padding: space.xs, display: 'flex',
             }}
           >
             <XIcon size={14} strokeWidth={2} />
@@ -136,11 +137,11 @@ export const ShareCard: FC<ShareCardProps> = ({
           border: '1px solid rgba(245,158,11,0.15)',
           borderRadius: 10,
           padding: '14px 16px',
-          fontSize: 12,
-          color: 'var(--text-secondary)',
+          fontSize: fontSize.md,
+          color: color.textSecondary,
           lineHeight: 1.9,
           whiteSpace: 'pre-wrap',
-          fontFamily: 'var(--font-body)',
+          fontFamily: font.body,
           marginBottom: 16,
           userSelect: 'text',
           WebkitUserSelect: 'text',
@@ -149,7 +150,7 @@ export const ShareCard: FC<ShareCardProps> = ({
           {shareText}
         </pre>
 
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ display: 'flex', gap: space.md }}>
           <button
             onClick={handleCopy}
             style={{
@@ -157,9 +158,9 @@ export const ShareCard: FC<ShareCardProps> = ({
               background: copied ? 'rgba(74,222,128,0.12)' : 'rgba(245,158,11,0.10)',
               border: `1px solid ${copied ? 'rgba(74,222,128,0.35)' : 'rgba(245,158,11,0.28)'}`,
               borderRadius: 10, cursor: 'pointer',
-              fontFamily: 'var(--font-display)', fontSize: 10,
-              fontWeight: 700, letterSpacing: 1,
-              color: copied ? '#4ade80' : 'var(--accent-gold)',
+              fontFamily: font.display, fontSize: fontSize.sm,
+              fontWeight: weight.bold, letterSpacing: 1,
+              color: copied ? '#4ade80' : color.accentGold,
               transition: 'all 0.25s ease',
             }}
           >
@@ -173,8 +174,8 @@ export const ShareCard: FC<ShareCardProps> = ({
                 background: 'rgba(124,58,237,0.10)',
                 border: '1px solid rgba(124,58,237,0.3)',
                 borderRadius: 10, cursor: 'pointer',
-                fontFamily: 'var(--font-display)', fontSize: 10,
-                fontWeight: 700, letterSpacing: 1,
+                fontFamily: font.display, fontSize: fontSize.sm,
+                fontWeight: weight.bold, letterSpacing: 1,
                 color: '#a78bfa',
               }}
             >

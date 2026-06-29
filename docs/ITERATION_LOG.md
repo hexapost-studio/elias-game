@@ -1806,6 +1806,21 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Porte** : verte (527 tests, `AmbitionTracker 0→0` lint).
 - **Rollback** : `git revert <hash itér.93>`.
 
+## Itération 94 — G-3 lot 4 (ShareCard) + clôture cohérente de G-3
+
+- **ShareCard migré** : `var(--…)` → tokens (font.display/body, color.accentGold/textMuted/textSecondary),
+  `12→fontSize.md`, `10→fontSize.sm`, `700→weight.bold`, `gap 10→space.md`, `padding 4→space.xs`. Laissés
+  littéraux : rgba bespoke (overlay, fonds de boutons), hex one-off #4ade80/#a78bfa, borderRadius 10/16
+  (hors barème). Pas de shadow local. Porte verte (527, `ShareCard 0→0`).
+- **Décision de clôture G-3 (chef de projet)** : le SYSTÈME `tokens.ts` est livré et le **cœur gameplay**
+  (ActionPanel, CodexMenu, AmbitionTracker, ShareCard) est migré à valeur identique. `Onboarding` et
+  `LexiconMenu` sont **différés à dessein** : ce sont des écrans à palette BESPOKE (splash sépia /
+  UI « parchemin ») hors `:root`, où le gain de tokenisation est faible et le risque de DÉRIVE DE TEINTE
+  (substitution d'un hex proche-mais-pas-égal, ex. `'Cinzel',serif` ≠ `--font-display`) n'est détectable
+  ni par la porte ni par `e2e.mjs` (qui ne checke que la console). Forcer ces migrations contredirait
+  l'objectif AAA. G-3 coché ; ré-ouvrable si ces écrans sont retravaillés.
+- **Rollback** : `git revert <hash itér.94>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
