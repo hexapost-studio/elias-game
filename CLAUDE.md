@@ -29,7 +29,8 @@ Vite + Zustand + localforage** (PWA).
 ## Vérification (tout vert avant de committer)
 
 ```bash
-bash tools/qa-gate.sh   # PORTE : typecheck + vitest (523) + build + validate (188 v / 342 e) + cohérence-doc + lint-diff
+bash tools/qa-gate.sh   # PORTE : typecheck + vitest + build + validate (188 v / 342 e) + cohérence-doc + lint-diff
+# (compte de tests volatile → non épinglé ici ; `node tools/status.mjs --tests` donne le vrai nombre)
 ```
 
 ⚠️ **`npx tsc --noEmit` seul est un NO-OP** ici : le `tsconfig.json` racine a `files:[]` + `references`,
@@ -46,6 +47,8 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
   (naissance/appel/saisons) — **jamais** la divergence narrative (pilotée par le CHOIX → déterminisme préservé).
 - **Save-compat** : spread-merge `createInitialState`/`hydrateFromSave` **+** whitelist explicite dans
   `saveGame` (`src/data/persistence.ts`). Tout nouveau champ d'état doit être ajouté à la whitelist, sinon perdu.
+  🛡️ **Garde automatique (itér.89/G-5)** : `tests/persistence.test.ts` échoue si un champ de
+  `createInitialState` n'est ni whitelisté ni explicitement exclu — le bug itér.81 ne peut plus revenir.
 - **Réglages transverses** : `useSyncExternalStore` (cf. `settings/textSpeed.ts`, `settings/seenText.ts`).
 - **Sources de données** : arcs = `src/data/storyArcs.ts` (lu par le code) **et** `game/data/storyArcs.json`
   (lu par le validateur — garder synchro) ; events = `game/data/events.json` (342) ; versets = `game/data/verses.json` (188).

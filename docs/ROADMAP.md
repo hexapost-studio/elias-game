@@ -235,9 +235,12 @@ Atteinte quand :
 - [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage
       des overlays (Testimony/Chapter/Share/Tutorial), effet musique, effet journal vivant. Chaque
       extraction = 1 commit, rendu pur préservé, smoke 0 erreur. Effort : moyen.
-- [ ] **G-5** **Prévention > réaction** — (a) politique « tout nouveau champ d'état ⇒ cas dans
-      `tests/persistence.test.ts` » (le bug save-compat itér.81 aurait été prévenu) ; (b) évaluer le
-      MCP `code-review-graph` pour l'analyse d'impact AVANT les changements transverses. Effort : faible.
+- [x] **G-5** **Prévention > réaction** → itér. 89. (a) Garde SYSTÉMIQUE (pas juste une note) :
+      `tests/persistence.test.ts` confronte `Object.keys(createInitialState())` aux clés réellement
+      persistées par `saveGame` (via le mock localforage) → un champ ni whitelisté ni explicitement
+      exclu fait ROUGIR la porte ⇒ le bug itér.81 est désormais impossible. Politique liée dans
+      CLAUDE.md §Save-compat. (b) MCP `code-review-graph` : **adopté pour les refactors transverses
+      G-3/G-4** (analyse d'impact AVANT), hors contenu. +1 test. Effort : faible.
 - [ ] **G-6** **Harnais e2e stable** — remplacer les drivers Playwright ad-hoc (fragiles, coûteux en
       crédits) par UN script paramétré dans `.claude/skills/run-elias` pilotant naissance→mort→restart
       de façon fiable (gère le gate `descDone`, le bouton « J'AI COMPRIS », le TestimonyCard). Réutilisable

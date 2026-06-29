@@ -63,6 +63,32 @@ describe('persistence — round-trip de l\'identité de run (itér.81)', () => {
   });
 });
 
+describe('persistence — garde systémique anti-régression (G-5, prévention > réaction)', () => {
+  beforeEach(() => mem.clear());
+
+  // Champs d'état VOLONTAIREMENT non persistés (éphémères / dérivés / re-init au chargement).
+  // Y ajouter un champ est un CHOIX documenté ; sinon la garde force à le whitelister dans saveGame.
+  // → Le bug save-compat de l'itér.81 (nom/vocation/graine/traits lâchés) aurait été IMPOSSIBLE.
+  // Vide aujourd'hui : la whitelist de saveGame couvre 100 % des champs de createInitialState
+  // (vérifié par cette garde). Tout futur champ devra être whitelisté OU ajouté ici avec sa raison.
+  const INTENTIONALLY_NOT_PERSISTED = new Set<string>([]);
+
+  it('tout champ de createInitialState est soit persisté, soit explicitement exclu', async () => {
+    const s = createInitialState(undefined, 7, 'Garde');
+    await saveGame(s);
+    const saved = mem.get('elias-save-v1') as Record<string, unknown>;
+    const persisted = new Set(Object.keys(saved));
+    const unclassified = Object.keys(s).filter(
+      (k) => !persisted.has(k) && !INTENTIONALLY_NOT_PERSISTED.has(k),
+    );
+    expect(
+      unclassified,
+      `Champs d'état NI persistés NI exclus — whiteliste-les dans saveGame() ou ajoute-les à `
+      + `INTENTIONALLY_NOT_PERSISTED avec justification : [${unclassified.join(', ')}]`,
+    ).toEqual([]);
+  });
+});
+
 describe('persistence — codex « à vie » cross-parties (itér.84)', () => {
   function codex(over: Record<string, Partial<CodexEntry>>): Record<string, CodexEntry> {
     const out: Record<string, CodexEntry> = {};

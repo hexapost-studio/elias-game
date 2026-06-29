@@ -1724,6 +1724,23 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   `--check` détecte une assertion fabriquée stale). Porte complète verte (523 tests, 6/6 étapes).
 - **Rollback** : `git revert <hash itér.88>`.
 
+## Itération 89 — G-5 : prévention > réaction (garde systémique save-compat + politique d'impact)
+
+- **Constat (audit)** : la détection était RÉACTIVE — le bug save-compat (itér.81 : nom/vocation/graine/
+  traits lâchés au rechargement) n'a été trouvé qu'au playtest, faute de garde. Idem testimony (itér.79).
+- **Livrable (a) — garde systémique, pas une note** : `tests/persistence.test.ts` confronte
+  `Object.keys(createInitialState())` aux clés **réellement** écrites par `saveGame` (lues dans le mock
+  localforage `mem`). Tout champ d'état ni whitelisté ni listé dans `INTENTIONALLY_NOT_PERSISTED` (vide
+  aujourd'hui : whitelist exhaustive, vérifié) fait échouer la porte. ⇒ **le bug itér.81 ne peut plus
+  revenir** : ajouter un champ sans le persister est rejeté mécaniquement. Politique inscrite dans
+  CLAUDE.md §Save-compat (règle + pointeur vers la garde).
+- **Livrable (b) — évaluation MCP `code-review-graph`** : décision de chef de projet — l'**adopter pour
+  les refactors transverses G-3 (design tokens) / G-4 (découpe `App.tsx`)** afin d'analyser l'impact
+  AVANT de toucher des fichiers à fort rayonnement ; inutile pour le contenu (events/versets isolés).
+- **Cohérence** : compte de tests dé-épinglé de CLAUDE.md (volatile + non enforced → source de dérive) ;
+  les comptes events/versets restent chiffrés car vérifiés par la porte (G-2). Porte verte (524 tests).
+- **Rollback** : `git revert <hash itér.89>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
