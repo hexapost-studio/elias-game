@@ -1741,6 +1741,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   les comptes events/versets restent chiffrés car vérifiés par la porte (G-2). Porte verte (524 tests).
 - **Rollback** : `git revert <hash itér.89>`.
 
+## Itération 90 — G-3 (amorce) : système de design tokens + 1ʳᵉ migration de référence
+
+- **Problème (audit A)** : ~419 `style={{…}}` inline pour 27 variables CSS = pas de design system.
+  Valeurs en dur dispersées, thème non changeable d'un seul endroit, incohérences faciles.
+- **Système (abstraction > valeurs dispersées)** : `src/styles/tokens.ts`. Choix de sûreté pour une
+  migration à **rendu STRICTEMENT inchangé** : `color.*`/`font.*` résolvent vers les `var(--…)` de
+  `:root` (la source de vérité du thème reste le `:root`, 1 endroit ; le token n'est qu'un accès typé
+  → byte-identique). Échelles `space`/`radius`/`fontSize`/`weight`/`tracking` = les valeurs littérales
+  déjà présentes inline. Helper composable `alpha(rgb, a)` pour les rgba sémantiques (états du lien ami).
+- **Lot 1 — ActionPanel** : entièrement migré, mapping vérifié un à un (chaque token = la valeur
+  d'origine). Sert de **référence du patron** pour les lots suivants.
+- **Garde** : `tests/tokens.test.ts` (3 tests) verrouille le contrat : couleurs = `var(--…)`,
+  `alpha()` reproduit les rgba à l'octet près, échelles cohérentes. Porte verte (527 tests).
+- **Non-régression visuelle** : identité de valeur garantie par construction + contrat de test ; le
+  smoke navigateur répétable est reporté à **G-6** (harnais e2e stable) plutôt qu'un driver ad-hoc coûteux.
+- **Suite** : lots 2+ (CodexMenu, Onboarding, LexiconMenu, AmbitionTracker, ShareCard, TestimonyCard…)
+  délégués à `release-lead` — mécaniques, suivent le patron ActionPanel.
+- **Rollback** : `git revert <hash itér.90>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

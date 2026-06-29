@@ -225,11 +225,15 @@ Atteinte quand :
       5/6 de la porte QA** (anti-dérive permanent, pas un outil qui dort). +3 tests. Effort : faible.
 
 ### Tier 2 — Systématiser l'UI (le plus gros écart : 419 styles inline / 27 tokens)
-- [ ] **G-3** (audit A) **Design tokens** — créer `src/styles/tokens.ts` (+ extension des 27 variables
-      CSS) centralisant couleurs / espacements / rayons / typo, puis **migrer les composants par lots**
-      (commencer par les plus stylés : `TestimonyCard`, `ActionPanel`, `ShareCard`). Cible : faire
-      baisser les ~419 `style={{…}}` inline et permettre un changement de thème en 1 endroit.
-      1 lot = 1 commit + porte verte + smoke (rendu inchangé). Effort : moyen, incrémental.
+- [~] **G-3** (audit A) **Design tokens** — EN COURS (multi-lots).
+      - [x] **Lot 0 — système** (itér.90) : `src/styles/tokens.ts` (`color`→`var(--…)` donc rendu
+            identique + thème en 1 endroit ; échelles `space`/`radius`/`fontSize`/`weight`/`tracking` ;
+            helper composable `alpha(rgb,a)`). Contrat verrouillé par `tests/tokens.test.ts`.
+      - [x] **Lot 1 — ActionPanel** (itér.90) : migré à valeur byte-identique (référence du patron).
+      - [ ] **Lots 2+** : migrer les autres composants stylés (`CodexMenu` 61, `Onboarding` 30,
+            `LexiconMenu` 29, `AmbitionTracker` 28, `ShareCard`, `TestimonyCard`, …). 1 lot = 1 commit +
+            porte verte. Délégué à `release-lead` (mécanique, suit le patron ActionPanel). Analyse
+            d'impact `code-review-graph` avant les fichiers à fort rayonnement (cf. G-5b).
 
 ### Tier 3 — Composition & prévention
 - [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage

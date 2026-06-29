@@ -1,6 +1,7 @@
 import { useGameStore } from '../stores/gameStore';
 import type { PlayerAction } from '../types/game';
 import { Heart, Handshake, Phone, BookOpen, Briefcase, Moon } from 'lucide-react';
+import { color, space, radius, fontSize, weight, tracking, rgb, alpha } from '../styles/tokens';
 
 interface ActionDef {
   id: PlayerAction;
@@ -11,7 +12,7 @@ interface ActionDef {
 
 const ACTIONS: ActionDef[] = [
   { id: 'pray',        label: 'Prier',        effect: '+Foi',      icon: <Heart size={14} strokeWidth={1.5} /> },
-  { id: 'fast',        label: 'Jeûner',       effect: '+Foi −Corps', icon: <span style={{ fontSize: 14 }}>✦</span> },
+  { id: 'fast',        label: 'Jeûner',       effect: '+Foi −Corps', icon: <span style={{ fontSize: fontSize.base }}>✦</span> },
   { id: 'serve',       label: 'Servir',       effect: '+Paix',     icon: <Handshake size={14} strokeWidth={1.5} /> },
   { id: 'call_friend', label: 'Appeler',      effect: '+Paix +Lien', icon: <Phone size={14} strokeWidth={1.5} /> },
   { id: 'read_word',   label: 'Lire',         effect: '+Foi',      icon: <BookOpen size={14} strokeWidth={1.5} /> },
@@ -36,28 +37,28 @@ export function ActionPanel() {
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: 6,
-      padding: '10px 0 4px',
+      gap: space.sm,
+      padding: `${space.md}px 0 ${space.xs}px`,
     }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 2,
+        marginBottom: space.xxs,
       }}>
-        <span style={{ fontSize: 10, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: fontSize.sm, color: color.textMuted, letterSpacing: tracking.wide, textTransform: 'uppercase' }}>
           Actions cette année
         </span>
         <span style={{
-          fontSize: 10,
-          fontWeight: 700,
-          color: actionPoints > 0 ? 'var(--accent-violet)' : 'var(--text-muted)',
+          fontSize: fontSize.sm,
+          fontWeight: weight.bold,
+          color: actionPoints > 0 ? color.accentViolet : color.textMuted,
         }}>
           {actionPoints} point{actionPoints !== 1 ? 's' : ''}
         </span>
       </div>
 
-      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: space.sm, flexWrap: 'wrap' }}>
         {ACTIONS.map((action) => {
           const used      = actionsThisYear.includes(action.id);
           const exhausted = actionPoints <= 0;
@@ -78,10 +79,10 @@ export function ActionPanel() {
             : action.effect
             : action.effect;
           const callFriendBorder = isCallFriend && !used
-            ? locked ? '1px solid rgba(100,100,100,0.3)'
-            : amiWeak   ? '1px solid rgba(239,68,68,0.5)'
-            : amiStrong ? '1px solid rgba(52,211,153,0.5)'
-            : '1px solid var(--accent-violet)'
+            ? locked ? `1px solid ${alpha(rgb.locked, 0.3)}`
+            : amiWeak   ? `1px solid ${alpha(rgb.amiWeak, 0.5)}`
+            : amiStrong ? `1px solid ${alpha(rgb.amiStrong, 0.5)}`
+            : `1px solid ${color.accentViolet}`
             : undefined;
 
           return (
@@ -93,48 +94,48 @@ export function ActionPanel() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 2,
-                padding: '6px 10px',
-                borderRadius: 8,
+                gap: space.xxs,
+                padding: `${space.sm}px ${space.md}px`,
+                borderRadius: radius.md,
                 border: callFriendBorder ?? (used
-                  ? '1px solid var(--text-muted)'
-                  : '1px solid var(--accent-violet)'),
+                  ? `1px solid ${color.textMuted}`
+                  : `1px solid ${color.accentViolet}`),
                 background: used
-                  ? 'rgba(255,255,255,0.04)'
+                  ? alpha(rgb.white, 0.04)
                   : exhausted
-                  ? 'rgba(255,255,255,0.04)'
+                  ? alpha(rgb.white, 0.04)
                   : locked
-                  ? 'rgba(100,100,100,0.04)'
+                  ? alpha(rgb.locked, 0.04)
                   : isCallFriend && amiWeak
-                  ? 'rgba(239,68,68,0.07)'
+                  ? alpha(rgb.amiWeak, 0.07)
                   : isCallFriend && amiStrong
-                  ? 'rgba(52,211,153,0.1)'
-                  : 'rgba(139,92,246,0.12)',
+                  ? alpha(rgb.amiStrong, 0.1)
+                  : alpha(rgb.violet, 0.12),
                 opacity: disabled ? 0.45 : 1,
                 cursor: disabled ? 'not-allowed' : 'pointer',
                 transition: 'all 0.15s',
                 minWidth: 58,
               }}
             >
-              <span style={{ fontSize: 16, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{action.icon}</span>
+              <span style={{ fontSize: fontSize.lg, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{action.icon}</span>
               <span style={{
-                fontSize: 9,
-                fontWeight: 700,
-                color: used ? 'var(--text-muted)' : 'var(--text-primary)',
-                letterSpacing: '0.04em',
+                fontSize: fontSize.xs,
+                fontWeight: weight.bold,
+                color: used ? color.textMuted : color.textPrimary,
+                letterSpacing: tracking.tight,
                 whiteSpace: 'nowrap',
               }}>
                 {displayLabel}
               </span>
               <span style={{
-                fontSize: 8,
-                color: amiWeak ? 'rgba(239,68,68,0.8)' : amiStrong ? 'rgba(52,211,153,0.8)' : 'var(--text-muted)',
+                fontSize: fontSize.xxs,
+                color: amiWeak ? alpha(rgb.amiWeak, 0.8) : amiStrong ? alpha(rgb.amiStrong, 0.8) : color.textMuted,
                 whiteSpace: 'nowrap',
               }}>
                 {displayEffect}
               </span>
               {used && (
-                <span style={{ fontSize: 8, color: 'var(--accent-violet)' }}>✓</span>
+                <span style={{ fontSize: fontSize.xxs, color: color.accentViolet }}>✓</span>
               )}
             </button>
           );
