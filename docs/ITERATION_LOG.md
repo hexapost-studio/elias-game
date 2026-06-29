@@ -1821,6 +1821,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   l'objectif AAA. G-3 coché ; ré-ouvrable si ces écrans sont retravaillés.
 - **Rollback** : `git revert <hash itér.94>`.
 
+## Itération 95 — G-4 extraction 1 : `useGameFeedbackFx` (juice impératif sorti d'App.tsx)
+
+- **G-4 amorcé** (découpe du monolithe `App.tsx`, 1293 l.) en mode incrémental : 1 extraction = 1 commit,
+  rendu pur préservé, **vérifié au navigateur via `e2e.mjs` (G-6)**.
+- **Extraction 1** : `src/hooks/useGameFeedbackFx.ts` regroupe les 5 effets de *juice* impératif
+  (result flash, son de game-over + reset de garde, combo, level-up) et leurs 3 refs internes
+  (`gameOverSoundPlayed`, `prevCombo`, `prevAge`) — déplacés VERBATIM. App appelle le hook avec
+  `{ phase, lastEventResult, dismissResult, gameOver, combo, age, containerRef }`. Imports de juice
+  désormais inutilisés retirés de l'import d'App (évite `noUnusedLocals`).
+- **Sûreté** : `containerRef`/`dismissResult` deviennent params → ajoutés aux deps des effets (refs/actions
+  stables → aucun re-run supplémentaire, comportement identique ; satisfait `exhaustive-deps`).
+- **Vérif** : porte verte (527 tests, App.tsx 0→0, hook 0→0) **+** `e2e.mjs --until restart` =
+  naissance→mort→restart, **0 erreur console** (les sons de transition partent toujours correctement).
+- **Constat reporté (décision)** : `useAccessibilityPrefs` envisagé mais NON pris — toute extraction
+  propre corrigerait un bug latent (l'effet de persist écrit les défauts au montage avant le chargement
+  async → les prefs ne survivent pas au reload). Ce serait un CHANGEMENT de comportement non détectable
+  par e2e → à traiter comme un FIX explicite et testé, pas un refactor « rendu inchangé ».
+- **Rollback** : `git revert <hash itér.95>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

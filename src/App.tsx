@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import { useGameFeedbackFx } from './hooks/useGameFeedbackFx';
 import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
@@ -35,7 +36,7 @@ const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ d
 const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone, initLifetimeCodex } from './data/persistence';
 import { flushLocalQueue } from './services/feedback';
-import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo, seasonTrackPath, albumTrack, getStoredAlbum, storeAlbum } from './engine/juice';
+import { initJuice, playClick, setShakeContainer, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo, seasonTrackPath, albumTrack, getStoredAlbum, storeAlbum } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
@@ -164,7 +165,6 @@ function App() {
   const [reducedSounds, setReducedSounds] = useState(false);
   const [slowTimer, setSlowTimer] = useState(false);
   const journalRef = useRef<HTMLDivElement>(null);
-  const gameOverSoundPlayed = useRef(false);
 
   // ── IA narrative ──────────────────────────────────────────────────────────
   type AiJournalEntry = { age: number; text: string; generating: boolean };
@@ -263,61 +263,10 @@ function App() {
     if (containerRef.current) setShakeContainer(containerRef.current);
   }, []);
 
-  // Effet de RÉSULTAT : ne fait QUE le juice impératif (son/particules/vibration) sur la
-  // transition. La bannière et les modales sont dérivées au rendu (cf. plus haut) ; seul
-  // l'auto-dismiss du succès reste ici, et son setState part du callback différé du timer.
-  useEffect(() => {
-    if (phase !== 'result' || !lastEventResult) return;
-    if (lastEventResult === 'success') {
-      playSuccess();
-      try { navigator.vibrate([5, 50, 10]); } catch { /* vibrate non supporté */ }
-      if (containerRef.current) {
-        spawnParticles(containerRef.current, 'success', 10);
-        glowFlash(containerRef.current, 'rgba(16, 185, 129, 0.3)');
-      }
-      const timer = setTimeout(() => dismissResult(), 1500);
-      return () => clearTimeout(timer);
-    } else {
-      // Échec → confirmation manuelle, le joueur doit lire le verset.
-      playFail();
-      try { navigator.vibrate(20); } catch { /* vibrate non supporté */ }
-      screenShake(6, 400);
-      if (containerRef.current) {
-        spawnParticles(containerRef.current, 'fail', 6);
-      }
-    }
-  }, [phase, lastEventResult, dismissResult]);
-
-  // Son de fin de partie — EFFET (pas en rendu) : un effet sonore ne doit jamais
-  // partir pendant le rendu. Joué une seule fois à la bascule en game over.
-  useEffect(() => {
-    if (gameOver?.isOver && !gameOverSoundPlayed.current) {
-      gameOverSoundPlayed.current = true;
-      if (gameOver.reason === 'victory') playLevelUp();
-      else playFail();
-    }
-  }, [gameOver?.isOver, gameOver?.reason]);
-
-  // Combo sound
-  const prevCombo = useRef(0);
-  useEffect(() => {
-    if (combo >= 5 && combo > prevCombo.current) {
-      playCombo();
-      if (containerRef.current) {
-        spawnParticles(containerRef.current, 'combo', 5);
-      }
-    }
-    prevCombo.current = combo;
-  }, [combo]);
-
-  // Level up sound
-  const prevAge = useRef(0);
-  useEffect(() => {
-    if (age > 0 && age !== prevAge.current && [15, 25, 60, 80].includes(age)) {
-      playLevelUp();
-    }
-    prevAge.current = age;
-  }, [age]);
+  // Juice impératif (son/particules/vibration/screen-shake) sur les transitions d'état —
+  // extrait en hook (G-4 / itér.95). Les refs de garde (gameOverSoundPlayed/prevCombo/prevAge)
+  // y vivent désormais. Comportement identique.
+  useGameFeedbackFx({ phase, lastEventResult, dismissResult, gameOver, combo, age, containerRef });
 
   // Reset des modales de fin quand une nouvelle partie commence : fait PENDANT le rendu
   // (pattern « reset state on prop change ») au lieu d'un setState dans un effet.
@@ -334,10 +283,6 @@ function App() {
       setShownChapterAge(-1); // reset pour la prochaine partie
     }
   }
-  // Garde sonore de game-over : reset d'un ref (non concerné par set-state-in-effect).
-  useEffect(() => {
-    if (!gameOver?.isOver) gameOverSoundPlayed.current = false;
-  }, [gameOver?.isOver]);
 
   // Dynamic music: slow the track slightly when any stat is critically low
   useEffect(() => {

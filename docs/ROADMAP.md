@@ -244,9 +244,14 @@ Atteinte quand :
         est migré. Ré-ouvrable si ces écrans sont retravaillés visuellement.
 
 ### Tier 3 — Composition & prévention
-- [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage
-      des overlays (Testimony/Chapter/Share/Tutorial), effet musique, effet journal vivant. Chaque
-      extraction = 1 commit, rendu pur préservé, smoke 0 erreur. Effort : moyen.
+- [~] **G-4** (audit D) **Découper `App.tsx`** — EN COURS (1 extraction = 1 commit, vérifié `e2e.mjs`).
+      - [x] **Extraction 1 — `useGameFeedbackFx`** (itér.95) : 5 effets de juice impératif (result/
+            gameOver/combo/level-up + reset) + 3 refs de garde sortis en hook. Rendu identique, e2e vert.
+      - [ ] **Extraction 2** — musique (`useAmbientMusic` : album + saison + playback rate).
+      - [ ] **Extraction 3** — montage overlays (`<GameOverlays>` : Testimony/Chapter/Share/Tutorial/Codex…).
+      - **Différé** : `useAccessibilityPrefs` — l'extraction CHANGERAIT le comportement (corrige un bug
+        latent de persistance des prefs, non vérifiable par e2e) → à traiter comme un FIX explicite, pas
+        un refactor pur. Documenté dans l'ITERATION_LOG itér.95.
 - [x] **G-5** **Prévention > réaction** → itér. 89. (a) Garde SYSTÉMIQUE (pas juste une note) :
       `tests/persistence.test.ts` confronte `Object.keys(createInitialState())` aux clés réellement
       persistées par `saveGame` (via le mock localforage) → un champ ni whitelisté ni explicitement
