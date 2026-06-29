@@ -54,7 +54,10 @@ if [ ${#FILES[@]} -eq 0 ]; then
   echo "  (aucun .ts/.tsx touché)"
 else
   # Compte d'erreurs (severity 2) ESLint sur un flux JSON.
-  count_errs() { node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const r=JSON.parse(s);console.log(r.reduce((n,f)=>n+(f.errorCount||0),0))}catch{console.log(0)}})'; }
+  # ⚠️ `console.log(nombre)` COLORISE quand stdout est un TTY (`\033[33m1\033[39m`) → la comparaison
+  #    `-gt` plus bas recevait des codes ANSI, échouait en silence et tombait sur ✓ (régression MASQUÉE).
+  #    `process.stdout.write(String(n))` n'émet jamais de couleur → entier propre garanti, TTY ou pipe.
+  count_errs() { node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const r=JSON.parse(s);process.stdout.write(String(r.reduce((n,f)=>n+(f.errorCount||0),0)))}catch{process.stdout.write("0")}})'; }
   regressions=0
   for f in "${FILES[@]}"; do
     after=$(npx eslint "$f" -f json 2>/dev/null | count_errs)

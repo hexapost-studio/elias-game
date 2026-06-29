@@ -1688,6 +1688,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   (« aucun .ts/.tsx touché »).
 - **Rollback** : `git revert <hash itér.86>`.
 
+## Itération 87 — G-1 : la porte QA ne masque plus une régression lint (faille de sécurité du process)
+
+- **Demande** : reprise du projet en orchestration « chef de projet » — finir le backlog (Phase G +
+  Phase 5) en visant une qualité AAA, systèmes > scripts. Tête de file = **G-1** (la porte QA elle-même).
+- **Diagnostic (mesuré, pas cru sur parole)** : sonde fabriquée (`__gate_probe__.ts` avec un
+  `no-unused-vars`) → `count_errs()` renvoyait `\033[33m1\033[39m`, **pas `1`**. Cause : `console.log(nombre)`
+  de Node **colorise** quand stdout est un TTY (cas d'un humain lançant la porte dans son terminal).
+  La comparaison `[ "$after" -gt "$before" ]` recevait alors des codes ANSI → bash échoue la comparaison
+  entière **en silence** (stderr) → branche `else` → affiche `✓`. **Une régression lint passait inaperçue.**
+- **Correctif méthode (systèmes > rustine)** : le remède noté dans la ROADMAP (`tr -dc '0-9'`) était
+  **lui-même faux** — il aurait gardé les chiffres des codes couleur (`33`/`39`), transformant `1` en
+  `33139`. Corrigé à la **source** : `process.stdout.write(String(n))` n'émet jamais de couleur (TTY
+  comme pipe) → entier propre garanti. 1 ligne dans `count_errs()`, commentaire explicatif ajouté.
+- **Critère d'acceptation vérifié** : après correctif, `count_errs` → `1` (propre) **et** un fichier
+  fabriqué à +1 erreur fait bien `[ 1 -gt 0 ]` → ROUGE. Porte complète relancée : verte (188 v / 342 e,
+  510 tests, build, validate). Fichier `.sh` non concerné par le lint-diff (« aucun .ts/.tsx touché »).
+- **Rollback** : `git revert <hash itér.87>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

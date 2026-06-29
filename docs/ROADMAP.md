@@ -213,11 +213,11 @@ Atteinte quand :
 > rend la porte/le suivi fiables. ROI décroissant — Tier 1 d'abord (rapide, anti-gaspillage).
 
 ### Tier 1 — Anti-gaspillage (rapide, à faire en premier)
-- [ ] **G-1** (audit C) **Fixer le trou de la porte QA** — dans `tools/qa-gate.sh` étape 5/5, la
-      comparaison `[ "$after" -gt "$before" ]` reçoit des codes couleur (`[33m0`) → le test échoue
-      et **tombe silencieusement sur ✓**, ce qui peut **MASQUER une régression lint**. Nettoyer la
-      sortie (`tr -dc '0-9'` sur before/after) avant comparaison. Critère : un fichier avec +1 erreur
-      lint fait bien ROUGIR la porte (tester avec un cas fabriqué). Effort : faible.
+- [x] **G-1** (audit C) **Fixer le trou de la porte QA** → itér. 87. Cause réelle (mesurée) : `console.log(nombre)`
+      de Node colorise en TTY → `count_errs` renvoyait `\033[33m1\033[39m`, la comparaison `-gt` échouait
+      en silence et tombait sur ✓ (régression lint MASQUÉE). Le remède noté ici (`tr -dc '0-9'`) était faux
+      (gardait les chiffres des codes couleur). Corrigé à la **source** : `process.stdout.write(String(n))`.
+      Critère vérifié : fichier fabriqué à +1 erreur → porte ROUGE. Porte complète verte.
 - [ ] **G-2** (audit B) **Statut dérivé, pas narré** — `tools/status.mjs` (module pur + CLI) qui
       GÉNÈRE l'état (nb events/versets/tests, dernière itér., hash HEAD, phases ✅/⏳) depuis
       git + `game/data/*` + sortie vitest, au lieu de la prose tenue à la main qui DÉRIVE (14+21
