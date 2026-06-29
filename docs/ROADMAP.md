@@ -11,6 +11,19 @@
 - [x] **T-B** lint lot B — `no-explicit-any` ×8 typés → itér. 21 / `356a6c8`
 - [x] **T-C** lint lot C — fast-refresh `only-export-components` ×5 (iconMeta) → itér. 21 / `2d01cc4`
 
+## 🟢 DONE — hors-file (correctifs playtest itér. 69-76)
+> Travail livré **en réaction aux playtests**, hors de la file planifiée. Tracé ici a posteriori
+> (itér. de réconciliation) pour que la ROADMAP redevienne le miroir fidèle de HEAD — la dérive
+> venait de ce que ces lignes ne vivaient que dans `CLAUDE.md` / `ITERATION_LOG.md`.
+- [x] **itér. 69** Fluidité roman-visuel (scène lue avant le verset, fix panneau Appel, choix d'album) → `e6112e8`
+- [x] **itér. 70** Polish éditorial : 9 échos décennaux de jeunesse (320→329 events) → `24310ac`
+- [x] **itér. 71** Arc-ami : {ami} évolue (5 scènes hors-spine) + flag `ami_parti` + 3 contradictions corrigées → `db52c75`
+- [x] **itér. 72** Finances jouables : la pauvreté ne tue plus + action **Travailler** → `8e9dc2a`
+- [x] **itér. 73** Leurres plus proches : `pickDecoys` en 3 paliers (distracteurs pertinents) → `02a144e`
+- [x] **itér. 74** Mode wordBank honoré dès la 1ʳᵉ découverte + garde `canWordBank` → `e028b7f`
+- [x] **itér. 75** Musique débloquée au 1ᵉʳ geste (`armAudioUnlock`) → `d0a4139`
+- [x] **itér. 76** Levier physique mesuré (survie ↔ précision : `FAIL_PHYSIQUE_PENALTY` + action **Repos/sabbat**) → `bac0352`
+
 ## 🟡 IN-PROGRESS  (≤ 1 tâche à la fois — invariant 1 = atomicité)
 - (vide)
 
@@ -126,10 +139,12 @@ Atteinte quand :
 > - T-37 saisons audio : code en place (`juice.ts:playSeasonTrack`), manque = assets `.mp3`, pas du code.
 
 ### Tier 1 — Équilibre contenu (RÉEL)
-- [ ] **T-34** **Catégories sous-représentées** — `impudicite_addiction` (3), `culpabilite` (3),
-      `abondance_financiere` (3) → ≥ 8 events chacune (+15 minimum). Et rééquilibrer
-      `amertume_rejet` (44 events = 19 % du total) en enrichissant les autres au lieu d'en supprimer.
-      Format `game/data/events.json` + `npm run validate` vert.
+- [x] **T-34** **Catégories sous-représentées** — **cible atteinte organiquement** (itér. 53→76).
+      Vérifié sur HEAD (334 events) : `impudicite_addiction` **8**, `culpabilite` **9**,
+      `abondance_financiere` **8** — toutes ≥ 8. Et `amertume_rejet` est descendu de 19 % → **14,4 %**
+      (48/334) par enrichissement des autres, comme souhaité. Mesuré : `node -e` de comptage par
+      catégorie sur `game/data/events.json`. **Aucune rédaction nécessaire** → coché à la
+      réconciliation (cf. Definition v0.2.0).
 
 ### Tier 2 — Déterminisme & qualité
 - [x] **T-39** **`pickDecoys` seedé ?** — DÉCISION (2026-06-20) : **garder `Math.random()`**.
@@ -138,12 +153,15 @@ Atteinte quand :
       Le CHOIX seul pilote la divergence narrative — CLAUDE.md §RNG seedé.
 
 ### Tier 3 — Assets audio saisons
-- [ ] **T-40** **Pistes ambient saisons** — `public/audio/ambient-{saison}.mp3` (4 fichiers) pour
-      `playSeasonTrack` (`juice.ts:341`). Travail = production audio, pas de code. À faire quand les
-      assets sont disponibles.
+- [ ] **T-40** ⏸ **BLOQUÉ-ASSETS** — `public/audio/ambient-{saison}.mp3` (4 fichiers) pour
+      `playSeasonTrack` (`juice.ts:341`). Travail = **production audio, pas de code** → hors de la
+      file de codage. **Ne gate PAS v0.2.0.** À reprendre quand les `.mp3` seront fournis.
 
-### 🎯 Definition of v0.2.0
+### 🎯 Definition of v0.2.0 — ✅ ATTEINTE (réconciliation, cf. itér. de clôture)
 Atteinte quand :
-1. Catégories `impudicite_addiction`/`culpabilite`/`abondance_financiere` à ≥ 8 events (T-34) + `npm run validate` vert.
-2. Décision T-39 prise + appliquée si retenu.
-3. `bash tools/qa-gate.sh` → exit 0.
+1. ✅ Catégories `impudicite_addiction`/`culpabilite`/`abondance_financiere` à ≥ 8 events (T-34 : 8/9/8) + `npm run validate` vert.
+2. ✅ Décision T-39 prise + appliquée (garder `Math.random()` — couche présentation, cf. CLAUDE.md §RNG seedé).
+3. ✅ `bash tools/qa-gate.sh` → exit 0.
+> T-40 (audio) reste ouvert mais **ne gate pas** v0.2.0 (production d'assets, hors code).
+> **Prochaine file : Phase 5 « De quiz à roman visuel »** (densité narrative + Testimony/Chapter) —
+> cf. plan d'organisation + `docs/DESIGN_PARTIE2.md`.

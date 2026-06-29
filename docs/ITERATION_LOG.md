@@ -1509,6 +1509,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   séparé `50190ec`.
 - **Rollback** : `git revert <hash itér.76>`.
 
+## Itération 77 — Réconciliation des docs : clôture de la Phase 4 (v0.2.0)
+
+- **Origine** : audit d'organisation (suite au playtest). La `docs/ROADMAP.md` avait **dérivé** —
+  les itér. **69-76** (correctifs playtest) ne vivaient que dans `CLAUDE.md` / ce journal, jamais
+  dans la file. La ROADMAP n'était donc plus le miroir de HEAD, et la Phase 4 restait « ouverte »
+  alors que son seul vrai reste (T-34) était déjà comblé.
+- **Mesure (preuve)** : comptage par catégorie sur `game/data/events.json` (334 events) →
+  `impudicite_addiction` **8**, `culpabilite` **9**, `abondance_financiere` **8** (cible T-34 ≥ 8
+  **atteinte organiquement** itér. 53→76) ; `amertume_rejet` 48/334 = **14,4 %** (était 19 %).
+- **Application (doc only, zéro code)** :
+  1. **R-0** — section « DONE hors-file » dans la ROADMAP listant itér. 69-76 + hashs → miroir de HEAD.
+  2. **T-34** coché avec la note de mesure (aucune rédaction nécessaire).
+  3. **T-40** (audio saisons) marqué **⏸ BLOQUÉ-ASSETS** — production `.mp3`, hors file de codage,
+     ne gate pas v0.2.0.
+  4. **Definition v0.2.0** marquée ✅ ATTEINTE (T-34 ✓ + T-39 ✓ décision RNG + porte verte).
+- **Résultat** : Phase 4 close, ROADMAP = miroir de HEAD. **Prochaine file : Phase 5 « De quiz à
+  roman visuel »** (densité narrative éditoriale [moi] + Testimony/Chapter [release-lead, code]).
+- **Process** : on réaffirme l'invariant « 1 tâche = 1 commit + ROADMAP + ITERATION_LOG + CLAUDE.md
+  ensemble » — la dérive venait précisément de l'avoir relâché sur les correctifs playtest 69-76.
+- **Rollback** : `git revert <hash itér.77>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
