@@ -171,3 +171,32 @@ Atteinte quand :
 > T-40 (audio) reste ouvert mais **ne gate pas** v0.2.0 (production d'assets, hors code).
 > **Prochaine file : Phase 5 « De quiz à roman visuel »** (densité narrative + Testimony/Chapter) —
 > cf. plan d'organisation + `docs/DESIGN_PARTIE2.md`.
+
+---
+
+## Phase F — Finalisation « jeu livrable » (v0.3.0) — ✅ ATTEINTE (itér. 77-82)
+
+> Passe de finalisation pilotée en orchestrateur (playtest réel + audit + revue de code).
+> But : un jeu **jouable de bout en bout, robuste et installable** — pas de nouveau contenu, on
+> durcit l'existant. Chaque défaut trouvé = 1 commit revert-able + garde de test.
+
+- [x] **F-1** Réconciliation docs (itér. 69-76 dans la ROADMAP) + clôture v0.2.0 → itér. 77 / `923c753`
+- [x] **F-2** Bug de rendu du tutoriel (`setState` inter-composants `TutorialOverlay`→`App`) → itér. 78 / `ae3a7bb`
+- [x] **F-3** Témoignage de fin de vie incassable (couverture de l'état viral) → itér. 79 / `5734003`
+- [x] **F-4** Cohérence PWA (manifest `lang:'fr'`) + audit assets de prod (0 cassé) → itér. 80 / `07f6cfc`
+- [x] **F-5** **Bug GRAVE save-compat** : recharger perdait nom/vocation/graine/traits → itér. 81 / `3775f2e`
+- [x] **F-6** Tour guidé : dernière étape avalée (trouvé en revue de code) → itér. 82 / `f4af4f8`
+
+### 🎯 Definition of v0.3.0 « livrable » — ✅ ATTEINTE
+1. ✅ Jouable naissance → mort → témoignage → rejouer (interaction verset vérifiée au playtest).
+2. ✅ **0 erreur console** sur parcours réel (smoke `run-elias`).
+3. ✅ Sauvegarde fiable : recharger préserve l'identité (garde `tests/persistence.test.ts`).
+4. ✅ PWA installable valide (manifest cohérent, SW + workbox, 0 asset cassé).
+5. ✅ 510 tests verts, dette type = 0, `react-hooks/* = 0`, `bash tools/qa-gate.sh` → exit 0.
+
+### Reste hors-périmètre « livrable » (enrichissement, non bloquant)
+- **T-40** audio saisons (production `.mp3`).
+- **Phase 5** densité narrative éditoriale (réécriture d'épreuves, échos décennaux).
+- **Décision produit ouverte** : codex remis à zéro par vie → types `completion`/`reference`
+  quasi jamais atteints. À trancher : apprentissage persistant cross-parties (façon SRS) vs
+  reset par vie (façon BitLife). N'empêche pas de livrer.
