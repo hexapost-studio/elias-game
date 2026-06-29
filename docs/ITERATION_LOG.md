@@ -1793,6 +1793,19 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Nature** : script `.mjs` + `.md` (hors lint-diff `.ts/.tsx`). Porte verte par construction (code source inchangé).
 - **Rollback** : `git revert <hash itér.92>`.
 
+## Itération 93 — G-3 lot 3 : AmbitionTracker migré vers les tokens (partiel, valeur identique)
+
+- **Migration** : couleurs `var(--…)` → tokens, nombres du barème migrés à valeur égale (`12→fontSize.md`,
+  `9→fontSize.xs`, `10→fontSize.sm`, `16→fontSize.lg`, `8→fontSize.xxs`, `700→weight.bold`,
+  `600→weight.medium`, `400→weight.regular`, `gap 2→space.xxs`/`4→space.xs`/`10→space.md`,
+  `borderRadius 8→radius.md`/`6→radius.sm`, `font.body`).
+- **Laissés littéraux (à dessein)** : la couleur DYNAMIQUE de l'appel (`${callingColor}55/28/12/33/44/22`,
+  hex+alpha non décomposable en `alpha()`), les hex sémantiques d'état #34d399 (« fait ») / #fbbf24
+  (« actif ») hors `:root`, et les nombres hors barème (11, 13, 15, 5, 3, borderRadius 10/16). Migration
+  incrémentale : pas de teinte changée, rendu identique.
+- **Porte** : verte (527 tests, `AmbitionTracker 0→0` lint).
+- **Rollback** : `git revert <hash itér.93>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

@@ -233,8 +233,11 @@ Atteinte quand :
       - [x] **Lot 2 — CodexMenu** (itér.91) : migré à valeur byte-identique (couleurs→tokens,
             `12→fontSize.md`/`8→radius.md`/`700→weight.bold`…). Shadowing local `color` résolu
             (`catColor`). Démarré par `release-lead` (coupé par limite session), revu + validé + commité par le lead.
-      - [ ] **Lots 3+** : `Onboarding` 30, `LexiconMenu` 29, `AmbitionTracker` 28, `ShareCard`,
-            `TestimonyCard`, … 1 lot = 1 commit + porte verte, patron ActionPanel/CodexMenu.
+      - [x] **Lot 3 — AmbitionTracker** (itér.93) : migration partielle sûre (couleurs `var(--…)`
+            + nombres du barème) ; laissés littéraux la couleur DYNAMIQUE de l'appel (`${callingColor}…`)
+            et les hex sémantiques #34d399/#fbbf24 (hors :root). Rendu identique.
+      - [ ] **Lots 4+** : `Onboarding` 30, `LexiconMenu` 29, `ShareCard`, `TestimonyCard`, … 1 lot =
+            1 commit + porte verte, patron ActionPanel/CodexMenu. Vérif rendu via `e2e.mjs` (G-6).
 
 ### Tier 3 — Composition & prévention
 - [ ] **G-4** (audit D) **Découper `App.tsx` (1293 l.)** — extraire en sous-composants/hooks : montage

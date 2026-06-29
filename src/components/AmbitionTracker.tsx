@@ -9,6 +9,10 @@
  *  - prefers-reduced-motion : les transitions sont désactivées.
  *  - role="dialog" + aria-label + focus-trap minimal (Escape pour fermer).
  *  - Bouton déclencheur discret — ne surcharge pas l'écran principal.
+ *
+ * Tokens (G-3) : couleurs `var(--…)` et nombres du barème migrés vers ../styles/tokens
+ * à valeur identique. Laissés littéraux : la couleur DYNAMIQUE de l'appel (`${callingColor}…`,
+ * hex+alpha) et les hex sémantiques d'état (#34d399 « fait », #fbbf24 « actif ») hors :root.
  */
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
@@ -16,17 +20,18 @@ import { useGameStore } from '../stores/gameStore';
 import { deriveRunAmbition, getCallingProgress } from '../engine/runAmbition';
 import { STORY_ARCS } from '../data/storyArcs';
 import type { AmbitionStep } from '../engine/runAmbition';
+import { color, font, fontSize, weight, space, radius } from '../styles/tokens';
 
 /* ─── Icônes de statut ─── */
 
 function IconDone() {
-  return <span aria-hidden="true" style={{ color: '#34d399', fontWeight: 700, fontSize: 12 }}>✓</span>;
+  return <span aria-hidden="true" style={{ color: '#34d399', fontWeight: weight.bold, fontSize: fontSize.md }}>✓</span>;
 }
 function IconActive() {
-  return <span aria-hidden="true" style={{ color: '#fbbf24', fontSize: 12 }}>●</span>;
+  return <span aria-hidden="true" style={{ color: '#fbbf24', fontSize: fontSize.md }}>●</span>;
 }
 function IconLocked() {
-  return <span aria-hidden="true" style={{ color: 'var(--text-muted)', fontSize: 12, opacity: 0.5 }}>○</span>;
+  return <span aria-hidden="true" style={{ color: color.textMuted, fontSize: fontSize.md, opacity: 0.5 }}>○</span>;
 }
 
 /* ─── Résolution des templates d'arc ─── */
@@ -86,12 +91,12 @@ function StepRow({ step, city, friendName, profession, churchName, spouseName }:
         <div
           style={{
             fontSize: 11,
-            fontWeight: isActive ? 600 : 400,
+            fontWeight: isActive ? weight.medium : weight.regular,
             color: isDone
               ? '#34d399'
               : isActive
               ? '#fbbf24'
-              : 'var(--text-muted)',
+              : color.textMuted,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -106,7 +111,7 @@ function StepRow({ step, city, friendName, profession, churchName, spouseName }:
           <div
             style={{
               display: 'flex',
-              gap: 2,
+              gap: space.xxs,
               marginTop: 3,
             }}
             aria-label={`${step.stepsCompleted} étape${step.stepsCompleted !== 1 ? 's' : ''} sur ${step.stepsTotal}`}
@@ -132,8 +137,8 @@ function StepRow({ step, city, friendName, profession, churchName, spouseName }:
       {!isLocked && (
         <span
           style={{
-            fontSize: 9,
-            color: 'var(--text-muted)',
+            fontSize: fontSize.xs,
+            color: color.textMuted,
             whiteSpace: 'nowrap',
           }}
         >
@@ -193,11 +198,11 @@ export function AmbitionTracker() {
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 4,
+          gap: space.xs,
           padding: '2px 8px',
           borderRadius: 10,
-          fontSize: 9,
-          fontWeight: 600,
+          fontSize: fontSize.xs,
+          fontWeight: weight.medium,
           letterSpacing: 0.3,
           border: `1px solid ${callingColor}55`,
           background: open ? `${callingColor}28` : `${callingColor}12`,
@@ -205,7 +210,7 @@ export function AmbitionTracker() {
           cursor: 'pointer',
           verticalAlign: 'middle',
           transition: 'background 0.15s ease',
-          fontFamily: 'var(--font-body)',
+          fontFamily: font.body,
         }}
       >
         <span aria-hidden="true">{calling.icon}</span>
@@ -213,9 +218,9 @@ export function AmbitionTracker() {
         <span
           style={{
             background: `${callingColor}33`,
-            borderRadius: 8,
+            borderRadius: radius.md,
             padding: '0 4px',
-            fontSize: 8,
+            fontSize: fontSize.xxs,
           }}
         >
           {progress.completed}/{progress.total}
@@ -241,7 +246,7 @@ export function AmbitionTracker() {
             maxHeight: '65vh',
             display: 'flex',
             flexDirection: 'column',
-            background: 'var(--bg-card)',
+            background: color.bgCard,
             border: `1px solid ${callingColor}44`,
             borderBottom: 'none',
             borderRadius: '16px 16px 0 0',
@@ -264,7 +269,7 @@ export function AmbitionTracker() {
               <div
                 style={{
                   fontSize: 13,
-                  fontWeight: 700,
+                  fontWeight: weight.bold,
                   color: callingColor,
                   display: 'flex',
                   alignItems: 'center',
@@ -274,7 +279,7 @@ export function AmbitionTracker() {
                 <span aria-hidden="true" style={{ fontSize: 15 }}>{calling.icon}</span>
                 {calling.name}
               </div>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 1 }}>
+              <div style={{ fontSize: fontSize.sm, color: color.textMuted, marginTop: 1 }}>
                 {calling.tagline}
               </div>
             </div>
@@ -284,11 +289,11 @@ export function AmbitionTracker() {
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'var(--text-muted)',
-                fontSize: 16,
+                color: color.textMuted,
+                fontSize: fontSize.lg,
                 cursor: 'pointer',
                 padding: '2px 6px',
-                borderRadius: 6,
+                borderRadius: radius.sm,
                 lineHeight: 1,
               }}
             >
@@ -302,13 +307,13 @@ export function AmbitionTracker() {
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                fontSize: 9,
-                color: 'var(--text-muted)',
+                fontSize: fontSize.xs,
+                color: color.textMuted,
                 marginBottom: 4,
               }}
             >
               <span>PROGRESSION DE LA DESTINÉE</span>
-              <span style={{ color: callingColor, fontWeight: 600 }}>
+              <span style={{ color: callingColor, fontWeight: weight.medium }}>
                 {progress.percent}%
               </span>
             </div>
@@ -340,10 +345,10 @@ export function AmbitionTracker() {
             <div
               style={{
                 display: 'flex',
-                gap: 10,
+                gap: space.md,
                 marginTop: 5,
-                fontSize: 9,
-                color: 'var(--text-muted)',
+                fontSize: fontSize.xs,
+                color: color.textMuted,
               }}
             >
               <span style={{ color: '#34d399' }}>✓ {progress.completed} terminé{progress.completed !== 1 ? 's' : ''}</span>
