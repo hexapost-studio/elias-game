@@ -1775,6 +1775,24 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
 - **Porte** : verte (527 tests, 6/6 étapes, `CodexMenu 0→0` lint, build OK). Rendu byte-identique.
 - **Rollback** : `git revert <hash itér.91>`.
 
+## Itération 92 — G-6 : harnais e2e PARAMÉTRÉ et fiable (naissance→mort→restart)
+
+- **Problème (audit)** : drivers Playwright ad-hoc réécrits à chaque fois (fragiles, coûteux en crédits) ;
+  la porte QA étant sans navigateur, les bugs de RENDU lui échappent (cf. itér.78).
+- **Livrable** : `.claude/skills/run-elias/scripts/e2e.mjs` — UN script réutilisable, `--until
+  birth|death|restart` (+ `--port`/`--max-steps`/`--name`/`--shots`). Helpers robustes ; gère les pièges
+  du flux découverts en pilotant : gate `descDone` (clic `.event-description`), « J'AI COMPRIS »,
+  **ChapterCard de décennie** (« CONTINUER → » — c'était le blocage à 20 ans qui empêchait d'atteindre
+  la mort), **TestimonyCard** (styles inline, bouton « VOIR LE BILAN DE VIE → »), mort (`.btn-restart`), restart.
+- **Mise au point empirique** (capture à l'appui) : 1ʳᵉ version bloquée à 20 ans (overlay de décennie non
+  congédié) → ajout du dismiss d'overlays en tête de boucle ; restart échouait (le TestimonyCard
+  interceptait « NOUVELLE PARTIE ») → dismiss par le vrai libellé. **Validé** : naissance→mort→restart,
+  0 erreur console.
+- **Double dividende** : la passe `--until restart` confirme que les migrations de design tokens (G-3,
+  itér.90-91) ne cassent rien à l'écran (0 erreur console sur un parcours complet). Documenté dans `SKILL.md`.
+- **Nature** : script `.mjs` + `.md` (hors lint-diff `.ts/.tsx`). Porte verte par construction (code source inchangé).
+- **Rollback** : `git revert <hash itér.92>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

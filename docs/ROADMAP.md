@@ -246,10 +246,12 @@ Atteinte quand :
       exclu fait ROUGIR la porte ⇒ le bug itér.81 est désormais impossible. Politique liée dans
       CLAUDE.md §Save-compat. (b) MCP `code-review-graph` : **adopté pour les refactors transverses
       G-3/G-4** (analyse d'impact AVANT), hors contenu. +1 test. Effort : faible.
-- [ ] **G-6** **Harnais e2e stable** — remplacer les drivers Playwright ad-hoc (fragiles, coûteux en
-      crédits) par UN script paramétré dans `.claude/skills/run-elias` pilotant naissance→mort→restart
-      de façon fiable (gère le gate `descDone`, le bouton « J'AI COMPRIS », le TestimonyCard). Réutilisable
-      au lieu d'être réécrit à chaque fois. Effort : moyen.
+- [x] **G-6** **Harnais e2e stable** → itér. 92. `e2e.mjs` paramétré (`--until birth|death|restart`,
+      `--port`/`--max-steps`/`--name`/`--shots`) dans `.claude/skills/run-elias/scripts/`. Gère le gate
+      `descDone` (clic `.event-description`), « J'AI COMPRIS », le ChapterCard de décennie (« CONTINUER → »),
+      le TestimonyCard (« VOIR LE BILAN DE VIE → »), la mort (`.btn-restart`) et le restart. **Validé en
+      réel** : naissance→mort→restart, 0 erreur console (confirme au passage que les migrations de tokens
+      G-3 ne cassent rien à l'écran). Documenté dans `SKILL.md`. Effort : moyen.
 
 > Note méthode : la porte QA est **sans navigateur** par choix → les bugs de RENDU (cf. itér.78)
 > lui échappent. G-1 peut ajouter le `smoke` (0 erreur console) en étape optionnelle non bloquante.
