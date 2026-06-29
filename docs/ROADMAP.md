@@ -6,6 +6,35 @@
 > `ITERATION_LOG.md` reste la source de vérité du *process* (pourquoi / comment / preuve QA / rollback).
 > Porte QA obligatoire avant chaque commit : `bash tools/qa-gate.sh` (sans Playwright).
 
+## ⏭️ PROCHAINE SESSION — file priorisée (au 2026-06-29, après itér.97)
+
+> **État** : Phase G 5/6 close (G-1/2/3/5/6). Reste **G-4** (découpe `App.tsx`, 1293→**1175** l.) puis **Phase 5 lot 2**.
+> Rituel par tâche : 1 extraction/lot = 1 commit · `bash tools/qa-gate.sh` VERT · vérif rendu `e2e.mjs --until restart` (0 err console) · entrée ITERATION_LOG · case cochée ici. Démarrer : `node tools/status.mjs`.
+
+1. **G-4 ext.4 — `useLivingJournal`** : sortir l'effet « journal vivant » (offline + IA) d'`App.tsx`.
+   ⚠️ Il PORTE l'exception assumée `react-hooks/set-state-in-effect` (génération de contenu) → **mettre à
+   jour la réf de l'invariant CLAUDE.md §4** (« …dans `App.tsx` » → « …dans le hook `useLivingJournal` »).
+   Params : age/gameOver/stats/season/calling/traits/successRate/lifeContext/parentNames/actionsThisYear/
+   playerName + `setAiJournalEntries`. Relocaliser imports `deriveEchoes`/`generateOfflineJournal`/
+   `generateJournalEntry`/`isAiEnabled` (vérifier orphelins dans App).
+2. **G-4 ext.5 — bootstrap d'init** (`useAppBootstrap`) : l'effet de montage (juice/lifetime-codex/onboarding/
+   save/prefs/flush). Prop-surface = setters ; garder la charge prefs VERBATIM (cf. bug latent ci-dessous).
+3. **G-4 ext.6 — `<GameOverlays>`** : montage des overlays. Gros prop-surface, **2 branches de rendu**
+   (gameOver vs jeu) → faire posément, peut se scinder (overlays jeu d'abord). Alternative : extraire le
+   `<GameOverScreen>` (bloc `if overNow`) d'abord (chunk contigu plus cohérent).
+   → Quand `App.tsx` est « raisonnable », **clore G-4** (cocher dans la section Phase G).
+4. **Phase 5 lot 2 — densité narrative** (expérience joueur) : réécrire ~15-20 épreuves de **spine** plates
+   pour créer de la tension AVANT le verset (candidates repérées : `e-bilan-002/003/004/005`, `e-fond-002`,
+   `e-prod-*` ; **PAS** les cascades `-c`). Ton grâce>punition. `npm run validate` + relire au rendu.
+
+**Différé (décision explicite, ne pas faire en « refactor pur »)** : `useAccessibilityPrefs` — l'extraire
+CHANGERAIT le comportement (corrige un bug LATENT : l'effet de persist écrit les défauts au montage avant
+le chargement async → les prefs ne survivent pas au reload). À traiter comme un **FIX explicite + testé**,
+hors G-4. Cf. ITERATION_LOG itér.95.
+
+**Outils prêts** : `tools/status.mjs` (état dérivé + `--check`), `e2e.mjs` (parcours réel), `code-review-graph`
+(analyse d'impact avant un changement transverse — politique G-5b).
+
 ## 🟢 DONE
 - [x] **T-A** lint lot A — 27 erreurs sûres (no-unused-vars/no-empty/prefer-const) → itér. 21 / `1bdc150`
 - [x] **T-B** lint lot B — `no-explicit-any` ×8 typés → itér. 21 / `356a6c8`

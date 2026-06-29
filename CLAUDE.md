@@ -58,7 +58,7 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
   détours d'échec (≠ bifurcations). Helpers purs : `engine/gameEngine.ts isArcStepUnlocked`,
   `engine/storyGraph.ts validateStoryGraph` (DFS itératif), `engine/arcProgress.ts` (visualizer).
 
-## État des itérations (36 livrées)
+## État des itérations (1–97 livrées)
 
 | # | Livrable | Commit |
 |---|---|---|
@@ -102,15 +102,21 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 83 | **Phase F close — v0.3.0 « livrable »** : passe de finalisation (itér. 77-82) actée dans la ROADMAP (Definition v0.3.0 ✅). Jouable bout-en-bout, 0 erreur console, save fiable, PWA valide, 510 tests verts | `01c2f73` |
 | 84 | **Persistance du codex cross-parties** : module pur `codexMemory.ts` (`mergeCodex` accumulation) + codex « à vie » (clé dédiée sans expiration, cache boot) seedé aux 3 entrées de partie. Débloque `completion`/`reference` + priorité SRS d'une vie à l'autre. +10 tests | `681e7c7` |
 | 85 | **Phase 5 lot 1 + T-40 résolu** : 8 échos décennaux (contenu pur, 334→342 events, prerequisites réels, versets accordés, ton grâce>punition) ; **constat T-40** — audio des saisons déjà réglé (saisons mappées sur soundtracks présents, pas d'asset à produire) | `f5c262d` |
-| 86 | **Audit méthode/outillage → Phase G** : constat « cœur = système, 3 couches linéaires (UI 419 inline styles, statut narré qui dérive, App.tsx 1293 l.) + méthode réactive ». 6 tâches G-1..G-6 dans la ROADMAP (doc-only) | _(ce commit)_ |
+| 86 | **Audit méthode/outillage → Phase G** : constat « cœur = système, 3 couches linéaires (UI 419 inline styles, statut narré qui dérive, App.tsx 1293 l.) + méthode réactive ». 6 tâches G-1..G-6 dans la ROADMAP (doc-only) | `80a46dc` |
+| 87–89 | **Phase G Tier 1** : **G-1** porte QA fiable (`count_errs` colorisait en TTY → comparaison `-gt` muette, corrigé à la source) · **G-2** statut DÉRIVÉ `tools/status.mjs` + `--check` câblé étape 5/6 (anti-dérive ; 4 compteurs stales corrigés) · **G-5** garde save-compat auto (`tests/persistence.test.ts` → bug itér.81 impossible) | `8847a33`/`1798ec5`/`1911e35` |
+| 90,91,93,94 | **G-3 — Design tokens** : système `src/styles/tokens.ts` (couleurs→`var()`, échelles, `alpha()`) + **cœur gameplay** migré à valeur identique (ActionPanel/CodexMenu/AmbitionTracker/ShareCard). Écrans bespoke (Onboarding/Lexicon) différés à dessein | `8ca8b06`→`db5d69a` |
+| 92 | **G-6 — Harnais e2e** : `.claude/skills/run-elias/scripts/e2e.mjs` paramétré (`--until birth/death/restart`, gère descDone/J'AI COMPRIS/ChapterCard/TestimonyCard), validé en réel | `55698d8` |
+| 95–97 | **G-4 (EN COURS) — découpe `App.tsx` 1293→1175 l.** : hooks `useGameFeedbackFx` (juice), `useAmbientMusic`, `useAiEventPrefetch` extraits ; chacun vérifié `e2e.mjs` (0 erreur console) | `7000883`→`122d5ee` |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).
 **Phase 3 (fil polyphonique) : COMPLÈTE** (T-20..T-32 livrés). **Phase 4 (v0.2.0) : CLOSE** (itér. 77 — T-34 atteint, T-39 tranché ;
 T-40 audio parqué hors code). **Phase F (v0.3.0 « livrable ») : CLOSE** (itér. 77-82 — jouable bout-en-bout, 0 erreur console,
-save fiable, PWA valide, 510 tests). **Apprentissage persistant** (itér. 84) : codex « à vie » cross-parties (`codexMemory.ts`) →
-`completion`/`reference` atteignables, priorité SRS conservée. **Prochaine file = Phase 5 « De quiz à roman visuel »** : densité
-narrative éditoriale + TestimonyCard/ChapterCard (cf. `docs/ROADMAP.md` + `docs/DESIGN_PARTIE2.md`). Mesure : `tools/survival-sim.ts` ; playtest : skill `run-elias`.
+save fiable, PWA valide, 510 tests). **Apprentissage persistant** (itér. 84) : codex « à vie » cross-parties (`codexMemory.ts`).
+**Phase G (dette systémique & méthode) : 5/6 closes** (itér. 87-97) — G-1 porte QA fiable, G-2 statut dérivé, G-3 design
+tokens (cœur migré), G-5 garde save-compat, G-6 harnais e2e ; **G-4 (découpe `App.tsx`) en cours** (3 hooks extraits, 1293→1175 l.).
+**Prochaine file = finir G-4** (cf. `## ⏭️ PROCHAINE SESSION` en tête de `docs/ROADMAP.md`) **puis Phase 5 lot 2** (densité
+narrative). Mesure : `tools/survival-sim.ts` ; playtest : skill `run-elias` (ou `e2e.mjs`). État dérivé : `node tools/status.mjs`.
 
 ## Réserve (analysée, non planifiée)
 
