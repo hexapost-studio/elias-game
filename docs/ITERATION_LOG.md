@@ -1840,6 +1840,20 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   par e2e → à traiter comme un FIX explicite et testé, pas un refactor « rendu inchangé ».
 - **Rollback** : `git revert <hash itér.95>`.
 
+## Itération 96 — G-4 extraction 2 : `useAmbientMusic` (musique sortie d'App.tsx)
+
+- **Extraction 2** : `src/hooks/useAmbientMusic.ts` regroupe les 2 effets musicaux (ralenti dynamique
+  quand une jauge est critique + sélection unifiée album/saison dédupliquée par `lastMusicSig`) et la
+  ref `lastMusicSig` — déplacés VERBATIM. App appelle `useAmbientMusic({ ambientOn, musicAlbum,
+  spiritualSeason, stats })`. Les SETTERS (`setAmbientOn`/`setMusicAlbum`) et le déverrouillage autoplay
+  RESTENT dans App (toggles MainMenu) — le hook ne consomme que les valeurs. 5 imports de juice
+  (setAmbientPlaybackRate/startAmbient/crossfadeTo/seasonTrackPath/albumTrack) retirés d'App.
+- **Type sûr** : `spiritualSeason` typé via `Parameters<typeof seasonTrackPath>[0]` (zéro import de type,
+  compatibilité garantie).
+- **Vérif (audio = zone sensible, pas de raccourci)** : porte verte (527, App 0→0, hook 0→0) **+**
+  `e2e.mjs --until death` = parcours complet, **0 erreur console**.
+- **Rollback** : `git revert <hash itér.96>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

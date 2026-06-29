@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { useGameFeedbackFx } from './hooks/useGameFeedbackFx';
+import { useAmbientMusic } from './hooks/useAmbientMusic';
 import { useGameStore } from './stores/gameStore';
 import { StatBar } from './components/StatBar';
 import { FlowBar } from './components/FlowBar';
@@ -36,7 +37,7 @@ const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ d
 const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
 import { loadGame, hasSeenOnboarding, markOnboardingDone, initLifetimeCodex } from './data/persistence';
 import { flushLocalQueue } from './services/feedback';
-import { initJuice, playClick, setShakeContainer, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo, seasonTrackPath, albumTrack, getStoredAlbum, storeAlbum } from './engine/juice';
+import { initJuice, playClick, setShakeContainer, stopAmbient, playTheme, getStoredAlbum, storeAlbum } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
 import { generateOfflineJournal } from './services/offlineNarrator';
 import { getTraitById } from './data/traits';
@@ -151,9 +152,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [ambientOn, setAmbientOn] = useState(false);
   const [musicAlbum, setMusicAlbum] = useState<string>(() => getStoredAlbum());
-  // Dédoublonnage de la sélection musicale : ne relance une piste que si la
-  // "signature" (album + saison) change réellement (ref → pas de setState-in-effect).
-  const lastMusicSig = useRef('');
   const [showShareCard, setShowShareCard] = useState(false);
   const [showTestimony, setShowTestimony] = useState(false);
   // ChapterCard : âge de la dernière carte affichée (évite les répétitions)
@@ -284,41 +282,8 @@ function App() {
     }
   }
 
-  // Dynamic music: slow the track slightly when any stat is critically low
-  useEffect(() => {
-    if (!ambientOn) return;
-    const min = Math.min(stats.foi, stats.paix, stats.physique, stats.finances);
-    setAmbientPlaybackRate(min <= 20 ? 0.92 : min <= 35 ? 0.96 : 1.0);
-  }, [stats, ambientOn]);
-
-  // Sélection musicale unifiée : album choisi + saison de vie.
-  //  - 'auto'    → suit la saison (piste réelle, en boucle jusqu'au prochain virage)
-  //  - 'shuffle' → toutes les pistes au hasard (autoAdvance)
-  //  - album fixe → une piste en boucle
-  // Une "signature" évite de relancer la piste quand l'input n'a pas vraiment changé
-  // (ex. la saison bascule mais on est en album fixe → on ne coupe rien).
-  useEffect(() => {
-    if (!ambientOn) { lastMusicSig.current = ''; return; }
-
-    let sig: string;
-    let action: () => void;
-    if (musicAlbum === 'shuffle') {
-      sig = 'shuffle';
-      action = () => startAmbient();
-    } else if (musicAlbum === 'auto') {
-      const path = seasonTrackPath(spiritualSeason);
-      sig = 'auto:' + (path ?? 'none');
-      action = path ? () => crossfadeTo(path, true) : () => startAmbient();
-    } else {
-      sig = 'album:' + musicAlbum;
-      const path = albumTrack(musicAlbum);
-      action = () => crossfadeTo(path, true);
-    }
-
-    if (sig === lastMusicSig.current) return;
-    lastMusicSig.current = sig;
-    action();
-  }, [ambientOn, musicAlbum, spiritualSeason]);
+  // Musique d'ambiance (album choisi + saison + ralenti dynamique) — extraite en hook (G-4 / itér.96).
+  useAmbientMusic({ ambientOn, musicAlbum, spiritualSeason, stats });
 
   // ── Journal vivant : narrateur offline (immédiat) + IA en bonus ──────────
   useEffect(() => {

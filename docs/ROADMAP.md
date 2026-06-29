@@ -247,7 +247,9 @@ Atteinte quand :
 - [~] **G-4** (audit D) **Découper `App.tsx`** — EN COURS (1 extraction = 1 commit, vérifié `e2e.mjs`).
       - [x] **Extraction 1 — `useGameFeedbackFx`** (itér.95) : 5 effets de juice impératif (result/
             gameOver/combo/level-up + reset) + 3 refs de garde sortis en hook. Rendu identique, e2e vert.
-      - [ ] **Extraction 2** — musique (`useAmbientMusic` : album + saison + playback rate).
+      - [x] **Extraction 2 — `useAmbientMusic`** (itér.96) : 2 effets musique (ralenti dynamique +
+            sélection unifiée album/saison) + ref `lastMusicSig` sortis ; setters d'état restés dans App.
+            Rendu/audio identiques, e2e vert.
       - [ ] **Extraction 3** — montage overlays (`<GameOverlays>` : Testimony/Chapter/Share/Tutorial/Codex…).
       - **Différé** : `useAccessibilityPrefs` — l'extraction CHANGERAIT le comportement (corrige un bug
         latent de persistance des prefs, non vérifiable par e2e) → à traiter comme un FIX explicite, pas
