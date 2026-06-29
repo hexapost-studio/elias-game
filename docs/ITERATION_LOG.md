@@ -1551,6 +1551,25 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   pour les défauts de rendu que la QA auto ne voit pas.
 - **Rollback** : `git revert <hash itér.78>`.
 
+## Itération 79 — Le témoignage de fin de vie est incassable (couverture d'un état viral)
+
+- **Origine** : passe de finalisation (« jeu livrable »). Audit de couverture — `TestimonyCard`
+  (état VIRAL atteint à **chaque** mort, partage WhatsApp EJP/ICC) et son générateur
+  `testimonyGenerator.ts` n'avaient **aucun test**. Un état de partage qui plante silencieusement
+  sur une mort précoce (journal vide) serait un défaut de livraison majeur.
+- **Vérification (code review)** : le générateur est déjà défensif (`successes[0] ?? null`, `.find`,
+  filtres ; quote par défaut sans calling ; `fullText` n'émet jamais d'`undefined`). Le composant
+  filtre `Boolean` sur les moments → tolère 0 moment. Aucun correctif nécessaire.
+- **Application** : `tests/testimonyGenerator.test.ts` (4 cas) — ferme le trou :
+  1. mort précoce (9 ans), journal vide, sans calling → témoignage valide, 0 moment, pas de crash,
+     `fullText` sans `undefined/null/NaN`, quote par défaut (Jérémie 29:11), graine présente ;
+  2. victoire (100 ans) → ouverture de victoire (nom + 100), titre + versets dans les stats ;
+  3. vie pleine → founding/turning/lastVictory distincts et datés (12/45/78 ans), combo ×6 ;
+  4. un seul succès → founding rempli, turning & lastVictory `null` (pas de doublon).
+- **Résultat** : 4 tests verts, porte QA verte, lint 0→0, dette inchangée. L'état viral est garanti
+  incassable. (Le bug de RENDU à la mort avait déjà été éliminé en amont, cf. itér.78.)
+- **Rollback** : `git revert <hash itér.79>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).
