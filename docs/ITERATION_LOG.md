@@ -1649,6 +1649,26 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   La mémorisation progresse désormais d'une partie à l'autre ; `completion`/`reference` atteignables.
 - **Rollback** : `git revert <hash itér.84>`.
 
+## Itération 85 — Phase 5 (lot 1) : 8 échos décennaux + constat T-40 (audio déjà résolu)
+
+- **Demande** : avancer Phase 5 (densité narrative) ET T-40 (audio), sous contrainte de crédits →
+  lot contenu, économe.
+- **Phase 5 — 8 échos décennaux** (contenu PUR, zéro code) : un choix de jeunesse/maturité rappelé
+  NOMMÉMENT au grand âge (principe ④ encodage contextuel — la mémoire associative ancre le verset à
+  une situation reconnaissable). Ajoutés à `game/data/events.json` (334 → 342) via script idempotent ;
+  chaque écho référence un event-source RÉEL (`prerequisites: event_succeeded`), un verset **accordé à
+  sa catégorie** (zéro warning ajouté — les 3 warnings restants sont pré-existants), ton grâce >
+  punition (impacts d'échec doux −2). Thèmes : peur, vocation, doute (×2), impudicité, combat,
+  finances, orgueil. `npm run validate` vert (188 v / 342 e).
+- **T-40 — CONSTAT : déjà résolu, n'était PAS bloqué.** En préparant les « specs audio » demandées,
+  découvert que `juice.ts` (SEASON_TRACKS, l.253-261) mappe désormais les 5 saisons vers des
+  `soundtrack-N.mp3` **présents** dans `public/audio/` (8 fichiers). Le besoin d'origine
+  (`ambient-{saison}.mp3` absents → musique muette) a été supprimé par ce remappage. Aucune
+  production d'asset nécessaire. Dérive doc corrigée dans la ROADMAP.
+- **Crédits** : journée à ~$60 au moment de la demande → lot volontairement contenu, script unique,
+  zéro pilotage navigateur. Porte QA verte, dette inchangée.
+- **Rollback** : `git revert <hash itér.85>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

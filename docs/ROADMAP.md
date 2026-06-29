@@ -159,9 +159,10 @@ Atteinte quand :
       Le CHOIX seul pilote la divergence narrative — CLAUDE.md §RNG seedé.
 
 ### Tier 3 — Assets audio saisons
-- [ ] **T-40** ⏸ **BLOQUÉ-ASSETS** — `public/audio/ambient-{saison}.mp3` (4 fichiers) pour
-      `playSeasonTrack` (`juice.ts:341`). Travail = **production audio, pas de code** → hors de la
-      file de codage. **Ne gate PAS v0.2.0.** À reprendre quand les `.mp3` seront fournis.
+- [x] **T-40** ✅ **RÉSOLU (constat itér.85)** — plus besoin d'`ambient-{saison}.mp3`. `juice.ts`
+      (`SEASON_TRACKS`, l.253-261) mappe les 5 saisons vers des `soundtrack-N.mp3` **présents** dans
+      `public/audio/` (8 fichiers). Le blocage d'origine (fichiers absents → musique muette) est
+      supprimé par ce remappage. Aucune production d'asset nécessaire.
 
 ### 🎯 Definition of v0.2.0 — ✅ ATTEINTE (réconciliation, cf. itér. de clôture)
 Atteinte quand :
@@ -195,7 +196,9 @@ Atteinte quand :
 5. ✅ 510 tests verts, dette type = 0, `react-hooks/* = 0`, `bash tools/qa-gate.sh` → exit 0.
 
 ### Reste hors-périmètre « livrable » (enrichissement, non bloquant)
-- **T-40** audio saisons (production `.mp3`).
-- **Phase 5** densité narrative éditoriale (réécriture d'épreuves, échos décennaux).
+- [x] **T-40** audio saisons → **RÉSOLU** (constat itér.85) : saisons mappées sur soundtracks présents.
+- **Phase 5** densité narrative éditoriale (réécriture d'épreuves + échos décennaux) :
+  - [x] **Lot 1** — 8 échos décennaux (342 events) → itér. 85.
+  - [ ] **Lot 2+** — réécriture de ~15-20 épreuves (tension avant le verset) + échos restants (à la demande).
 - [x] **Décision produit tranchée** → **apprentissage persistant cross-parties** (façon SRS) :
   codex « à vie » accumulé, types `completion`/`reference` désormais atteignables → itér. 84 / `codexMemory.ts`.

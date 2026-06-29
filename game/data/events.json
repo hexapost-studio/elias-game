@@ -9295,5 +9295,245 @@
     },
     "spawnProbability": 0.65,
     "thematicFlavor": "Le plus beau fruit d'une amitié fidèle : voir l'autre rencontrer Celui qui t'a tenu."
+  },
+  {
+    "id": "e-echo-choix-peur-jeunesse",
+    "title": "La peur d’autrefois revient frapper",
+    "description": "Soixante ans plus tôt, jeune, tu avais tremblé puis choisi d’avancer malgré la peur. Ce soir, la vieillesse réveille la même angoisse au creux de la nuit. Mais cette fois tu connais le chemin : tu y es déjà passé, et Il était là.",
+    "ageRange": [
+      58,
+      75
+    ],
+    "category": "peur_angoisse",
+    "correctVerseId": "v-peur-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "e-choix-001"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "La peur vaincue dans la jeunesse devient une force tranquille au soir de la vie."
+  },
+  {
+    "id": "e-echo-prod-vocation-fruit",
+    "title": "La vocation embrassée porte du fruit",
+    "description": "À l’âge mûr, tu avais dit oui à l’appel que tu fuyais. Des décennies après, un jeune frappe à ta porte : 'On m’a dit que c’est vous qui aviez tout commencé.' Tu réalises que ta réponse d’alors nourrit encore des vies que tu ne verras pas.",
+    "ageRange": [
+      60,
+      78
+    ],
+    "category": "identite_appel",
+    "correctVerseId": "v-ident-004",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "e-prod-007"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Ce que Dieu sème par ton oui dépasse de loin ce que tu peux mesurer."
+  },
+  {
+    "id": "e-echo-mathias-foi-tardive",
+    "title": "Mathias, et le doute traversé",
+    "description": "Tu te souviens du temps où, adulte, le doute menaçait de tout emporter — et de Mathias, à tes côtés. Aujourd’hui âgé, tu reçois de ses nouvelles : sa foi a tenu, dit-il, parce qu’il t’a vu ne pas lâcher la tienne quand c’était le plus dur.",
+    "ageRange": [
+      62,
+      78
+    ],
+    "category": "doute_incredulite",
+    "correctVerseId": "v-doute-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-mathias-3"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "La foi tenue dans la tempête éclaire encore, longtemps après, ceux qui regardaient."
+  },
+  {
+    "id": "e-echo-prod-impudicite-liberte",
+    "title": "La liberté gagnée tient toujours",
+    "description": "Au milieu de ta vie, tu avais livré un combat secret et choisi la pureté plutôt que l’esclavage. Devenu vieux, tu mesures le prix de cette victoire : une paix que rien n’a pu te reprendre, et une maison restée debout.",
+    "ageRange": [
+      60,
+      76
+    ],
+    "category": "impudicite_addiction",
+    "correctVerseId": "v-imput-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "e-prod-002"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "La délivrance d’hier n’était pas un instant — c’était une porte restée ouverte."
+  },
+  {
+    "id": "e-echo-combat-veteran",
+    "title": "Le vétéran encourage les jeunes",
+    "description": "Adulte, tu avais appris à reconnaître le combat spirituel et à tenir bon. Vieux soldat désormais, tu vois de jeunes croyants ployer sous la même attaque. Ils te regardent : que leur dis-tu de ces années de lutte ?",
+    "ageRange": [
+      60,
+      78
+    ],
+    "category": "combat_spirituel",
+    "correctVerseId": "v-combat-003",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "e-prod-006"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "On ne transmet bien que les batailles qu’on a vraiment livrées."
+  },
+  {
+    "id": "e-echo-finances-fidelite",
+    "title": "La fidélité dans le peu a porté",
+    "description": "Vers la cinquantaine, tu avais choisi l’honnêteté plutôt que le gain facile, même quand ça serrait. Aujourd’hui, sans richesse éclatante, tu ne manques de rien d’essentiel — et ta parole vaut encore quelque chose dans toute la ville.",
+    "ageRange": [
+      62,
+      78
+    ],
+    "category": "finances_paresse",
+    "correctVerseId": "v-fin-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "e-prod-008"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Le fidèle dans les petites choses récolte une paix que l’argent n’achète pas."
+  },
+  {
+    "id": "e-echo-orgueil-humilite-tardive",
+    "title": "L’orgueil brisé, la douceur restée",
+    "description": "Adulte, ton orgueil t’avait coûté cher avant que tu plies enfin le genou. Devenu âgé, on te dit doux et accessible — et tu sais d’où vient cette douceur : d’une chute ancienne que la grâce a transformée en humilité.",
+    "ageRange": [
+      60,
+      78
+    ],
+    "category": "orgueil_independance",
+    "correctVerseId": "v-orgueil-002",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "arc-mathias-1-c"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Ce que l’orgueil a brisé, l’humilité l’a reconstruit en plus beau."
+  },
+  {
+    "id": "e-echo-choix-doute-jeunesse",
+    "title": "La question de jeunesse, enfin apaisée",
+    "description": "Tout jeune, une question avait failli emporter ta foi, et tu avais choisi de rester malgré l’ombre. Au soir de ta vie, la même question revient — mais elle ne te fait plus peur : tu as vécu assez pour connaître Celui en qui tu as cru.",
+    "ageRange": [
+      58,
+      75
+    ],
+    "category": "doute_incredulite",
+    "correctVerseId": "v-doute-004",
+    "decoyVerseIds": [],
+    "prerequisites": [
+      {
+        "kind": "event_succeeded",
+        "eventId": "e-choix-004"
+      }
+    ],
+    "statImpactOnFail": {
+      "foi": -2,
+      "paix": -2,
+      "physique": 0,
+      "finances": 0
+    },
+    "statImpactOnSuccess": {
+      "foi": 4,
+      "paix": 4,
+      "finances": 0
+    },
+    "thematicFlavor": "Les doutes traversés ne se taisent pas : ils deviennent des témoins de la fidélité de Dieu."
   }
 ]
