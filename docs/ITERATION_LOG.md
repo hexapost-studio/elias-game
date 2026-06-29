@@ -1582,6 +1582,27 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   Porte QA verte (build inclus), lint 0→0.
 - **Rollback** : `git revert <hash itér.80>`.
 
+## Itération 81 — Save-compat : recharger une partie ne perd plus l'identité (bug GRAVE)
+
+- **Origine** : audit save-compat de la passe de finalisation (invariant CLAUDE.md « tout nouveau
+  champ d'état doit être whitelisté dans `saveGame`, sinon perdu »). Diff `GameState` ↔ whitelist
+  `saveGame` (`src/data/persistence.ts`) : **4 champs d'identité manquants** — `playerName`,
+  `calling`, `seed`, `traits`.
+- **Impact (réel et actif)** : au boot, `App.tsx:187-188` fait `loadGame()` → `hydrateFromSave(saved)`,
+  qui fait `{ ...createInitialState(), ...saved }`. Les clés absentes de `saved` retombaient donc sur
+  un `createInitialState()` FRAIS → au rechargement : **nom réinitialisé** (perte de la saisie itér.9),
+  **VOCATION re-tirée au hasard** (incohérente avec `completedArcs`/« MON APPEL », pourtant sauvés),
+  **graine partageable changée** (casse « rejoue cette graine » itér.10), **traits vidés** (échos
+  narratifs cassés). Bug grave : il sapait silencieusement 3 features cœur.
+- **Application** : ajout de `playerName`, `calling`, `seed`, `traits` à la whitelist `saveGame`.
+- **Garde anti-régression** : `tests/persistence.test.ts` (2 cas, localforage mocké en mémoire) —
+  (1) save→load préserve les 4 champs ; (2) l'hydratation simulée `{...createInitialState(),...saved}`
+  n'écrase PAS l'identité (nom/seed/vocation/traits forcés ≠ état frais). Échoue si un champ est
+  re-lâché.
+- **Résultat** : 2 tests verts, porte QA verte, lint 0→0. Une partie reprise garde nom/vocation/
+  graine/traits.
+- **Rollback** : `git revert <hash itér.81>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

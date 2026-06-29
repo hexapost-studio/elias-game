@@ -18,6 +18,13 @@ export async function saveGame(state: GameState): Promise<void> {
   const toSave = {
     age: state.age,
     stats: state.stats,
+    // Identité de la run — SANS ces champs, hydrateFromSave les reprend de createInitialState() :
+    // nom réinitialisé, VOCATION re-tirée au hasard (incohérente avec completedArcs), graine
+    // partageable changée, traits perdus (échos cassés). Cf. invariant Save-compat (CLAUDE.md).
+    playerName: state.playerName,
+    calling: state.calling,
+    seed: state.seed,
+    traits: state.traits,
     profileName: state.profileName,
     parentNames: state.parentNames,
     lifeContext: state.lifeContext,
