@@ -19,9 +19,9 @@ vi.mock('localforage', () => ({
   },
 }));
 
-import { saveGame, loadGame } from '../src/data/persistence';
+import { saveGame, loadGame, getLifetimeCodex, mergeAndSaveLifetimeCodex, initLifetimeCodex } from '../src/data/persistence';
 import { createInitialState } from '../src/engine/gameEngine';
-import type { GameState } from '../src/types/game';
+import type { GameState, CodexEntry } from '../src/types/game';
 
 describe('persistence — round-trip de l\'identité de run (itér.81)', () => {
   beforeEach(() => mem.clear());
@@ -60,5 +60,38 @@ describe('persistence — round-trip de l\'identité de run (itér.81)', () => {
     expect(hydrated.seed).toBe(424242);            // pas 999
     expect(hydrated.calling?.id).toBe('berger');   // pas la vocation re-tirée
     expect(hydrated.traits).toHaveLength(1);       // pas vidé
+  });
+});
+
+describe('persistence — codex « à vie » cross-parties (itér.84)', () => {
+  function codex(over: Record<string, Partial<CodexEntry>>): Record<string, CodexEntry> {
+    const out: Record<string, CodexEntry> = {};
+    for (const id of Object.keys(over)) out[id] = { verseId: id, unlocked: false, timesUsed: 0, errorCount: 0, ...over[id] };
+    return out;
+  }
+
+  it('mergeAndSaveLifetimeCodex ACCUMULE entre deux vies (le cache reflète le max)', async () => {
+    await mergeAndSaveLifetimeCodex(codex({ v1: { unlocked: true, timesUsed: 2, errorCount: 1 } }));
+    await mergeAndSaveLifetimeCodex(codex({ v1: { timesUsed: 5 }, v2: { unlocked: true, timesUsed: 1 } }));
+    const life = getLifetimeCodex();
+    expect(life.v1.timesUsed).toBe(5);   // max(2,5)
+    expect(life.v1.errorCount).toBe(1);  // conservé
+    expect(life.v1.unlocked).toBe(true); // OR
+    expect(life.v2.timesUsed).toBe(1);   // nouveau verset
+  });
+
+  it('initLifetimeCodex recharge la mémoire persistée (round-trip storage→cache)', async () => {
+    await mergeAndSaveLifetimeCodex(codex({ v9: { unlocked: true, timesUsed: 4 } }));
+    await initLifetimeCodex(); // relit depuis localforage mocké
+    expect(getLifetimeCodex().v9?.timesUsed).toBe(4);
+  });
+
+  it('saveGame alimente la mémoire à vie (capture continue de l\'apprentissage)', async () => {
+    const s = createInitialState(undefined, 1, 'Léa');
+    s.codex = { ...s.codex, ...codex({ vsave: { unlocked: true, timesUsed: 3, errorCount: 1 } }) };
+    await saveGame(s);
+    // saveGame déclenche un merge fire-and-forget ; on laisse la microtask se résoudre.
+    await Promise.resolve();
+    expect(getLifetimeCodex().vsave?.timesUsed).toBeGreaterThanOrEqual(3);
   });
 });

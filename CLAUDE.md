@@ -95,15 +95,16 @@ Vérif **comportementale** optionnelle (hors porte, sans navigateur dans la QA a
 | 80 | **Cohérence PWA** (polish livraison) : manifest `lang:'fr'`+`dir:'ltr'` (vite-plugin-pwa émettait `en` par défaut, incohérent avec `<html lang="fr">`). Audit assets de prod : 13 img + 3 icônes, 0 cassé | `07f6cfc` |
 | 81 | **Save-compat (bug GRAVE)** : `saveGame` ne whitelistait pas `playerName`/`calling`/`seed`/`traits` → recharger réinitialisait le nom, re-tirait la vocation au hasard, changeait la graine, vidait les traits. Whitelist complétée + garde `tests/persistence.test.ts` | `3775f2e` |
 | 82 | **Tour guidé : dernière étape avalée** (trouvé en revue de code) : `useTargetRect` ne réinitialisait pas la mesure au changement de cible → la cascade de saut des étapes absentes (`.event-card`/`#choices-area`, idle) débordait sur `.btn-age`. État clé sur `selector` + garde `tests/tutorialOverlay.test.tsx` | `f4af4f8` |
-| 83 | **Phase F close — v0.3.0 « livrable »** : passe de finalisation (itér. 77-82) actée dans la ROADMAP (Definition v0.3.0 ✅). Jouable bout-en-bout, 0 erreur console, save fiable, PWA valide, 510 tests verts | _(ce commit)_ |
+| 83 | **Phase F close — v0.3.0 « livrable »** : passe de finalisation (itér. 77-82) actée dans la ROADMAP (Definition v0.3.0 ✅). Jouable bout-en-bout, 0 erreur console, save fiable, PWA valide, 510 tests verts | `01c2f73` |
+| 84 | **Persistance du codex cross-parties** : module pur `codexMemory.ts` (`mergeCodex` accumulation) + codex « à vie » (clé dédiée sans expiration, cache boot) seedé aux 3 entrées de partie. Débloque `completion`/`reference` + priorité SRS d'une vie à l'autre. +10 tests | _(ce commit)_ |
 
 **Propositions D, A, B : COMPLÈTES.** **Phase 1 (hooks) + Phase 1bis (type) : COMPLÈTES** (`react-hooks/* = 0`, dette de type = 0).
 **Phase 2 (contenu + équilibrage senior) : COMPLÈTE** (arcs/seniors présents, courbe rééquilibrée et mesurée).
 **Phase 3 (fil polyphonique) : COMPLÈTE** (T-20..T-32 livrés). **Phase 4 (v0.2.0) : CLOSE** (itér. 77 — T-34 atteint, T-39 tranché ;
 T-40 audio parqué hors code). **Phase F (v0.3.0 « livrable ») : CLOSE** (itér. 77-82 — jouable bout-en-bout, 0 erreur console,
-save fiable, PWA valide, 510 tests). **Prochaine file = Phase 5 « De quiz à roman visuel »** : densité narrative éditoriale +
-TestimonyCard/ChapterCard (cf. `docs/ROADMAP.md` + `docs/DESIGN_PARTIE2.md`). **Décision produit ouverte** : codex reset/vie →
-types `completion`/`reference` rares (persistance cross-parties à trancher). Mesure : `tools/survival-sim.ts` ; playtest : skill `run-elias`.
+save fiable, PWA valide, 510 tests). **Apprentissage persistant** (itér. 84) : codex « à vie » cross-parties (`codexMemory.ts`) →
+`completion`/`reference` atteignables, priorité SRS conservée. **Prochaine file = Phase 5 « De quiz à roman visuel »** : densité
+narrative éditoriale + TestimonyCard/ChapterCard (cf. `docs/ROADMAP.md` + `docs/DESIGN_PARTIE2.md`). Mesure : `tools/survival-sim.ts` ; playtest : skill `run-elias`.
 
 ## Réserve (analysée, non planifiée)
 

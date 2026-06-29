@@ -13,8 +13,17 @@ import {
 import { personalize } from '../engine/identity';
 import { applyMoralChoice } from '../engine/moralChoice';
 import { revealsUpToAge } from '../engine/reveals';
-import { saveGame, logEvent, logRun, saveInheritance } from '../data/persistence';
+import { saveGame, logEvent, logRun, saveInheritance, getLifetimeCodex } from '../data/persistence';
+import { mergeCodex } from '../engine/codexMemory';
 import { trackEvent } from '../services/analytics';
+
+/** Seede le codex d'une nouvelle run depuis la mémoire « à vie » (apprentissage cross-parties,
+ *  itér.84) : un verset déjà travaillé démarre avec son historique → progression de difficulté
+ *  (`wordBank`/`completion`/`reference`) et priorité SRS conservées d'une partie à l'autre. */
+function seedCodexFromLifetime(state: GameState): GameState {
+  state.codex = mergeCodex(state.codex, getLifetimeCodex());
+  return state;
+}
 
 interface GameStore extends GameState {
   gameOver: { isOver: boolean; reason?: string } | null;
@@ -43,11 +52,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const inheritance = get().inheritance;
     const used = inheritance?.used;
     // Préserve le nom du joueur au redémarrage (itér. 9) — pas de re-saisie au restart.
-    const state = createInitialState(
+    const state = seedCodexFromLifetime(createInitialState(
       used ? { title: null, bonus: {}, used: false } : inheritance,
       undefined,
       get().playerName
-    );
+    ));
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
   },
@@ -57,11 +66,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // monde + stats de départ. Sans prologue (la naissance est entièrement seedée).
     const inheritance = get().inheritance;
     const used = inheritance?.used;
-    const state = createInitialState(
+    const state = seedCodexFromLifetime(createInitialState(
       used ? { title: null, bonus: {}, used: false } : inheritance,
       seed,
       playerName ?? get().playerName
-    );
+    ));
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
   },
@@ -95,6 +104,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
     state.journal = [introEntry, ...storyEntries, ...caughtUpReveals];
     state.difficulty = 2 as const; // Skip easy mode — prologue already prepared them
+    seedCodexFromLifetime(state); // apprentissage cross-parties (itér.84)
     set({ ...state, gameOver: null });
     saveGame(state).catch(() => {});
   },

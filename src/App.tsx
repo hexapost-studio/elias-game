@@ -33,7 +33,7 @@ import { MainMenu } from './components/MainMenu';
 const CodexMenu  = lazy(() => import('./components/CodexMenu').then(m => ({ default: m.CodexMenu })));
 const LexiconMenu = lazy(() => import('./components/LexiconMenu').then(m => ({ default: m.LexiconMenu })));
 const FeedbackModal = lazy(() => import('./components/FeedbackModal').then(m => ({ default: m.FeedbackModal })));
-import { loadGame, hasSeenOnboarding, markOnboardingDone } from './data/persistence';
+import { loadGame, hasSeenOnboarding, markOnboardingDone, initLifetimeCodex } from './data/persistence';
 import { flushLocalQueue } from './services/feedback';
 import { initJuice, playSuccess, playFail, playClick, playCombo, playLevelUp, screenShake, spawnParticles, setShakeContainer, glowFlash, startAmbient, stopAmbient, setAmbientPlaybackRate, playTheme, crossfadeTo, seasonTrackPath, albumTrack, getStoredAlbum, storeAlbum } from './engine/juice';
 import { isAiEnabled, generateJournalEntry, generateDynamicEvent } from './services/aiNarrator';
@@ -180,6 +180,9 @@ function App() {
     async function init() {
       initJuice();
       playTheme();
+      // Hydrater la mémoire « à vie » du codex AVANT toute nouvelle partie (apprentissage
+      // cross-parties, itér.84) — le seeding d'une run la lit de façon synchrone.
+      await initLifetimeCodex();
       const seen = await hasSeenOnboarding();
       if (!seen) {
         setShowOnboarding(true);

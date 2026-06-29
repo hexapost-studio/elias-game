@@ -1626,6 +1626,29 @@ narrateur offline). 60 tests verts. Point de restauration avant la boucle.
   code systématique des commits a rattrapé un défaut qu'aucun test ni le smoke ne voyaient.
 - **Rollback** : `git revert <hash itér.82>`.
 
+## Itération 84 — Persistance du codex entre les vies (répétition espacée cross-parties)
+
+- **Origine** : décision produit ouverte à la clôture v0.3.0. Le codex repartait à zéro à chaque vie
+  (`createInitialState` → `createInitialCodex()`) → les types de question à difficulté croissante
+  (`completion` ≥3 vues, `reference` ≥5) et la priorité SRS n'étaient quasi jamais atteints. Choix
+  tranché : **apprentissage persistant** (ambition neuro du Design V2 — mémorisation sur N parties).
+- **Architecture (modulaire, pur + I/O séparés)** :
+  - **Module pur** `src/engine/codexMemory.ts` — `mergeCodex(base, incoming)` : accumulation par
+    verset (`unlocked` OR, `timesUsed`/`errorCount` max), idempotente et ordre-indépendante. 7 tests.
+  - **`src/data/persistence.ts`** — codex « à vie » sur une clé dédiée `elias-lifetime-codex-v1`
+    (SANS expiration, ≠ SAVE_KEY 7 j). Cache mémoire `lifetimeCodexCache` hydraté au boot par
+    `initLifetimeCodex()` (lecture synchrone via `getLifetimeCodex()` pour le seeding). `saveGame`
+    fusionne en continu le codex de run dans la mémoire à vie (`mergeAndSaveLifetimeCodex`).
+  - **`src/stores/gameStore.ts`** — `seedCodexFromLifetime()` branché aux 3 entrées de nouvelle
+    partie (`initGame`/`initGameWithSeed`/`startWithPrologue`) : le codex de run démarre sur
+    l'historique accumulé → `resolveQuestionType` voit `timesUsed` élevé → progression débloquée.
+  - **`src/App.tsx`** — `await initLifetimeCodex()` au boot, avant toute nouvelle partie.
+- **Garde** : `tests/codexMemory.test.ts` (7) + 3 cas ajoutés à `tests/persistence.test.ts`
+  (accumulation cross-vies, round-trip storage→cache, `saveGame` alimente la mémoire). +10 tests.
+- **Résultat** : 520 tests verts, smoke « 0 erreur console », porte QA verte, lint 0→0 sur 6 fichiers.
+  La mémorisation progresse désormais d'une partie à l'autre ; `completion`/`reference` atteignables.
+- **Rollback** : `git revert <hash itér.84>`.
+
 ### Réserve (analysée, non encore planifiée)
 - ✅ ~~Déterminisation complète de la naissance / graine partageable~~ → **livré itér. 10**.
 - ✅ ~~Smart skip vers le non-lu~~ → **livré itér. 11** (système « texte déjà-lu → instantané »).

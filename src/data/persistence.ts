@@ -1,10 +1,12 @@
 import localforage from 'localforage';
-import type { GameState, Inheritance } from '../types/game';
+import type { GameState, Inheritance, CodexEntry } from '../types/game';
+import { mergeCodex } from '../engine/codexMemory';
 
 const SAVE_KEY = 'elias-save-v1';
 const ONBOARDING_KEY = 'elias-onboarding-v1';
 const ANALYTICS_KEY = 'elias-analytics-v1';
 const INHERITANCE_KEY = 'elias-inheritance-v1';
+const LIFETIME_CODEX_KEY = 'elias-lifetime-codex-v1';
 
 // Configure localforage
 localforage.config({
@@ -64,6 +66,8 @@ export async function saveGame(state: GameState): Promise<void> {
     timestamp: Date.now(),
   };
   await localforage.setItem(SAVE_KEY, toSave);
+  // Capture continue de l'apprentissage dans la mémoire « à vie » (cross-parties).
+  void mergeAndSaveLifetimeCodex(state.codex);
 }
 
 export async function loadGame(): Promise<Partial<GameState> | null> {
@@ -83,6 +87,34 @@ export async function loadGame(): Promise<Partial<GameState> | null> {
 
 export async function deleteSave(): Promise<void> {
   await localforage.removeItem(SAVE_KEY);
+}
+
+/* ─── CODEX « À VIE » (mémoire d'apprentissage cross-parties, itér.84) ─── */
+
+// Cache mémoire : le seeding d'une nouvelle partie a besoin du codex à vie de façon SYNCHRONE
+// (les actions du store ne sont pas async). Hydraté une fois au boot via `initLifetimeCodex()`.
+// PAS d'expiration (≠ SAVE_KEY) : l'apprentissage est permanent.
+let lifetimeCodexCache: Record<string, CodexEntry> = {};
+
+/** À appeler une fois au démarrage (avant toute nouvelle partie) pour peupler le cache. */
+export async function initLifetimeCodex(): Promise<void> {
+  try {
+    const data = await localforage.getItem<Record<string, CodexEntry>>(LIFETIME_CODEX_KEY);
+    if (data) lifetimeCodexCache = data;
+  } catch { /* cache reste vide — 1ʳᵉ session ou stockage indisponible */ }
+}
+
+/** Codex à vie courant (synchrone) — sert à seeder le codex d'une nouvelle run. */
+export function getLifetimeCodex(): Record<string, CodexEntry> {
+  return lifetimeCodexCache;
+}
+
+/** Fusionne le codex d'une run dans la mémoire à vie (accumulation) et persiste. Idempotent. */
+export async function mergeAndSaveLifetimeCodex(runCodex: Record<string, CodexEntry>): Promise<void> {
+  lifetimeCodexCache = mergeCodex(lifetimeCodexCache, runCodex);
+  try {
+    await localforage.setItem(LIFETIME_CODEX_KEY, lifetimeCodexCache);
+  } catch { /* best-effort : la perte d'une écriture ne casse pas la run en cours */ }
 }
 
 /* ─── ONBOARDING ─── */

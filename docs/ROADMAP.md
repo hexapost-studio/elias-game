@@ -197,6 +197,5 @@ Atteinte quand :
 ### Reste hors-périmètre « livrable » (enrichissement, non bloquant)
 - **T-40** audio saisons (production `.mp3`).
 - **Phase 5** densité narrative éditoriale (réécriture d'épreuves, échos décennaux).
-- **Décision produit ouverte** : codex remis à zéro par vie → types `completion`/`reference`
-  quasi jamais atteints. À trancher : apprentissage persistant cross-parties (façon SRS) vs
-  reset par vie (façon BitLife). N'empêche pas de livrer.
+- [x] **Décision produit tranchée** → **apprentissage persistant cross-parties** (façon SRS) :
+  codex « à vie » accumulé, types `completion`/`reference` désormais atteignables → itér. 84 / `codexMemory.ts`.
