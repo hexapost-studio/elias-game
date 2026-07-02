@@ -118,6 +118,21 @@ tokens (cœur migré), G-5 garde save-compat, G-6 harnais e2e ; **G-4 (découpe 
 **Prochaine file = finir G-4** (cf. `## ⏭️ PROCHAINE SESSION` en tête de `docs/ROADMAP.md`) **puis Phase 5 lot 2** (densité
 narrative). Mesure : `tools/survival-sim.ts` ; playtest : skill `run-elias` (ou `e2e.mjs`). État dérivé : `node tools/status.mjs`.
 
+## Workflow de session
+
+### Début (obligatoire, dans cet ordre)
+1. Lire `~/.claude/KNOWLEDGE_BASE.md` — patterns transférables (React, Vite, PWA, localStorage pertinents)
+2. Lire **`docs/ROADMAP.md` tête** (`## ⏭️ PROCHAINE SESSION`) — source de vérité sur la prochaine tâche
+3. Lire `docs/ITERATION_LOG.md` — état vivant du processus, dernière itération livrée
+4. `node tools/status.mjs` — compteurs dérivés (ne pas recopier à la main)
+
+### Fin (3 questions)
+1. **Pattern transférable ?** → OUI : ajouter dans `~/.claude/KNOWLEDGE_BASE.md`
+2. **Mémoire projet à jour ?** → mettre à jour `~/.claude/projects/.../memory/project-elias-game.md`
+3. **Porte QA verte ?** → `bash tools/qa-gate.sh` avant de fermer — ne jamais committer sans ça
+
+---
+
 ## Réserve (analysée, non planifiée)
 
 - ~~**Assainissement lint hooks**~~ → **livré itér. 21–31** (`react-hooks/* = 0`).
